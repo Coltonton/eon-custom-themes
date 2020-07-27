@@ -143,7 +143,19 @@ Looking to theme your EON? This is the place see [List Of Themes](#List-of-theme
 | ------------------| ---------------------| -----------| --------------------| ----------------------------------| ----------------|
 | Colton HooeyPilot | 3T                   | Yes        | No                  | Yes, Loading, Elements, & Sounds  | Colton          |
 | Comma Stock       | 3T                   | Yes        | No                  | No                                | Comma.ai        |
-
+| Acura-Black       | 3T                   | Yes        | No                  | No                                | Colton          |
+| Android-Black     | 3T                   | Yes        | No                  | No                                | Colton          |
+| Apple Black       | 3T                   | Yes        | No                  | No                                | Colton          |
+| Chevy Black       | 3T                   | Yes        | No                  | No                                | Colton          |
+| CommunityPilot-Black | 3T                | Yes        | No                  | No                                | Colton          |
+| DragonPilot-Black | 3T                   | Yes        | No                  | No                                | Colton          |
+| Honda Black       | 3T                   | Yes        | No                  | No                                | Colton          |
+| Hyundai Black     | 3T                   | Yes        | No                  | No                                | Colton          |
+| Kia_Black         | 3T                   | Yes        | No                  | No                                | Colton          |
+| Lexus Black       | 3T                   | Yes        | No                  | No                                | Colton          |
+| OnePlus-Black     | 3T                   | Yes        | No                  | No                                | Colton          |
+| Subaru-Black      | 3T                   | Yes        | No                  | No                                | Colton          |
+| Toyota-Black      | 3T                   | Yes        | No                  | No                                | Colton          |
 
 i'll be adding and making more in the coming days :)
 
