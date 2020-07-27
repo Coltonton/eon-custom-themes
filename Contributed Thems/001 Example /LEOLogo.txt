@@ -1,0 +1,1 @@
+Put your logo.bin here for the LeEco Pro based phones, removing the extention and naming it LEOLogo

@@ -1,0 +1,6 @@
+To get the Comma.ai stock boot logo back
+
+It must be downloaded from here:
+https://github.com/commaai/eon-neos-builder/blob/master/devices/eon/binaries/logo.bin
+
+Remove the .bin extension and follow the install guide in the main Readme
