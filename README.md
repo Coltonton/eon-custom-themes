@@ -27,7 +27,7 @@ Table of Contents
 
 ## [Community Files](#LEON/TWO_Instructions)
 *  [How To Use:](#How-To-Use: )
-*  [List of themes: ](#List-of-themes:)
+*  [List of themes: ](#List-Of-Themes:)
 *  [Contribute Your Work!](#Contribute-Your-Work!)
 
 ---
@@ -131,7 +131,7 @@ Community Files
 
 Looking to theme your EON? This is the place see [List Of Themes](#List-of-themes:) bellow to see user contributed themes. 
 
-## List of themes: 
+## List-Of-Themes: 
 | Theme             | What EONs? (3T/LEO)  | Boot Logo? | Boot Animation?     | Custom OP UI?                     | Contributor     |
 | ------------------| ---------------------| -----------| --------------------| ----------------------------------| ----------------|
 | Colton HooeyPilot | 3T                   | Yes        | No                  | Yes, Loading, Elements, & Sounds  | Colton          |
