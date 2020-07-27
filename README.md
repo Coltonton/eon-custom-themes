@@ -1,52 +1,52 @@
 [![](https://i.imgur.com/IcCeUD7.png)](#)
-# EON-Custom-Bootscreens
+# EON-Custom-Themes
 Upgrade your EON/Leon/Two's Looks!!!
 
 Table of Contents
 =======================
 * [What is this?](#what-is-this)
-* [Prerequisites:](#Prerequisites:)
-* [Setting Up FileZilla](#Setting-Up-FileZilla:)
+* [Prerequisites](#Prerequisites)
+* [Setting Up FileZilla](#Setting-Up-FileZilla)
+
+### 3T-EON Boot Logo Instructions
+* [Retrive 3T Boot Logo](#Retrive-3T-Boot-Logo)
+* [Modifying 3T Files](#Modifying-3T-Files)
+* [Uploading Modified 3T Logo/Custom Logo:](#Uploading-Modified-3T-Logo/Custom-Logo)
 
 
-## [3T-EON Boot Logo Instructions](#3T-EON-Instructions:)
-* [Retrive Boot Logo](#Retrive-Boot-Logo)
-* [Modifying Files](#Modifying-Files:)
-* [Uploading Modified Logo/Custom Logo:](#Uploading-Modified-Logo/Custom-Logo:)
+### LEON/TWO Boot Logo Instructions HALP ME!!!
+* [HELP WANTED!!!!](#Help-Wanted)
+* [Find The LEON/TWO logo.bin:](#Find-The-LEON/TWO-logo.bin)
 
 
-## [LEON/TWO Boot Logo Instructions HALP ME!!!](#LEON/TWO_Instructions)
-* [HELP WANTED!!!!](#Help-Wanted!!)
-* [Install ADB:](#Installing-ADB-(Windows):)
-* [Find The LEON/TWO logo.bin:](#Find-The-LEON/TWO-logo.bin:)
+### Boot Animation & OP Loading Screen
+*  [Boot Animation:](#Boot-Animation)
+*  [OpenPilot Loading Screen:](#OpenPilot-Loading-Screen)
 
+### Themes
 
-## [Boot Animation & OP Loading Screen](#Boot-Animation-&-OP-Loading-Screen)
-*  [Boot Animation:](#Boot-Animation:)
-*  [OpenPilot Loading Animation:](#OpenPilot-Loading-Screen:)
-
-## [Community Files](#LEON/TWO_Instructions)
-*  [How To Use:](#How-To-Use: )
-*  [List of themes: ](#List-Of-Themes:)
-*  [Contribute Your Work!](#Contribute-Your-Work!)
+*  [How To Use:](#How-To-Use)
+*  [List of themes:](#List-Of-Themes)
+*  [Contribute Your Work!](#Contribute-Your-Work)
 
 ---
+---
+---
 
-What is this?
-------
+## What is this?
+
 Thanks for asking young one! This is a project dedicated to de-comma-ing your EON! Wether you dont like Comma.ai the company or want to personalize your EON, I gotchu fam!
 
-Included in this repository is all the info you need to start hacking around! This is also a community project so here you can find Boot Logos, Boot Animations, and OpenPilot loading annimations for your device! Created by myself and other community members, free to use!!! Made your own and want to share it with the world? Wonderful! check [Contribute Your Work!](#Contribute-Your-Work!)
+Included in this repository is all the info you need to start hacking around! This is also a community project so here you can find boot logos, boot animations, and OpenPilot loading annimations for your device! Created by myself and other community members, free to use!!! Made your own and want to share it with the world? Wonderful! check [Contribute Your Work!](#Contribute-Your-Work!)
 
-Prerequisites:
-------
+## Prerequisites:
+
 * Windows(Only needed if you plan on making your own Logo files)
 * FileZilla
 * An EON (Any will do! FreeT-ON, Free-LeON, 3T-ON, Gold/LEON, TWO)
 
 
-Setting Up FileZilla:
-------
+## Setting Up FileZilla:
 0. [Download Filezilla](https://filezilla-project.org/download.php?type=client)
 1. Install FileZilla
 2. Open Site Manager (Top leftmost icon - looks like 3 server racks)
@@ -61,18 +61,18 @@ Setting Up FileZilla:
 3T-EON Instructions:
 =======================
 
-## Boot Logo:
-### Retrive Boot Logo
+## 3T Boot Logo:
+### Retrive 3T Boot Logo
 
 1. Connect with FileZilla
 2. and go to `/dev/block`
 3. In the left handed pannel choose where you want to save.
 4. Doubble click the file sde17 to transfer and backup
 
-### Modifying Files:
+### Modifying 3T Files:
 * Not Available yet sorry :(
 
-### Uploading Modified Logo/Custom Logo:
+### Uploading Modified 3T Logo/Custom Logo:
 1. Find the boot logo in this repo you want, and rename it sde17 keeping it with no extention
 2. Connect with FileZilla
 3. Go to `/dev/block`
@@ -124,17 +124,25 @@ Boot Animation & OP Loading Screen
 ## OpenPilot Loading Screen:
 * Not Available yet sorry :(
 
-Community Files
+
+
+Community-Files:
 =======================
 
 ## How To Use:
 
-Looking to theme your EON? This is the place see [List Of Themes](#List-of-themes:) bellow to see user contributed themes. 
+Looking to theme your EON? This is the place see [List Of Themes](#List-of-themes:) to see contributed themes! Just Clone/download this repo, and follow the guide relevant to you from the below list  
 
-## List-Of-Themes: 
-| Theme             | What EONs? (3T/LEO)  | Boot Logo? | Boot Animation?     | Custom OP UI?                     | Contributor     |
+* [3T Boot Logo Upload Instructions](#Uploading-Modified-3T-Logo/Custom-Logo:)
+* [LEON Boot Logo Upload Instructions](#null:) 
+* [EON Boot Animation Instructions](#Boot-Animation:)
+* Or the info/instructions provided by th author for other cutom files.
+
+## List Of Themes: 
+| Theme Name        | What EONs? (3T/LEO)  | Boot Logo? | Boot Animation?     | Custom OP Files?                   | Contributor/ Author|
 | ------------------| ---------------------| -----------| --------------------| ----------------------------------| ----------------|
 | Colton HooeyPilot | 3T                   | Yes        | No                  | Yes, Loading, Elements, & Sounds  | Colton          |
+| Comma Stock       | 3T                   | Yes        | No                  | No                                | Comma.ai        |
 
 
 i'll be adding and making more in the coming days :)
