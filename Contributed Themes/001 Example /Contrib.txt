@@ -1,2 +1,15 @@
 Add any of your info here, and a licence to your folder if you so desire, remember this is a community project and this is all 
-"open source" you can retain your rights to your work, but it will be free to use. I will not and cannot accept anythin else!
+"open source" you can retain your rights to your work, but it will be free to use. I will not and cannot accept anything else!
+
+'Member
+Requirements To Contribute:
+* Logo/animation/etc must be in the correct orientation.
+* You must follow the directory structure/ how files & folders should be names.
+* Inside Other Files is free rein.
+* No Pornographic/Obscene/GreyLine content will we accepted - Keep it clean.
+* No "off-color" or controversial content of any kind.
+* You are willing to accept responsibility for your theme, I will not maintain your themes.
+* You accept legal responsibility over anything in your theme folder, if I receive a copyright notice, I will take down your theme and forward the notice to you until you resolve the issue.
+* Some form of contact is required either in Contrib.txt, or shared privately with me.
+
+License:

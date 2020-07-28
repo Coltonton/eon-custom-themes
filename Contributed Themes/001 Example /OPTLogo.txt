@@ -1,1 +1,0 @@
-Put your logo.bin here for the One Plus 3T based phones, removing the extention and naming it OPTLogo
