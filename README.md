@@ -144,7 +144,14 @@ I'm also C-ton#2169 on discord if you want help / want to chat!
 Boot Animation & OP Loading Screen
 =======================
 ## Boot Animation:
-* Not Available yet sorry :(
+(Universal Method For OP3T EONS and LeEco Eons (Gold/TWO))
+1. Download this repo to your computer.
+2. SSH into EON and run `mount -o remount,rw /system`.
+3. SSH into EON with FileZilla, navigate to your downloads  in the left section (your computer) and `/system/media` on the EON Side.
+4. Doubble click bootanimation.zip on the eon side to backup the stock Comma boot animation.
+5. With FileZilla, navigate to this downloaded repo in the left section (your computer) and `/system/media` on the EON Side.
+6. Doubble click bootanimation.zip in your desired theme folder in the left section, and choose to overwrite.
+7. Reboot and enjoy!
 
 ## OpenPilot Loading Screen:
 * Not Available yet sorry :(
