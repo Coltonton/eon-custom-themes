@@ -95,6 +95,7 @@ Although there are a few files that get extracted you only need to worry about 3
 4. FIN! You can now [Upload your modified 3T logo](#Uploading-modified/custom-3T-Logo:)
 
 ### Uploading modified/custom 3T Logo:
+0. Make sure you are NOT about to follow these steps to install on a LeEco Based EON (LEON,GOLD,TWO) THIS IS ONLY FOR OP3T EON's, YOUR DEVICE WILL BE HARD BRICKED! DEAD! CAPUT! JEFFREY EPSTEIN'ED!!!!!
 1. Connect with FileZilla.
 2. Go to `/dev/block`
 3. In the left pane area in FileZilla, navigate to the boot logo you want to use.
@@ -106,11 +107,14 @@ Reboot and enjoy! If EON shows a Linux penguin you done screwed sumthin' up! (Or
 LEON/TWO_Instructions
 =======================
 
+## DO NOT DON NOT!!!!! TRY TO PUT A OP3T BOOT LOGO ON YOUR LEECO EON
+
 ## HELP WANTED!!
 
 I do not have a LEON and I need your help! 
 If you want to send in a LEON/Two logo.bin it would be much appriciated! 
 Email it to Cole@endoflinetech.com and I will get a working! It would be appricieated if you would help verify my work is working
+I'm also C-ton#2169 on discord if you want help / want to chat!
 
 
 
@@ -157,29 +161,34 @@ Looking to theme your EON? This is the place see [List Of Themes](#List-of-theme
 * [3T Boot Logo Upload Instructions](#Uploading-Modified-3T-Logo/Custom-Logo:)
 * [LEON Boot Logo Upload Instructions](#null:) 
 * [EON Boot Animation Instructions](#Boot-Animation:)
-* Or the info/instructions provided by th author for other cutom files.
+* Or the info/instructions provided by the author for other custom files.
 
 ## List Of Themes: 
-| Theme Name        | What EONs? (3T/LEO)  | Boot Logo? | Boot Animation?     | Custom OP Files?                   | Contributor/ Author|
-| ------------------| ---------------------| -----------| --------------------| ----------------------------------| ----------------|
-| Colton-HooeyPilot | 3T                   | Yes        | No                  | Yes, Loading, Elements, & Sounds  | Colton          |
-| Colton-Pyramid    | 3T                   | Yes        | No                  | No                                | Colton          |
-| Comma-Stock       | 3T                   | Yes        | No                  | No                                | Comma.ai        |
-| Acura-Black       | 3T                   | Yes        | No                  | No                                | Colton          |
-| Android-Black     | 3T                   | Yes        | No                  | No                                | Colton          |
-| Apple-Black       | 3T                   | Yes        | No                  | No                                | Colton          |
-| Chevy-Black       | 3T                   | Yes        | No                  | No                                | Colton          |
-| CommunityPilot-Black | 3T                | Yes        | No                  | No                                | Colton          |
-| DragonPilot-Black | 3T                   | Yes        | No                  | No                                | Colton          |
-| Honda-Black       | 3T                   | Yes        | No                  | No                                | Colton          |
-| Hyundai-Black     | 3T                   | Yes        | No                  | No                                | Colton          |
-| Kia-Black         | 3T                   | Yes        | No                  | No                                | Colton          |
-| Lexus-Black       | 3T                   | Yes        | No                  | No                                | Colton          |
-| OnePlus-Black     | 3T                   | Yes        | No                  | No                                | Colton          |
-| Subaru-Black      | 3T                   | Yes        | No                  | No                                | Colton          |
-| Toyota-Black      | 3T                   | Yes        | No                  | No                                | Colton          |
+| Theme Name            |Boot Logo?(3T)| Boot Logo? (LEO/Gold/Two) | Boot Animation? | Custom OP Files?                 | Contributor/ Author|
+| ----------------------| -------------| ------------------------- | ----------------| ---------------------------------| -------------------|
+| Acura                 | Yes          | No                        | No              | No                               | Colton             |
+| Android               | Yes          | No                        | Yes             | No                               | Colton             |
+| Apple                 | Yes          | No                        | No              | No                               | Colton             |
+| Arne-Pilot            | Yes          | No                        | Yes             | No                               | Colton             |
+| Chevy                 | Yes          | No                        | No              | No                               | Colton             |
+| Colton-HooeyPilot     | Yes          | No                        | No              | Elements, & Sounds               | Colton             |
+| Comma-Stock           | Yes          | No                        | Yes             | No                               | Comma.ai           |
+| CommunityPilot        | Yes          | No                        | No              | No                               | Colton             |
+| DragonPilot           | Yes          | No                        | Yes             | No                               | Colton             |
+| A General Theme       | Yes          | No                        | Yes             | No                               | Colton             |
+| Honda                 | Yes          | No                        | Yes             | No                               | Colton             |
+| Hyundai               | Yes          | No                        | No              | No                               | Colton             |
+| Kia                   | Yes          | No                        | No              | No                               | Colton             |
+| Lexus                 | Yes          | No                        | No              | No                               | Colton             |
+| OnePlus               | Yes          | No                        | No              | No                               | Colton             |
+| Subaru                | Yes          | No                        | Yes             | No                               | Colton             |
+| Toyota                | Yes          | No                        | Yes             | No                               | Colton             |
 
-i'll be adding and making more in the coming days :)
+This is the default linup, I will be finishing up whats here, with maybe a coupple others. Happy to hear suggestions for others!!! 
+I still need your help, to make LEON boot logos. Want to help? See [HELP WANTED!!!!](#Help-Wanted)
+
+## Donations accepted and very much not required!:
+I also hate to ask but I've put quite an ammount of time in to this project. If you like what I've done and do want to help you can buy me a bee....coffee! by donating on [PayPal](https://paypal.me/dattech?locale.x=en_US). Just a coupple dollary doo's will mean alot, plese dont feel overly generous I did this for my fun and the community!!
 
 ## Contribute Your Work!:
 
