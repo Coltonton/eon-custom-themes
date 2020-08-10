@@ -2,28 +2,47 @@ IsThemeInstalled=/storage/emulated/0/theme_installed
 switchstate=`cat /sys/devices/virtual/switch/tri-state-key/state` || switchstate=5
 Is3TON=/sys/devices/virtual/switch/tri-state-key/state
 
-read -p "Enter 1 for OnePlus Eon, or enter 2 for LeEco Eon:"  eonval
-read -p "Enter the theme number"  themeval
+PS3="Select The Theme: "
+select theme in OP3T-Acura OP3T-Android OP3T-Apple OP3T-Arne OP3T-Chevy OP3T-Colton quit; 
 
-if [ $eonval == 1 ] 
-    then
-    if [ $themeval == 1 ] 
-        then
-    elif [ $eonval == 2 ]
-    elif [ $eonval == 2 ]
-    elif [ $eonval == 2 ]
-    elif [ $eonval == 2 ]
-    elif [ $eonval == 2 ]
-    elif [ $eonval == 2 ]
-    elif [ $eonval == 2 ]
-    elif [ $eonval == 2 ]
-elif [ $eonval == 2 ] 
-    then
-    echo "2" 
-elif [ $eonval > 2 ] 
-    then
-    echo "I said 1 or 2 you silly goof!" 
-fi
+do
+    case $theme in
+        OP3T-Acura)
+            echo "oof"
+            ;;
+        OP3T-Android)
+            read -p "Enter the first number: " n1
+            read -p "Enter the second number: " n2
+            echo "$n1 - $n2 = $(($n1-$n2))"
+            ;;
+        OP3T-Apple)
+            read -p "Enter the first number: " n1
+            read -p "Enter the second number: " n2
+            echo "$n1 * $n2 = $(($n1*$n2))"
+            ;;
+        OP3T-Arne)
+            read -p "Enter the first number: " n1
+            read -p "Enter the second number: " n2
+            echo "$n1 / $n2 = $(($n1/$n2))"
+            ;;
+        OP3T-Chevy)
+            read -p "Enter the first number: " n1
+            read -p "Enter the second number: " n2
+            echo "$n1 / $n2 = $(($n1/$n2))"
+            ;;
+        OP3T-Colton)
+            read -p "Enter the first number: " n1
+            read -p "Enter the second number: " n2
+            echo "$n1 / $n2 = $(($n1/$n2))"
+            ;;
+        quit)
+            break
+            ;;
+    *) 
+      echo "Invalid option $REPLY"
+      ;;
+  esac
+done
 
 #cd /data/hooeypilot
 #exec ./installtheme.sh

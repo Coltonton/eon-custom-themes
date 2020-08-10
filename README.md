@@ -171,25 +171,25 @@ Looking to theme your EON? This is the place see [List Of Themes](#List-of-theme
 * Or the info/instructions provided by the author for other custom files.
 
 ## List Of Themes: 
-| Theme Name            |Boot Logo?(3T)| Boot Logo? (LEO/Gold/Two) | Boot Animation? | Custom OP Files?                 | Contributor/ Author|
-| ----------------------| -------------| ------------------------- | ----------------| ---------------------------------| -------------------|
-| Acura                 | Yes          | No                        | No              | No                               | Colton             |
-| Android               | Yes          | No                        | Yes             | No                               | Colton             |
-| Apple                 | Yes          | No                        | No              | No                               | Colton             |
-| Arne-Pilot            | Yes          | No                        | Yes             | No                               | Colton             |
-| Chevy                 | Yes          | No                        | No              | No                               | Colton             |
-| Colton-HooeyPilot     | Yes          | No                        | No              | Elements, & Sounds               | Colton             |
-| Comma-Stock           | Yes          | No                        | Yes             | No                               | Comma.ai           |
-| CommunityPilot        | Yes          | No                        | No              | No                               | Colton             |
-| DragonPilot           | Yes          | No                        | Yes             | No                               | Colton             |
-| A General Theme       | Yes          | No                        | Yes             | No                               | Colton             |
-| Honda                 | Yes          | No                        | Yes             | No                               | Colton             |
-| Hyundai               | Yes          | No                        | No              | No                               | Colton             |
-| Kia                   | Yes          | No                        | No              | No                               | Colton             |
-| Lexus                 | Yes          | No                        | No              | No                               | Colton             |
-| OnePlus               | Yes          | No                        | No              | No                               | Colton             |
-| Subaru                | Yes          | No                        | Yes             | No                               | Colton             |
-| Toyota                | Yes          | No                        | Yes             | No                               | Colton             |
+| Theme Number | Theme Name            |Boot Logo?(3T)| Boot Logo? (LeEco) | Boot Animation? | Custom OP Files?                 | Contributor/ Author|
+|----------- | ----------------------| -------------| ------------------ | ----------------| ---------------------------------| -------------------|
+|  1         | Acura                 | Yes          | No                 | No              | No                               | Colton             |
+|  2         | Android               | Yes          | No                 | Yes             | No                               | Colton             |
+|  3         | Apple                 | Yes          | No                 | No              | No                               | Colton             |
+|  4         | Arne-Pilot            | Yes          | No                 | Yes             | No                               | Colton             |
+|  5         | Chevy                 | Yes          | No                 | No              | No                               | Colton             |
+|  6         | Colton-HooeyPilot     | Yes          | No                 | No              | Elements, & Sounds               | Colton             |
+|  n/a       | Comma-Stock           | Yes          | No                 | Yes             | No                               | Comma.ai           |
+|  7         | CommunityPilot        | Yes          | No                 | No              | No                               | Colton             |
+|  8         | DragonPilot           | Yes          | No                 | Yes             | No                               | Colton             |
+|  9         | A General Theme       | Yes          | No                 | Yes             | No                               | Colton             |
+| 10         | Honda                 | Yes          | No                 | Yes             | No                               | Colton             |
+| 11         | Hyundai               | Yes          | No                 | No              | No                               | Colton             |
+| 12         | Kia                   | Yes          | No                 | No              | No                               | Colton             |
+| 13         | Lexus                 | Yes          | No                 | No              | No                               | Colton             |
+| 14         | OnePlus               | Yes          | No                 | No              | No                               | Colton             |
+| 15         | Subaru                | Yes          | No                 | Yes             | No                               | Colton             |
+| 16         | Toyota                | Yes          | No                 | Yes             | No                               | Colton             |
 
 This is the default linup, I will be finishing up whats here, with maybe a coupple others. Happy to hear suggestions for others!!! 
 I still need your help, to make LEON boot logos. Want to help? See [HELP WANTED!!!!](#Help-Wanted)
