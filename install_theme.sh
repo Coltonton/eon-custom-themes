@@ -51,8 +51,6 @@
 # README_DEV file for this project under the DevNote, section
 
 
-CONTRIB_THEMES="Contributed Themes"
-
 datetimevar=$(date +%m%d%y_%T)                  #Take current date/time for creating& adding to backup folder 
 
 echo 'Copyright (c) 2020 Brandon (Colton) S. EndLine \n'
@@ -69,15 +67,17 @@ else
     EON_TYPE=2 ## 1 = OnePlus 3T : 2 = LeEco
 fi
 
-echo "Available Themes:"
-THEMES=()
-for d in "$CONTRIB_THEMES"/*; do
-    if [ -d "$d" ]; then
-        echo "$d"
-        THEMES+=("$d")
-    fi
-done
-echo "${THEMES[*]}"
+python installer_helper.py
+
+#echo "Available Themes:"
+#THEMES=()
+#for d in "$CONTRIB_THEMES"/*; do
+#    if [ -d "$d" ]; then
+#        echo "$d"
+#        THEMES+=("$d")
+#    fi
+#done
+#echo "${THEMES[*]}"
 
 ####################################### SHANE HALPPPPPPP #####################################################
 #PS3="Select The Theme: "
