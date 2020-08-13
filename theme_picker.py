@@ -35,10 +35,10 @@ def main():
       if selected_theme in lower_available_themes:
         return available_themes[lower_available_themes.index(selected_theme)]
       sims = [str_sim(selected_theme, t.lower()) for t in available_themes]
-      most_sim = max(range(len(sims)), key=sims.__getitem__)
-      print(sims[most_sim])
-      selected_theme = available_themes[most_sim]
-      if selected_theme > MIN_SIM_THRESHOLD:
+      most_sim_idx = max(range(len(sims)), key=sims.__getitem__)
+      print(sims[most_sim_idx])
+      selected_theme = available_themes[most_sim_idx]
+      if sims[most_sim_idx] > MIN_SIM_THRESHOLD:
         print('Selected theme: {}'.format(selected_theme))
         print('Is this correct?')
         if input('[Y/n]: ').lower().strip() in ['yes', 'y']:
