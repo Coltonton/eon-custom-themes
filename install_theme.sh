@@ -68,9 +68,8 @@ else
 fi
 
 python theme_picker.py
-echo $?
 
-echo "Selected theme (in bash): ${theme}"
+echo "Selected theme (in bash): $?"
 #echo "Available Themes:"
 #THEMES=()
 #for d in "$CONTRIB_THEMES"/*; do
