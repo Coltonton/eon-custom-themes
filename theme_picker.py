@@ -5,7 +5,7 @@ import difflib
 os.chdir(os.getcwd())
 
 CONTRIB_THEMES = "Contributed Themes"
-EXCLUDED_THEMES = []  # todo: change me
+EXCLUDED_THEMES = ["Comma Default", "Example"]  # todo: change me
 MIN_SIM_THRESHOLD = 0.25  # user's input needs to be this percent or higher similar to a theme to select it
 
 
