@@ -68,7 +68,7 @@ else
 fi
 
 #theme=$(python theme_picker.py 1>&1)
-theme=`python theme_picker`
+theme=`python theme_picker.py`
 
 echo "Selected theme (in bash): $theme"
 #echo "Available Themes:"
