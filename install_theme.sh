@@ -70,7 +70,7 @@ fi
 theme="$(python theme_picker.py 2>&1 > /dev/tty)"  # tty is so it redirects python CLI to screen
 if [ "$theme" == "none" ]; then
     echo "User didn't provide a theme, exiting!"
-    EXIT
+    exit
 fi
 
 
