@@ -1,4 +1,5 @@
 import os
+import ast
 import difflib
 
 os.chdir(os.getcwd())
@@ -18,9 +19,14 @@ def main():
   print('\nAvailable themes:')
   for idx, theme in enumerate(available_themes):
     print('{}. {}'.format(idx + 1, theme))
-  print('Choose a theme to install (by name or index)')
+  print('\nChoose a theme to install (by name or index)')
   while 1:
     selected_theme = input('Selected theme: ').strip().lower()
+    if selected_theme.isdigit():
+      return available_themes[selected_theme - 1]
+    else:
+      sims = [str_sim(selected_theme, t.lower()) for t in available_themes]
+      print(sims)
 
 
 if __name__ == "__main__":
