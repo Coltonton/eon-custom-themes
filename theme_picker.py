@@ -23,7 +23,7 @@ def main():
   while 1:
     selected_theme = input('Selected theme: ').strip().lower()
     if selected_theme.isdigit():
-      return available_themes[selected_theme - 1]
+      return available_themes[int(selected_theme) - 1]
     else:
       sims = [str_sim(selected_theme, t.lower()) for t in available_themes]
       print(sims)
