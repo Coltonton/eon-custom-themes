@@ -21,7 +21,7 @@ def main():
     print('{}. {}'.format(idx + 1, theme))
   print('\nChoose a theme to install (by name or index)')
   while 1:
-    selected_theme = input('Selected theme: ').strip().lower()
+    selected_theme = input('>> ').strip().lower()
     if selected_theme.isdigit():
       return available_themes[int(selected_theme) - 1]
     else:
