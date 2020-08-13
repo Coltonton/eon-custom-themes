@@ -24,6 +24,8 @@ def main():
   print('\nChoose a theme to install (by name or index)')
   while 1:
     selected_theme = input('Select a theme: ').strip().lower()
+    if selected_theme == 'exit':
+      return 'none'  # check for this in install_theme.sh
 
     if selected_theme.isdigit():
       selected_theme = int(selected_theme)
