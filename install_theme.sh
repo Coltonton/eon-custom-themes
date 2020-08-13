@@ -1,4 +1,4 @@
-um #!/usr/bin/bash
+#!/usr/bin/bash
 #################################################################################
 #           Copyright (c) 2020 Brandon (Colton) S. EndLine \n                   #
 #                         http://EndLineTech.com                                #
@@ -54,10 +54,12 @@ um #!/usr/bin/bash
 ############################################################################################################
 #======================================= Code Start! ======================================================#
 ############################################################################################################
-echo 'Created By: Brandon (Colton) S. EndLine \n'
-echo 'Special Thanks to @ShaneSmiskol for all the help!!!'
-echo 'Free to use! Free to Edit! Free to Contribute'
-echo "It's your EON, do what you want!"
+echo '++++++++++++++++++++++++++++++++++++++++++++++++++++++++'
+echo '+     Created By: Brandon (Colton) S. EndLine \n       +'
+echo '+  Special Thanks to @ShaneSmiskol for all the help!!! +'
+echo '+     Free to use! Free to Edit! Free to Contribute    +'
+echo "+           It's your EON, do what you want!            +"
+echo '++++++++++++++++++++++++++++++++++++++++++++++++++++++++'
 
 datetimevar=$(date +%m%d%y_%T)                  #Take current date/time for creating& adding to backup folder 
 mkdir /storage/emulated/0/backup.$datetimevar   #Create backup folder
@@ -83,47 +85,48 @@ fi
 
 
 ############################ Determine The Availible Theme Resources ####################################### 
-if [ -f "if=./contributed-themes/$selectedtheme/$bootlogothemepath/LOGO" ]; then 
+if [ -e "./contributed-themes/$selectedtheme/$bootlogothemepath/LOGO" ]; then 
     bootLogoAvailable="Boot_Logo"
+    echo 'im mr poopoo'
 else
     bootLogoAvailable="N/A"
 fi
-if [ -f "./contributed-themes/$selectedtheme/bootanimation.zip" ]; then
-    bootAnimationAvailable="Boot-Animation"
+if [ -e "./contributed-themes/$selectedtheme/bootanimation.zip" ]; then
+    bootAnimationAvailable="Boot_Animation"
 else
-    bootLogoAvailable="N/A"
+    bootAnimationAvailable="N/A"
 fi
 if [ -f "./contributed-themes/$selectedtheme/spinner" ]; then
-    spinnerAvailable="OP-Spinner"
+    spinnerAvailable="OP_Spinner"
 else
-    bootLogoAvailable="N/A"
+    spinnerAvailable="OP_Spinner"
 fi
 if [ -d "./contributed-themes/$selectedtheme/additional" ]; then
     additionalAvailable="Additional-resources"
 else
-    bootLogoAvailable="N/A"
+    additionalAvailable="Additional-resources"
 fi
-
+#cd /data/EON-Custom-Themes
 ############################################################################################################
 ############################################# Installation Code ############################################
-############################################################################################################
-cd /data/EON-Custom-Themes/Contributed-Themes/$selectedtheme          
+############################################################################################################    
 echo '-----------------------------------------'
 PS3="What Would you like to install? "
-select asset in Boot-Logo Boot-Animation OP-Spinner Additional Reboot Quit; #Create a selection menu for user 
+select asset in $bootLogoAvailable $bootAnimationAvailable $spinnerAvailable $additionalAvailable Reboot Quit; #Create a selection menu for user 
 do                                                                        
     case $asset in            # 
-        Boot-Logo)             #Install Boot Logo Code
+        Boot_Logo)             #Install Boot Logo Code
             if [ $bootLogoAvailable != 'N/A' ]; then 
                 cp $bootlogodir /storage/emulated/0/backup.$datetimevar #TEMP DEV EDIT SHOULD BE MV
                 dd if=./contributed-themes/$selectedtheme/OP3T-Logo/LOGO of=$bootlogodir
                 echo "Boot Logo installed successfully! Original backuped to /sdcard/backup.$datetimevar"
-                ;;
             else
                 echo "Boot logo is not available for $selectedtheme"
             fi
-        Boot-Animation)        #Install Boot Annimation Code
-            if [ $bootAnimationAvailable != 'N/A' ]; then 
+            ;;
+        Boot_Animation)        #Install Boot Annimation Code
+            if [ $bootAnimationAvailable != 'N/A' ]
+            then 
                 mount -o remount,rw /system
                 mv /system/media/bootanimation.zip /storage/emulated/0/backup.$datetimevar
                 cp ./contributed-themes/$selectedtheme/bootanimation.zip /system/media
@@ -133,11 +136,13 @@ do
                 echo "Boot Animation is not available for $selectedtheme"
             fi
             ;;
-        OP-Spinner)            #Install OP Spinner Code
-            if [ $spinenrAvailable != 'N/A' ]; then
-                PS3="Does your openpilot directory have a custom name? (ex. arnepilot, dragonpilot) "
-                select iscustomop in Yes No; #Create a selection menu for user  
-                do 
+            
+        OP_Spinner)
+            if [ $spinenrAvailable != 'N/A' ]
+            then
+                PS4="Does your openpilot directory have a custom name? (ex. arnepilot, dragonpilot):"
+                select iscustomop in Yes No; #Create a selection menu for user
+                do
                     case $iscustomop in
                         Yes)
                             read -p 'What is the OP directory name? (case matters)' opdir 
@@ -158,14 +163,15 @@ do
                         *)
                             echo "Invalid selection"
                             ;;
+                    esac
+                done
             else
-                echo "OP Spinner not available for $selectedtheme"
+                echo "OP Spinner is not available for $selectedtheme"
             fi
             ;;
         Additional)            #Up To You To Code!!! 
             if [ $bootLogoAvailable != 'N/A' ]; then 
                 echo "Additional resources uncoded!"
-                ;;
             else
                 echo "Additional resources are not available for $selectedtheme"
             fi
