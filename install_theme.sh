@@ -60,7 +60,7 @@ mkdir /storage/emulated/0/backup.$datetimevar   #Create backup folder
 
 ###################################### Get User Device #####################################################
 if [ -d "/sys/devices/virtual/switch/tri-state-key" ] #Crude device detection, it works tho *shrug*
-then
+then 
     echo 'OnePlus EON Device Detected'
     eontype=1 ## 1 = OnePlus 3T 2 = LeEco
 else
@@ -76,7 +76,7 @@ if [ "$selectedtheme" == "none" ]; then
 fi
 
 
-############################ Determine The Availible Theme Resources #######################################
+############################ Determine The Availible Theme Resources ####################################### 
 #if [ -f "$FILE" ]; then        #(ignore shane, function not active)
 #    echo "$FILE exists."
 #fi
@@ -98,9 +98,9 @@ if [ $eontype == 1 ]               ##OnePlus EON Installation
 then
     echo '-----------------------------------------'
     PS3="What Would you like to install? "
-    select choice in Boot-Logo Boot-Animation OP-Spinner Additional Reboot Quit; #Create a selection menu for user
+    select choice in Boot-Logo Boot-Animation OP-Spinner Additional Reboot Quit; #Create a selection menu for user 
     do                                                                           #[DEVNOTE] remove the choices you dont have!
-        case $choice in            #
+        case $choice in            # 
             Boot-Logo)             #Install Boot Logo Code
                 cp /dev/block/platform/soc/624000.ufshc/by-name/LOGO /storage/emulated/0/backup.$datetimevar #TEMP DEV EDIT SHOULD BE MV
                 dd if=./OP3T-Logo/LOGO of=/dev/block/platform/soc/624000.ufshc/by-name/LOGO
@@ -118,7 +118,7 @@ then
                 read -p '(ex. like ArnePilot/DragonPilot) enter 1, else enter 0: ' iscustomop
                 if [ $iscustomop = 1 ]
                 then
-                    read -p 'What is the OP directory name? (case matters)' opdir
+                    read -p 'What is the OP directory name? (case matters)' opdir 
                     if [ -d  "/data/$opdir" ]
                     then
                         cp /data/$opdir/selfdrive/ui/spinner/spinner /storage/emulated/0/backup.$datetimevar #TEMP DEV EDIT SHOULD BE MV
@@ -137,7 +137,7 @@ then
                 fi
 
                 ;;
-            Additional)            #Up To You To Code!!! 
+            Additional)            #Up To You To Code!!!
                 echo "addit Done!"
                 ;;
             Reboot)                #Exit and reboot
@@ -148,7 +148,7 @@ then
                 echo "Goodbye!!!"
                 break
                 ;;
-            *)                     #Invalid Selection
+            *)                     #Invalid Selection 
                 echo "Invalid selection"
                 ;;
         esac
