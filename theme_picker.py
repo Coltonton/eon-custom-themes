@@ -24,6 +24,7 @@ def main():
   print('\nChoose a theme to install (by name or index)')
   while 1:
     selected_theme = input('Select a theme: ').strip().lower()
+    print()
     if selected_theme == 'exit':
       return 'none'  # check for this in install_theme.sh
 
