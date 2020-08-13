@@ -61,10 +61,10 @@ mkdir /storage/emulated/0/backup.$datetimevar   #Create backup folder
 ###################################### Get User Device #####################################################
 if [ -d "/sys/devices/virtual/switch/tri-state-key" ]; then #Crude device detection, it works tho *shrug*
     echo 'OnePlus EON Device Detected'
-    EON_TYPE=1 ## 1 = OnePlus 3T 2 = LeEco
+    eontype=1 ## 1 = OnePlus 3T 2 = LeEco
 else
     echo 'LeEco EON Device Detected'
-    EON_TYPE=2 ## 1 = OnePlus 3T : 2 = LeEco
+    eontype=2 ## 1 = OnePlus 3T : 2 = LeEco
 fi
 
 # get theme picked by user with python helper file
