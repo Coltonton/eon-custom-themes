@@ -6,6 +6,7 @@ os.chdir(os.getcwd())
 
 CONTRIB_THEMES = "Contributed Themes"
 EXCLUDED_THEMES = []  # todo: change me
+MIN_SIM_THRESHOLD = 0.25  # user's input needs to be this percent or higher similar to a theme to select it
 
 
 def str_sim(a, b):
@@ -39,11 +40,13 @@ def main():
       most_sim_idx = max(range(len(sims)), key=sims.__getitem__)
       print(sims[most_sim_idx])
       selected_theme = available_themes[most_sim_idx]
-
-      print('Selected theme: {}'.format(selected_theme))
-      print('Is this correct?')
-      if input('[Y/n]: ').lower().strip() in ['yes', 'y']:
-        return selected_theme
+      if sims[most_sim_idx] >= MIN_SIM_THRESHOLD:
+        print('Selected theme: {}'.format(selected_theme))
+        print('Is this correct?')
+        if input('[Y/n]: ').lower().strip() in ['yes', 'y']:
+          return selected_theme
+      else:
+        print('Unknown theme, try again!')
 
 
 if __name__ == "__main__":
