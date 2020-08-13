@@ -22,7 +22,12 @@ def main():
   print('\nChoose a theme to install (by name or index)')
   while 1:
     selected_theme = input('>> ').strip().lower()
+
     if selected_theme.isdigit():
+      selected_theme = int(selected_theme)
+      if selected_theme > len(available_themes):
+        print('Index out of range, try again!')
+        continue
       return available_themes[int(selected_theme) - 1]
     else:
       sims = [str_sim(selected_theme, t.lower()) for t in available_themes]
