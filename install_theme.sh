@@ -67,7 +67,8 @@ else
     EON_TYPE=2 ## 1 = OnePlus 3T : 2 = LeEco
 fi
 
-output=$((python theme_picker.py) 2> &1)
+python theme_picker.py
+echo $?
 
 echo "Selected theme (in bash): ${theme}"
 #echo "Available Themes:"
