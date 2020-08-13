@@ -69,11 +69,14 @@ else
     EON_TYPE=2 ## 1 = OnePlus 3T : 2 = LeEco
 fi
 
+themes=()
 for d in "$CONTRIB_THEMES"/*; do
     if [ -d "$d" ]; then
         echo "$d"
+        themes+=("$d")
     fi
 done
+echo "$themes"
 
 ####################################### SHANE HALPPPPPPP #####################################################
 #PS3="Select The Theme: "
