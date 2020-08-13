@@ -68,9 +68,8 @@ else
 fi
 
 #theme=$(python theme_picker.py 1>&1)
-theme=`python theme_picker.py`
-
-echo "Selected theme (in bash): $theme"
+theme="$(python theme_picker.py 2>&1 > /dev/null)"
+#echo "Selected theme (in bash): $theme"
 #echo "Available Themes:"
 #THEMES=()
 #for d in "$CONTRIB_THEMES"/*; do
