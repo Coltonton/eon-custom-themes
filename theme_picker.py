@@ -23,7 +23,7 @@ def main():
     print('{}. {}'.format(idx + 1, theme))
   print('\nChoose a theme to install (by name or index)')
   while 1:
-    selected_theme = input('>> ').strip().lower()
+    selected_theme = input('Select a theme: ').strip().lower()
 
     if selected_theme.isdigit():
       selected_theme = int(selected_theme)
@@ -38,7 +38,7 @@ def main():
       most_sim_idx = max(range(len(sims)), key=sims.__getitem__)
       print(sims[most_sim_idx])
       selected_theme = available_themes[most_sim_idx]
-      if sims[most_sim_idx] > MIN_SIM_THRESHOLD:
+      if sims[most_sim_idx] >= MIN_SIM_THRESHOLD:
         print('Selected theme: {}'.format(selected_theme))
         print('Is this correct?')
         if input('[Y/n]: ').lower().strip() in ['yes', 'y']:
