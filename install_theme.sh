@@ -51,22 +51,27 @@
 # README_DEV file for this project under the DevNote, section
 
 
+############################################################################################################
+#======================================= Code Start! ======================================================#
+############################################################################################################
+echo 'Created By: Brandon (Colton) S. EndLine \n'
+echo 'Special Thanks to @ShaneSmiskol for all the help!!!'
+echo 'Free to use! Free to Edit! Free to Contribute'
+echo "It's your EON, do what you want!"
 
 datetimevar=$(date +%m%d%y_%T)                  #Take current date/time for creating& adding to backup folder 
-
-echo 'Copyright (c) 2020 Brandon (Colton) S. EndLine \n'
-echo 'Free to use! Free to Edit!'
-echo "It's your EON, do what you want!"
 mkdir /storage/emulated/0/backup.$datetimevar   #Create backup folder
 
 ###################################### Get User Device #####################################################
 if [ -d "/sys/devices/virtual/switch/tri-state-key" ] #Crude device detection, it works tho *shrug* 
 then 
     echo 'OnePlus EON Device Detected'
-    eontype=1 ## 1 = OnePlus 3T 2 = LeEco
+    bootlogothemepath='OP3T-Logo'
+    bootlogodir='/dev/block/bootdevice/by-name/boot'
 else
     echo 'LeEco EON Device Detected'
-    eontype=2 ## 1 = OnePlus 3T : 2 = LeEco
+    bootlogothemepath='LeEco-Logo'
+    bootlogodir='/dev/block/bootdevice/by-name/splash'
 fi
 
 ###################################### SHANE HALPPPPPPP #####################################################
@@ -147,89 +152,103 @@ done
 
 
 ############################ Determine The Availible Theme Resources ####################################### 
-#if [ -f "$FILE" ]; then        #(ignore shane, function not active)
-#    echo "$FILE exists."
-#fi
-#if [ -f "/data/EON-Custom-Themes/Contributed-Themes/$theme" ]; then
-#    echo "$FILE exists."
-#fi
-#if [ -f "$FILE" ]; then
-#    echo "$FILE exists."
-#fi
-#if [ -f "$FILE" ]; then
-#    echo "$FILE exists."
-#fi
+if [ -f "if=./contributed-themes/$selectedtheme/$bootlogothemepath/LOGO" ]; then 
+    bootLogoAvailable="Boot_Logo"
+else
+    bootLogoAvailable="N/A"
+fi
+if [ -f "./contributed-themes/$selectedtheme/bootanimation.zip" ]; then
+    bootAnimationAvailable="Boot-Animation"
+else
+    bootLogoAvailable="N/A"
+fi
+if [ -f "./contributed-themes/$selectedtheme/spinner" ]; then
+    spinnerAvailable="OP-Spinner"
+else
+    bootLogoAvailable="N/A"
+fi
+if [ -d "./contributed-themes/$selectedtheme/additional" ]; then
+    additionalAvailable="Additional-resources"
+else
+    bootLogoAvailable="N/A"
+fi
 
 ############################################################################################################
 ############################################# Installation Code ############################################
 ############################################################################################################
-cd /data/EON-Custom-Themes/Contributed-Themes/$selectedtheme
-if [ $eontype == 1 ]               ##OnePlus EON Installation
-then
-    echo '-----------------------------------------'
-    PS3="What Would you like to install? "
-    select choice in Boot-Logo Boot-Animation OP-Spinner Additional Reboot Quit; #Create a selection menu for user 
-    do                                                                           #[DEVNOTE] remove the choices you dont have!
-        case $choice in            # 
-            Boot-Logo)             #Install Boot Logo Code
-                cp /dev/block/platform/soc/624000.ufshc/by-name/LOGO /storage/emulated/0/backup.$datetimevar #TEMP DEV EDIT SHOULD BE MV
-                dd if=./OP3T-Logo/LOGO of=/dev/block/platform/soc/624000.ufshc/by-name/LOGO
-                echo "Boot Logo Installed Successfully! Original backuped to /sdcard/backup.$datetimevar"
+cd /data/EON-Custom-Themes/Contributed-Themes/$selectedtheme          
+echo '-----------------------------------------'
+PS3="What Would you like to install? "
+select asset in Boot-Logo Boot-Animation OP-Spinner Additional Reboot Quit; #Create a selection menu for user 
+do                                                                        
+    case $asset in            # 
+        Boot-Logo)             #Install Boot Logo Code
+            if [ $bootLogoAvailable != 'N/A' ]; then 
+                cp $bootlogodir /storage/emulated/0/backup.$datetimevar #TEMP DEV EDIT SHOULD BE MV
+                dd if=./contributed-themes/$selectedtheme/OP3T-Logo/LOGO of=$bootlogodir
+                echo "Boot Logo installed successfully! Original backuped to /sdcard/backup.$datetimevar"
                 ;;
-            Boot-Animation)        #Install Boot Annimation Code
+            else
+                echo "Boot logo is not available for $selectedtheme"
+            fi
+        Boot-Animation)        #Install Boot Annimation Code
+            if [ $bootAnimationAvailable != 'N/A' ]; then 
                 mount -o remount,rw /system
                 mv /system/media/bootanimation.zip /storage/emulated/0/backup.$datetimevar
-                cp bootanimation.zip /system/media
+                cp ./contributed-themes/$selectedtheme/bootanimation.zip /system/media
                 chmod 666 /system/media/bootanimation.zip
                 echo "Boot Animation Installed Successfully! Original backuped to /sdcard/backup.$datetimevar"
+            else
+                echo "Boot Animation is not available for $selectedtheme"
+            fi
+            ;;
+        OP-Spinner)            #Install OP Spinner Code
+            if [ $spinenrAvailable != 'N/A' ]; then
+                PS3="Does your openpilot directory have a custom name? (ex. arnepilot, dragonpilot) "
+                select iscustomop in Yes No; #Create a selection menu for user  
+                do 
+                    case $iscustomop in
+                        Yes)
+                            read -p 'What is the OP directory name? (case matters)' opdir 
+                            if [ -d  "/data/$opdir" ]
+                            then
+                                cp /data/$opdir/selfdrive/ui/spinner/spinner /storage/emulated/0/backup.$datetimevar #TEMP DEV EDIT SHOULD BE MV
+                                cp ./contributed-themes/$selectedtheme/spinner /data/$opdir/selfdrive/ui/spinner
+                                echo "$opdir Spinner installed successfully! Original backuped to /sdcard/backup.$datetimevar"
+                            else
+                                echo "$opdir does not exist, please check case"
+                            fi
+                            ;;
+                        No)
+                            cp /data/openpilot/selfdrive/ui/spinner/spinner /storage/emulated/0/backup.$datetimevar #TEMP DEV EDIT SHOULD BE MV
+                            cp ./contributed-themes/$selectedtheme/spinner /data/openpilot/selfdrive/ui/spinner
+                            echo "OP Spinner Installed Successfully! Original backuped to /sdcard/backup.$datetimevar"
+                            ;;
+                        *)
+                            echo "Invalid selection"
+                            ;;
+            else
+                echo "OP Spinner not available for $selectedtheme"
+            fi
+            ;;
+        Additional)            #Up To You To Code!!! 
+            if [ $bootLogoAvailable != 'N/A' ]; then 
+                echo "Additional resources uncoded!"
                 ;;
-            OP-Spinner)            #Install OP Spinner Code
-                echo 'If you are using a OP fork with a custom directory name: '
-                read -p '(ex. like ArnePilot/DragonPilot) enter 1, else enter 0: ' iscustomop
-                if [ $iscustomop = 1 ]
-                then
-                    read -p 'What is the OP directory name? (case matters)' opdir 
-                    if [ -d  "/data/$opdir" ]
-                    then
-                        cp /data/$opdir/selfdrive/ui/spinner/spinner /storage/emulated/0/backup.$datetimevar #TEMP DEV EDIT SHOULD BE MV
-                        cp spinner /data/$opdir/selfdrive/ui/spinner
-                        echo "$opdir Spinner installed successfully! Original backuped to /sdcard/backup.$datetimevar"
-                    else
-                        echo "$opdir does not exist, please check case"
-                    fi
-                elif [ $iscustomop == 0 ]
-                then
-                    cp /data/openpilot/selfdrive/ui/spinner/spinner /storage/emulated/0/backup.$datetimevar #TEMP DEV EDIT SHOULD BE MV
-                    cp spinner /data/openpilot/selfdrive/ui/spinner
-                    echo "OP Spinner Installed Successfully! Original backuped to /sdcard/backup.$datetimevar"
-                else
-                    echo "Incorrect responce given Type 1 or 0"
-                fi
-
-                ;;
-            Additional)            #Up To You To Code!!! 
-                echo "addit Done!"
-                ;;
-            Reboot)                #Exit and reboot
-                echo "Now Rebooting! Enjoy your new themes!"
-                reboot
-                ;;
-            Quit)                  #Quit Program
-                echo "Goodbye!!!"
-                break
-                ;;
-            *)                     #Invalid Selection 
-                echo "Invalid selection"
-                ;;
-        esac
-    done
-elif [ $eontype == 1 ]             ## LeEco Installation
-    rm -d /storage/emulated/0/backup.$datetimevar
-    echo 'Your Device does not appear to be a OnePlus 3T EON.'
-    echo 'Please select the correct device in the main program!'
-    echo 'Aborting to prevent hard bricking!!!'
-fi
-
-
-#cd /data/EON-Custom-Themes/Contributed-Themes/Subaru
-#exec ./OP3T-Install.sh
+            else
+                echo "Additional resources are not available for $selectedtheme"
+            fi
+            ;;
+        Reboot)                #Exit and reboot
+            echo "Now Rebooting! Enjoy your new themes!"
+            reboot
+            ;;
+        Quit)                  #Quit Program
+            echo "Goodbye!!!"
+            break
+            ;;
+        *)                     #Invalid Selection 
+            echo "Invalid selection"
+            ;;
+    esac
+done
