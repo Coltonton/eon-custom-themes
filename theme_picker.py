@@ -39,7 +39,6 @@ def main():
         return available_themes[lower_available_themes.index(selected_theme)]
       sims = [str_sim(selected_theme, t.lower()) for t in available_themes]
       most_sim_idx = max(range(len(sims)), key=sims.__getitem__)
-      print(sims[most_sim_idx])
       selected_theme = available_themes[most_sim_idx]
       if sims[most_sim_idx] >= MIN_SIM_THRESHOLD:
         print('Selected theme: {}'.format(selected_theme))
