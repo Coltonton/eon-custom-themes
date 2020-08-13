@@ -59,7 +59,8 @@ echo "It's your EON, do what you want!"
 mkdir /storage/emulated/0/backup.$datetimevar   #Create backup folder
 
 ###################################### Get User Device #####################################################
-if [ -d "/sys/devices/virtual/switch/tri-state-key" ]; then #Crude device detection, it works tho *shrug*
+if [ -d "/sys/devices/virtual/switch/tri-state-key" ] #Crude device detection, it works tho *shrug*
+then
     echo 'OnePlus EON Device Detected'
     eontype=1 ## 1 = OnePlus 3T 2 = LeEco
 else
