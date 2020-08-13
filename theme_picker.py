@@ -23,7 +23,7 @@ def main():
     print('{}. {}'.format(idx + 1, theme))
   print('\nChoose a theme to install (by name or index)')
   while 1:
-    print('Select a theme:', end='')
+    print('Select a theme: ', end='')
     selected_theme = input().strip().lower()
     print()
     if selected_theme == 'exit':
