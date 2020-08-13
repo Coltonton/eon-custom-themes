@@ -1,4 +1,4 @@
-#!/usr/bin/bash
+um #!/usr/bin/bash
 #################################################################################
 #           Copyright (c) 2020 Brandon (Colton) S. EndLine \n                   #
 #                         http://EndLineTech.com                                #
@@ -74,81 +74,12 @@ else
     bootlogodir='/dev/block/bootdevice/by-name/splash'
 fi
 
-###################################### SHANE HALPPPPPPP #####################################################
-PS3="Select The Theme: "
-select theme in Acura Android Apple Arne Chevy Colton CommunityPilot ODragonPilot General Honda Hyundai Kia Lexus OnePlus Subaru Toyota quit; 
-
-selectedtheme=$theme #SHANE- this is the new way to do things ignore the case, unless that works better
-
-do
-case $theme in
-    Acura)
-        selectedtheme=$theme #SHANE- this is the new way to do things 
-        ;;
-    Android)
-        selectedtheme=$theme
-        ;;
-    Apple)
-        selectedtheme=$theme
-        ;;
-    Arne)
-        selectedtheme=$theme
-        ;;
-    Chevy)
-        selectedtheme=$theme
-        ;;
-    Colton)
-        cd /data/EON-Custom-Themes/Contributed-Themes/Colton
-        exec ./OP3T-Install.sh
-        ;;
-    CommunityPilot)
-        cd /data/EON-Custom-Themes/Contributed-Themes/CommunityPilot
-        exec ./OP3T-Install.sh
-        ;;
-    DragonPilot)
-        cd /data/EON-Custom-Themes/Contributed-Themes/DragonPilot
-        exec ./OP3T-Install.sh
-        ;;
-    General)
-        cd /data/EON-Custom-Themes/Contributed-Themes/General
-        exec ./OP3T-Install.sh
-        ;;
-    Honda)
-        cd /data/EON-Custom-Themes/Contributed-Themes/Honda
-        exec ./OP3T-Install.sh
-        ;;
-    Hyundai)
-        cd /data/EON-Custom-Themes/Contributed-Themes/Hyundai
-        exec ./OP3T-Install.sh
-        ;;
-    Kia)
-        cd /data/EON-Custom-Themes/Contributed-Themes/Kia
-        exec ./OP3T-Install.sh
-        ;;
-    Lexus)
-        cd /data/EON-Custom-Themes/Contributed-Themes/Lexus
-        exec ./OP3T-Install.sh
-        ;;
-    OnePlus)
-        cd /data/EON-Custom-Themes/Contributed-Themes/OnePlus
-        exec ./OP3T-Install.sh
-        ;;
-    Subaru)
-        cd /data/EON-Custom-Themes/Contributed-Themes/Subaru
-        exec ./OP3T-Install.sh
-        ;;
-    Toyota)
-        cd /data/EON-Custom-Themes/Contributed-Themes/Toyota
-        exec ./OP3T-Install.sh
-        ;;
-    quit)
-        break
-        ;;
-    *) 
-        echo "Invalid option"
-        ;;
-    esac
-done
+# get theme picked by user with python helper file
+selectedtheme="$(python theme_picker.py 2>&1 > /dev/tty)"  # tty is so it redirects python CLI to screen
+if [ "$selectedtheme" == "none" ]; then
+    echo "User didn't provide a theme, exiting!"
+    exit
+fi
 
 
 ############################ Determine The Availible Theme Resources ####################################### 
