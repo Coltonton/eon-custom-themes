@@ -50,4 +50,5 @@ def main():
 
 
 if __name__ == "__main__":
-  sys.exit(main())
+  theme = main()
+  sys.exit(them)
