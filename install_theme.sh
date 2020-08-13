@@ -67,7 +67,7 @@ else
     EON_TYPE=2 ## 1 = OnePlus 3T : 2 = LeEco
 fi
 
-python installer_helper.py
+python theme_picker.py
 
 #echo "Available Themes:"
 #THEMES=()
