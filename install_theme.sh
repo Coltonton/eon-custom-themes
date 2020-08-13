@@ -51,7 +51,7 @@
 # README_DEV file for this project under the DevNote, section
 
 
-CONTRIB_THEMES="/Contributed Themes"
+CONTRIB_THEMES="Contributed Themes"
 
 datetimevar=$(date +%m%d%y_%T)                  #Take current date/time for creating& adding to backup folder 
 
