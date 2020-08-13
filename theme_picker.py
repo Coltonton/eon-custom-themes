@@ -1,5 +1,5 @@
 import os
-import ast
+import sys
 import difflib
 
 os.chdir(os.getcwd())
