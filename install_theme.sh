@@ -51,6 +51,7 @@
 # README_DEV file for this project under the DevNote, section
 
 
+CONTRIB_THEMES=/Contributed Themes
 
 datetimevar=$(date +%m%d%y_%T)                  #Take current date/time for creating& adding to backup folder 
 
@@ -63,18 +64,22 @@ mkdir /storage/emulated/0/backup.$datetimevar   #Create backup folder
 if [ -d "/sys/devices/virtual/switch/tri-state-key" ] #Crude device detection, it works tho *shrug* 
 then 
     echo 'OnePlus EON Device Detected'
-    eontype=1 ## 1 = OnePlus 3T 2 = LeEco
+    EON_TYPE=1 ## 1 = OnePlus 3T 2 = LeEco
 else
     echo 'LeEco EON Device Detected'
-    eontype=2 ## 1 = OnePlus 3T : 2 = LeEco
+    EON_TYPE=2 ## 1 = OnePlus 3T : 2 = LeEco
 fi
 
-###################################### SHANE HALPPPPPPP #####################################################
-PS3="Select The Theme: "
-select theme in Acura Android Apple Arne Chevy Colton CommunityPilot ODragonPilot General Honda Hyundai Kia Lexus OnePlus Subaru Toyota quit; 
+for d in $CONTRIB_THEMES ; do
+    echo "$d"
+done
 
-selectedtheme=$theme #SHANE- this is the new way to do things ignore the case, unless that works better
-echo "Test"
+####################################### SHANE HALPPPPPPP #####################################################
+#PS3="Select The Theme: "
+#select theme in Acura Android Apple Arne Chevy Colton CommunityPilot ODragonPilot General Honda Hyundai Kia Lexus OnePlus Subaru Toyota quit;
+#
+#selectedtheme=$theme #SHANE- this is the new way to do things ignore the case, unless that works better
+#echo "Test"
 #
 #do
 #case $theme in
