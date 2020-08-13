@@ -51,7 +51,7 @@
 # README_DEV file for this project under the DevNote, section
 
 
-CONTRIB_THEMES=/Contributed Themes
+CONTRIB_THEMES="/Contributed Themes"
 
 datetimevar=$(date +%m%d%y_%T)                  #Take current date/time for creating& adding to backup folder 
 
@@ -70,7 +70,7 @@ else
     EON_TYPE=2 ## 1 = OnePlus 3T : 2 = LeEco
 fi
 
-for d in */ ; do
+for d in $CONTRIB_THEMES/ ; do
     echo "$d"
 done
 
