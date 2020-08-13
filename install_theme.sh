@@ -68,8 +68,8 @@ else
 fi
 
 # get theme picked by user with python helper file
-theme="$(python theme_picker.py 2>&1 > /dev/tty)"  # tty is so it redirects python CLI to screen
-if [ "$theme" == "none" ]; then
+selectedtheme="$(python theme_picker.py 2>&1 > /dev/tty)"  # tty is so it redirects python CLI to screen
+if [ "$selectedtheme" == "none" ]; then
     echo "User didn't provide a theme, exiting!"
     exit
 fi
