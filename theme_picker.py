@@ -43,7 +43,8 @@ def main():
       if sims[most_sim_idx] >= MIN_SIM_THRESHOLD:
         print('Selected theme: {}'.format(selected_theme))
         print('Is this correct?')
-        if input('[Y/n]: \n').lower().strip() in ['yes', 'y']:
+        print('[Y/n]: ', end='')
+        if input().lower().strip() in ['yes', 'y']:
           return selected_theme
       else:
         print('Unknown theme, try again!')
