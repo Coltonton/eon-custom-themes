@@ -69,8 +69,10 @@ else
     EON_TYPE=2 ## 1 = OnePlus 3T : 2 = LeEco
 fi
 
-for d in "$CONTRIB_THEMES/"; do
-    echo "$d"
+for d in "$CONTRIB_THEMES"/*; do
+    if [ -d "$d" ]; then
+        echo "$d"
+    fi
 done
 
 ####################################### SHANE HALPPPPPPP #####################################################
