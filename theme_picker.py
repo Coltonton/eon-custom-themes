@@ -6,7 +6,7 @@ os.chdir(os.getcwd())
 
 CONTRIB_THEMES = "Contributed Themes"
 EXCLUDED_THEMES = []  # todo: change me
-MIN_SIM_THRESHOLD = 2/3  # user's input needs to be this percent or higher similar to a theme to select it
+MIN_SIM_THRESHOLD = 2 / 3.  # user's input needs to be this percent or higher similar to a theme to select it
 
 
 def str_sim(a, b):
