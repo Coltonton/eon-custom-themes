@@ -223,7 +223,7 @@ then
                 ;;
         esac
     done
-elif [ $eontype == 1 ]             ## LeEco Installation
+elif [ $eontype == 2 ]             ## LeEco Installation
     rm -d /storage/emulated/0/backup.$datetimevar
     echo 'Your Device does not appear to be a OnePlus 3T EON.'
     echo 'Please select the correct device in the main program!'
