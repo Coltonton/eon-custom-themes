@@ -67,8 +67,12 @@ else
     EON_TYPE=2 ## 1 = OnePlus 3T : 2 = LeEco
 fi
 
-#theme=$(python theme_picker.py 1>&1)
-theme="$(python theme_picker.py 2>&1 > $(tty))"
+theme="$(python theme_picker.py 2>&1 > /dev/tty)"  # tty is so it redirects python CLI to screen
+if [ "$theme" == "none" ]; then
+    echo "User didn't provide a theme, exiting!"
+    EXIT
+fi
+
 
 echo "Selected theme (in bash): $theme"
 #echo "Available Themes:"

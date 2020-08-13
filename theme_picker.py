@@ -26,8 +26,8 @@ def main():
     print('Select a theme: ', end='')
     selected_theme = input().strip().lower()
     print()
-    if selected_theme == 'exit':
-      return 'none'  # check for this in install_theme.sh
+    if selected_theme in ['exit', '']:
+      return 'none'
 
     if selected_theme.isdigit():
       selected_theme = int(selected_theme)
