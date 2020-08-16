@@ -69,7 +69,7 @@ if [ -d "/sys/devices/virtual/switch/tri-state-key" ] #Crude device detection, i
 then 
     echo 'OnePlus EON Device Detected'
     bootlogothemepath='OP3T-Logo'
-    bootlogodir='/dev/block/bootdevice/by-name/boot'
+    bootlogodir='/dev/block/bootdevice/by-name/logo'
 else
     echo 'LeEco EON Device Detected'
     bootlogothemepath='LeEco-Logo'
