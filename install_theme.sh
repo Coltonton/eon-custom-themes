@@ -61,8 +61,14 @@ echo '+     Free to use! Free to Edit! Free to Contribute!   +'
 echo "+           It's your EON, do what you want!           +"
 echo '++++++++++++++++++++++++++++++++++++++++++++++++++++++++'
 
+
+
+doAutoInstall='1'                               #Use to auto install $selectedtheme with no user prompts
+selectedtheme="Arne"                            #
+
 isAutoInstall=`cat /storage/emulated/0/is_auto_install`
 isAutoConfig=`cat /storage/emulated/0/is_auto_config`
+
 datetimevar=$(date +%m%d%y_%T)                  #Take current date/time for creating& adding to backup folder 
 mkdir /storage/emulated/0/backup.$datetimevar   #Create backup folder
 

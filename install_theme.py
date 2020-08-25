@@ -82,13 +82,9 @@ def ThemePicker():
   for idx, theme in enumerate(available_themes):
     print('{}. {}'.format(idx + 1, theme))
   print('\nChoose a theme to install (by name or index)')
-  print("Enter Q to quit and reboot.")
   while 1:
     print('Select a theme: ', end='')
     theme = input().strip().lower()
-    if (theme == 'q', 'Q', 'r', 'R' ):
-      print("Rebooting...")
-      #Sos.system("reboot")
     print()
     if theme in ['exit', '']:
       return 'none'
@@ -115,14 +111,19 @@ def ThemePicker():
         print('Unknown theme, try again!')
 
 def setup():
-  if(path.exists('./contributed-themes/'+str(selected_theme)+'/'+str(bootlogothemepath)) == True):
+  global bootLogoAvailable
+  global bootAnimationAvailable
+  global spinnerAvailable
+  global additionalAvailable
+  print(os.path.exists('./contributed-themes/'+str(selected_theme)+'/'+str(bootlogothemepath)) == True)
+  if(os.path.exists('./contributed-themes/'+str(selected_theme)+'/'+str(bootlogothemepath)) == True):
     bootLogoAvailable = "Boot_Logo"
-  if(path.exists('./contributed-themes/'+str(selected_theme)+'/bootanimation.zip') == True):
+  if(os.path.exists('./contributed-themes/'+str(selected_theme)+'/bootanimation.zip') == True):
     bootAnimationAvailable="Boot_Animation"
-  if(path.exists('./contributed-themes/'+str(selected_theme)+'/spinner') == True):
+  if(os.path.exists('./contributed-themes/'+str(selected_theme)+'/spinner') == True):
     spinnerAvailable="OP_Spinner"
-  if(path.exists('./contributed-themes/'+str(selected_theme)+'/additional') == True):
-    additionalAvailable="Additional-resources"
+  #if(os.path.exists('./contributed-themes/'+str(selected_theme)+'/additional') == True):
+  #  additionalAvailable="Additional-resources"
 
 def Auto_Installer():
     if (autoInstallLogo != 'no'):                   #BootLogo Install Code
