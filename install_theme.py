@@ -28,6 +28,15 @@ running                = 1
 dt = datetime.datetime.now()
 dateTimeVar = dt.strftime("%m%d%y_%T")
 
+if(path.exists('/sys/devices/virtual/switch/tri-state-key') == True):
+  print('\nOnePlus EON Device Detected')
+  bootlogothemepath = "OP3T-Logo/LOGO"
+  bootlogodir = "/dev/block/sde17"
+else:
+  print ('LeEco EON Device Detected')
+  bootlogothemepath = "LeEco-Logo/SPLASH"
+  bootlogodir = "/dev/block/bootdevice/by-name/splash"
+
 #Auto Install variables - see DEVREADME
 isAutoInstall          = 0            #
 selectedAutoTheme      = "arne"       #
@@ -50,15 +59,6 @@ def Main():
   print ('++++++++++++++++++++++++++++++++++++++++++++++++++++++++')
 
   os.mkdir('backups/backup.'+str(dateTimeVar))
-
-  if(path.exists('/sys/devices/virtual/switch/tri-state-key') == True):
-    print('\nOnePlus EON Device Detected')
-    bootlogothemepath = "OP3T-Logo/LOGO"
-    bootlogodir = "/dev/block/bootdevice/by-name/logo"
-  else:
-    print ('LeEco EON Device Detected')
-    bootlogothemepath = "LeEco-Logo/SPLASH"
-    bootlogodir = "/dev/block/bootdevice/by-name/splash"
 
   time.sleep(3)
 
@@ -115,9 +115,10 @@ def setup():
   global bootAnimationAvailable
   global spinnerAvailable
   global additionalAvailable
-  print(os.path.exists('./contributed-themes/'+str(selected_theme)+'/'+str(bootlogothemepath)) == True)
-  if(os.path.exists('./contributed-themes/'+str(selected_theme)+'/'+str(bootlogothemepath)) == True):
+
+  if(os.path.exists("./contributed-themes/"+str(selected_theme)+"/"+str(bootlogothemepath)) == True):
     bootLogoAvailable = "Boot_Logo"
+
   if(os.path.exists('./contributed-themes/'+str(selected_theme)+'/bootanimation.zip') == True):
     bootAnimationAvailable="Boot_Animation"
   if(os.path.exists('./contributed-themes/'+str(selected_theme)+'/spinner') == True):
@@ -147,6 +148,7 @@ def Auto_Installer():
       print("Additional Resources are not an active feature")
 
 def Self_Installer():
+  #global bootlogothemepath
   r=1
   while (r == 1):
     title = 'What resources do you want to install for the '+str(selected_theme)+' theme?: '
@@ -158,9 +160,10 @@ def Self_Installer():
     print(option, index)
 
     if (index == 0):                   #BootLogo Install Code
-      if (bootLogoAvailable != 'N/A'):
+      if (bootLogoAvailable != 'N/A'):       
         os.system("cp "+str(bootlogodir)+" backups/backup."+str(dateTimeVar)) #DEV EDIT SHOULD BE MV
-        os.system("dd if=./contributed-themes/"+str(selected_theme)+'/'+str(bootlogothemepath)+" of="+str(bootlogodir))
+        os.system("dd if=./contributed-themes/"+str(selected_theme)+"/"+str(bootlogothemepath)+" of="+str(bootlogodir))
+        time.sleep(5)
         print("Boot Logo installed successfully! Original backuped to ./backups/backup."+str(dateTimeVar))
       else:
         print("Boot logo is not available for "+str(selected_theme))
