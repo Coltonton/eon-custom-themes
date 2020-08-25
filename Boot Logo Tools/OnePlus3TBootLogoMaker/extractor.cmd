@@ -1,1 +1,0 @@
-OP3TInject -i sde17.bin -D

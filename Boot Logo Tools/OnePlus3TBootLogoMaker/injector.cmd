@@ -1,1 +1,0 @@
-OP3TInject -j fhd -i sde17.bin

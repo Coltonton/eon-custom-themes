@@ -1,1 +1,0 @@
-Put your openpilot/selfdrive/assets folder here if you made changes

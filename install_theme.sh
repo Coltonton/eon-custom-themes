@@ -57,10 +57,12 @@
 echo '++++++++++++++++++++++++++++++++++++++++++++++++++++++++'
 echo '+     Created By: Brandon (Colton) S. EndLine \n       +'
 echo '+  Special Thanks to @ShaneSmiskol for all the help!!! +'
-echo '+     Free to use! Free to Edit! Free to Contribute    +'
-echo "+           It's your EON, do what you want!            +"
+echo '+     Free to use! Free to Edit! Free to Contribute!   +'
+echo "+           It's your EON, do what you want!           +"
 echo '++++++++++++++++++++++++++++++++++++++++++++++++++++++++'
 
+isAutoInstall=`cat /storage/emulated/0/is_auto_install`
+isAutoConfig=`cat /storage/emulated/0/is_auto_config`
 datetimevar=$(date +%m%d%y_%T)                  #Take current date/time for creating& adding to backup folder 
 mkdir /storage/emulated/0/backup.$datetimevar   #Create backup folder
 
@@ -83,6 +85,8 @@ if [ "$selectedtheme" == "none" ]; then
     exit
 fi
 
+####################################### Check Auto Config ################################################## 
+if [ -e "./contributed-themes/$selectedtheme/$bootlogothemepath/LOGO" ]; then 
 
 ############################ Determine The Availible Theme Resources ####################################### 
 if [ -e "./contributed-themes/$selectedtheme/$bootlogothemepath/LOGO" ]; then 
@@ -182,7 +186,7 @@ do
             ;;
         Quit)                  #Quit Program
             echo "Goodbye!!!"
-            break
+            exit
             ;;
         *)                     #Invalid Selection 
             echo "Invalid selection"
