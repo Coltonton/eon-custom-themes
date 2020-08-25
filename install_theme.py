@@ -118,11 +118,16 @@ def setup():
 
   if(os.path.exists("./contributed-themes/"+str(selected_theme)+"/"+str(bootlogothemepath)) == True):
     bootLogoAvailable = "Boot_Logo"
-
+  else:
+    bootLogoAvailable = "N/A"
   if(os.path.exists('./contributed-themes/'+str(selected_theme)+'/bootanimation.zip') == True):
     bootAnimationAvailable="Boot_Animation"
+  else:
+    bootAnimationAvailable = "N/A"
   if(os.path.exists('./contributed-themes/'+str(selected_theme)+'/spinner') == True):
     spinnerAvailable="OP_Spinner"
+  else:
+    spinnerAvailable = "N/A"
   #if(os.path.exists('./contributed-themes/'+str(selected_theme)+'/additional') == True):
   #  additionalAvailable="Additional-resources"
 
