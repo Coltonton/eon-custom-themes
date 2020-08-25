@@ -115,13 +115,13 @@ def ThemePicker():
         print('Unknown theme, try again!')
 
 def setup():
-  if(path.exists('./contributed-themes/$selectedtheme/$bootlogothemepath/LOGO') == True):
+  if(path.exists('./contributed-themes/'+str(selected_theme)+'/'+str(bootlogothemepath)) == True):
     bootLogoAvailable = "Boot_Logo"
-  if(path.exists('./contributed-themes/$selectedtheme/bootanimation.zip') == True):
+  if(path.exists('./contributed-themes/'+str(selected_theme)+'/bootanimation.zip') == True):
     bootAnimationAvailable="Boot_Animation"
-  if(path.exists('./contributed-themes/$selectedtheme/spinner') == True):
+  if(path.exists('./contributed-themes/'+str(selected_theme)+'/spinner') == True):
     spinnerAvailable="OP_Spinner"
-  if(path.exists('./contributed-themes/$selectedtheme/additional') == True):
+  if(path.exists('./contributed-themes/'+str(selected_theme)+'/additional') == True):
     additionalAvailable="Additional-resources"
 
 def Auto_Installer():
@@ -159,7 +159,7 @@ def Self_Installer():
     if (index == 0):                   #BootLogo Install Code
       if (bootLogoAvailable != 'N/A'):
         os.system("cp "+str(bootlogodir)+" backups/backup."+str(dateTimeVar)) #DEV EDIT SHOULD BE MV
-        os.system("dd if=./contributed-themes/"+str(selected_theme)+str(bootlogothemepath)+" of="+str(bootlogodir))
+        os.system("dd if=./contributed-themes/"+str(selected_theme)+'/'+str(bootlogothemepath)+" of="+str(bootlogodir))
         print("Boot Logo installed successfully! Original backuped to ./backups/backup."+str(dateTimeVar))
       else:
         print("Boot logo is not available for "+str(selected_theme))
