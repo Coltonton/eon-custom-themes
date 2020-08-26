@@ -115,6 +115,10 @@ class ThemeInstaller:
   def install_function(self):  # Self installer program, prompts user on what they want to do
     while 1:
       options = list(self.theme_options)  # this only contains available options from self.get_available_options
+      if not len(options):
+        print('The selected theme has no resources available for your device! Try another.')
+        time.sleep(2)
+
       options += ['-Main Menu-', '-Reboot-']
 
       picker = Picker(options, 'What resources do you want to install for the {} theme?'.format(self.selected_theme))
@@ -159,10 +163,10 @@ class ThemeInstaller:
         print('Additional Resources are not an active feature')
         time.sleep(5)
 
-      elif selected_option == 'Main Menu':
+      elif selected_option == '-Main Menu-':
         break
 
-      elif selected_option == 'Reboot':
+      elif selected_option == '-Reboot-':
         print('Rebooting.... Enjoy your new theme!!!')
         os.system('am start -a android.intent.action.REBOOT')  # reboot intent is safer (reboot sometimes causes corruption)
         return
