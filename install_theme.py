@@ -152,7 +152,7 @@ class ThemeInstaller:
         os.system('mv /system/media/bootanimation.zip {}'.format(self.backup_dir))  # backup
         os.system('cp {}/{}/bootanimation.zip /system/media'.format(CONTRIB_THEMES, self.selected_theme))  # replace
         os.system('chmod 666 /system/media/bootanimation.zip')
-        print('\nBoot Logo installed successfully! Original backed up to {}'.format(self.backup_dir))
+        print('\nBoot Animation installed successfully! Original backed up to {}'.format(self.backup_dir))
         print('Press enter to continue!')
         input()
 
