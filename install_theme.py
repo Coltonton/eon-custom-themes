@@ -164,7 +164,7 @@ class ThemeInstaller:
         time.sleep(5)
 
       elif selected_option == '-Main Menu-':
-        break
+        return
 
       elif selected_option == '-Reboot-':
         print('Rebooting.... Enjoy your new theme!!!')
