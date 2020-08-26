@@ -50,11 +50,10 @@
 #                                                                                #
 ##################################################################################
 import os
-from os import path
-import sys
 import time
-from datetime import datetime
 import curses
+from os import path
+from datetime import datetime
 from support.pick.pick import Picker
 from support.support_functions import str_sim, print_welcome_text, check_auto_installability, go_back
 
