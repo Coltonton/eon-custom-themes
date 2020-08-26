@@ -145,6 +145,9 @@ class ThemeInstaller:
     while self.running:
       print('non-auto')
       self.selected_theme = self.get_user_theme()
+      if self.selected_theme is None:
+        print('Didn\'t select a theme, exiting.')
+        return
       self.get_available_options()
       self.installer()
 
@@ -269,11 +272,12 @@ class ThemeInstaller:
     print('\nAvailable themes:')
     for idx, theme in enumerate(available_themes):
       print('{}. {}'.format(idx + 1, theme))
+    print('Type `exit` to exit.')
     while 1:
       theme = input('\nChoose a theme to install (by name or index): ').strip().lower()
       print()
-      if theme in ['exit', '']:
-        return 'none'
+      if theme in ['exit']:
+        return None
 
       if theme.isdigit():
         theme = int(theme)
