@@ -55,12 +55,11 @@ import curses
 from os import path
 from datetime import datetime
 from support.pick.pick import Picker
-from support.support_functions import print_welcome_text, check_auto_installability, go_back
-from support.support_variables import CONTRIB_THEMES
+from support.support_functions import print_welcome_text, check_auto_installability, get_user_theme, go_back
+from support.support_variables import CONTRIB_THEMES, IS_AUTO_INSTALL, AUTO_INSTALL_CONF
 
 os.chdir(os.path.dirname(os.path.realpath(__file__)))  # __file__ is safer since it doesn't change based on where this file is called from
 print_welcome_text()
-
 
 # Crude device detection, *shrug* it works! LeEco does not have tristate!
 if path.exists('/sys/devices/virtual/switch/tri-state-key'):
@@ -76,18 +75,10 @@ print('IMPORTANT: If this is incorrect, exit now! Soft-bricking is likely if thi
 time.sleep(5)
 
 
-# Auto Install variables - see DEVREADME
-IS_AUTO_INSTALL = False
-AUTO_INSTALL_CONF = {'selected_theme': 'arne', 'install_logo': False, 'install_anim': False,
-                     'install_spinner': False, 'openpilot_dir_name': 'arnepilot', 'install_additional': False}
-
-
 class ThemeInstaller:
   def __init__(self):
     self.backup_dir = datetime.now().strftime('backups/backup.%m-%d-%y--%I.%M.%S-%p')  # Get current datetime and store
-    # os.mkdir(self.backup_dir)  # Create the session backup folder  # todo: uncomment
-
-    self.running = True
+    os.mkdir(self.backup_dir)  # Create the session backup folder  # todo: uncomment
 
     if IS_AUTO_INSTALL:
       assert check_auto_installability(), 'Error when checking if auto install available'
@@ -96,38 +87,33 @@ class ThemeInstaller:
       self.start()
 
   def start(self):
-    while self.running:
-      print('non-auto')
-      self.selected_theme = self.get_user_theme()
-      if self.selected_theme is None:
-        print('Didn\'t select a theme, exiting.')
-        return
-      else:
-        print('Selected theme: {}'.format(self.selected_theme))
-        time.sleep(2)
-      self.get_available_options()
-      self.install_function()
+    self.selected_theme = get_user_theme()
+    if self.selected_theme is None:
+      print('Didn\'t select a theme, exiting.')
+      return
+    else:
+      print('Selected theme: {}'.format(self.selected_theme))
+      time.sleep(2)
+    self.get_available_options()
+    self.install_function()
+    print('Thanks for using the tool! Exiting...')
 
-  def auto_installer(self):  # Auto Installer program for incorperating into OP forks SEE DEVREADME
-    if AUTO_INSTALL_CONF['install_logo']:  # Auto BootLogo Install Code
-      os.system('cp {} {}'.format(BOOT_LOGO_PATH, self.backup_dir))  # DEV EDIT SHOULD BE MV
-      os.system('dd if={}/{}/OP3T-Logo/LOGO of={}'.format(CONTRIB_THEMES, self.selected_theme, BOOT_LOGO_PATH))
-      print('Boot Logo installed successfully! Original backuped to ' + self.backup_dir)
+  def get_available_options(self):  # Check what assets are available for the selected theme
+    # Check if the selected theme has a boot logo asset
+    self.theme_options = []
+    if os.path.exists('{}/{}/{}'.format(CONTRIB_THEMES, self.selected_theme, BOOT_LOGO_THEME_PATH)):
+      self.theme_options.append('Boot Logo')
 
-    if AUTO_INSTALL_CONF['install_anim']:  # Auto BootAni Install Code
-      os.system('mount -o remount,rw /system')
-      os.system('mv /system/media/bootanimation.zip {}'.format(self.backup_dir))
-      os.system('cp {}/{}/bootanimation.zip /system/media'.format(CONTRIB_THEMES, self.selected_theme))
-      os.system('chmod 666 /system/media/bootanimation.zip')
-      print('Boot Logo installed successfully! Original backuped to {}'.format(self.backup_dir))
+    # Check if the selected theme has a boot annimation asset
+    if os.path.exists('{}/{}/bootanimation.zip'.format(CONTRIB_THEMES, self.selected_theme)):
+      self.theme_options.append('Boot Animation')
 
-    if AUTO_INSTALL_CONF['install_spinner']:  # Auto OP Spinner Code
-      os.system('cp /data/{}/selfdrive/ui/spinner/spinner {}'.format(AUTO_INSTALL_CONF['openpilot_dir_name'], self.backup_dir))  # TEMP DEV EDIT SHOULD BE MV
-      os.system('cp {}/{}/spinner /data/{}/selfdrive/ui/spinner'.format(CONTRIB_THEMES, self.selected_theme, AUTO_INSTALL_CONF['openpilot_dir_name']))
-      print('OP Spinner installed successfully! Original backed up to {}'.format(self.backup_dir))
+    # Check if the selected theme has a OpenPilot Spinner asset
+    if os.path.exists('{}/{}/spinner'.format(CONTRIB_THEMES, self.selected_theme)):
+      self.theme_options.append('OP Spinner')
 
-    # if (autoInstallAdditional != 'no'):             #Auto additional features Code (Not An Active feature)
-    #  print('Additional Resources are not an active feature')  # todo: refactor this
+    # if os.path.exists('{}/{}/additional'.format(CONTRIB_THEMES, self.selected_theme)):  # todo disabled for now
+    #   self.theme_options.append('Additional Resources')
 
   def install_function(self):  # Self installer program, prompts user on what they want to do
     while 1:
@@ -175,12 +161,6 @@ class ThemeInstaller:
       elif selected_option == 'Additional Resources':  # additional features
         print('Additional Resources are not an active feature')
         time.sleep(5)
-        # if (additionalAvailable != 'N/A'):
-        #  print('Additional Resources are not an active feature')
-        #  time.sleep(5)
-        # else:
-        #  print('Additional Resources are not an active feature')
-        #  time.sleep(5)
 
       elif selected_option == 'Main Menu':
         break
@@ -190,25 +170,26 @@ class ThemeInstaller:
         os.system('am start -a android.intent.action.REBOOT')  # reboot intent is safer (reboot sometimes causes corruption)
         return
 
-  def get_available_options(self):  # Check what assets are available for the selected theme
-    # Check if the selected theme has a boot logo asset
-    self.theme_options = []
-    if os.path.exists('{}/{}/{}'.format(CONTRIB_THEMES, self.selected_theme, BOOT_LOGO_THEME_PATH)):
-      self.theme_options.append('Boot Logo')
+  def auto_installer(self):  # Auto Installer program for incorperating into OP forks SEE DEVREADME
+    if AUTO_INSTALL_CONF['install_logo']:  # Auto BootLogo Install Code
+      os.system('cp {} {}'.format(BOOT_LOGO_PATH, self.backup_dir))  # DEV EDIT SHOULD BE MV
+      os.system('dd if={}/{}/OP3T-Logo/LOGO of={}'.format(CONTRIB_THEMES, self.selected_theme, BOOT_LOGO_PATH))
+      print('Boot Logo installed successfully! Original backuped to ' + self.backup_dir)
 
-    # Check if the selected theme has a boot annimation asset
-    if os.path.exists('{}/{}/bootanimation.zip'.format(CONTRIB_THEMES, self.selected_theme)):
-      self.theme_options.append('Boot Animation')
+    if AUTO_INSTALL_CONF['install_anim']:  # Auto BootAni Install Code
+      os.system('mount -o remount,rw /system')
+      os.system('mv /system/media/bootanimation.zip {}'.format(self.backup_dir))
+      os.system('cp {}/{}/bootanimation.zip /system/media'.format(CONTRIB_THEMES, self.selected_theme))
+      os.system('chmod 666 /system/media/bootanimation.zip')
+      print('Boot Logo installed successfully! Original backuped to {}'.format(self.backup_dir))
 
-    # Check if the selected theme has a OpenPilot Spinner asset
-    if os.path.exists('{}/{}/spinner'.format(CONTRIB_THEMES, self.selected_theme)):
-      self.theme_options.append('OP Spinner')
+    if AUTO_INSTALL_CONF['install_spinner']:  # Auto OP Spinner Code
+      os.system('cp /data/{}/selfdrive/ui/spinner/spinner {}'.format(AUTO_INSTALL_CONF['openpilot_dir_name'], self.backup_dir))  # TEMP DEV EDIT SHOULD BE MV
+      os.system('cp {}/{}/spinner /data/{}/selfdrive/ui/spinner'.format(CONTRIB_THEMES, self.selected_theme, AUTO_INSTALL_CONF['openpilot_dir_name']))
+      print('OP Spinner installed successfully! Original backed up to {}'.format(self.backup_dir))
 
-    # if os.path.exists('{}/{}/additional'.format(CONTRIB_THEMES, self.selected_theme)):  # todo disabled for now
-    #   self.theme_options.append('Additional Resources')
-
-
-
+    # if (autoInstallAdditional != 'no'):             #Auto additional features Code (Not An Active feature)
+    #  print('Additional Resources are not an active feature')  # todo: refactor this
 
 
 if __name__ == '__main__':
