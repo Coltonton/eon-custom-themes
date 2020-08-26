@@ -114,7 +114,7 @@ class ThemeInstaller:
 
   def install_function(self):  # Self installer program, prompts user on what they want to do
     while 1:
-      options = list(['- ' + opt for opt in self.theme_options])  # this only contains available options from self.get_available_options
+      options = ['-' + opt for opt in self.theme_options]  # this only contains available options from self.get_available_options
       options += ['Main Menu', 'Reboot']
 
       picker = Picker(options, 'What resources do you want to install for the {} theme?'.format(self.selected_theme))
