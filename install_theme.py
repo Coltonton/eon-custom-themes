@@ -97,7 +97,6 @@ class ThemeInstaller:
         time.sleep(2)
       self.get_available_options()
       self.install_function()
-    print('Thanks for using the tool! Exiting...')
 
   def get_available_options(self):  # Check what assets are available for the selected theme
     # Check if the selected theme has a boot logo asset
