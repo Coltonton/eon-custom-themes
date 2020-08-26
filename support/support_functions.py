@@ -20,4 +20,4 @@ def print_welcome_text():
     padding_left = padding // 2
     print('+{}+'.format(' ' * padding_left + line + ' ' * (padding - padding_left)))
   print(''.join(['+' for _ in range(max_line_length)]))
-  time.sleep(3)  # Pause for suspense, and so can be read
+  time.sleep(1)  # Pause for suspense, and so can be read  # todo: change back to 3

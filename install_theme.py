@@ -97,7 +97,7 @@ def MainLoop():
   global selected_theme
   while (running == 1):
     if (isAutoInstall == 1):                #If auto install set run auto installer
-      if( CheckAutoInstalability() == True):
+      if( check_auto_instalability() == True):
         selected_theme = selectedAutoTheme  #Make the selected_theme the provided auto theme
         Auto_Installer()
       else:
@@ -106,92 +106,6 @@ def MainLoop():
       selected_theme = ThemePicker()        #Make selected_theme chosen theme from prompt
       setup()
       Self_Installer()
-
-def CheckAutoInstalability():
-  doInstall = False
-  if(os.path.exists("./auto_theme_installed.txt") == True): #if auto installed before
-    isOveride  = open("override_auto_install.txt", "r")         #check if override set
-    if isOveride.mode == 'r':                               
-      contents = isOveride.read()
-      if (contents == 1):                                   #if overide == 1
-        doInstall = True                                    #overide and Do Auto install theme
-      else:
-        doInstall = False                                   #do not override reinstall, do not pass go do not collect $200
-  else:                                      #If auto_theme_installed.txt does not exist
-    doInstall = True                         #Do Auto install theme
-    f= open("auto_theme_installed.txt","w+") #Create auto_theme_installed.txt to prevent more installs
-    f.write("1")
-    f.close()         
-
-  return doInstall
-
-#Created by @ShaneSmiskol
-def ThemePicker():                   #Auto discover themes and let user choose!
-  available_themes = [t for t in os.listdir(CONTRIB_THEMES)]
-  available_themes = [t for t in available_themes if os.path.isdir(os.path.join(CONTRIB_THEMES, t))]
-  available_themes = [t for t in available_themes if t not in EXCLUDED_THEMES]
-  lower_available_themes = [t.lower() for t in available_themes]
-  print('\nAvailable themes:')
-  for idx, theme in enumerate(available_themes):
-    print('{}. {}'.format(idx + 1, theme))
-  print('\nChoose a theme to install (by name or index)')
-  while 1:
-    print('Select a theme: ', end='')
-    theme = input().strip().lower()
-    print()
-    if theme in ['exit', '']:
-      return 'none'
-
-    if theme.isdigit():
-      theme = int(theme)
-      if theme > len(available_themes):
-        print('Index out of range, try again!')
-        continue
-      return available_themes[int(theme) - 1]
-    else:
-      if theme in lower_available_themes:
-        return available_themes[lower_available_themes.index(theme)]
-      sims = [str_sim(theme, t.lower()) for t in available_themes]
-      most_sim_idx = max(range(len(sims)), key=sims.__getitem__)
-      theme = available_themes[most_sim_idx]
-      if sims[most_sim_idx] >= MIN_SIM_THRESHOLD:
-        print('Selected theme: {}'.format(theme))
-        print('Is this correct?')
-        print('[Y/n]: ', end='')
-        if input().lower().strip() in ['yes', 'y']:
-          return theme
-      else:
-        print('Unknown theme, try again!')
-
-def setup():                         #Check what assets are available for the selected theme
-  global bootLogoAvailable
-  global bootAnimationAvailable
-  global spinnerAvailable
-  global additionalAvailable
-
-  #Check if the selected theme has a boot logo  asset
-  if(os.path.exists("./contributed-themes/"+str(selected_theme)+"/"+str(bootlogothemepath)) == True):
-    bootLogoAvailable = "Boot_Logo"
-  else:
-    bootLogoAvailable = "N/A"
-
-  #Check if the selected theme has a boot annimation asset
-  if(os.path.exists('./contributed-themes/'+str(selected_theme)+'/bootanimation.zip') == True):
-    bootAnimationAvailable="Boot_Animation"
-  else:
-    bootAnimationAvailable = "N/A"
-
-  #Check if the selected theme has a OpenPilot Spinner asset
-  if(os.path.exists('./contributed-themes/'+str(selected_theme)+'/spinner') == True):
-    spinnerAvailable="OP_Spinner"
-  else:
-    spinnerAvailable = "N/A"
-
-  #Check if the selected theme has a additional assets (feature not active)
-  #if(os.path.exists('./contributed-themes/'+str(selected_theme)+'/additional') == True):
-  #  additionalAvailable="Additional-resources"
-  #else:
-  #  additionalAvailable = "N/A"
 
 def Auto_Installer():                #Auto Installer program for incorperating into OP forks SEE DEVREADME
     if (autoInstallLogo != 'no'):                   #Auto BootLogo Install Code
@@ -296,20 +210,108 @@ EXCLUDED_THEMES = ["Comma-Default", "Example", "ignoreme"]
 MIN_SIM_THRESHOLD = 0.25  # user's input needs to be this percent or higher similar to a theme to select it
 
 
+# Auto Install variables - see DEVREADME
+IS_AUTO_INSTALL = False
+AUTO_INSTALL_CONF = {'selected_theme': 'arne', 'install_logo': False, 'install_anim': False,
+                     'install_spinner': False, 'openpilot_dir_name': 'arnepilot', 'install_additional': False}
+
 
 class ThemeInstaller:
   def __init__(self):
     print_welcome_text()
     self.backup_dir = datetime.now().strftime('backups/backup.%m-%d-%y--%I.%M.%S-%p')  # Get current datetime and store
     os.mkdir(self.backup_dir)  # Create the session backup folder
-
+    if IS_AUTO_INSTALL:
+      assert self.check_auto_instalability(), "Error when checking if auto install available"
+      self.install_function = Auto_Installer
+    else:
+      self.install_function = self.start
 
   def start(self):
-    pass
+    print('non-auto')
+    selected_theme = self.get_user_theme()
+    self.get_available_options()
+    Self_Installer()
+
+  def get_available_options(self):  # Check what assets are available for the selected theme
+    # Check if the selected theme has a boot logo asset
+    self.boot_logo_available = os.path.exists('{}/{}/{}'.format(CONTRIB_THEMES, selected_theme, bootlogothemepath))
+    # bootLogoAvailable = "Boot_Logo"  # todo: reference these strings
+
+    # Check if the selected theme has a boot annimation asset
+    self.boot_animation_available = os.path.exists('{}/{}/bootanimation.zip'.format(CONTRIB_THEMES, selected_theme))
+    # bootAnimationAvailable="Boot_Animation"
+
+    # Check if the selected theme has a OpenPilot Spinner asset
+    self.spinner_available = os.path.exists('{}/{}/spinner'.format(CONTRIB_THEMES, selected_theme))
+    # spinnerAvailable="OP_Spinner"
+
+
+    #Check if the selected theme has a additional assets (feature not active)  # todo: refactor this to above format
+    #if(os.path.exists('./contributed-themes/'+str(selected_theme)+'/additional') == True):
+    #  additionalAvailable="Additional-resources"
+    #else:
+    #  additionalAvailable = "N/A"
+
+  def check_auto_instalability(self):
+    doInstall = False
+    if os.path.exists("auto_theme_installed.txt"):  # if auto installed before
+      isOveride = open("override_auto_install.txt", "r")  # check if override set
+      if isOveride.mode == 'r':
+        contents = isOveride.read()
+        if contents == 1:  # if overide == 1
+          doInstall = True  # overide and Do Auto install theme
+        else:
+          doInstall = False  # do not override reinstall, do not pass go do not collect $200
+    else:  # If auto_theme_installed.txt does not exist
+      doInstall = True  # Do Auto install theme
+      f = open("auto_theme_installed.txt", "w+")  # Create auto_theme_installed.txt to prevent more installs
+      f.write("1")
+      f.close()
+
+    return doInstall
+
+  # Created by @ShaneSmiskol
+  def get_user_theme(self):  # Auto discover themes and let user choose!
+    available_themes = [t for t in os.listdir(CONTRIB_THEMES)]
+    available_themes = [t for t in available_themes if os.path.isdir(os.path.join(CONTRIB_THEMES, t))]
+    available_themes = [t for t in available_themes if t not in EXCLUDED_THEMES]
+    lower_available_themes = [t.lower() for t in available_themes]
+    print('\nAvailable themes:')
+    for idx, theme in enumerate(available_themes):
+      print('{}. {}'.format(idx + 1, theme))
+    print('\nChoose a theme to install (by name or index)')
+    while 1:
+      print('Select a theme: ', end='')
+      theme = input().strip().lower()
+      print()
+      if theme in ['exit', '']:
+        return 'none'
+
+      if theme.isdigit():
+        theme = int(theme)
+        if theme > len(available_themes):
+          print('Index out of range, try again!')
+          continue
+        return available_themes[int(theme) - 1]
+      else:
+        if theme in lower_available_themes:
+          return available_themes[lower_available_themes.index(theme)]
+        sims = [str_sim(theme, t.lower()) for t in available_themes]
+        most_sim_idx = max(range(len(sims)), key=sims.__getitem__)
+        theme = available_themes[most_sim_idx]
+        if sims[most_sim_idx] >= MIN_SIM_THRESHOLD:
+          print('Selected theme: {}'.format(theme))
+          print('Is this correct?')
+          print('[Y/n]: ', end='')
+          if input().lower().strip() in ['yes', 'y']:
+            return theme
+        else:
+          print('Unknown theme, try again!')
 
 
 
 if __name__ == "__main__":
   ti = ThemeInstaller()
-  ti.start()
+  ti.install_function()
   # MainLoop()
