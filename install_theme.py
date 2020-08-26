@@ -52,10 +52,8 @@
 ##################################################################################
 import os
 import time
-import curses
 from os import path
 from datetime import datetime
-from support.pick.pick import Picker
 from support.support_functions import print_welcome_text, check_auto_installability, get_user_theme, is_affirmative, go_back
 from support.support_variables import CONTRIB_THEMES, IS_AUTO_INSTALL, AUTO_INSTALL_CONF
 
