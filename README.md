@@ -1,3 +1,5 @@
+Initial Release Coming Soon! Expected by 8/28/20!!
+
 [![](https://i.imgur.com/IcCeUD7.png)](#)
 # EON-Custom-Themes
 Upgrade your EON/Leon/Two's Looks!!! This is a pretty all inclusive guide to modify your device themingly. It's your own device! You own it, do with it as you please despite what someeee people may say, which is ironic dont you think?..... Lets Light It Up!!! (Contest)
