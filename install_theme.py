@@ -269,10 +269,8 @@ class ThemeInstaller:
     print('\nAvailable themes:')
     for idx, theme in enumerate(available_themes):
       print('{}. {}'.format(idx + 1, theme))
-    print('\nChoose a theme to install (by name or index)')
     while 1:
-      print('Select a theme: ', end='')
-      theme = input().strip().lower()
+      theme = input('\nChoose a theme to install (by name or index): ').strip().lower()
       print()
       if theme in ['exit', '']:
         return 'none'
