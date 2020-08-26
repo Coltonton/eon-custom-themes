@@ -78,7 +78,7 @@ time.sleep(5)
 class ThemeInstaller:
   def __init__(self):
     self.backup_dir = datetime.now().strftime('backups/backup.%m-%d-%y--%I.%M.%S-%p')  # Get current datetime and store
-    os.mkdir(self.backup_dir)  # Create the session backup folder  # todo: uncomment
+    os.mkdir(self.backup_dir)  # Create the session backup folder
 
     if IS_AUTO_INSTALL:
       assert check_auto_installability(), 'Error when checking if auto install available'

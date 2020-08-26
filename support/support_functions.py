@@ -73,7 +73,7 @@ def print_welcome_text():  # this center formats text automatically
     padding_left = padding // 2
     print('+{}+'.format(' ' * padding_left + line + ' ' * (padding - padding_left)))
   print(''.join(['+' for _ in range(max_line_length)]))
-  time.sleep(1)  # Pause for suspense, and so can be read  # todo: change back to 3
+  time.sleep(3)  # Pause for suspense, and so can be read
 
 
 def go_back(picker):  # part of the picker code
