@@ -113,7 +113,7 @@ class ThemeInstaller:
       self.theme_options.append('OP Spinner')
 
     # if os.path.exists('{}/{}/additional'.format(CONTRIB_THEMES, self.selected_theme)):  # todo disabled for now
-    #   self.theme_options.append('Additional Resources')
+    #   self.theme_options.append('4. Additional Resources')
 
   def install_function(self):  # Self installer program, prompts user on what they want to do
     while 1:
@@ -124,11 +124,14 @@ class ThemeInstaller:
         return
 
       options += ['-Main Menu-', '-Reboot-']
+      
+      print('What resources do you want to install for the {} theme?'.format(self.selected_theme))
+      for idx, theme in enumerate(options):
+        print('{}. {}'.format(idx + 1, theme))
+      indexChoice = int(input("Enter Index Value: "))
+      indexChoice -= 1 
 
-      picker = Picker(options, 'What resources do you want to install for the {} theme?'.format(self.selected_theme))
-      picker.register_custom_handler(curses.KEY_LEFT, go_back)
-      selected_option, index = picker.start()
-      # print(selected_option, index)
+      selected_option = self.theme_options[indexChoice]
 
       if selected_option == 'Boot Logo':
         print('Selected to install the {} Boot Logo. Continue?'.format(self.selected_theme))
