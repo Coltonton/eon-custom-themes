@@ -54,8 +54,8 @@ from os import path
 import sys
 import time
 from datetime import datetime
-# import curses
-# from support.pick.pick import Picker
+import curses
+from support.pick.pick import Picker
 from support.support_functions import str_sim, print_welcome_text
 
 os.chdir(os.path.dirname(os.path.realpath(__file__)))  # __file__ is safer since it doesn't change based on where this file is called from
@@ -71,46 +71,12 @@ os.chdir(os.path.dirname(os.path.realpath(__file__)))  # __file__ is safer since
 #
 # running = 1
 
-#Crude device detection, *shrug* it works! LeEco does not have tristate!
-if(path.exists('/sys/devices/virtual/switch/tri-state-key') == True):
-  print('\n*** OnePlus EON Device Detected ***\n')
-  bootlogothemepath = "OP3T-Logo/LOGO"      #Set the boot logo theme path for 3T
-  bootlogodir = "/dev/block/sde17"          #Set the boot logo directory for 3T
-else:
-  print ('\n*** LeEco EON Device Detected ***\n')
-  bootlogothemepath = "LeEco-Logo/SPLASH"   #Set the boot logo theme path for Leo
-  bootlogodir = "/dev/block/bootdevice/by-name/splash" #Set the boot logo directory for Leo
 
-#Auto Install variables - see DEVREADME
-isAutoInstall          = 0            #
-selectedAutoTheme      = "arne"       #
-autoInstallLogo        = "no"         #
-autoInstallAnim        = "no"         #
-autoInstallSpinner     = "no"         #
-autoOpenPilotDirName   = "arnepilot"  #
-autoInstallAdditional  = "no"         #
-#=====================================#
-
-#=================== Functions =================================
-
-def MainLoop():
-  global selected_theme
-  while (running == 1):
-    if (isAutoInstall == 1):                #If auto install set run auto installer
-      if( check_auto_instalability() == True):
-        selected_theme = selectedAutoTheme  #Make the selected_theme the provided auto theme
-        Auto_Installer()
-      else:
-        sys.exit()
-    elif (isAutoInstall == 0):              #else use self installer
-      selected_theme = ThemePicker()        #Make selected_theme chosen theme from prompt
-      setup()
-      Self_Installer()
 
 def Auto_Installer():                #Auto Installer program for incorperating into OP forks SEE DEVREADME
     if (autoInstallLogo != 'no'):                   #Auto BootLogo Install Code
-      os.system("cp "+str(bootlogodir)+" backups/backup."+str(dateTimeVar)) #DEV EDIT SHOULD BE MV
-      os.system("dd if=./contributed-themes/"+str(selected_theme)+"/OP3T-Logo/LOGO of="+str(bootlogodir))
+      os.system("cp "+str(BOOT_LOGO_PATH)+" backups/backup."+str(dateTimeVar)) #DEV EDIT SHOULD BE MV
+      os.system("dd if=./contributed-themes/"+str(selected_theme)+"/OP3T-Logo/LOGO of="+str(BOOT_LOGO_PATH))
       print("Boot Logo installed successfully! Original backuped to ./backups/backup."+str(dateTimeVar))
 
     if (autoInstallAnim != 'no'):                   #Auto BootAni Install Code
@@ -128,81 +94,26 @@ def Auto_Installer():                #Auto Installer program for incorperating i
     #if (autoInstallAdditional != 'no'):             #Auto additional features Code (Not An Active feature)
     #  print("Additional Resources are not an active feature")
 
-def Self_Installer():                #Self installer program, prompts user on what they want to do
-  while 1:
-    title = 'What resources do you want to install for the '+str(selected_theme)+' theme?: '
-    options = [bootLogoAvailable, bootAnimationAvailable, spinnerAvailable, additionalAvailable, 'Main Menu', 'Reboot']
-
-    picker = Picker(options, title)
-    picker.register_custom_handler(curses.KEY_LEFT, go_back)
-    option, index = picker.start()
-    print(option, index)
-
-    if (index == 0):                   #BootLogo Install Code
-      if (bootLogoAvailable != 'N/A'):       
-        os.system("cp "+str(bootlogodir)+" backups/backup."+str(dateTimeVar)) #Make Backup
-        os.system("dd if=./contributed-themes/"+str(selected_theme)+"/"+str(bootlogothemepath)+" of="+str(bootlogodir)) #Replace
-        print("Boot Logo installed successfully! Original backuped to ./backups/backup."+str(dateTimeVar))
-      else:
-        print("Boot logo is not available for "+str(selected_theme))
-        time.sleep(5)
-
-    if (index == 1):                   #BootAni Install Code
-      if (bootAnimationAvailable != 'N/A'):
-        os.system("mount -o remount,rw /system")           #/system read only, must mount as r/w
-        os.system("mv /system/media/bootanimation.zip backups/backup."+str(dateTimeVar))             #backup 
-        os.system("cp ./contributed-themes/"+str(selected_theme)+"/bootanimation.zip /system/media") #replace
-        os.system("chmod 666 /system/media/bootanimation.zip")
-        print("Boot Logo installed successfully! Original backuped to ./backups/backup."+str(dateTimeVar))
-      else:
-        print("Boot Annimation is not available for "+str(selected_theme))
-        time.sleep(5)
-
-    if (index == 2):                   #OP Spinner Code
-      if (spinnerAvailable == 'N/A'):
-        print("Do you have an OP fork with a custom directory name? (ex. arnepilot, dragonpilot)")
-        print("Choose an option (by name or index) (case matters)")
-        print("1. Yes")                #Ask the user if their OP fork used a diffrent directory.
-        print("2. No")
-        isCustOP = input("")
-
-        if (isCustOP == 'y','Y','yes','Yes',1):  #Yes there is a custom OP dir
-          opdir = input("What is the OP directory name? (case matters)") #get custom dir name
-          print("Your OpenPilot directory is /data/"+str(opdir))
-          os.system("mv /data/"+str(opdir)+"/selfdrive/ui/spinner/spinner backups/backup."+str(dateTimeVar))
-          os.system("cp ./contributed-themes/"+str(selected_theme)+"/spinner /data/"+str(opdir)+"/selfdrive/ui/spinner")
-          print(str(opdir)+" Spinner installed Successfully! Original backuped to ./backups/backup."+str(dateTimeVar))
-        elif (isCustOP == 'n','N','no','No',2):  #No there is not custom OP dir
-          os.system("mv /data/openpilot/selfdrive/ui/spinner/spinner backups/backup."+str(dateTimeVar))
-          os.system("cp ./contributed-themes/"+str(selected_theme)+"/spinner /data/openpilot/selfdrive/ui/spinner")
-          print("OpenPIlot Spinner installed Successfully! Original backuped to ./backups/backup."+str(dateTimeVar))
-        else:
-          print("Invalid selection")
-
-      else:
-        print("OP Spinner is not available for "+str(selected_theme))
-        time.sleep(5)
-
-    if (index == 3):                          #additional features
-      print("Additional Resources are not an active feature")
-      time.sleep(5)
-      #if (additionalAvailable != 'N/A'):
-      #  print("Additional Resources are not an active feature")
-      #  time.sleep(5)
-      #else:
-      #  print("Additional Resources are not an active feature")
-      #  time.sleep(5)
-
-    if (index == 4):                          #main menu
-      break
-
-    if (index == 5):                          #reboot
-      print('Rebooting.... Enjoy your new theme!!!')
-      os.system('reboot')
-
 
 def go_back(picker): #part of the picker code
   return (None, -1)
+
+
+print_welcome_text()
+
+
+# Crude device detection, *shrug* it works! LeEco does not have tristate!
+if path.exists('/sys/devices/virtual/switch/tri-state-key'):
+  print('\n*** OnePlus EON Device Detected ***')
+  BOOT_LOGO_THEME_PATH = "OP3T-Logo/LOGO"  # Set the boot logo theme path for 3T
+  BOOT_LOGO_PATH = "/dev/block/sde17"  # Set the boot logo directory for 3T
+else:
+  print('\n*** LeEco EON Device Detected ***')
+  BOOT_LOGO_THEME_PATH = "LeEco-Logo/SPLASH"  # Set the boot logo theme path for Leo
+  BOOT_LOGO_PATH = "/dev/block/bootdevice/by-name/splash"  # Set the boot logo directory for Leo
+
+print('IMPORTANT: If this is incorrect, exit now! Soft-bricking is likely if this detection is incorrect.')
+time.sleep(5)
 
 
 CONTRIB_THEMES = "contributed-themes"
@@ -216,44 +127,122 @@ AUTO_INSTALL_CONF = {'selected_theme': 'arne', 'install_logo': False, 'install_a
                      'install_spinner': False, 'openpilot_dir_name': 'arnepilot', 'install_additional': False}
 
 
+# noinspection PyDictCreation
 class ThemeInstaller:
   def __init__(self):
-    print_welcome_text()
     self.backup_dir = datetime.now().strftime('backups/backup.%m-%d-%y--%I.%M.%S-%p')  # Get current datetime and store
-    os.mkdir(self.backup_dir)  # Create the session backup folder
+    # os.mkdir(self.backup_dir)  # Create the session backup folder  # todo: uncomment
+
+    self.running = True
+
     if IS_AUTO_INSTALL:
-      assert self.check_auto_instalability(), "Error when checking if auto install available"
+      assert self.check_auto_installability(), "Error when checking if auto install available"
       self.install_function = Auto_Installer
     else:
       self.install_function = self.start
 
   def start(self):
-    print('non-auto')
-    selected_theme = self.get_user_theme()
-    self.get_available_options()
-    Self_Installer()
+    while self.running:
+      print('non-auto')
+      self.selected_theme = self.get_user_theme()
+      self.get_available_options()
+      self.installer()
+
+  def installer(self):  # Self installer program, prompts user on what they want to do
+    while 1:
+      title = 'What resources do you want to install for the {} theme?'.format(self.selected_theme)
+      options = []
+      for opt, info in self.options_available.items():
+        if info['available']:
+          options.append(info['name'])
+      options += ['Main Menu', 'Reboot']
+
+      picker = Picker(options, title)
+      picker.register_custom_handler(curses.KEY_LEFT, go_back)
+      option, index = picker.start()
+      print(option, index)
+      raise Exception
+
+      if (index == 0):  # BootLogo Install Code
+        if (bootLogoAvailable != 'N/A'):
+          os.system("cp " + str(BOOT_LOGO_PATH) + " backups/backup." + str(dateTimeVar))  # Make Backup
+          os.system("dd if=./contributed-themes/" + str(selected_theme) + "/" + str(BOOT_LOGO_THEME_PATH) + " of=" + str(BOOT_LOGO_PATH))  # Replace
+          print("Boot Logo installed successfully! Original backuped to ./backups/backup." + str(dateTimeVar))
+        else:
+          print("Boot logo is not available for " + str(selected_theme))
+          time.sleep(5)
+
+      if (index == 1):  # BootAni Install Code
+        if (bootAnimationAvailable != 'N/A'):
+          os.system("mount -o remount,rw /system")  # /system read only, must mount as r/w
+          os.system("mv /system/media/bootanimation.zip backups/backup." + str(dateTimeVar))  # backup
+          os.system("cp ./contributed-themes/" + str(selected_theme) + "/bootanimation.zip /system/media")  # replace
+          os.system("chmod 666 /system/media/bootanimation.zip")
+          print("Boot Logo installed successfully! Original backuped to ./backups/backup." + str(dateTimeVar))
+        else:
+          print("Boot Annimation is not available for " + str(selected_theme))
+          time.sleep(5)
+
+      if (index == 2):  # OP Spinner Code
+        if (spinnerAvailable == 'N/A'):
+          print("Do you have an OP fork with a custom directory name? (ex. arnepilot, dragonpilot)")
+          print("Choose an option (by name or index) (case matters)")
+          print("1. Yes")  # Ask the user if their OP fork used a diffrent directory.
+          print("2. No")
+          isCustOP = input("")
+
+          if (isCustOP == 'y', 'Y', 'yes', 'Yes', 1):  # Yes there is a custom OP dir
+            opdir = input("What is the OP directory name? (case matters)")  # get custom dir name
+            print("Your OpenPilot directory is /data/" + str(opdir))
+            os.system("mv /data/" + str(opdir) + "/selfdrive/ui/spinner/spinner backups/backup." + str(dateTimeVar))
+            os.system("cp ./contributed-themes/" + str(selected_theme) + "/spinner /data/" + str(opdir) + "/selfdrive/ui/spinner")
+            print(str(opdir) + " Spinner installed Successfully! Original backuped to ./backups/backup." + str(dateTimeVar))
+          elif (isCustOP == 'n', 'N', 'no', 'No', 2):  # No there is not custom OP dir
+            os.system("mv /data/openpilot/selfdrive/ui/spinner/spinner backups/backup." + str(dateTimeVar))
+            os.system("cp ./contributed-themes/" + str(selected_theme) + "/spinner /data/openpilot/selfdrive/ui/spinner")
+            print("OpenPIlot Spinner installed Successfully! Original backuped to ./backups/backup." + str(dateTimeVar))
+          else:
+            print("Invalid selection")
+
+        else:
+          print("OP Spinner is not available for " + str(selected_theme))
+          time.sleep(5)
+
+      if (index == 3):  # additional features
+        print("Additional Resources are not an active feature")
+        time.sleep(5)
+        # if (additionalAvailable != 'N/A'):
+        #  print("Additional Resources are not an active feature")
+        #  time.sleep(5)
+        # else:
+        #  print("Additional Resources are not an active feature")
+        #  time.sleep(5)
+
+      if (index == 4):  # main menu
+        break
+
+      if (index == 5):  # reboot
+        print('Rebooting.... Enjoy your new theme!!!')
+        os.system('reboot')
 
   def get_available_options(self):  # Check what assets are available for the selected theme
     # Check if the selected theme has a boot logo asset
-    self.boot_logo_available = os.path.exists('{}/{}/{}'.format(CONTRIB_THEMES, selected_theme, bootlogothemepath))
-    # bootLogoAvailable = "Boot_Logo"  # todo: reference these strings
+    self.options_available = {}
+    self.options_available['boot_logo'] = {'available': os.path.exists('{}/{}/{}'.format(CONTRIB_THEMES, self.selected_theme, BOOT_LOGO_THEME_PATH)),
+                                           'name': 'Boot_Logo'}
 
     # Check if the selected theme has a boot annimation asset
-    self.boot_animation_available = os.path.exists('{}/{}/bootanimation.zip'.format(CONTRIB_THEMES, selected_theme))
-    # bootAnimationAvailable="Boot_Animation"
+    self.options_available['boot_animation'] = {'available': os.path.exists('{}/{}/bootanimation.zip'.format(CONTRIB_THEMES, self.selected_theme)),
+                                                'name': 'Boot_Animation'}
 
     # Check if the selected theme has a OpenPilot Spinner asset
-    self.spinner_available = os.path.exists('{}/{}/spinner'.format(CONTRIB_THEMES, selected_theme))
-    # spinnerAvailable="OP_Spinner"
+    self.options_available['spinner'] = {'available': os.path.exists('{}/{}/spinner'.format(CONTRIB_THEMES, self.selected_theme)),
+                                         'name': 'OP_Spinner'}
 
+    self.options_available['additional'] = {'available': False, 'name': 'Additional-resources'}  # fixme: disabled for now
+    # self.options_available['additional'] = {'available': os.path.exists('{}/{}/additional'.format(CONTRIB_THEMES, self.selected_theme)), 'name': 'Additional-resources'}
 
-    #Check if the selected theme has a additional assets (feature not active)  # todo: refactor this to above format
-    #if(os.path.exists('./contributed-themes/'+str(selected_theme)+'/additional') == True):
-    #  additionalAvailable="Additional-resources"
-    #else:
-    #  additionalAvailable = "N/A"
-
-  def check_auto_instalability(self):
+  def check_auto_installability(self):
     doInstall = False
     if os.path.exists("auto_theme_installed.txt"):  # if auto installed before
       isOveride = open("override_auto_install.txt", "r")  # check if override set
@@ -314,4 +303,3 @@ class ThemeInstaller:
 if __name__ == "__main__":
   ti = ThemeInstaller()
   ti.install_function()
-  # MainLoop()
