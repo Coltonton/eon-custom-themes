@@ -7,7 +7,7 @@ def str_sim(a, b):  # part of Shane's theme picker code
   return difflib.SequenceMatcher(a=a, b=b).ratio()
 
 
-def print_welcome_text():
+def print_welcome_text():  # this center formats text automatically
   welcome_text = ['Created By: Colton (Brandon) S. EndLine \\n',
                   'Special Thanks to @ShaneSmiskol for all the help!!!',
                   'Free to use! Free to Edit! Free to integrate!',
@@ -25,22 +25,20 @@ def print_welcome_text():
 
 
 def check_auto_installability():
-  doInstall = False
-  if os.path.exists('auto_theme_installed.txt'):  # if auto installed before
-    isOveride = open('override_auto_install.txt', 'r')  # check if override set
-    if isOveride.mode == 'r':
-      contents = isOveride.read()
-      if contents == 1:  # if overide == 1
-        doInstall = True  # overide and Do Auto install theme
-      else:
-        doInstall = False  # do not override reinstall, do not pass go do not collect $200
-  else:  # If auto_theme_installed.txt does not exist
-    doInstall = True  # Do Auto install theme
-    f = open('auto_theme_installed.txt', 'w+')  # Create auto_theme_installed.txt to prevent more installs
-    f.write('1')
-    f.close()
+  auto_installed_path = 'auto_theme_installed.txt'
+  if os.path.exists(auto_installed_path):  # if auto installed before
+    with open(auto_installed_path, 'r') as f:  # check if override set
+      override = f.read().strip().strip('\n')
 
-    return doInstall
+    if override == '1':  # if overide
+      return True  # overide and Do Auto install theme
+    else:
+      return False  # do not override reinstall, do not pass go do not collect $200
+
+  else:  # If auto_theme_installed.txt does not exist
+    with open(auto_installed_path, 'w') as f:  # Create auto_theme_installed.txt to prevent more installs
+      f.write('0')  # this was previously 1, causing it to keep installing when it shouldn't have
+    return True
 
 
 def go_back(picker):  # part of the picker code
