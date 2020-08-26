@@ -55,7 +55,7 @@ import curses
 from os import path
 from datetime import datetime
 from support.pick.pick import Picker
-from support.support_functions import print_welcome_text, check_auto_installability, get_user_theme, go_back
+from support.support_functions import print_welcome_text, check_auto_installability, get_user_theme, is_affirmative, go_back
 from support.support_variables import CONTRIB_THEMES, IS_AUTO_INSTALL, AUTO_INSTALL_CONF
 
 os.chdir(os.path.dirname(os.path.realpath(__file__)))  # __file__ is safer since it doesn't change based on where this file is called from
@@ -125,30 +125,40 @@ class ThemeInstaller:
       picker = Picker(options, 'What resources do you want to install for the {} theme?'.format(self.selected_theme))
       picker.register_custom_handler(curses.KEY_LEFT, go_back)
       selected_option, index = picker.start()
-      print(selected_option, index)
+      # print(selected_option, index)
 
       if selected_option == 'Boot Logo':
+        print('Selected to install the {} Boot Logo. Continue?'.format(self.selected_theme))
+        if not is_affirmative():
+          print('Not installing...')
+          time.sleep(1.5)
+          break
         os.system('cp {} {}'.format(BOOT_LOGO_PATH, self.backup_dir))  # Make Backup
         os.system('dd if={}/{}/{} of={}'.format(CONTRIB_THEMES, self.selected_theme, BOOT_LOGO_THEME_PATH, BOOT_LOGO_PATH))  # Replace
         print('Boot Logo installed successfully! Original backed up to {}'.format(self.backup_dir))
-        time.sleep(2.5)
+        input('Press enter to continue!')
 
       elif selected_option == 'Boot Animation':
+        print('Selected to install the {} Boot Animation. Continue?'.format(self.selected_theme))
+        if not is_affirmative():
+          print('Not installing...')
+          time.sleep(1.5)
+          break
         os.system('mount -o remount,rw /system')  # /system read only, must mount as r/w
         os.system('mv /system/media/bootanimation.zip {}'.format(self.backup_dir))  # backup
         os.system('cp {}/{}/bootanimation.zip /system/media'.format(CONTRIB_THEMES, self.selected_theme))  # replace
         os.system('chmod 666 /system/media/bootanimation.zip')
         print('Boot Logo installed successfully! Original backed up to {}'.format(self.backup_dir))
-        time.sleep(2.5)
+        input('Press enter to continue!')
 
       elif selected_option == 'OP Spinner':
-        print('Do you have an OP fork with a custom directory name? (ex. arnepilot, dragonpilot)')
-        print()
-        print('1. Yes')  # Ask the user if their OP fork used a diffrent directory.
-        print('2. No')
-        custom_op_dir = input('[Yes/No]: ').lower() in ['yes', 'ye', 'y']
-
-        if custom_op_dir:  # Yes there is a custom OP dir
+        print('Selected to install the {} OP Spinner. Continue?'.format(self.selected_theme))
+        if not is_affirmative():
+          print('Not installing...')
+          time.sleep(1.5)
+          break
+        print('Do you have an OP fork with a custom directory name? (ex. arnepilot, dragonpilot)')  # Ask the user if their OP fork used a diffrent directory.
+        if is_affirmative():  # Yes there is a custom OP dir
           print('What is the OP directory name? (case matters, not including /data/)')
           op_dir = '/data/{}'.format(input('> ').strip('/'))  # get custom dir name, strip slashes for safety
           print('Your openpilot directory is {}'.format(op_dir))
@@ -161,7 +171,7 @@ class ThemeInstaller:
           os.system('mv /data/openpilot/selfdrive/ui/spinner/spinner {}'.format(self.backup_dir))
           os.system('cp {}/{}/spinner /data/openpilot/selfdrive/ui/spinner'.format(CONTRIB_THEMES, self.selected_theme))
           print('openpilot spinner installed successfully! Original backed up to {}'.format(self.backup_dir))
-        time.sleep(2.5)
+        input('Press enter to continue!')
 
       elif selected_option == 'Additional Resources':  # additional features
         print('Additional Resources are not an active feature')

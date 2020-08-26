@@ -82,3 +82,7 @@ def go_back(picker):  # part of the picker code
 
 def str_sim(a, b):  # part of Shane's theme picker code
   return difflib.SequenceMatcher(a=a, b=b).ratio()
+
+def is_affirmative():
+  u = input('[Yes/No]: ').lower().strip()
+  return u in ['yes', 'ye', 'y']
