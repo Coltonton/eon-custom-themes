@@ -87,15 +87,16 @@ class ThemeInstaller:
       self.start()
 
   def start(self):
-    self.selected_theme = get_user_theme()
-    if self.selected_theme is None:
-      print('Didn\'t select a theme, exiting.')
-      return
-    else:
-      print('Selected theme: {}'.format(self.selected_theme))
-      time.sleep(2)
-    self.get_available_options()
-    self.install_function()
+    while 1:
+      self.selected_theme = get_user_theme()
+      if self.selected_theme is None:
+        print('Didn\'t select a theme, exiting.')
+        return
+      else:
+        print('Selected theme: {}'.format(self.selected_theme))
+        time.sleep(2)
+      self.get_available_options()
+      self.install_function()
     print('Thanks for using the tool! Exiting...')
 
   def get_available_options(self):  # Check what assets are available for the selected theme
