@@ -191,7 +191,8 @@ class ThemeInstaller:
 
       elif selected_option == 'Reboot':
         print('Rebooting.... Enjoy your new theme!!!')
-        os.system('reboot')  # todo: replace with safer reboot intent
+        os.system('am start -a android.intent.action.REBOOT')  # reboot intent is safer (reboot sometimes causes corruption)
+        return
 
   def get_available_options(self):  # Check what assets are available for the selected theme
     # Check if the selected theme has a boot logo asset
