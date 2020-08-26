@@ -86,9 +86,9 @@ class ThemeInstaller:
       assert check_auto_installability(), 'Auto install has already been performed!'
       self.auto_installer()
     else:
-      self.start()
+      self.start_loop()
 
-  def start(self):
+  def start_loop(self):
     while 1:
       self.selected_theme = get_user_theme()
       if self.selected_theme is None:
