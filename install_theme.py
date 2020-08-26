@@ -148,16 +148,16 @@ class ThemeInstaller:
       if self.selected_theme is None:
         print('Didn\'t select a theme, exiting.')
         return
+      else:
+        print('Selected theme: {}'.format(self.selected_theme))
+        time.sleep(2)
       self.get_available_options()
       self.installer()
 
   def installer(self):  # Self installer program, prompts user on what they want to do
     while 1:
       title = 'What resources do you want to install for the {} theme?'.format(self.selected_theme)
-      options = []
-      for opt, info in self.options_available.items():
-        if info['available']:
-          options.append(info['name'])
+      options = list(self.theme_options)
       options += ['Main Menu', 'Reboot']
 
       picker = Picker(options, title)
@@ -230,19 +230,19 @@ class ThemeInstaller:
 
   def get_available_options(self):  # Check what assets are available for the selected theme
     # Check if the selected theme has a boot logo asset
-    self.options_available = {}
-    self.options_available['boot_logo'] = {'available': os.path.exists('{}/{}/{}'.format(CONTRIB_THEMES, self.selected_theme, BOOT_LOGO_THEME_PATH)),
-                                           'name': 'Boot_Logo'}
+    self.theme_options = []
+    if os.path.exists('{}/{}/{}'.format(CONTRIB_THEMES, self.selected_theme, BOOT_LOGO_THEME_PATH)):
+      self.theme_options.append('Boot Logo')
 
     # Check if the selected theme has a boot annimation asset
-    self.options_available['boot_animation'] = {'available': os.path.exists('{}/{}/bootanimation.zip'.format(CONTRIB_THEMES, self.selected_theme)),
-                                                'name': 'Boot_Animation'}
+    if os.path.exists('{}/{}/bootanimation.zip'.format(CONTRIB_THEMES, self.selected_theme)):
+      self.theme_options.append('Boot Animation')
 
     # Check if the selected theme has a OpenPilot Spinner asset
-    self.options_available['spinner'] = {'available': os.path.exists('{}/{}/spinner'.format(CONTRIB_THEMES, self.selected_theme)),
-                                         'name': 'OP_Spinner'}
+    if os.path.exists('{}/{}/spinner'.format(CONTRIB_THEMES, self.selected_theme)):
+      self.theme_options.append('OP Spinner')
 
-    self.options_available['additional'] = {'available': False, 'name': 'Additional-resources'}  # fixme: disabled for now
+    self.theme_options['Additional Resources'] = False  # fixme: disabled for now
     # self.options_available['additional'] = {'available': os.path.exists('{}/{}/additional'.format(CONTRIB_THEMES, self.selected_theme)), 'name': 'Additional-resources'}
 
   def check_auto_installability(self):
