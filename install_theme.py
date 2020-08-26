@@ -72,7 +72,7 @@ else:
   BOOT_LOGO_PATH = '/dev/block/bootdevice/by-name/splash'  # Set the boot logo directory for Leo
 
 print('IMPORTANT: If this is incorrect, exit now! Soft-bricking is likely if this detection is incorrect.')
-time.sleep(2)
+time.sleep(3)
 
 
 class ThemeInstaller:
