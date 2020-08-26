@@ -136,8 +136,9 @@ class ThemeInstaller:
           break
         os.system('cp {} {}'.format(BOOT_LOGO_PATH, self.backup_dir))  # Make Backup
         os.system('dd if={}/{}/{} of={}'.format(CONTRIB_THEMES, self.selected_theme, BOOT_LOGO_THEME_PATH, BOOT_LOGO_PATH))  # Replace
-        print('Boot Logo installed successfully! Original backed up to {}'.format(self.backup_dir))
-        input('Press enter to continue!')
+        print('\nBoot Logo installed successfully! Original backed up to {}'.format(self.backup_dir))
+        print('Press enter to continue!')
+        input()
 
       elif selected_option == 'Boot Animation':
         print('Selected to install the {} Boot Animation. Continue?'.format(self.selected_theme))
@@ -149,8 +150,9 @@ class ThemeInstaller:
         os.system('mv /system/media/bootanimation.zip {}'.format(self.backup_dir))  # backup
         os.system('cp {}/{}/bootanimation.zip /system/media'.format(CONTRIB_THEMES, self.selected_theme))  # replace
         os.system('chmod 666 /system/media/bootanimation.zip')
-        print('Boot Logo installed successfully! Original backed up to {}'.format(self.backup_dir))
-        input('Press enter to continue!')
+        print('\nBoot Logo installed successfully! Original backed up to {}'.format(self.backup_dir))
+        print('Press enter to continue!')
+        input()
 
       elif selected_option == 'OP Spinner':
         print('Selected to install the {} OP Spinner. Continue?'.format(self.selected_theme))
@@ -167,12 +169,13 @@ class ThemeInstaller:
 
           os.system('mv {}/selfdrive/ui/spinner/spinner {}'.format(op_dir, self.backup_dir))
           os.system('cp {}/{}/spinner {}/selfdrive/ui/spinner'.format(CONTRIB_THEMES, self.selected_theme, op_dir))
-          print('{} spinner installed successfully! Original backed up to {}'.format(op_dir.split('/')[2], self.backup_dir))
+          print('\n{} spinner installed successfully! Original backed up to {}'.format(op_dir.split('/')[2], self.backup_dir))
         else:  # there is not custom OP dir
           os.system('mv /data/openpilot/selfdrive/ui/spinner/spinner {}'.format(self.backup_dir))
           os.system('cp {}/{}/spinner /data/openpilot/selfdrive/ui/spinner'.format(CONTRIB_THEMES, self.selected_theme))
-          print('openpilot spinner installed successfully! Original backed up to {}'.format(self.backup_dir))
-        input('Press enter to continue!')
+          print('\nopenpilot spinner installed successfully! Original backed up to {}'.format(self.backup_dir))
+        print('Press enter to continue!')
+        input()
 
       elif selected_option == 'Additional Resources':  # additional features
         print('Additional Resources are not an active feature')
