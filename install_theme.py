@@ -135,7 +135,7 @@ class ThemeInstaller:
         if not is_affirmative():
           print('Not installing...')
           time.sleep(1.5)
-          break
+          continue
         os.system('cp {} {}'.format(BOOT_LOGO_PATH, self.backup_dir))  # Make Backup
         os.system('dd if={}/{}/{} of={}'.format(CONTRIB_THEMES, self.selected_theme, BOOT_LOGO_THEME_PATH, BOOT_LOGO_PATH))  # Replace
         print('\nBoot Logo installed successfully! Original backed up to {}'.format(self.backup_dir))
@@ -147,7 +147,7 @@ class ThemeInstaller:
         if not is_affirmative():
           print('Not installing...')
           time.sleep(1.5)
-          break
+          continue
         os.system('mount -o remount,rw /system')  # /system read only, must mount as r/w
         os.system('mv /system/media/bootanimation.zip {}'.format(self.backup_dir))  # backup
         os.system('cp {}/{}/bootanimation.zip /system/media'.format(CONTRIB_THEMES, self.selected_theme))  # replace
@@ -161,7 +161,7 @@ class ThemeInstaller:
         if not is_affirmative():
           print('Not installing...')
           time.sleep(1.5)
-          break
+          continue
         print('Do you have an OP fork with a custom directory name? (ex. arnepilot, dragonpilot)')  # Ask the user if their OP fork used a diffrent directory.
         if is_affirmative():  # Yes there is a custom OP dir
           print('What is the OP directory name? (case matters, not including /data/)')
