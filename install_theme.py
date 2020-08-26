@@ -83,7 +83,7 @@ class ThemeInstaller:
     os.mkdir(self.backup_dir)  # Create the session backup folder
 
     if IS_AUTO_INSTALL:
-      assert check_auto_installability(), 'Error when checking if auto install available'
+      assert check_auto_installability(), 'Auto install has already been performed!'
       self.auto_installer()
     else:
       self.start()
