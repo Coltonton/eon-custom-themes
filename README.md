@@ -11,18 +11,18 @@ Table of Contents
 * [What is this?](#what-is-this)
 
 ### Using This Project
-* [How To Use](#How-To-Use:)
-* [Navigating The Installer](#Navigating-The-Installer:)
-* [What Are The Availble Assets?](#What-Are-The-Availble-Assets?)
-* [Restoring From Backup](#Restoring-Theme-Assets-From-Backup:)
-* [Restoring The Comma.ai Stock Theme (if backup lost)](#Restoring-The-Comma.ai-Stock-Theme-(if-backup-lost):)
+* [How To Use](#how-to-use)
+* [Navigating The Installer](#navigating-the-installer)
+* [What Are The Availble Assets?](#what-are-the-availble-assets)
+* [Restoring From Backup](#restoring-theme-assets-from-backup)
+* [Restoring The Comma.ai Stock Theme (if backup lost)](#restoring-the-comma-stock-theme-if-backup-lost)
 
 ### List Of Themes:
-*  [Stock Themes:](#Stock-Themes:)
-*  [Contributed Themes:](#Contributed-Themes:)
+*  [Stock Themes:](#stock-themes)
+*  [Contributed Themes:](#contributed-themes)
 
 ### How To Contribute
-*  [Contribute Your Work!](#Contribute-Your-Work)
+*  [Contribute Your Work!](#contribute-your-work)
 
 ---
 ---
@@ -34,15 +34,15 @@ Thanks for asking young one! This is a project dedicated to de-comma-ing your EO
 
 This is a community project so here you can find new boot logos, boot animations, OpenPilot loading annimations, and even more for your device! Created/designed by myself and other community members. 
 
-Also included in this repository is all the info you need to start hacking and making your own extra custom themes! See the [DEVREADME](https://github.com/Coltonton/eon-custom-themes/developer/DEVREADME.md) in this repo in the developer folder. 
+Also included in this repository is all the info you need to start hacking and making your own extra custom themes! See the [DEVREADME](https://github.com/Coltonton/eon-custom-themes/blob/master/developer/DEVREADME.md) in this repo in the developer folder. 
 
-Did you make your own and want to share it with the world? Wonderful! Check out that [DEVREADME](https://github.com/Coltonton/eon-custom-themes/developer/DEVREADME.md) to learn how to submit!
+Did you make your own and want to share it with the world? Wonderful! Check out that [DEVREADME](https://github.com/Coltonton/eon-custom-themes/blob/master/developer/DEVREADME.md) to learn how to submit!
 
 # How To Use:
 Thanks to many hours of coding, thinking, and courtious help of @ShaneSmiskol this project couldn't be easier to install and run! If you have installed a custom fork of OpenPilot, can answer simple questions, or can just follow this simple guide you will be up and running with a new look in no time! 
 
 **BEFORE YOU START**
-- This program automagicly backup the existing theme before copying the new; and saves them to the backups folder in this project. If replacing the Comma.AI stock theme, be sure to keep to transfer the backups to a safe place off device just in case if you want to go back! **I DO NOT AND WILL NOT PROVIDE THESE FILES** for obvious legal reasons... Because they are assholes and would actually care and try to shut this project shut down, or even sue me... hmm... maybe I should cuz then I could make a crappy rap and call it "The Light It Up Contest" See [Restoring Backup](#Restoring-Theme-Assets-From-Backup:) and [Restoring The Comma.ai Stock Theme (if backup lost):](#Restoring-The-Comma.ai-Stock-Theme-(if-backup-lost):)
+- This program automagicly backup the existing theme before copying the new; and saves them to the backups folder in this project. If replacing the Comma.AI stock theme, be sure to keep to transfer the backups to a safe place off device just in case if you want to go back! **I DO NOT AND WILL NOT PROVIDE THESE FILES** for obvious legal reasons... Because they are assholes and would actually care and try to shut this project shut down, or even sue me... hmm... maybe I should cuz then I could make a crappy rap and call it "The Light It Up Contest" See [Restoring Backup](#restoring-theme-assets-from-backup) and [Restoring The Comma.ai Stock Theme If Backup Lost):](#restoring-the-comma-stock-theme-if-backup-lost)
 - As per the [licence](https://github.com/Coltonton/eon-custom-themes/Licence), this software is provided "as is", without warranty of any kind and in no event shall I or any other authors be liable for any claim, damages, or other liability. Use this project at your own risk!
 
 **Let's Begin:**
@@ -57,7 +57,7 @@ Thanks to many hours of coding, thinking, and courtious help of @ShaneSmiskol th
 
 ### Navigating The Installer:
 1. The installer will firstly prompt you for what theme you would like to choose. Enter the name, or index number and press enter. If you misspelled the theme name from the shown theme name; the program will try to attempt to figure out what you ment and ask you to confirm
-2. Now the installer will promt you with the available assets for that theme. You can choose (if availble) the **Boot Logo**, **Boot Animation**, **OpenPilot Spinner**, and **Additional Resources**. ([What do these mean?](#What-are-the-availble-assets?))
+2. Now the installer will promt you with the available assets for that theme. You can choose (if availble) the **Boot Logo**, **Boot Animation**, **OpenPilot Spinner**, and **Additional Resources**. ([What do these mean?](#what-are-the-availble-assets))
 3. One by one choose your desired theme assets and they will automagically install! Want to install diffrent assets from diffrent themes? YOU CAN! Sipmply select **Main Menu** from the options to be taken back to the theme picker!
 4. Once done select **Reboot** to reboot your EON and see your new themes!!!!
 5. Having issues? Message me on discord @C-ton#2169
@@ -72,7 +72,7 @@ Thanks to many hours of coding, thinking, and courtious help of @ShaneSmiskol th
 ### Restoring Theme Assets From Backup:
 - Program releasing soon
 
-### Restoring The Comma.ai Stock Theme (if backup lost):
+### Restoring The Comma Stock Theme If Backup Lost:
 - Information not yet provided
 
 
@@ -109,7 +109,7 @@ This is the default linup, I will be creating coupple others. Happy to hear sugg
 
 # Contribute Your Work!:
 
-Please see the [DEVREADME](https://github.com/Coltonton/eon-custom-themes/developer/DEVREADME.md)  in the developer folder of this repo to find out about contributing your designed theme! 
+Please see the [DEVREADME](https://github.com/Coltonton/eon-custom-themes/blob/master/developer/DEVREADME.md)  in the developer folder of this repo to find out about contributing your designed theme! 
 
 ---
 
