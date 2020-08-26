@@ -53,15 +53,12 @@ import os
 from os import path
 import sys
 import time
-import datetime
-import curses
-from support.pick.pick import Picker
+from datetime import datetime
+# import curses
+# from support.pick.pick import Picker
 from support.support_functions import str_sim
 
-print(os.getcwd())
-print(os.path.dirname(os.path.realpath(__file__)))
-
-os.chdir(os.getcwd())
+os.chdir(os.path.dirname(os.path.realpath(__file__)))  # __file__ is safer since it doesn't change based on where this file is called from
 
 CONTRIB_THEMES = "contributed-themes"
 EXCLUDED_THEMES = ["Comma-Default", "Example", "ignoreme"]
@@ -77,9 +74,6 @@ spinnerAvailable = "N/A"
 additionalAvailable = "N/A"
 
 running = 1
-
-dt = datetime.datetime.now()
-dateTimeVar = dt.strftime("%m%d%y_%T")      #Get current datetime and store
 
 #Crude device detection, *shrug* it works! LeEco does not have tristate!
 if(path.exists('/sys/devices/virtual/switch/tri-state-key') == True):
@@ -102,19 +96,6 @@ autoInstallAdditional  = "no"         #
 #=====================================#
 
 #=================== Functions =================================
-def Main():
-  print ('++++++++++++++++++++++++++++++++++++++++++++++++++++++++')
-  print ("+     Created By: Colton (Brandon) S. EndLine \ n      +")
-  print ('+  Special Thanks to @ShaneSmiskol for all the help!!! +')
-  print ('+     Free to use! Free to Edit! Free to integrate!    +')
-  print ('+       Design and contribute your themes today!       +')
-  print ('+        (See the developer folder in this repo)       +')
-  print ("+           It's your EON, do what you want!           +")
-  print ('++++++++++++++++++++++++++++++++++++++++++++++++++++++++')
-
-  os.mkdir('backups/backup.'+str(dateTimeVar)) #Create the session backup folder
-
-  time.sleep(3)                             #Pause for suspense, and so can be read
 
 def MainLoop():
   global selected_theme
@@ -315,6 +296,36 @@ def go_back(picker): #part of the picker code
 
 
 
+def print_welcome_text():
+  welcome_text = ['Created By: Colton (Brandon) S. EndLine \\n',
+                  'Special Thanks to @ShaneSmiskol for all the help!!!',
+                  'Free to use! Free to Edit! Free to integrate!',
+                  'Design and contribute your themes today!',
+                  '(See the developer folder in this repo)',
+                  'It\'s your EON, do what you want!']
+  max_line_length = max([len(line) for line in welcome_text]) + 4
+  print(''.join(['+' for _ in range(max_line_length)]))
+  for line in welcome_text:
+    padding = max_line_length - len(line) - 2
+    padding_left = padding // 2
+    print('+{}+'.format(' ' * padding_left + line + ' ' * (padding - padding_left)))
+  print(''.join(['+' for _ in range(max_line_length)]))
+  time.sleep(3)  # Pause for suspense, and so can be read
+
+
+class ThemeInstaller:
+  def __init__(self):
+    print_welcome_text()
+    self.backup_dir = datetime.now().strftime('backups/backup.%m-%d-%y--%I.%M.%S-%p')  # Get current datetime and store
+    os.mkdir(self.backup_dir)  # Create the session backup folder
+
+
+  def start(self):
+    pass
+
+
+
 if __name__ == "__main__":
-  Main()
-  MainLoop()
+  ti = ThemeInstaller()
+  ti.start()
+  # MainLoop()
