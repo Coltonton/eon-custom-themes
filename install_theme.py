@@ -130,6 +130,7 @@ class ThemeInstaller:
         os.system('cp {} {}'.format(BOOT_LOGO_PATH, self.backup_dir))  # Make Backup
         os.system('dd if={}/{}/{} of={}'.format(CONTRIB_THEMES, self.selected_theme, BOOT_LOGO_THEME_PATH, BOOT_LOGO_PATH))  # Replace
         print('Boot Logo installed successfully! Original backed up to {}'.format(self.backup_dir))
+        time.sleep(2.5)
 
       elif selected_option == 'Boot Animation':
         os.system('mount -o remount,rw /system')  # /system read only, must mount as r/w
@@ -137,6 +138,7 @@ class ThemeInstaller:
         os.system('cp {}/{}/bootanimation.zip /system/media'.format(CONTRIB_THEMES, self.selected_theme))  # replace
         os.system('chmod 666 /system/media/bootanimation.zip')
         print('Boot Logo installed successfully! Original backed up to {}'.format(self.backup_dir))
+        time.sleep(2.5)
 
       elif selected_option == 'OP Spinner':
         print('Do you have an OP fork with a custom directory name? (ex. arnepilot, dragonpilot)')
@@ -158,19 +160,18 @@ class ThemeInstaller:
           os.system('mv /data/openpilot/selfdrive/ui/spinner/spinner {}'.format(self.backup_dir))
           os.system('cp {}/{}/spinner /data/openpilot/selfdrive/ui/spinner'.format(CONTRIB_THEMES, self.selected_theme))
           print('openpilot spinner installed successfully! Original backed up to {}'.format(self.backup_dir))
+        time.sleep(2.5)
 
       elif selected_option == 'Additional Resources':  # additional features
         print('Additional Resources are not an active feature')
         time.sleep(5)
 
-      elif selected_option == '-Main Menu-':
+      elif selected_option == '-Main Menu-' or selected_option is None:
         return
 
       elif selected_option == '-Reboot-':
         print('Rebooting.... Enjoy your new theme!!!')
         os.system('am start -a android.intent.action.REBOOT')  # reboot intent is safer (reboot sometimes causes corruption)
-        return
-      else:
         return
 
   def auto_installer(self):  # Auto Installer program for incorperating into OP forks SEE DEVREADME
