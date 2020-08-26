@@ -92,9 +92,6 @@ class ThemeInstaller:
       if self.selected_theme is None:
         print('Didn\'t select a theme, exiting.')
         return
-      else:
-        print('Selected theme: {}'.format(self.selected_theme))
-        time.sleep(2)
       self.get_available_options()
       self.install_function()
 
