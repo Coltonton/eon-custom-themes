@@ -71,8 +71,9 @@ else:
   BOOT_LOGO_THEME_PATH = 'LeEco-Logo/SPLASH'  # Set the boot logo theme path for Leo
   BOOT_LOGO_PATH = '/dev/block/bootdevice/by-name/splash'  # Set the boot logo directory for Leo
 
-print('IMPORTANT: If this is incorrect, exit now! Soft-bricking is likely if this detection is incorrect.')
-time.sleep(3)
+print('IMPORTANT: Soft-bricking is likely if this detection is incorrect. Is this correct?')
+if not is_affirmative():
+  exit()
 
 
 class ThemeInstaller:
