@@ -118,6 +118,7 @@ class ThemeInstaller:
       if not len(options):
         print('The selected theme has no resources available for your device! Try another.')
         time.sleep(2)
+        return
 
       options += ['-Main Menu-', '-Reboot-']
 
