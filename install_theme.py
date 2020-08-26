@@ -67,7 +67,7 @@ if path.exists('/sys/devices/virtual/switch/tri-state-key'):
   BOOT_LOGO_THEME_PATH = 'OP3T-Logo/LOGO'  # Set the boot logo theme path for 3T
   BOOT_LOGO_PATH = '/dev/block/sde17'  # Set the boot logo directory for 3T
 else:
-  print('\n*** LeEco EON Device Detected ***')
+  print('\n*** LeEco EON Device Detected ***\n')
   BOOT_LOGO_THEME_PATH = 'LeEco-Logo/SPLASH'  # Set the boot logo theme path for Leo
   BOOT_LOGO_PATH = '/dev/block/bootdevice/by-name/splash'  # Set the boot logo directory for Leo
 
