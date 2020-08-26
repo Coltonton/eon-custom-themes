@@ -95,9 +95,9 @@ class ThemeInstaller:
 
     if IS_AUTO_INSTALL:
       assert check_auto_installability(), 'Error when checking if auto install available'
-      self.install_function = self.auto_installer
+      self.auto_installer()
     else:
-      self.install_function = self.start
+      self.start()
 
   def start(self):
     while self.running:
@@ -110,7 +110,7 @@ class ThemeInstaller:
         print('Selected theme: {}'.format(self.selected_theme))
         time.sleep(2)
       self.get_available_options()
-      self.installer()
+      self.install_function()
 
   def auto_installer(self):  # Auto Installer program for incorperating into OP forks SEE DEVREADME
     if AUTO_INSTALL_CONF['install_logo']:  # Auto BootLogo Install Code
@@ -133,7 +133,7 @@ class ThemeInstaller:
     # if (autoInstallAdditional != 'no'):             #Auto additional features Code (Not An Active feature)
     #  print('Additional Resources are not an active feature')  # todo: refactor this
 
-  def installer(self):  # Self installer program, prompts user on what they want to do
+  def install_function(self):  # Self installer program, prompts user on what they want to do
     while 1:
       options = list(self.theme_options)  # this only contains available options from self.get_available_options
       options += ['Main Menu', 'Reboot']
@@ -251,4 +251,3 @@ class ThemeInstaller:
 
 if __name__ == '__main__':
   ti = ThemeInstaller()
-  ti.install_function()
