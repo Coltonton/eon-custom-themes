@@ -52,28 +52,31 @@
 import os
 from os import path
 import sys
-import difflib
 import time
 import datetime
 import curses
-from misc.pick.pick import Picker
+from support.pick.pick import Picker
+from support.support_functions import str_sim
+
+print(os.getcwd())
+print(os.path.dirname(os.path.realpath(__file__)))
 
 os.chdir(os.getcwd())
 
-CONTRIB_THEMES         = "contributed-themes"
-EXCLUDED_THEMES        = ["Comma-Default", "Example", "ignoreme"]
-MIN_SIM_THRESHOLD      = 0.25  # user's input needs to be this percent or higher similar to a theme to select it
+CONTRIB_THEMES = "contributed-themes"
+EXCLUDED_THEMES = ["Comma-Default", "Example", "ignoreme"]
+MIN_SIM_THRESHOLD = 0.25  # user's input needs to be this percent or higher similar to a theme to select it
 
-selected_theme         = ""
-bootlogothemepath      = ""
-bootlogodir            = ""
+selected_theme = ""
+bootlogothemepath = ""
+bootlogodir = ""
 
-bootLogoAvailable      = "N/A"
+bootLogoAvailable = "N/A"
 bootAnimationAvailable = "N/A"
-spinnerAvailable       = "N/A"
-additionalAvailable    = "N/A"
+spinnerAvailable = "N/A"
+additionalAvailable = "N/A"
 
-running                = 1
+running = 1
 
 dt = datetime.datetime.now()
 dateTimeVar = dt.strftime("%m%d%y_%T")      #Get current datetime and store
@@ -305,14 +308,10 @@ def Self_Installer():                #Self installer program, prompts user on wh
     if (index == 5):                          #reboot
       print('Rebooting.... Enjoy your new theme!!!')
       os.system('reboot')
-  
 
-def str_sim(a, b):   #part of Shane's theme picker code
-  return difflib.SequenceMatcher(a=a, b=b).ratio()
 
 def go_back(picker): #part of the picker code
   return (None, -1)
-
 
 
 
