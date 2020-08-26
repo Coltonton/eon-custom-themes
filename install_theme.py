@@ -62,11 +62,11 @@ print_welcome_text()
 
 # Crude device detection, *shrug* it works! LeEco does not have tristate!
 if path.exists('/sys/devices/virtual/switch/tri-state-key'):
-  print('\n*** OnePlus EON Device Detected ***')
+  print('\n*** OG OnePlus EON Device Detected ***')
   BOOT_LOGO_THEME_PATH = 'OP3T-Logo/LOGO'  # Set the boot logo theme path for 3T
   BOOT_LOGO_PATH = '/dev/block/sde17'  # Set the boot logo directory for 3T
 else:
-  print('\n*** LeEco EON Device Detected ***\n')
+  print('\n*** LeEco EON (Gold/Comma 2) Device Detected ***\n')
   BOOT_LOGO_THEME_PATH = 'LeEco-Logo/SPLASH'  # Set the boot logo theme path for Leo
   BOOT_LOGO_PATH = '/dev/block/bootdevice/by-name/splash'  # Set the boot logo directory for Leo
 
