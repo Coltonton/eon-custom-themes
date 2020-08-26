@@ -242,8 +242,8 @@ class ThemeInstaller:
     if os.path.exists('{}/{}/spinner'.format(CONTRIB_THEMES, self.selected_theme)):
       self.theme_options.append('OP Spinner')
 
-    self.theme_options['Additional Resources'] = False  # fixme: disabled for now
-    # self.options_available['additional'] = {'available': os.path.exists('{}/{}/additional'.format(CONTRIB_THEMES, self.selected_theme)), 'name': 'Additional-resources'}
+    if False:  # os.path.exists('{}/{}/additional'.format(CONTRIB_THEMES, self.selected_theme)):  # todo disabled for now
+      self.theme_options.append('Additional Resources')
 
   def check_auto_installability(self):
     doInstall = False
