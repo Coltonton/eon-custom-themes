@@ -170,6 +170,8 @@ class ThemeInstaller:
         print('Rebooting.... Enjoy your new theme!!!')
         os.system('am start -a android.intent.action.REBOOT')  # reboot intent is safer (reboot sometimes causes corruption)
         return
+      else:
+        return
 
   def auto_installer(self):  # Auto Installer program for incorperating into OP forks SEE DEVREADME
     if AUTO_INSTALL_CONF['install_logo']:  # Auto BootLogo Install Code
