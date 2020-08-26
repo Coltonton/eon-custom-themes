@@ -78,7 +78,7 @@ if not is_affirmative():
 
 class ThemeInstaller:
   def __init__(self):
-    self.backup_dir = datetime.now().strftime('backups/backup.%m-%d-%y--%I.%M.%S-%p')  # Get current datetime and store
+    self.backup_dir = datetime.now().strftime('backups/backup.%m-%d-%y--%I.%M-%p')  # Get current datetime and store
     os.mkdir(self.backup_dir)  # Create the session backup folder
 
     if IS_AUTO_INSTALL:
