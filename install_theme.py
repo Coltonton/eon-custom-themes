@@ -56,15 +56,9 @@ import time
 from datetime import datetime
 import curses
 from support.pick.pick import Picker
-from support.support_functions import str_sim, print_welcome_text
+from support.support_functions import str_sim, print_welcome_text, check_auto_installability, go_back
 
 os.chdir(os.path.dirname(os.path.realpath(__file__)))  # __file__ is safer since it doesn't change based on where this file is called from
-
-
-def go_back(picker):  # part of the picker code
-  return None, -1
-
-
 print_welcome_text()
 
 
@@ -93,7 +87,6 @@ AUTO_INSTALL_CONF = {'selected_theme': 'arne', 'install_logo': False, 'install_a
                      'install_spinner': False, 'openpilot_dir_name': 'arnepilot', 'install_additional': False}
 
 
-# noinspection PyDictCreation
 class ThemeInstaller:
   def __init__(self):
     self.backup_dir = datetime.now().strftime('backups/backup.%m-%d-%y--%I.%M.%S-%p')  # Get current datetime and store
@@ -102,7 +95,7 @@ class ThemeInstaller:
     self.running = True
 
     if IS_AUTO_INSTALL:
-      assert self.check_auto_installability(), 'Error when checking if auto install available'
+      assert check_auto_installability(), 'Error when checking if auto install available'
       self.install_function = self.auto_installer
     else:
       self.install_function = self.start
@@ -217,24 +210,6 @@ class ThemeInstaller:
 
     # if os.path.exists('{}/{}/additional'.format(CONTRIB_THEMES, self.selected_theme)):  # todo disabled for now
     #   self.theme_options.append('Additional Resources')
-
-  def check_auto_installability(self):
-    doInstall = False
-    if os.path.exists('auto_theme_installed.txt'):  # if auto installed before
-      isOveride = open('override_auto_install.txt', 'r')  # check if override set
-      if isOveride.mode == 'r':
-        contents = isOveride.read()
-        if contents == 1:  # if overide == 1
-          doInstall = True  # overide and Do Auto install theme
-        else:
-          doInstall = False  # do not override reinstall, do not pass go do not collect $200
-    else:  # If auto_theme_installed.txt does not exist
-      doInstall = True  # Do Auto install theme
-      f = open('auto_theme_installed.txt', 'w+')  # Create auto_theme_installed.txt to prevent more installs
-      f.write('1')
-      f.close()
-
-    return doInstall
 
   # Created by @ShaneSmiskol
   def get_user_theme(self):  # Auto discover themes and let user choose!
