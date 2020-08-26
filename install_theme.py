@@ -55,7 +55,8 @@ import curses
 from os import path
 from datetime import datetime
 from support.pick.pick import Picker
-from support.support_functions import str_sim, print_welcome_text, check_auto_installability, go_back
+from support.support_functions import print_welcome_text, check_auto_installability, go_back
+from support.support_variables import CONTRIB_THEMES
 
 os.chdir(os.path.dirname(os.path.realpath(__file__)))  # __file__ is safer since it doesn't change based on where this file is called from
 print_welcome_text()
@@ -73,11 +74,6 @@ else:
 
 print('IMPORTANT: If this is incorrect, exit now! Soft-bricking is likely if this detection is incorrect.')
 time.sleep(5)
-
-
-CONTRIB_THEMES = 'contributed-themes'
-EXCLUDED_THEMES = ['Comma-Default', 'Example', 'ignoreme']
-MIN_SIM_THRESHOLD = 0.25  # user's input needs to be this percent or higher similar to a theme to select it
 
 
 # Auto Install variables - see DEVREADME
@@ -211,42 +207,7 @@ class ThemeInstaller:
     # if os.path.exists('{}/{}/additional'.format(CONTRIB_THEMES, self.selected_theme)):  # todo disabled for now
     #   self.theme_options.append('Additional Resources')
 
-  # Created by @ShaneSmiskol
-  def get_user_theme(self):  # Auto discover themes and let user choose!
-    available_themes = [t for t in os.listdir(CONTRIB_THEMES)]
-    available_themes = [t for t in available_themes if os.path.isdir(os.path.join(CONTRIB_THEMES, t))]
-    available_themes = [t for t in available_themes if t not in EXCLUDED_THEMES]
-    lower_available_themes = [t.lower() for t in available_themes]
-    print('\nAvailable themes:')
-    for idx, theme in enumerate(available_themes):
-      print('{}. {}'.format(idx + 1, theme))
-    print('\nType `exit` to exit.')
-    while 1:
-      theme = input('\nChoose a theme to install (by name or index): ').strip().lower()
-      print()
-      if theme in ['exit']:
-        return None
 
-      if theme.isdigit():
-        theme = int(theme)
-        if theme > len(available_themes):
-          print('Index out of range, try again!')
-          continue
-        return available_themes[int(theme) - 1]
-      else:
-        if theme in lower_available_themes:
-          return available_themes[lower_available_themes.index(theme)]
-        sims = [str_sim(theme, t.lower()) for t in available_themes]
-        most_sim_idx = max(range(len(sims)), key=sims.__getitem__)
-        theme = available_themes[most_sim_idx]
-        if sims[most_sim_idx] >= MIN_SIM_THRESHOLD:
-          print('Selected theme: {}'.format(theme))
-          print('Is this correct?')
-          print('[Y/n]: ', end='')
-          if input().lower().strip() in ['yes', 'y']:
-            return theme
-        else:
-          print('Unknown theme, try again!')
 
 
 
