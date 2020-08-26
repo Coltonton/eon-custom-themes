@@ -56,24 +56,20 @@ import time
 from datetime import datetime
 # import curses
 # from support.pick.pick import Picker
-from support.support_functions import str_sim
+from support.support_functions import str_sim, print_welcome_text
 
 os.chdir(os.path.dirname(os.path.realpath(__file__)))  # __file__ is safer since it doesn't change based on where this file is called from
 
-CONTRIB_THEMES = "contributed-themes"
-EXCLUDED_THEMES = ["Comma-Default", "Example", "ignoreme"]
-MIN_SIM_THRESHOLD = 0.25  # user's input needs to be this percent or higher similar to a theme to select it
-
-selected_theme = ""
-bootlogothemepath = ""
-bootlogodir = ""
-
-bootLogoAvailable = "N/A"
-bootAnimationAvailable = "N/A"
-spinnerAvailable = "N/A"
-additionalAvailable = "N/A"
-
-running = 1
+# selected_theme = ""
+# bootlogothemepath = ""
+# bootlogodir = ""
+#
+# bootLogoAvailable = "N/A"
+# bootAnimationAvailable = "N/A"
+# spinnerAvailable = "N/A"
+# additionalAvailable = "N/A"
+#
+# running = 1
 
 #Crude device detection, *shrug* it works! LeEco does not have tristate!
 if(path.exists('/sys/devices/virtual/switch/tri-state-key') == True):
@@ -130,7 +126,7 @@ def CheckAutoInstalability():
   return doInstall
 
 #Created by @ShaneSmiskol
-def ThemePicker():                   #Auto discover themes and let user choose!                   
+def ThemePicker():                   #Auto discover themes and let user choose!
   available_themes = [t for t in os.listdir(CONTRIB_THEMES)]
   available_themes = [t for t in available_themes if os.path.isdir(os.path.join(CONTRIB_THEMES, t))]
   available_themes = [t for t in available_themes if t not in EXCLUDED_THEMES]
@@ -295,22 +291,10 @@ def go_back(picker): #part of the picker code
   return (None, -1)
 
 
+CONTRIB_THEMES = "contributed-themes"
+EXCLUDED_THEMES = ["Comma-Default", "Example", "ignoreme"]
+MIN_SIM_THRESHOLD = 0.25  # user's input needs to be this percent or higher similar to a theme to select it
 
-def print_welcome_text():
-  welcome_text = ['Created By: Colton (Brandon) S. EndLine \\n',
-                  'Special Thanks to @ShaneSmiskol for all the help!!!',
-                  'Free to use! Free to Edit! Free to integrate!',
-                  'Design and contribute your themes today!',
-                  '(See the developer folder in this repo)',
-                  'It\'s your EON, do what you want!']
-  max_line_length = max([len(line) for line in welcome_text]) + 4
-  print(''.join(['+' for _ in range(max_line_length)]))
-  for line in welcome_text:
-    padding = max_line_length - len(line) - 2
-    padding_left = padding // 2
-    print('+{}+'.format(' ' * padding_left + line + ' ' * (padding - padding_left)))
-  print(''.join(['+' for _ in range(max_line_length)]))
-  time.sleep(3)  # Pause for suspense, and so can be read
 
 
 class ThemeInstaller:
