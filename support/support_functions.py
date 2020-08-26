@@ -34,7 +34,7 @@ def get_user_theme():  # Auto discover themes and let user choose!
   while 1:
     theme = input('\nChoose a theme to install (by name or index): ').strip().lower()
     print()
-    if theme in ['exit']:
+    if theme in ['exit', '']:
       return None
 
     if theme.isdigit():
