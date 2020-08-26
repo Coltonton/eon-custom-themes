@@ -94,7 +94,8 @@ class ThemeInstaller:
         print('Didn\'t select a theme, exiting.')
         return
       self.get_available_options()
-      self.install_function()
+      if self.install_function() == 'exit':
+        return
 
   def get_available_options(self):  # Check what assets are available for the selected theme
     # Check if the selected theme has a boot logo asset
@@ -187,7 +188,7 @@ class ThemeInstaller:
       elif selected_option == '-Reboot-':
         print('Rebooting.... Enjoy your new theme!!!')
         os.system('am start -a android.intent.action.REBOOT')  # reboot intent is safer (reboot sometimes causes corruption)
-        return
+        return 'exit'
 
   def auto_installer(self):  # Auto Installer program for incorperating into OP forks SEE DEVREADME
     if AUTO_INSTALL_CONF['install_logo']:  # Auto BootLogo Install Code
