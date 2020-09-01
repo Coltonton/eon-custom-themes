@@ -139,6 +139,7 @@ class ThemeInstaller:
       indexChoice -= 1 
 
       selected_option = self.theme_options[indexChoice]
+      print(selected_option)
 
       if selected_option == 'Boot Logo':
         print('Selected to install the {} Boot Logo. Continue?'.format(self.selected_theme))
