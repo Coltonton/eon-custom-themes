@@ -123,8 +123,6 @@ class ThemeInstaller:
         print('The selected theme has no resources available for your device! Try another.')
         time.sleep(2)
         return
-
-      #options += ['-Main Menu-', '-Reboot-']
       
       print('What resources do you want to install for the {} theme?'.format(self.selected_theme))
       for idx, theme in enumerate(options):
@@ -192,7 +190,7 @@ class ThemeInstaller:
 
       elif selected_option == '-Reboot-':
         print('Rebooting.... Enjoy your new theme!!!')
-        os.system('am start -a android.intent.action.REBOOT am start -a android.intent.action.REBOOT')  # reboot intent is safer (reboot sometimes causes corruption)
+        os.system('am start -a android.intent.action.REBOOT')  # reboot intent is safer (reboot sometimes causes corruption)
         return 'exit'
 
   def auto_installer(self):  # Auto Installer program for incorperating into OP forks SEE DEVREADME
