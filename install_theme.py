@@ -152,6 +152,7 @@ class ThemeInstaller:
           continue
         
         theme_options = []
+        color = 0
         if path.exists('./contributed_themes/{}/colored_bootannimation.zip'.format(self.selected_theme)): 
           color += 1
           colorOptions.append('Colored boot animation')
