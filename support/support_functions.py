@@ -80,4 +80,4 @@ def str_sim(a, b):  # part of Shane's theme picker code
 
 def is_affirmative():
   u = input('[Yes/No]: ').lower().strip()
-  return u in ['yes', 'ye', 'y', 1]
+  return u in ['yes', 'ye', 'y', '1']
