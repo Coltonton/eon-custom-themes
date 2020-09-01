@@ -106,6 +106,14 @@ class ThemeInstaller:
     if os.path.exists('{}/{}/bootanimation.zip'.format(CONTRIB_THEMES, self.selected_theme)):
       self.theme_options.append('Boot Animation')
 
+    # Check if the selected theme has a color boot annimation asset
+    if os.path.exists('{}/{}/bootanimation.zip'.format(CONTRIB_THEMES, self.selected_theme)):
+      self.theme_options.append('Color Boot Animation')
+    
+    # Check if the selected theme has a white boot annimation asset
+    if os.path.exists('{}/{}/bootanimation.zip'.format(CONTRIB_THEMES, self.selected_theme)):
+      self.theme_options.append('White Boot Animation')
+
     # Check if the selected theme has a OpenPilot Spinner asset
     if os.path.exists('{}/{}/spinner'.format(CONTRIB_THEMES, self.selected_theme)):
       self.theme_options.append('OP Spinner')
@@ -144,40 +152,20 @@ class ThemeInstaller:
         print('Press enter to continue!')
         input()
 
-      elif selected_option == 'Boot Animation':
+      elif selected_option == 'Boot Animation' || 'Color Boot Animation' || 'White Boot Animation':
         print('Selected to install the {} Boot Animation. Continue?'.format(self.selected_theme))
         if not is_affirmative():
           print('Not installing...')
           time.sleep(1.5)
           continue
-        
-        theme_options = []
-        color = 0
-        if path.exists('./contributed_themes/{}/colored_bootannimation.zip'.format(self.selected_theme)): 
-          color += 1
-          colorOptions.append('Colored boot animation')
-        if path.exists('./contributed_themes/{}/white_bootannimation.zip'.format(self.selected_theme)):
-          color += 1
-          colorOptions.append('White boot animation')
 
-        if (color > 1): 
-          print('Do you want to install the colored boot animation, or white?')
-          for idx2, colors in enumerate(colorOptions):
-            print('{}. {}'.format(idx + 1, colorOptions))
-          indexChoice2 = int(input("Enter Index Value: "))
-          indexChoice2 -= 1 
-
-          
-          if (indexChoice2 == '0'):
-            bootAniColor = "color_"
-          else:
-            bootAniColor = "white_"
-
-        else:
+        if selected_option == 'Boot Animation':
           bootAniColor = ""
-
-
-
+        elif selected_option == 'Color Boot Animation':
+          bootAniColor = "color_"
+        elif selected_option == 'White Boot Animation':
+          bootAniColor = "white_"
+        
         os.system('mount -o remount,rw /system')  # /system read only, must mount as r/w
         os.system('mv /system/media/bootanimation.zip {}'.format(self.backup_dir))  # backup
         os.system('cp {}/{}/{}bootanimation.zip /system/media/bootanimation.zip'.format(CONTRIB_THEMES, self.selected_theme, bootAniColor))  # replace
