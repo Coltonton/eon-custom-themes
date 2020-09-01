@@ -107,11 +107,11 @@ class ThemeInstaller:
       self.theme_options.append('Boot Animation')
 
     # Check if the selected theme has a color boot annimation asset
-    if os.path.exists('{}/{}/bootanimation.zip'.format(CONTRIB_THEMES, self.selected_theme)):
+    if os.path.exists('{}/{}/color_bootanimation.zip'.format(CONTRIB_THEMES, self.selected_theme)):
       self.theme_options.append('Color Boot Animation')
     
     # Check if the selected theme has a white boot annimation asset
-    if os.path.exists('{}/{}/bootanimation.zip'.format(CONTRIB_THEMES, self.selected_theme)):
+    if os.path.exists('{}/{}/white_bootanimation.zip'.format(CONTRIB_THEMES, self.selected_theme)):
       self.theme_options.append('White Boot Animation')
 
     # Check if the selected theme has a OpenPilot Spinner asset
