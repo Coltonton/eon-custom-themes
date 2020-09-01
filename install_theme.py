@@ -151,18 +151,35 @@ class ThemeInstaller:
           time.sleep(1.5)
           continue
         
-        if path.exists('./contributed_themes/'+str(self.selected_theme)+'/colored_bootannimation.zip}') && path.exists('./contributed_themes/'+str(self.selected_theme)+'/colored_bootannimation.zip'):
-          print('Do you want to install the white boot animation, or colored?')
-          if is_color_theme():
+        theme_options = []
+        if path.exists('./contributed_themes/'+str(self.selected_theme)+'/colored_bootannimation.zip}') 
+          color += 1
+          colorOptions.append('Colored boot animation')
+        if path.exists('./contributed_themes/'+str(self.selected_theme)+'/colored_bootannimation.zip'):
+          color += 1
+          colorOptions.append('White boot animation')
+
+        if (color > 1): 
+          print('Do you want to install the colored boot animation, or white?')
+          for idx2, colors in enumerate(colorOptions):
+            print('{}. {}'.format(idx + 1, colorOptions))
+          indexChoice2 = int(input("Enter Index Value: "))
+          indexChoice2 -= 1 
+
+          
+          if (indexChoice2 == '0'):
             bootAniColor = "color_"
           else:
             bootAniColor = "white_"
+
         else:
           bootAniColor = ""
 
+
+
         os.system('mount -o remount,rw /system')  # /system read only, must mount as r/w
         os.system('mv /system/media/bootanimation.zip {}'.format(self.backup_dir))  # backup
-        os.system('cp {}/{}/{}bootanimation.zip /system/media'.format(CONTRIB_THEMES, self.selected_theme, bootAniColor))  # replace
+        os.system('cp {}/{}/{}bootanimation.zip /system/media/bootanimation.zip'.format(CONTRIB_THEMES, self.selected_theme, bootAniColor))  # replace
         os.system('chmod 666 /system/media/bootanimation.zip')
         print('\nBoot Animation installed successfully! Original backed up to {}'.format(self.backup_dir))
         print('Press enter to continue!')
