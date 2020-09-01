@@ -153,7 +153,7 @@ class ThemeInstaller:
         print('Press enter to continue!')
         input()
 
-      elif (selected_option == 'Boot Animation' or 'Color Boot Animation' or 'White Boot Animation'):
+      elif selected_option == 'Boot Animation' or 'Color Boot Animation' or 'White Boot Animation':
         print('Selected to install the {} Boot Animation. Continue?'.format(self.selected_theme))
         if not is_affirmative():
           print('Not installing...')
