@@ -106,6 +106,14 @@ class ThemeInstaller:
     if os.path.exists('{}/{}/bootanimation.zip'.format(CONTRIB_THEMES, self.selected_theme)):
       self.theme_options.append('Boot Animation')
 
+    # Check if the selected theme has a color boot annimation asset
+    if os.path.exists('{}/{}/color_bootanimation.zip'.format(CONTRIB_THEMES, self.selected_theme)):
+      self.theme_options.append('Color Boot Animation')
+    
+    # Check if the selected theme has a white boot annimation asset
+    if os.path.exists('{}/{}/white_bootanimation.zip'.format(CONTRIB_THEMES, self.selected_theme)):
+      self.theme_options.append('White Boot Animation')
+
     # Check if the selected theme has a OpenPilot Spinner asset
     if os.path.exists('{}/{}/spinner'.format(CONTRIB_THEMES, self.selected_theme)):
       self.theme_options.append('OP Spinner')
@@ -131,6 +139,7 @@ class ThemeInstaller:
       indexChoice -= 1 
 
       selected_option = self.theme_options[indexChoice]
+      print(selected_option)
 
       if selected_option == 'Boot Logo':
         print('Selected to install the {} Boot Logo. Continue?'.format(self.selected_theme))
@@ -141,20 +150,6 @@ class ThemeInstaller:
         os.system('cp {} {}'.format(BOOT_LOGO_PATH, self.backup_dir))  # Make Backup
         os.system('dd if={}/{}/{} of={}'.format(CONTRIB_THEMES, self.selected_theme, BOOT_LOGO_THEME_PATH, BOOT_LOGO_PATH))  # Replace
         print('\nBoot Logo installed successfully! Original backed up to {}'.format(self.backup_dir))
-        print('Press enter to continue!')
-        input()
-
-      elif selected_option == 'Boot Animation':
-        print('Selected to install the {} Boot Animation. Continue?'.format(self.selected_theme))
-        if not is_affirmative():
-          print('Not installing...')
-          time.sleep(1.5)
-          continue
-        os.system('mount -o remount,rw /system')  # /system read only, must mount as r/w
-        os.system('mv /system/media/bootanimation.zip {}'.format(self.backup_dir))  # backup
-        os.system('cp {}/{}/bootanimation.zip /system/media'.format(CONTRIB_THEMES, self.selected_theme))  # replace
-        os.system('chmod 666 /system/media/bootanimation.zip')
-        print('\nBoot Animation installed successfully! Original backed up to {}'.format(self.backup_dir))
         print('Press enter to continue!')
         input()
 
@@ -193,6 +188,29 @@ class ThemeInstaller:
         os.system('am start -a android.intent.action.REBOOT')  # reboot intent is safer (reboot sometimes causes corruption)
         return 'exit'
 
+      elif selected_option == 'Boot Animation' or 'Color Boot Animation' or 'White Boot Animation':
+        print('Selected to install the {} Boot Animation. Continue?'.format(self.selected_theme))
+        if not is_affirmative():
+          print('Not installing...')
+          time.sleep(1.5)
+          continue
+
+        if selected_option == 'Boot Animation':
+          bootAniColor = ""
+        elif selected_option == 'Color Boot Animation':
+          bootAniColor = "color_"
+        elif selected_option == 'White Boot Animation':
+          bootAniColor = "white_"
+        
+        os.system('mount -o remount,rw /system')  # /system read only, must mount as r/w
+        os.system('mv /system/media/bootanimation.zip {}'.format(self.backup_dir))  # backup
+        os.system('cp {}/{}/{}bootanimation.zip /system/media/bootanimation.zip'.format(CONTRIB_THEMES, self.selected_theme, bootAniColor))  # replace
+        os.system('chmod 666 /system/media/bootanimation.zip')
+        print('\nBoot Animation installed successfully! Original backed up to {}'.format(self.backup_dir))
+        print('Press enter to continue!')
+        input()
+
+      
   def auto_installer(self):  # Auto Installer program for incorperating into OP forks SEE DEVREADME
     if AUTO_INSTALL_CONF['install_logo']:  # Auto BootLogo Install Code
       os.system('cp {} {}'.format(BOOT_LOGO_PATH, self.backup_dir))  # DEV EDIT SHOULD BE MV
