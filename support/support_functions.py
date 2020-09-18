@@ -1,9 +1,9 @@
 import os
 import time
 import difflib
-from support.support_variables import CONTRIB_THEMES, EXCLUDED_THEMES, MIN_SIM_THRESHOLD, WELCOME_TEXT, AUTO_WELCOME_TEXT
+from support.support_variables import CONTRIB_THEMES, CURRENT_AUTO_VER, EXCLUDED_THEMES, MIN_SIM_THRESHOLD, WELCOME_TEXT, AUTO_WELCOME_TEXT
 
-CURRENT_AUTO_VER = 1
+
 DO_NOT_AUTO_INSTALL = 0
 
 def check_auto_installability():
