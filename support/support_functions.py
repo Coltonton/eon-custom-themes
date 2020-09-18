@@ -8,15 +8,12 @@ DO_NOT_AUTO_INSTALL = 0
 
 def check_auto_installability():
   f=open('./support/auto_install_ver.txt', 'r')  # check auto installed version
-  print(f)
   AUTO_VER = f.read()
   print(AUTO_VER)
     #print(CURRENT_AUTO_VER)
     #print(AUTO_VER)
 
-  f.close
-
-  if DO_NOT_AUTO_INSTALL == '0':
+  if DO_NOT_AUTO_INSTALL == 0:
     if AUTO_VER is not CURRENT_AUTO_VER:  # if overide
       return True  # Do Auto install theme
     else:
