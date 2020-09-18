@@ -81,9 +81,7 @@ if IS_AUTO_INSTALL == False:
 
 class ThemeInstaller:
   def __init__(self):
-
-    
-
+    print(DO_NOT_AUTO_INSTALL)
     if IS_AUTO_INSTALL == True and DO_NOT_AUTO_INSTALL is '0':
       file = open('./support/auto_install_ver.txt', 'r')  # check auto installed version
       AUTO_VER = file.read()
