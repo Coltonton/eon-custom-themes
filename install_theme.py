@@ -53,8 +53,8 @@
 import os
 import time
 from os import path
-from datetime import datetime
-from support.support_functions import print_welcome_text, print_auto_welcome_text, get_user_theme, is_affirmative, go_back
+
+from support.support_functions import create_backup_folder, backup_dir, print_welcome_text, print_auto_welcome_text, get_user_theme, is_affirmative, go_back
 from support.support_variables import AUTO_INSTALL_CONF, CONTRIB_THEMES, CURRENT_AUTO_VER, DO_NOT_AUTO_INSTALL, IS_AUTO_INSTALL
 
 os.chdir(os.path.dirname(os.path.realpath(__file__)))  # __file__ is safer since it doesn't change based on where this file is called from
@@ -81,26 +81,22 @@ if IS_AUTO_INSTALL == False:
 
 class ThemeInstaller:
   def __init__(self):
-    DO_NOT_AUTO_INSTALL = 0
 
-    if not os.path.exists('/storage/emulated/0/theme-backups'):
-      os.mkdirs('/storage/emulated/0/theme-backups')    
-
-    self.backup_dir = datetime.now().strftime('/storage/emulated/0/theme-backups/backup.%m-%d-%y--%I.%M.%S-%p')  # Get current datetime and store
-    os.mkdir(self.backup_dir)  # Create the session backup folder
+    
 
     if IS_AUTO_INSTALL == True and DO_NOT_AUTO_INSTALL is '0':
       file = open('./support/auto_install_ver.txt', 'r')  # check auto installed version
       AUTO_VER = file.read()
 
       if DO_NOT_AUTO_INSTALL == 0 and AUTO_VER != CURRENT_AUTO_VER:
-          self.auto_installer()  # Do Auto install theme
+        create_backup_folder()
+        self.auto_installer()  # Do Auto install theme
     
     else:
       if DO_NOT_AUTO_INSTALL is '1':
-        os.system('rm -d {}').format(backup_dir)
         exit()
       else:
+        create_backup_folder()
         self.start_loop()   
 
   def start_loop(self):
@@ -141,7 +137,7 @@ class ThemeInstaller:
     self.theme_options.append('-Main Menu-')
     self.theme_options.append('-Reboot-')
 
-  def install_function(self):  # Self installer program, prompts user on what they want to do
+  def install_function(self):       # Self installer program, prompts user on what they want to do
     while 1:
       options = list(self.theme_options)  # this only contains available options from self.get_available_options
       if not len(options):
@@ -164,9 +160,9 @@ class ThemeInstaller:
           print('Not installing...')
           time.sleep(1.5)
           continue
-        os.system('cp {} {}'.format(BOOT_LOGO_PATH, self.backup_dir))  # Make Backup
+        os.system('cp {} {}'.format(BOOT_LOGO_PATH, backup_dir))  # Make Backup
         os.system('dd if={}/{}/{} of={}'.format(CONTRIB_THEMES, self.selected_theme, BOOT_LOGO_THEME_PATH, BOOT_LOGO_PATH))  # Replace
-        print('\nBoot Logo installed successfully! Original backed up to {}'.format(self.backup_dir))
+        print('\nBoot Logo installed successfully! Original backed up to {}'.format(backup_dir))
         print('Press enter to continue!')
         input()
 
@@ -183,13 +179,13 @@ class ThemeInstaller:
           print('Your openpilot directory is {}'.format(op_dir))
           input('*** Please enter to continue, or Ctrl+C to abort if this is incorrect! ***')
 
-          os.system('mv {}/selfdrive/ui/spinner/spinner {}'.format(op_dir, self.backup_dir))
+          os.system('mv {}/selfdrive/ui/spinner/spinner {}'.format(op_dir, backup_dir))
           os.system('cp {}/{}/spinner {}/selfdrive/ui/spinner'.format(CONTRIB_THEMES, self.selected_theme, op_dir))
-          print('\n{} spinner installed successfully! Original backed up to {}'.format(op_dir.split('/')[2], self.backup_dir))
+          print('\n{} spinner installed successfully! Original backed up to {}'.format(op_dir.split('/')[2], backup_dir))
         else:  # there is not custom OP dir
-          os.system('mv /data/openpilot/selfdrive/ui/spinner/spinner {}'.format(self.backup_dir))
+          os.system('mv /data/openpilot/selfdrive/ui/spinner/spinner {}'.format(backup_dir))
           os.system('cp {}/{}/spinner /data/openpilot/selfdrive/ui/spinner'.format(CONTRIB_THEMES, self.selected_theme))
-          print('\nopenpilot spinner installed successfully! Original backed up to {}'.format(self.backup_dir))
+          print('\nopenpilot spinner installed successfully! Original backed up to {}'.format(backup_dir))
         print('Press enter to continue!')
         input()
 
@@ -220,34 +216,33 @@ class ThemeInstaller:
           bootAniColor = "white_"
         
         os.system('mount -o remount,rw /system')  # /system read only, must mount as r/w
-        os.system('mv /system/media/bootanimation.zip {}'.format(self.backup_dir))  # backup
+        os.system('mv /system/media/bootanimation.zip {}'.format(backup_dir))  # backup
         os.system('cp {}/{}/{}bootanimation.zip /system/media/bootanimation.zip'.format(CONTRIB_THEMES, self.selected_theme, bootAniColor))  # replace
         os.system('chmod 666 /system/media/bootanimation.zip')
-        print('\nBoot Animation installed successfully! Original backed up to {}'.format(self.backup_dir))
+        print('\nBoot Animation installed successfully! Original backed up to {}'.format(backup_dir))
         print('Press enter to continue!')
         input()
-
-      
-  def auto_installer(self):  # Auto Installer program for incorperating into OP forks SEE DEVREADME
+   
+  def auto_installer(self):         # Auto Installer program for incorperating into OP forks SEE DEVREADME
     self.selected_theme = AUTO_INSTALL_CONF['auto_selected_theme']
     #selected_ani_color = AUTO_INSTALL_CONF['install_color']
 
     if AUTO_INSTALL_CONF['install_logo']:  # Auto BootLogo Install Code
-      os.system('cp {} {}'.format(BOOT_LOGO_PATH, self.backup_dir))  # Make Backup
+      os.system('cp {} {}'.format(BOOT_LOGO_PATH, backup_dir))  # Make Backup
       os.system('dd if={}/{}/{} of={}'.format(CONTRIB_THEMES, self.selected_theme, BOOT_LOGO_THEME_PATH, BOOT_LOGO_PATH))  # Replace
-      print('\nBoot Logo installed successfully! Original backed up to {}'.format(self.backup_dir))
+      print('\nBoot Logo installed successfully! Original backed up to {}'.format(backup_dir))
 
     if AUTO_INSTALL_CONF['install_anim'] == True:  # Auto BootAni Install Code
       os.system('mount -o remount,rw /system')
-      os.system('mv /system/media/bootanimation.zip {}'.format(self.backup_dir))
+      os.system('mv /system/media/bootanimation.zip {}'.format(backup_dir))
       os.system('cp {}/{}/{}bootanimation.zip /system/media/bootanimation.zip'.format(CONTRIB_THEMES, self.selected_theme, AUTO_INSTALL_CONF['ani_color']))
       os.system('chmod 666 /system/media/bootanimation.zip')
-      print('Boot Animation installed successfully! Original backuped to {}'.format(self.backup_dir))
+      print('Boot Animation installed successfully! Original backuped to {}'.format(backup_dir))
 
     if AUTO_INSTALL_CONF['install_spinner']:  # Auto OP Spinner Code
-      os.system('cp /data/{}/selfdrive/ui/spinner/spinner {}'.format(AUTO_INSTALL_CONF['openpilot_dir_name'], self.backup_dir))  # TEMP DEV EDIT SHOULD BE MV
+      os.system('cp /data/{}/selfdrive/ui/spinner/spinner {}'.format(AUTO_INSTALL_CONF['openpilot_dir_name'], backup_dir))  # TEMP DEV EDIT SHOULD BE MV
       os.system('cp {}/{}/spinner /data/{}/selfdrive/ui/spinner'.format(CONTRIB_THEMES, self.selected_theme, AUTO_INSTALL_CONF['openpilot_dir_name']))
-      print('OP Spinner installed successfully! Original backed up to {}'.format(self.backup_dir))
+      print('OP Spinner installed successfully! Original backed up to {}'.format(backup_dir))
 
     # if (autoInstallAdditional != 'no'):             #Auto additional features Code (Not An Active feature)
     #  print('Additional Resources are not an active feature')  # todo: refactor this
