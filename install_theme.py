@@ -90,20 +90,27 @@ class ThemeInstaller:
     self.backup_dir = datetime.now().strftime('/storage/emulated/0/theme-backups/backup.%m-%d-%y--%I.%M.%S-%p')  # Get current datetime and store
     os.mkdir(self.backup_dir)  # Create the session backup folder
 
-    print(IS_AUTO_INSTALL)
-    print(DO_NOT_AUTO_INSTALL)
-
     if IS_AUTO_INSTALL == True and DO_NOT_AUTO_INSTALL == 0:
-      if check_auto_installability() == True:
-        #time.sleep(5)
-        self.auto_installer()
+      file = open('./support/auto_install_ver.txt', 'r')  # check auto installed version
+      AUTO_VER = file.read()
+      print(AUTO_VER)
+      #print(CURRENT_AUTO_VER)
+      #print(AUTO_VER)
 
+      if DO_NOT_AUTO_INSTALL == 0 and AUTO_VER is not CURRENT_AUTO_VER:
+        self.auto_installer()  # Do Auto install theme
+        print('woo!')
+    
     else:
       if DO_NOT_AUTO_INSTALL == '1':
         os.system('rm -d {}').format(backup_dir)
         exit()
       else:
         self.start_loop()
+
+    
+
+    
 
   def start_loop(self):
     while 1:
@@ -231,7 +238,6 @@ class ThemeInstaller:
 
       
   def auto_installer(self):  # Auto Installer program for incorperating into OP forks SEE DEVREADME
-    print('we made it here')
     self.selected_theme = AUTO_INSTALL_CONF['auto_selected_theme']
     #selected_ani_color = AUTO_INSTALL_CONF['install_color']
 
