@@ -55,7 +55,8 @@ import time
 from os import path
 from datetime import datetime
 from support.support_functions import print_welcome_text, check_auto_installability, get_user_theme, is_affirmative, go_back
-from support.support_variables import AUTO_INSTALL_CONF, CONTRIB_THEMES, CURRENT_AUTO_VER, DO_NOT_AUTO_INSTALL, IS_AUTO_INSTALL
+from support.support_variables import CURRENT_AUTO_VER
+from support.support_variables import AUTO_INSTALL_CONF, CONTRIB_THEMES, DO_NOT_AUTO_INSTALL, IS_AUTO_INSTALL
 
 os.chdir(os.path.dirname(os.path.realpath(__file__)))  # __file__ is safer since it doesn't change based on where this file is called from
 
@@ -87,6 +88,7 @@ class ThemeInstaller:
 
     if IS_AUTO_INSTALL and DO_NOT_AUTO_INSTALL == '0':
       if check_auto_installability() == True:
+        time.sleep(5)
         self.auto_installer()
 
     else:
@@ -244,6 +246,8 @@ class ThemeInstaller:
 
     # if (autoInstallAdditional != 'no'):             #Auto additional features Code (Not An Active feature)
     #  print('Additional Resources are not an active feature')  # todo: refactor this
+
+    time.sleep(5)
 
     fi = open("./support/auto_install_ver.txt", "w")
     print(CURRENT_AUTO_VER)
