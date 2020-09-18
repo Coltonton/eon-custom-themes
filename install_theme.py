@@ -55,10 +55,14 @@ import time
 from os import path
 from datetime import datetime
 from support.support_functions import print_welcome_text, check_auto_installability, get_user_theme, is_affirmative, go_back
-from support.support_variables import CONTRIB_THEMES, IS_AUTO_INSTALL, AUTO_INSTALL_CONF
+from support.support_variables import AUTO_INSTALL_CONF, CONTRIB_THEMES, CURRENT_AUTO_VER, DO_NOT_AUTO_INSTALL, IS_AUTO_INSTALL
 
 os.chdir(os.path.dirname(os.path.realpath(__file__)))  # __file__ is safer since it doesn't change based on where this file is called from
-print_welcome_text()
+
+if IS_AUTO_INSTALL:
+  print_welcome_text(True)   #Print welcome text with true flag for auto welcome text
+else:
+  print_welcome_text(False)  #Print welcome text with false flag for normal welcome text  
 
 # Crude device detection, *shrug* it works! LeEco does not have tristate!
 if path.exists('/sys/devices/virtual/switch/tri-state-key'):
@@ -70,9 +74,10 @@ else:
   BOOT_LOGO_THEME_PATH = 'LeEco-Logo/SPLASH'  # Set the boot logo theme path for Leo
   BOOT_LOGO_PATH = '/dev/block/bootdevice/by-name/splash'  # Set the boot logo directory for Leo
 
-print('IMPORTANT: Soft-bricking is likely if this detection is incorrect. Is this correct?')
-if not is_affirmative():
-  exit()
+if IS_AUTO_INSTALL == False:
+  print('IMPORTANT: Soft-bricking is likely if this detection is incorrect. Is this correct?')
+  if not is_affirmative():
+    exit()
 
 
 class ThemeInstaller:
@@ -80,11 +85,16 @@ class ThemeInstaller:
     self.backup_dir = datetime.now().strftime('backups/backup.%m-%d-%y--%I.%M.%S-%p')  # Get current datetime and store
     os.mkdir(self.backup_dir)  # Create the session backup folder
 
-    if IS_AUTO_INSTALL:
-      assert check_auto_installability(), 'Auto install has already been performed!'
-      self.auto_installer()
+    if IS_AUTO_INSTALL and DO_NOT_AUTO_INSTALL == '0':
+      if check_auto_installability() == True:
+        self.auto_installer()
+
     else:
-      self.start_loop()
+      if DO_NOT_AUTO_INSTALL == '1':
+        os.system('rm -d {}').format(backup_dir)
+        exit()
+      else:
+        self.start_loop()
 
   def start_loop(self):
     while 1:
@@ -212,6 +222,9 @@ class ThemeInstaller:
 
       
   def auto_installer(self):  # Auto Installer program for incorperating into OP forks SEE DEVREADME
+    self.selected_theme = AUTO_INSTALL_CONF['auto_selected_theme']
+    selected_ani_color = AUTO_INSTALL_CONF['install_color']
+
     if AUTO_INSTALL_CONF['install_logo']:  # Auto BootLogo Install Code
       os.system('cp {} {}'.format(BOOT_LOGO_PATH, self.backup_dir))  # DEV EDIT SHOULD BE MV
       os.system('dd if={}/{}/OP3T-Logo/LOGO of={}'.format(CONTRIB_THEMES, self.selected_theme, BOOT_LOGO_PATH))
@@ -220,7 +233,7 @@ class ThemeInstaller:
     if AUTO_INSTALL_CONF['install_anim']:  # Auto BootAni Install Code
       os.system('mount -o remount,rw /system')
       os.system('mv /system/media/bootanimation.zip {}'.format(self.backup_dir))
-      os.system('cp {}/{}/bootanimation.zip /system/media'.format(CONTRIB_THEMES, self.selected_theme))
+      os.system('cp {}/{}/white_bootanimation.zip /system/media/bootanimation.zip'.format(CONTRIB_THEMES, self.selected_theme))
       os.system('chmod 666 /system/media/bootanimation.zip')
       print('Boot Logo installed successfully! Original backuped to {}'.format(self.backup_dir))
 
@@ -231,6 +244,9 @@ class ThemeInstaller:
 
     # if (autoInstallAdditional != 'no'):             #Auto additional features Code (Not An Active feature)
     #  print('Additional Resources are not an active feature')  # todo: refactor this
+
+    fi = open("./support/auto_install_ver.txt", "w")
+    print(CURRENT_AUTO_VER)
 
 
 if __name__ == '__main__':
