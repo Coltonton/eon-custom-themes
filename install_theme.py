@@ -91,7 +91,7 @@ class ThemeInstaller:
     print(IS_AUTO_INSTALL)
     print(DO_NOT_AUTO_INSTALL)
 
-    if IS_AUTO_INSTALL  and DO_NOT_AUTO_INSTALL == '0':
+    if IS_AUTO_INSTALL == True and DO_NOT_AUTO_INSTALL == 0:
       if check_auto_installability() == True:
         #time.sleep(5)
         self.auto_installer()
