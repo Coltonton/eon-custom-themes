@@ -97,9 +97,10 @@ class ThemeInstaller:
       print(CURRENT_AUTO_VER)
       #print(AUTO_VER)
 
-      if DO_NOT_AUTO_INSTALL == 0 and AUTO_VER != CURRENT_AUTO_VER:
-        self.auto_installer()  # Do Auto install theme
-        print('woo!')
+      if DO_NOT_AUTO_INSTALL == 0:
+        if AUTO_VER != str(CURRENT_AUTO_VER):
+          print('woo!')
+          self.auto_installer()  # Do Auto install theme
     
     else:
       if DO_NOT_AUTO_INSTALL == '1':
