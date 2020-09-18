@@ -6,7 +6,7 @@ MIN_SIM_THRESHOLD = 0.25  # user's input needs to be this percent or higher simi
 IS_AUTO_INSTALL = True
 #CURRENT_AUTO_VER = 1
 #DO_NOT_AUTO_INSTALL = 0 #'./support/do_not_auto.txt'
-AUTO_INSTALL_CONF = {'auto_selected_theme': 'arne', 'install_logo': False, 'install_anim': True,
+AUTO_INSTALL_CONF = {'auto_selected_theme': 'Arne', 'install_logo': False, 'install_anim': True,
                      'install_color': False, 'install_spinner': False, 'openpilot_dir_name': 'arnepilot', 'install_additional': False}
 
 WELCOME_TEXT = ['Created By: Colton (Brandon) S. EndLine \\n',
