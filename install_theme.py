@@ -94,7 +94,7 @@ class ThemeInstaller:
       file = open('./support/auto_install_ver.txt', 'r')  # check auto installed version
       AUTO_VER = file.read()
       print(AUTO_VER)
-      #print(CURRENT_AUTO_VER)
+      print(CURRENT_AUTO_VER)
       #print(AUTO_VER)
 
       if DO_NOT_AUTO_INSTALL == 0 and AUTO_VER is not CURRENT_AUTO_VER:
