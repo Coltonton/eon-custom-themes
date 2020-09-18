@@ -256,7 +256,7 @@ class ThemeInstaller:
     #  print('Additional Resources are not an active feature')  # todo: refactor this
 
     fi = open("./support/auto_install_ver.txt", "w")
-    print(CURRENT_AUTO_VER)
+    print(str(CURRENT_AUTO_VER))
 
 
 if __name__ == '__main__':
