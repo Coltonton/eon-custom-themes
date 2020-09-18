@@ -97,6 +97,7 @@ class ThemeInstaller:
     
     else:
       if DO_NOT_AUTO_INSTALL is '1':
+        print('no here')
         exit()
       else:
         create_backup_folder()
