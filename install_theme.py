@@ -241,7 +241,7 @@ class ThemeInstaller:
     if AUTO_INSTALL_CONF['install_anim'] == True:  # Auto BootAni Install Code
       os.system('mount -o remount,rw /system')
       os.system('mv /system/media/bootanimation.zip {}'.format(self.backup_dir))
-      os.system('cp {}/{}/{}bootanimation.zip /system/media/bootanimation.zip'.format(CONTRIB_THEMES, self.selected_theme, AUTO_INSTALL_CONF[ani_color]))
+      os.system('cp {}/{}/{}bootanimation.zip /system/media/bootanimation.zip'.format(CONTRIB_THEMES, self.selected_theme, AUTO_INSTALL_CONF['ani_color']))
       os.system('chmod 666 /system/media/bootanimation.zip')
       print('Boot Animation installed successfully! Original backuped to {}'.format(self.backup_dir))
 
