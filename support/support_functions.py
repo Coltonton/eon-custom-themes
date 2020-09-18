@@ -7,8 +7,8 @@ CURRENT_AUTO_VER = 1
 DO_NOT_AUTO_INSTALL = 0
 
 def check_auto_installability():
-  AUTO_INSTALL_PATH = './support/auto_install_ver.txt'
-  f = open(AUTO_INSTALL_PATH, 'r')  # check auto installed version
+  f = open('./support/auto_install_ver.txt', 'r')  # check auto installed version
+  print(f)
   AUTO_VER = f.read().strip().strip('\n')
     #print(CURRENT_AUTO_VER)
     #print(AUTO_VER)
