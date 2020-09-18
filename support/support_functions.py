@@ -3,7 +3,6 @@ import time
 import difflib
 from support.support_variables import CONTRIB_THEMES, CURRENT_AUTO_VER, EXCLUDED_THEMES, MIN_SIM_THRESHOLD, WELCOME_TEXT, AUTO_WELCOME_TEXT
 
-DO_NOT_AUTO_INSTALL = 0
 
 # Created by @ShaneSmiskol
 def get_user_theme():  # Auto discover themes and let user choose!

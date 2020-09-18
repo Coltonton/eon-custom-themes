@@ -89,7 +89,7 @@ class ThemeInstaller:
     self.backup_dir = datetime.now().strftime('/storage/emulated/0/theme-backups/backup.%m-%d-%y--%I.%M.%S-%p')  # Get current datetime and store
     os.mkdir(self.backup_dir)  # Create the session backup folder
 
-    if IS_AUTO_INSTALL == True and DO_NOT_AUTO_INSTALL == 0:
+    if IS_AUTO_INSTALL == True and DO_NOT_AUTO_INSTALL is '0':
       file = open('./support/auto_install_ver.txt', 'r')  # check auto installed version
       AUTO_VER = file.read()
 
@@ -97,7 +97,7 @@ class ThemeInstaller:
           self.auto_installer()  # Do Auto install theme
     
     else:
-      if DO_NOT_AUTO_INSTALL == '1':
+      if DO_NOT_AUTO_INSTALL is '1':
         os.system('rm -d {}').format(backup_dir)
         exit()
       else:
