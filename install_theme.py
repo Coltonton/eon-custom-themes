@@ -55,8 +55,10 @@ import time
 from os import path
 from datetime import datetime
 from support.support_functions import print_welcome_text, check_auto_installability, get_user_theme, is_affirmative, go_back
-#from support.support_variables import CURRENT_AUTO_VER
-from support.support_variables import AUTO_INSTALL_CONF, CONTRIB_THEMES, DO_NOT_AUTO_INSTALL, IS_AUTO_INSTALL
+#from support.support_variables import CURRENT_AUTO_VER DO_NOT_AUTO_INSTALL,
+from support.support_variables import AUTO_INSTALL_CONF, CONTRIB_THEMES, IS_AUTO_INSTALL
+
+DO_NOT_AUTO_INSTALL = 0
 
 os.chdir(os.path.dirname(os.path.realpath(__file__)))  # __file__ is safer since it doesn't change based on where this file is called from
 
