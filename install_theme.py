@@ -53,7 +53,7 @@
 import os
 import time
 from os import path
-
+from datetime import datetime
 from support.support_functions import create_backup_folder, create_backup_folder, print_welcome_text, print_auto_welcome_text, get_user_theme, is_affirmative, go_back
 from support.support_functions import backup_dir
 from support.support_variables import AUTO_INSTALL_CONF, CONTRIB_THEMES, CURRENT_AUTO_VER, IS_AUTO_INSTALL
@@ -105,6 +105,13 @@ class ThemeInstaller:
       else:
         create_backup_folder()
         self.start_loop()   
+
+  def create_backup_folder(self):
+    if not os.path.exists('/storage/emulated/0/theme-backups'):
+      os.mkdirs('/storage/emulated/0/theme-backups')    
+
+    backup_dir = datetime.now().strftime('/storage/emulated/0/theme-backups/backup.%m-%d-%y--%I.%M.%S-%p')  # Get current datetime and store
+    os.mkdir(backup_dir)  # Create the session backup folder
 
   def start_loop(self):
     while 1:

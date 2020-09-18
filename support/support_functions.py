@@ -4,14 +4,6 @@ import difflib
 from datetime import datetime
 from support.support_variables import CONTRIB_THEMES, CURRENT_AUTO_VER, EXCLUDED_THEMES, MIN_SIM_THRESHOLD, WELCOME_TEXT, AUTO_WELCOME_TEXT
 
-backup_dir=''
-
-def create_backup_folder():
-  if not os.path.exists('/storage/emulated/0/theme-backups'):
-    os.mkdirs('/storage/emulated/0/theme-backups')    
-
-  backup_dir = datetime.now().strftime('/storage/emulated/0/theme-backups/backup.%m-%d-%y--%I.%M.%S-%p')  # Get current datetime and store
-  os.mkdir(backup_dir)  # Create the session backup folder
 
 # Created by @ShaneSmiskol
 def get_user_theme():  # Auto discover themes and let user choose!
