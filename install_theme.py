@@ -58,8 +58,6 @@ from support.support_functions import print_welcome_text, print_auto_welcome_tex
 #from support.support_variables import CURRENT_AUTO_VER DO_NOT_AUTO_INSTALL,
 from support.support_variables import AUTO_INSTALL_CONF, CONTRIB_THEMES, IS_AUTO_INSTALL
 
-DO_NOT_AUTO_INSTALL = 0
-
 os.chdir(os.path.dirname(os.path.realpath(__file__)))  # __file__ is safer since it doesn't change based on where this file is called from
 
 if IS_AUTO_INSTALL:
@@ -85,10 +83,15 @@ if IS_AUTO_INSTALL == False:
 
 class ThemeInstaller:
   def __init__(self):
+    DO_NOT_AUTO_INSTALL = 0
+
     self.backup_dir = datetime.now().strftime('backups/backup.%m-%d-%y--%I.%M.%S-%p')  # Get current datetime and store
     os.mkdir(self.backup_dir)  # Create the session backup folder
 
-    if IS_AUTO_INSTALL and DO_NOT_AUTO_INSTALL == '0':
+    print(IS_AUTO_INSTALL)
+    print(DO_NOT_AUTO_INSTALL)
+
+    if IS_AUTO_INSTALL  and DO_NOT_AUTO_INSTALL == '0':
       if check_auto_installability() == True:
         #time.sleep(5)
         self.auto_installer()
