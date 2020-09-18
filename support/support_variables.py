@@ -4,7 +4,7 @@ MIN_SIM_THRESHOLD = 0.25  # user's input needs to be this percent or higher simi
 
 # Auto Install variables - see DEVREADME
 IS_AUTO_INSTALL = True
-#CURRENT_AUTO_VER = 1
+CURRENT_AUTO_VER = 1
 #DO_NOT_AUTO_INSTALL = 0 #'./support/do_not_auto.txt'
 AUTO_INSTALL_CONF = {'auto_selected_theme': 'Arne', 'install_logo': True, 'install_anim': True,
                      'ani_color': 'white_', 'install_spinner': True, 'openpilot_dir_name': 'openpilot', 'install_additional': False}
