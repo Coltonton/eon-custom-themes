@@ -1,24 +1,28 @@
 import os
 import time
 import difflib
-from support.support_variables import CONTRIB_THEMES, EXCLUDED_THEMES, MIN_SIM_THRESHOLD, WELCOME_TEXT
+from support.support_variables import CONTRIB_THEMES, CURRENT_AUTO_VER, DO_NOT_AUTO_INSTALL, EXCLUDED_THEMES, MIN_SIM_THRESHOLD, WELCOME_TEXT, AUTO_WELCOME_TEXT
 
 
 def check_auto_installability():
-  auto_installed_path = 'auto_theme_installed.txt'
-  if os.path.exists(auto_installed_path):  # if auto installed before
-    with open(auto_installed_path, 'r') as f:  # check if override set
-      override = f.read().strip().strip('\n')
+  AUTO_INSTALL_PATH = './support/auto_install_ver.txt'
+  with open(AUTO_INSTALL_PATH, 'r') as f:  # check auto installed version
+    AUTO_VER = f.read().strip().strip('\n')
+    #print(CURRENT_AUTO_VER)
+    #print(AUTO_VER)
 
-    if override == '1':  # if overide
-      return True  # overide and Do Auto install theme
+    if DO_NOT_AUTO_INSTALL == '0':
+      if AUTO_VER is not CURRENT_AUTO_VER:  # if overide
+        return True  # Do Auto install theme
+      else:
+        return False  # do not reinstall, do not pass go, do not collect $200
     else:
-      return False  # do not override reinstall, do not pass go do not collect $200
+      return False
 
-  else:  # If auto_theme_installed.txt does not exist
-    with open(auto_installed_path, 'w') as f:  # Create auto_theme_installed.txt to prevent more installs
-      f.write('0')  # this was previously 1, causing it to keep installing when it shouldn't have
-    return True
+  #else:  # If auto_theme_installed.txt does not exist
+    #with open(auto_installed_path, 'w') as f:  # Create auto_theme_installed.txt to prevent more installs
+    #  f.write('0')  # this was previously 1, causing it to keep installing when it shouldn't have
+    #return True
 
 
 # Created by @ShaneSmiskol
@@ -60,9 +64,21 @@ def get_user_theme():  # Auto discover themes and let user choose!
 
 
 def print_welcome_text():  # this center formats text automatically
+
   max_line_length = max([len(line) for line in WELCOME_TEXT]) + 4
   print(''.join(['+' for _ in range(max_line_length)]))
   for line in WELCOME_TEXT:
+    padding = max_line_length - len(line) - 2
+    padding_left = padding // 2
+    print('+{}+'.format(' ' * padding_left + line + ' ' * (padding - padding_left)))
+  print(''.join(['+' for _ in range(max_line_length)]))
+  time.sleep(2)  # Pause for suspense, and so can be read
+
+def print_auto_welcome_text():  # this center formats text automatically
+
+  max_line_length = max([len(line) for line in AUTO_WELCOME_TEXT]) + 4
+  print(''.join(['+' for _ in range(max_line_length)]))
+  for line in AUTO_WELCOME_TEXT:
     padding = max_line_length - len(line) - 2
     padding_left = padding // 2
     print('+{}+'.format(' ' * padding_left + line + ' ' * (padding - padding_left)))

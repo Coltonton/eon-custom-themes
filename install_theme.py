@@ -54,7 +54,7 @@ import os
 import time
 from os import path
 from datetime import datetime
-from support.support_functions import print_welcome_text, check_auto_installability, get_user_theme, is_affirmative, go_back
+from support.support_functions import print_welcome_text, print_auto_welcome_text, check_auto_installability, get_user_theme, is_affirmative, go_back
 #from support.support_variables import CURRENT_AUTO_VER DO_NOT_AUTO_INSTALL,
 from support.support_variables import AUTO_INSTALL_CONF, CONTRIB_THEMES, IS_AUTO_INSTALL
 
@@ -63,9 +63,9 @@ DO_NOT_AUTO_INSTALL = 0
 os.chdir(os.path.dirname(os.path.realpath(__file__)))  # __file__ is safer since it doesn't change based on where this file is called from
 
 if IS_AUTO_INSTALL:
-  print_welcome_text(True)   #Print welcome text with true flag for auto welcome text
+  print_auto_welcome_text()   #Print welcome text with true flag for auto welcome text
 else:
-  print_welcome_text(False)  #Print welcome text with false flag for normal welcome text  
+  print_welcome_text()  #Print welcome text with false flag for normal welcome text  
 
 # Crude device detection, *shrug* it works! LeEco does not have tristate!
 if path.exists('/sys/devices/virtual/switch/tri-state-key'):
