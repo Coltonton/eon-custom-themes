@@ -3,29 +3,7 @@ import time
 import difflib
 from support.support_variables import CONTRIB_THEMES, CURRENT_AUTO_VER, EXCLUDED_THEMES, MIN_SIM_THRESHOLD, WELCOME_TEXT, AUTO_WELCOME_TEXT
 
-
 DO_NOT_AUTO_INSTALL = 0
-
-def check_auto_installability():
-  f=open('./support/auto_install_ver.txt', 'r')  # check auto installed version
-  AUTO_VER = f.read()
-  print(AUTO_VER)
-    #print(CURRENT_AUTO_VER)
-    #print(AUTO_VER)
-
-  if DO_NOT_AUTO_INSTALL == 0:
-    if AUTO_VER is not CURRENT_AUTO_VER:  # if overide
-      return True  # Do Auto install theme
-    else:
-      return False  # do not reinstall, do not pass go, do not collect $200
-  else:
-    return False
-
-  #else:  # If auto_theme_installed.txt does not exist
-    #with open(auto_installed_path, 'w') as f:  # Create auto_theme_installed.txt to prevent more installs
-    #  f.write('0')  # this was previously 1, causing it to keep installing when it shouldn't have
-    #return True
-
 
 # Created by @ShaneSmiskol
 def get_user_theme():  # Auto discover themes and let user choose!

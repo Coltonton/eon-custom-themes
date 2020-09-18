@@ -55,8 +55,7 @@ import time
 from os import path
 from datetime import datetime
 from support.support_functions import print_welcome_text, print_auto_welcome_text, check_auto_installability, get_user_theme, is_affirmative, go_back
-#DO_NOT_AUTO_INSTALL,
-from support.support_variables import AUTO_INSTALL_CONF, CONTRIB_THEMES, CURRENT_AUTO_VER, IS_AUTO_INSTALL
+from support.support_variables import AUTO_INSTALL_CONF, CONTRIB_THEMES, CURRENT_AUTO_VER, DO_NOT_AUTO_INSTALL, IS_AUTO_INSTALL
 
 os.chdir(os.path.dirname(os.path.realpath(__file__)))  # __file__ is safer since it doesn't change based on where this file is called from
 
@@ -94,7 +93,7 @@ class ThemeInstaller:
       file = open('./support/auto_install_ver.txt', 'r')  # check auto installed version
       AUTO_VER = file.read()
 
-      if DO_NOT_AUTO_INSTALL == 0 and AUTO_VER != str(CURRENT_AUTO_VER):
+      if DO_NOT_AUTO_INSTALL == 0 and AUTO_VER != CURRENT_AUTO_VER:
           self.auto_installer()  # Do Auto install theme
     
     else:

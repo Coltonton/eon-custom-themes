@@ -4,11 +4,17 @@ MIN_SIM_THRESHOLD = 0.25  # user's input needs to be this percent or higher simi
 
 # Auto Install variables - see DEVREADME
 IS_AUTO_INSTALL = True
-CURRENT_AUTO_VER = 1
-DO_NOT_AUTO_INSTALL = 0 #'./support/do_not_auto.txt'
+
+CURRENT_AUTO_VER = '1'
+
+file = open('./support/do_not_auto.txt', 'r')  # check auto installed version
+DO_NOT_AUTO_INSTALL = file.read()
+file.close
+
 AUTO_INSTALL_CONF = {'auto_selected_theme': 'Arne', 'install_logo': True, 'install_anim': True,
                      'ani_color': 'white_', 'install_spinner': True, 'openpilot_dir_name': 'openpilot', 'install_additional': False}
 
+#Welcome Texts
 WELCOME_TEXT = ['Created By: Colton (Brandon) S. EndLine \\n',
                 'Special Thanks to @ShaneSmiskol for all the help!!!',
                 'Free to use! Free to Edit! Free to integrate!',
@@ -22,7 +28,6 @@ AUTO_WELCOME_TEXT = ['Created By: Colton (Brandon) S. EndLine \\n',
                 'Design and contribute your themes today!',
                 '(See the developer folder in this repo)',
                 'It\'s your EON, do what you want!',
-                '------------'
                 '*NOTE* THIS IS AN AUTO INSTALL PROGRAM',
                 'This is a minimal installer and only made to',
                 'auto install the theme the user of this program',
