@@ -85,7 +85,7 @@ class ThemeInstaller:
     DO_NOT_AUTO_INSTALL = 0
 
     if not os.path.exists('/storage/emulated/0/theme-backups'):
-      os.mkdir('/storage/emulated/0/theme-backups')    
+      os.mkdirs('/storage/emulated/0/theme-backups')    
 
     self.backup_dir = datetime.now().strftime('/storage/emulated/0/theme-backups/backup.%m-%d-%y--%I.%M.%S-%p')  # Get current datetime and store
     os.mkdir(self.backup_dir)  # Create the session backup folder
