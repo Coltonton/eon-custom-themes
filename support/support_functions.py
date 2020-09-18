@@ -7,19 +7,19 @@ CURRENT_AUTO_VER = 1
 DO_NOT_AUTO_INSTALL = 0
 
 def check_auto_installability():
-  AUTO_INSTALL_PATH = '/support/auto_install_ver.txt'
-  with open(AUTO_INSTALL_PATH, 'r') as f:  # check auto installed version
-    AUTO_VER = f.read().strip().strip('\n')
+  AUTO_INSTALL_PATH = './support/auto_install_ver.txt'
+  f = open(AUTO_INSTALL_PATH, 'r')  # check auto installed version
+  AUTO_VER = f.read().strip().strip('\n')
     #print(CURRENT_AUTO_VER)
     #print(AUTO_VER)
 
-    if DO_NOT_AUTO_INSTALL == '0':
-      if AUTO_VER is not CURRENT_AUTO_VER:  # if overide
-        return True  # Do Auto install theme
-      else:
-        return False  # do not reinstall, do not pass go, do not collect $200
+  if DO_NOT_AUTO_INSTALL == '0':
+    if AUTO_VER is not CURRENT_AUTO_VER:  # if overide
+      return True  # Do Auto install theme
     else:
-      return False
+      return False  # do not reinstall, do not pass go, do not collect $200
+  else:
+    return False
 
   #else:  # If auto_theme_installed.txt does not exist
     #with open(auto_installed_path, 'w') as f:  # Create auto_theme_installed.txt to prevent more installs
