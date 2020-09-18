@@ -89,10 +89,12 @@ class ThemeInstaller:
 
     if IS_AUTO_INSTALL == True and DO_NOT_AUTO_INSTALL == '0':
       print('here')
-      file = open('./support/auto_install_ver.txt', 'r')  # check auto installed version
-      AUTO_VER = file.read()
+      file2 = open('./support/auto_install_ver.txt', 'r')  # check auto installed version
+      AUTO_VER = file2.read()
+      file2.close
 
-      if DO_NOT_AUTO_INSTALL == 0 and AUTO_VER != CURRENT_AUTO_VER:
+      if AUTO_VER is not CURRENT_AUTO_VER:
+        print('im working dumbo')
         create_backup_folder()
         self.auto_installer()  # Do Auto install theme
     
