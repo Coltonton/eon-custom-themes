@@ -231,7 +231,7 @@ class ThemeInstaller:
   def auto_installer(self):  # Auto Installer program for incorperating into OP forks SEE DEVREADME
     print('we made it here')
     self.selected_theme = AUTO_INSTALL_CONF['auto_selected_theme']
-    selected_ani_color = AUTO_INSTALL_CONF['install_color']
+    #selected_ani_color = AUTO_INSTALL_CONF['install_color']
 
     if AUTO_INSTALL_CONF['install_logo']:  # Auto BootLogo Install Code
       os.system('cp {} {}'.format(BOOT_LOGO_PATH, self.backup_dir))  # Make Backup
