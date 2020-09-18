@@ -7,7 +7,7 @@ IS_AUTO_INSTALL = True
 #CURRENT_AUTO_VER = 1
 #DO_NOT_AUTO_INSTALL = 0 #'./support/do_not_auto.txt'
 AUTO_INSTALL_CONF = {'auto_selected_theme': 'Arne', 'install_logo': True, 'install_anim': True,
-                     'ani_color': 'white_', 'install_spinner': True, 'openpilot_dir_name': 'arnepilot', 'install_additional': False}
+                     'ani_color': 'white_', 'install_spinner': True, 'openpilot_dir_name': 'openpilot', 'install_additional': False}
 
 WELCOME_TEXT = ['Created By: Colton (Brandon) S. EndLine \\n',
                 'Special Thanks to @ShaneSmiskol for all the help!!!',
