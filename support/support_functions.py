@@ -7,7 +7,7 @@ CURRENT_AUTO_VER = 1
 DO_NOT_AUTO_INSTALL = 0
 
 def check_auto_installability():
-  AUTO_INSTALL_PATH = './support/auto_install_ver.txt'
+  AUTO_INSTALL_PATH = '/support/auto_install_ver.txt'
   with open(AUTO_INSTALL_PATH, 'r') as f:  # check auto installed version
     AUTO_VER = f.read().strip().strip('\n')
     #print(CURRENT_AUTO_VER)
@@ -75,6 +75,7 @@ def print_welcome_text():  # this center formats text automatically
     print('+{}+'.format(' ' * padding_left + line + ' ' * (padding - padding_left)))
   print(''.join(['+' for _ in range(max_line_length)]))
   time.sleep(2)  # Pause for suspense, and so can be read
+
 
 def print_auto_welcome_text():  # this center formats text automatically
 
