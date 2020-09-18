@@ -229,6 +229,7 @@ class ThemeInstaller:
 
       
   def auto_installer(self):  # Auto Installer program for incorperating into OP forks SEE DEVREADME
+    print('we made it here')
     self.selected_theme = AUTO_INSTALL_CONF['auto_selected_theme']
     selected_ani_color = AUTO_INSTALL_CONF['install_color']
 
@@ -237,7 +238,7 @@ class ThemeInstaller:
       os.system('dd if={}/{}/OP3T-Logo/LOGO of={}'.format(CONTRIB_THEMES, self.selected_theme, BOOT_LOGO_PATH))
       print('Boot Logo installed successfully! Original backuped to ' + self.backup_dir)
 
-    if AUTO_INSTALL_CONF['install_anim']:  # Auto BootAni Install Code
+    if AUTO_INSTALL_CONF['install_anim'] == True:  # Auto BootAni Install Code
       os.system('mount -o remount,rw /system')
       os.system('mv /system/media/bootanimation.zip {}'.format(self.backup_dir))
       os.system('cp {}/{}/white_bootanimation.zip /system/media/bootanimation.zip'.format(CONTRIB_THEMES, self.selected_theme))

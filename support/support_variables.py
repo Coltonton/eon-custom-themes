@@ -5,7 +5,7 @@ MIN_SIM_THRESHOLD = 0.25  # user's input needs to be this percent or higher simi
 # Auto Install variables - see DEVREADME
 IS_AUTO_INSTALL = True
 #CURRENT_AUTO_VER = 1
-DO_NOT_AUTO_INSTALL = 0 #'./support/do_not_auto.txt'
+#DO_NOT_AUTO_INSTALL = 0 #'./support/do_not_auto.txt'
 AUTO_INSTALL_CONF = {'auto_selected_theme': 'arne', 'install_logo': False, 'install_anim': True,
                      'install_color': False, 'install_spinner': False, 'openpilot_dir_name': 'arnepilot', 'install_additional': False}
 
@@ -22,7 +22,7 @@ AUTO_WELCOME_TEXT = ['Created By: Colton (Brandon) S. EndLine \\n',
                 'Design and contribute your themes today!',
                 '(See the developer folder in this repo)',
                 'It\'s your EON, do what you want!',
-                '------------------------------------------'
+                '------------------'
                 '*NOTE* THIS IS AN AUTO INSTALL PROGRAM',
                 'This is a minimal installer and only made to',
                 'auto install the theme the user of this program',
