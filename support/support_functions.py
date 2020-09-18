@@ -4,6 +4,8 @@ import difflib
 from datetime import datetime
 from support.support_variables import CONTRIB_THEMES, CURRENT_AUTO_VER, EXCLUDED_THEMES, MIN_SIM_THRESHOLD, WELCOME_TEXT, AUTO_WELCOME_TEXT
 
+backup_dir=''
+
 def create_backup_folder():
   if not os.path.exists('/storage/emulated/0/theme-backups'):
     os.mkdirs('/storage/emulated/0/theme-backups')    
