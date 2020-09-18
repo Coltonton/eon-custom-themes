@@ -80,12 +80,14 @@ if IS_AUTO_INSTALL == False:
   if not is_affirmative():
     exit()
 
-
 class ThemeInstaller:
   def __init__(self):
     DO_NOT_AUTO_INSTALL = 0
 
-    self.backup_dir = datetime.now().strftime('backups/backup.%m-%d-%y--%I.%M.%S-%p')  # Get current datetime and store
+    if not os.path.exists('/storage/emulated/0/theme-backups'):
+      os.mkdir('/storage/emulated/0/theme-backups')    
+
+    self.backup_dir = datetime.now().strftime('/storage/emulated/0/theme-backups/backup.%m-%d-%y--%I.%M.%S-%p')  # Get current datetime and store
     os.mkdir(self.backup_dir)  # Create the session backup folder
 
     print(IS_AUTO_INSTALL)
