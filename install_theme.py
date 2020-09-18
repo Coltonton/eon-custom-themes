@@ -234,16 +234,16 @@ class ThemeInstaller:
     selected_ani_color = AUTO_INSTALL_CONF['install_color']
 
     if AUTO_INSTALL_CONF['install_logo']:  # Auto BootLogo Install Code
-      os.system('cp {} {}'.format(BOOT_LOGO_PATH, self.backup_dir))  # DEV EDIT SHOULD BE MV
-      os.system('dd if={}/{}/OP3T-Logo/LOGO of={}'.format(CONTRIB_THEMES, self.selected_theme, BOOT_LOGO_PATH))
-      print('Boot Logo installed successfully! Original backuped to ' + self.backup_dir)
+      os.system('cp {} {}'.format(BOOT_LOGO_PATH, self.backup_dir))  # Make Backup
+      os.system('dd if={}/{}/{} of={}'.format(CONTRIB_THEMES, self.selected_theme, BOOT_LOGO_THEME_PATH, BOOT_LOGO_PATH))  # Replace
+      print('\nBoot Logo installed successfully! Original backed up to {}'.format(self.backup_dir))
 
     if AUTO_INSTALL_CONF['install_anim'] == True:  # Auto BootAni Install Code
       os.system('mount -o remount,rw /system')
       os.system('mv /system/media/bootanimation.zip {}'.format(self.backup_dir))
-      os.system('cp {}/{}/white_bootanimation.zip /system/media/bootanimation.zip'.format(CONTRIB_THEMES, self.selected_theme))
+      os.system('cp {}/{}/{}bootanimation.zip /system/media/bootanimation.zip'.format(CONTRIB_THEMES, self.selected_theme, AUTO_INSTALL_CONF[ani_color]))
       os.system('chmod 666 /system/media/bootanimation.zip')
-      print('Boot Logo installed successfully! Original backuped to {}'.format(self.backup_dir))
+      print('Boot Animation installed successfully! Original backuped to {}'.format(self.backup_dir))
 
     if AUTO_INSTALL_CONF['install_spinner']:  # Auto OP Spinner Code
       os.system('cp /data/{}/selfdrive/ui/spinner/spinner {}'.format(AUTO_INSTALL_CONF['openpilot_dir_name'], self.backup_dir))  # TEMP DEV EDIT SHOULD BE MV
@@ -252,8 +252,6 @@ class ThemeInstaller:
 
     # if (autoInstallAdditional != 'no'):             #Auto additional features Code (Not An Active feature)
     #  print('Additional Resources are not an active feature')  # todo: refactor this
-
-    time.sleep(5)
 
     #fi = open("./support/auto_install_ver.txt", "w")
     #print(CURRENT_AUTO_VER)
