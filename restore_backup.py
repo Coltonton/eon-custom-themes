@@ -31,7 +31,7 @@ class BackupInstaller:
 
     def start_loop(self):
         while 1:
-            self.selected_backup = get_user_backup()
+            self.selected_backup = get_user_backups()
             if self.selected_backup is None:
                 print('Didn\'t select a backup, exiting.')
                 return
