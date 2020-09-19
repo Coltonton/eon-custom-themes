@@ -19,8 +19,10 @@
 #                === http://endoflinetech.com/eon-themes ===                     #
 #                                                                                #
 #              With a mission to rid all EONS of Comma.ai branding               #
-#             And give the people the freedom, knowlage, and power               #
-#                         to make their EONS purdy!                              #
+#             And give the people the freedom, knowlage, and power!              #
+#                       & to make their EONS purdy!                              #
+#                                                                                #
+#                         Grab life by the horns                                 #
 #                                                                                #
 #   A very special thank you to @ShaneSmiskol for creating the theme picker      #
 #      for his tireless help, and donating the life of his LeEco EON             #
@@ -46,8 +48,8 @@
 #                            Love Cole (@C-ton)                                  #
 #                                                                                #
 #        Did you know that if you have a custom OP fork you can use this         #
-#      program to auto install your custom boot logo & boot annimation for       #
-#                    your users? See ./developer/DEVREADME                       #
+#     program to auto install your custom theme for your users automagiclly?     #
+#       And incorparate it into your OP Fork? See ./developer/DEVREADME          #
 #                                                                                #
 ##################################################################################
 import os
@@ -55,64 +57,63 @@ import time
 from os import path
 from datetime import datetime
 from support.support_functions import print_welcome_text, print_auto_welcome_text, get_user_theme, is_affirmative, go_back
-from support.support_variables import AUTO_INSTALL_CONF, CONTRIB_THEMES, CURRENT_AUTO_VER, IS_AUTO_INSTALL
+from support.support_variables import AUTO_INSTALL_CONF, CONTRIB_THEMES, DESIRED_AUTO_VER, IS_AUTO_INSTALL
 
 os.chdir(os.path.dirname(os.path.realpath(__file__)))  # __file__ is safer since it doesn't change based on where this file is called from
 
 if IS_AUTO_INSTALL:
   print_auto_welcome_text()   #Print welcome text with true flag for auto welcome text
 else:
-  print_welcome_text()  #Print welcome text with false flag for normal welcome text  
+  print_welcome_text()        #Print welcome text with false flag for normal welcome text  
 
 # Crude device detection, *shrug* it works! LeEco does not have tristate!
-if path.exists('/sys/devices/virtual/switch/tri-state-key'):
+if path.exists('/sys/devices/virtual/switch/tri-state-key'): #If 3T-ON
   print('\n*** OG OnePlus EON Device Detected ***')
-  BOOT_LOGO_THEME_PATH = 'OP3T-Logo/LOGO'  # Set the boot logo theme path for 3T
-  BOOT_LOGO_PATH = '/dev/block/sde17'  # Set the boot logo directory for 3T
-else:
+  BOOT_LOGO_THEME_PATH = 'OP3T-Logo/LOGO'                      # Set the boot logo theme path for 3T
+  BOOT_LOGO_PATH = '/dev/block/sde17'                          # Set the boot logo directory for 3T
+else:                                                        #If LeON/Two
   print('\n*** LeEco EON (Gold/Comma 2) Device Detected ***\n')
-  BOOT_LOGO_THEME_PATH = 'LeEco-Logo/SPLASH'  # Set the boot logo theme path for Leo
-  BOOT_LOGO_PATH = '/dev/block/bootdevice/by-name/splash'  # Set the boot logo directory for Leo
+  BOOT_LOGO_THEME_PATH = 'LeEco-Logo/SPLASH'                   # Set the boot logo theme path for Leo
+  BOOT_LOGO_PATH = '/dev/block/bootdevice/by-name/splash'      # Set the boot logo directory for Leo
 
-if IS_AUTO_INSTALL == False:
-  print('IMPORTANT: Soft-bricking is likely if this detection is incorrect. Is this correct?')
-  if not is_affirmative():
-    exit()
+print('IMPORTANT: Soft-bricking is likely if this detection is incorrect!')
+
 
 class ThemeInstaller:
-  def create_backup_folder(self):
-    if not os.path.exists('/storage/emulated/0/theme-backups'):
-      os.mkdirs('/storage/emulated/0/theme-backups')    
+  def __init__(self):
+    if not os.path.exists('/storage/emulated/0/theme-backups'): # Check if theme backup folder doesnt exist
+      os.mkdirs('/storage/emulated/0/theme-backups')              #Create theme backup folder
 
     self.backup_dir = datetime.now().strftime('/storage/emulated/0/theme-backups/backup.%m-%d-%y--%I.%M.%S-%p')  # Get current datetime and store
     os.mkdir(self.backup_dir)  # Create the session backup folder
- 
-  def __init__(self):
-    file = open('./support/do_not_auto.txt', 'r')  # check auto installed version
-    DO_NOT_AUTO_INSTALL = file.read()
-    file.close
-    print(DO_NOT_AUTO_INSTALL)
 
-    if IS_AUTO_INSTALL == True and DO_NOT_AUTO_INSTALL == '0':
-      print('here')
-      file2 = open('./support/auto_install_ver.txt', 'r')  # check auto installed version
-      AUTO_VER = file2.read()
+    file = open('./support/do_not_auto.txt', 'r')  # Open do_not_auto flag file
+    DO_NOT_AUTO_INSTALL = file.read()                # Store flag
+    file.close
+
+    if IS_AUTO_INSTALL == True and DO_NOT_AUTO_INSTALL == '0': # Check if auto install and do_not_auto is not set (0)
+      print('Doing Auto Install')
+      file2 = open('./support/auto_install_ver.txt', 'r')  # Open auto installed version file
+      CURRENT_AUTO_VER = file2.read()                        # Store version as variable
       file2.close
 
-      if AUTO_VER is not CURRENT_AUTO_VER:
-        print('im working dumbo')
-        create_backup_folder()
-        self.auto_installer()  # Do Auto install theme
+      if CURRENT_AUTO_VER is not DESIRED_AUTO_VER:         # If currentt installed version != desired version
+        print('First install or new version detected, installing.....')
+        self.auto_installer()                                # Do Auto install theme
+      else:                                                # If current installed theme == desired version 
+        print('Most current version installed, canceling.....')
+        os.rmdir(self.backup_dir)                            # Remove session backup folder
+        exit()                                               # Terminate program
     
-    else:
-      if DO_NOT_AUTO_INSTALL is '1':
-        print('no here')
-        exit()
-      else:
-        create_backup_folder()
-        self.start_loop()   
+    elif IS_AUTO_INSTALL == True and DO_NOT_AUTO_INSTALL is '1': # If is auto install but do_not_install flag set
+      print('Do Not install flag set!! Canceling....') 
+      os.rmdir(self.backup_dir)                              # Remove session backup folder
+      exit()                                                 # Terminate program
+      
+    else:                                                  # Else do self installer
+      self.start_loop()   
 
-  def start_loop(self):
+  def start_loop(self):             # Self Installer loop
     while 1:
       self.selected_theme = get_user_theme()
       if self.selected_theme is None:
@@ -123,8 +124,8 @@ class ThemeInstaller:
         return
 
   def get_available_options(self):  # Check what assets are available for the selected theme
-    # Check if the selected theme has a boot logo asset
     self.theme_options = []
+    # Check if the selected theme has a boot logo asset
     if os.path.exists('{}/{}/{}'.format(CONTRIB_THEMES, self.selected_theme, BOOT_LOGO_THEME_PATH)):
       self.theme_options.append('Boot Logo')
 
@@ -142,7 +143,7 @@ class ThemeInstaller:
 
     # Check if the selected theme has a OpenPilot Spinner asset
     if os.path.exists('{}/{}/spinner'.format(CONTRIB_THEMES, self.selected_theme)):
-      self.theme_options.append('OP Spinner')
+      self.theme_options.append('OpenPilot Spinner')
 
     # if os.path.exists('{}/{}/additional'.format(CONTRIB_THEMES, self.selected_theme)):  # todo disabled for now
     #   self.theme_options.append('4. Additional Resources')
@@ -261,7 +262,7 @@ class ThemeInstaller:
     #  print('Additional Resources are not an active feature')  # todo: refactor this
 
     fi = open("./support/auto_install_ver.txt", "w")
-    fi.write(str(CURRENT_AUTO_VER))
+    fi.write(str(DESIRED_AUTO_VER))
 
 
 if __name__ == '__main__':

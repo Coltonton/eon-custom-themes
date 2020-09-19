@@ -2,15 +2,11 @@ CONTRIB_THEMES = 'contributed-themes'
 EXCLUDED_THEMES = ['Comma-Default', 'Example', 'ignoreme']
 MIN_SIM_THRESHOLD = 0.25  # user's input needs to be this percent or higher similar to a theme to select it
 
+BACKUPS_DIR = '/storage/emulated/0/theme-backups'
+
 # Auto Install variables - see DEVREADME
-IS_AUTO_INSTALL = True
-
-CURRENT_AUTO_VER = '1'
-
-file = open('./support/do_not_auto.txt', 'r')  # check auto installed version
-DO_NOT_AUTO_INSTALL = file.read()
-file.close
-
+IS_AUTO_INSTALL = True     #Do Auto Install
+DESIRED_AUTO_VER = '1'     #Desired theme version, add 1 to update users theme.
 AUTO_INSTALL_CONF = {'auto_selected_theme': 'Arne', 'install_logo': True, 'install_anim': True,
                      'ani_color': 'white_', 'install_spinner': True, 'openpilot_dir_name': 'openpilot', 'install_additional': False}
 
