@@ -40,6 +40,7 @@ class BackupInstaller:
                 return
 
     def get_available_options(self):  # Check what assets are available for the selected backup
+        backup_options = []
         # Check if the selected backup has a 3T boot logo asset
         if os.path.exists('{}/sde17'.format(BACKUPS_DIR)):
             self.backup_options.append('3T Boot Logo')
