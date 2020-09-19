@@ -44,22 +44,22 @@ class BackupInstaller:
     def get_available_options(self):  # Check what assets are available for the selected backup
         
         # Check if the selected backup has a 3T boot logo asset
-        if os.path.exists('{}/sde17'.format(BACKUPS_DIR)):
+        if os.path.exists('{}/{}/sde17'.format(BACKUPS_DIR, self.selected_backup)):
             backup_options.append('3T Boot Logo')
 
         # Check if the selected backup has a 3T boot logo asset
-        if os.path.exists('{}/splash'.format(BACKUPS_DIR)):
+        if os.path.exists('{}/{}/splash'.format(BACKUPS_DIR, self.selected_backup)):
             backup_options.append('LeEco/Gold/Two Boot Logo')
 
         # Check if the selected theme has a boot annimation asset
-        if os.path.exists('{}/bootanimation.zip'.format(BACKUPS_DIR)):
+        if os.path.exists('{}/{}/bootanimation.zip'.format(BACKUPS_DIR, self.selected_backup)):
             backup_options.append('Boot Animation')
 
         # Check if the selected theme has a OpenPilot Spinner asset
-        if os.path.exists('{}/spinner'.format(BACKUPS_DIR)):
+        if os.path.exists('{}/{}/spinner'.format(BACKUPS_DIR, self.selected_backup)):
             backup_options.append('OpenPilot Spinner')
 
-        # if os.path.exists('{}/{}/additional'.format(CONTRIB_THEMES, self.selected_theme)):  # todo disabled for now
+        # if os.path.exists('{}/{}/additional'.format(BACKUPS_DIR, self.selected_backup)):  # todo disabled for now
         #   self.backup_options.append('4. Additional Resources')
 
         backup_options.append('-Main Menu-')
