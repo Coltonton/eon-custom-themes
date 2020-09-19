@@ -5,7 +5,7 @@ from os import path
 import time
 from datetime import datetime
 from support.support_variables import BACKUPS_DIR
-from support.support_functions import get_user_backup, is_affirmative
+from support.support_functions import get_user_backups, is_affirmative
 
 os.chdir(os.path.dirname(os.path.realpath(__file__)))  # __file__ is safer since it doesn't change based on where this file is called from
 
