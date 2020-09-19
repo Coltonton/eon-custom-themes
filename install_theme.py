@@ -180,7 +180,7 @@ class ThemeInstaller:
         print('Press enter to continue!')
         input()
 
-      elif selected_option == 'OP Spinner':
+      elif selected_option == 'OpenPilot Spinner':
         print('Selected to install the {} OP Spinner. Continue?'.format(self.selected_theme))
         if not is_affirmative():
           print('Not installing...')
