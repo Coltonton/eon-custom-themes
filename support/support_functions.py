@@ -103,3 +103,4 @@ def str_sim(a, b):              # Part of Shane's theme picker code
 def is_affirmative():           # Ask user for confirmation
   u = input('[Yes/No]: ').lower().strip()
   return u in ['yes', 'ye', 'y', '1']
+
