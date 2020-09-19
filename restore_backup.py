@@ -27,7 +27,7 @@ class BackupInstaller:
         self.backup_dir = datetime.now().strftime('/storage/emulated/0/theme-backups/backup.%m-%d-%y--%I.%M.%S-%p')  # Get current datetime and store
         os.mkdir(self.backup_dir)  # Create the session backup folder
 
-        self.start_loop
+        self.start_loop()
 
     def start_loop(self):
         while 1:
@@ -153,4 +153,4 @@ class BackupInstaller:
         return u in ['yes', 'ye', 'y', '1']
 
 if __name__ == '__main__':
-    bi = BackupInstaller()
+    ti = BackupInstaller()
