@@ -216,7 +216,7 @@ class ThemeInstaller:
         return 'exit'
 
       elif selected_option == 'Boot Animation' or 'Color Boot Animation' or 'White Boot Animation':
-        print('Selected to install the {} Boot Animation. Continue?'.format(self.selected_theme))
+        print('Selected to install the {} {}}. Continue?'.format(self.selected_theme, selected_option))
         if not is_affirmative():
           print('Not installing...')
           time.sleep(1.5)
