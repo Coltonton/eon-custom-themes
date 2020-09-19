@@ -3,6 +3,31 @@ import time
 import difflib
 from support.support_variables import BACKUPS_DIR, CONTRIB_THEMES, EXCLUDED_THEMES, MIN_SIM_THRESHOLD, WELCOME_TEXT, AUTO_WELCOME_TEXT
 
+# Created by @ShaneSmiskol modified version of get_user_theme() to get all backups by Coltonton
+def get_user_backups():
+  available_backups = [t for t in os.listdir(BACKUPS_DIR)]
+  available_backups = [t for t in available_backups if os.path.isdir(os.path.join(BACKUPS_DIR, t))]
+  available_backups = [t for t in available_backups if t not in BACKUPS_DIR]
+  lower_available_themes = [t.lower() for t in available_backups]
+  print('\nAvailable themes:')
+  for idx, backup in enumerate(available_backups):
+    print('{}. {}'.format(idx + 1, backup))
+    print('\nType `exit` to exit.')
+    while 1:
+      backup = input('\nChoose a backup folder (by index): ').strip().lower()
+      print()
+      if backup in ['exit', 'Exit', 'E', 'e','']:
+        return None
+
+      if backup.isdigit():                 # If index number was given
+        backup = int(backup)
+        if backup > len(available_backups):
+          print('Index out of range, try again!')
+          continue
+        return available_backups[int(backup) - 1]
+      else:                                # If not a number
+        print("Invalid selection, please enter index number only, or type 'exit'")
+        return None
 
 # Created by @ShaneSmiskol
 def get_user_theme():           # Auto discover themes and let user choose!
@@ -40,32 +65,6 @@ def get_user_theme():           # Auto discover themes and let user choose!
           return theme
       else:
         print('Unknown theme, try again!')
-
-# Created by @ShaneSmiskol modified version of get_user_theme() to get all backups by Coltonton
-def get_user_backups():
-  available_backups = [t for t in os.listdir(BACKUPS_DIR)]
-  available_backups = [t for t in available_backups if os.path.isdir(os.path.join(BACKUPS_DIR, t))]
-  available_backups = [t for t in available_backups if t not in BACKUPS_DIR]
-  lower_available_themes = [t.lower() for t in available_backups]
-  print('\nAvailable themes:')
-  for idx, backup in enumerate(available_backups):
-    print('{}. {}'.format(idx + 1, backup))
-    print('\nType `exit` to exit.')
-    while 1:
-      backup = input('\nChoose a backup folder (by index): ').strip().lower()
-      print()
-      if backup in ['exit', 'Exit', 'E', 'e','']:
-        return None
-
-      if backup.isdigit():                 # If index number was given
-        backup = int(backup)
-        if backup > len(available_backups):
-          print('Index out of range, try again!')
-          continue
-        return available_backups[int(backup) - 1]
-      else:                                # If not a number
-        print("Invalid selection, please enter index number only, or type 'exit'")
-        return None
 
 # Created by @ShaneSmiskol
 def print_welcome_text():       # This center formats text automatically
