@@ -4,13 +4,14 @@ import os
 from os import path
 import time
 from datetime import datetime
-from support_functions import get_user_backup, is_affirmative
-from support_variables import BACKUPS_DIR
+#import get_user_backup, is_affirmative from support_functions
+from support.support_functions import get_user_backup, is_affirmative
 
 os.chdir(os.path.dirname(os.path.realpath(__file__)))  # __file__ is safer since it doesn't change based on where this file is called from
 
 backup_options = []
 selected_backup = ''
+BACKUPS_DIR = '/storage/emulated/0/theme-backups'
 
 if not os.path.exists('/storage/emulated/0/theme-backups'): # Check if theme backup folder doesnt exist
     os.mkdirs('/storage/emulated/0/theme-backups')              #Create theme backup folder
