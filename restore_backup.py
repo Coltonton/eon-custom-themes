@@ -35,7 +35,7 @@ class BackupInstaller:
             if self.selected_backup is None:
                 print('Didn\'t select a backup, exiting.')
                 return
-            get_available_options()
+            self.get_available_options()
             if self.install_function() == 'exit':
                 return
 
