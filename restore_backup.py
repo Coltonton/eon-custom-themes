@@ -9,6 +9,8 @@ from support.support_functions import get_user_backups, is_affirmative
 
 os.chdir(os.path.dirname(os.path.realpath(__file__)))  # __file__ is safer since it doesn't change based on where this file is called from
 
+backup_options = []
+
 # Crude device detection, *shrug* it works! LeEco does not have tristate!
 if path.exists('/sys/devices/virtual/switch/tri-state-key'): #If 3T-ON
   print('\n*** OG OnePlus EON Device Detected ***')
@@ -40,32 +42,32 @@ class BackupInstaller:
                 return
 
     def get_available_options(self):  # Check what assets are available for the selected backup
-        backup_options = []
+        
         # Check if the selected backup has a 3T boot logo asset
         if os.path.exists('{}/sde17'.format(BACKUPS_DIR)):
-            self.backup_options.append('3T Boot Logo')
+            backup_options.append('3T Boot Logo')
 
         # Check if the selected backup has a 3T boot logo asset
         if os.path.exists('{}/splash'.format(BACKUPS_DIR)):
-            self.backup_options.append('LeEco/Gold/Two Boot Logo')
+            backup_options.append('LeEco/Gold/Two Boot Logo')
 
         # Check if the selected theme has a boot annimation asset
         if os.path.exists('{}/bootanimation.zip'.format(BACKUPS_DIR)):
-            self.backup_options.append('Boot Animation')
+            backup_options.append('Boot Animation')
 
         # Check if the selected theme has a OpenPilot Spinner asset
         if os.path.exists('{}/spinner'.format(BACKUPS_DIR)):
-            self.backup_options.append('OpenPilot Spinner')
+            backup_options.append('OpenPilot Spinner')
 
         # if os.path.exists('{}/{}/additional'.format(CONTRIB_THEMES, self.selected_theme)):  # todo disabled for now
-        #   self.self.backup_options.append('4. Additional Resources')
+        #   self.backup_options.append('4. Additional Resources')
 
-        self.backup_options.append('-Main Menu-')
-        self.backup_options.append('-Reboot-')
+        backup_options.append('-Main Menu-')
+        backup_options.append('-Reboot-')
 
     def install_function(self):       # Self installer program, prompts user on what they want to do
         while 1:
-            options = list(self.backup_options)  # this only contains available options from self.get_available_options
+            options = list(backup_options)  # this only contains available options from self.get_available_options
             if not len(options):
                 print('The selected backup has no resources available for your device! Try another.')
                 time.sleep(2)
@@ -77,7 +79,7 @@ class BackupInstaller:
             indexChoice = int(input("Enter Index Value: "))
             indexChoice -= 1 
 
-            selected_option = self.backup_options[indexChoice]
+            selected_option = backup_options[indexChoice]
             print(selected_option)
 
             if selected_option == '3T Boot Logo':
