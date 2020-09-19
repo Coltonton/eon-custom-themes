@@ -80,6 +80,13 @@ if IS_AUTO_INSTALL == False:
     exit()
 
 class ThemeInstaller:
+  def create_backup_folder(self):
+    if not os.path.exists('/storage/emulated/0/theme-backups'):
+      os.mkdirs('/storage/emulated/0/theme-backups')    
+
+    self.backup_dir = datetime.now().strftime('/storage/emulated/0/theme-backups/backup.%m-%d-%y--%I.%M.%S-%p')  # Get current datetime and store
+    os.mkdir(self.backup_dir)  # Create the session backup folder
+ 
   def __init__(self):
     file = open('./support/do_not_auto.txt', 'r')  # check auto installed version
     DO_NOT_AUTO_INSTALL = file.read()
@@ -104,13 +111,6 @@ class ThemeInstaller:
       else:
         create_backup_folder()
         self.start_loop()   
-
-  def create_backup_folder(self):
-    if not os.path.exists('/storage/emulated/0/theme-backups'):
-      os.mkdirs('/storage/emulated/0/theme-backups')    
-
-    self.backup_dir = datetime.now().strftime('/storage/emulated/0/theme-backups/backup.%m-%d-%y--%I.%M.%S-%p')  # Get current datetime and store
-    os.mkdir(self.backup_dir)  # Create the session backup folder
 
   def start_loop(self):
     while 1:
