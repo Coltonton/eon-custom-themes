@@ -118,7 +118,7 @@ class BackupInstaller:
                 print('\nBoot Animation installed successfully! Original backed up to {}'.format(self.backup_dir))
                 print('Press enter to continue!')
                 input()
-            elif selected_option == 'OP Spinner':
+            elif selected_option == 'OpenPilot Spinner':
                 print('Selected to install the OP Spinner backup. Continue?')
                 if not is_affirmative():
                     print('Not installing...')
