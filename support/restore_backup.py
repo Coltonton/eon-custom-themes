@@ -38,7 +38,7 @@ def start_loop():
 
 def get_available_options():  # Check what assets are available for the selected backup
     # Check if the selected backup has a 3T boot logo asset
-    if os.path.exists('{}/LOGO'.format(BACKUPS_DIR)):
+    if os.path.exists('{}/sde17'.format(BACKUPS_DIR)):
         backup_options.append('3T Boot Logo')
 
     # Check if the selected backup has a 3T boot logo asset
@@ -83,7 +83,7 @@ def install_function():       # Self installer program, prompts user on what the
                 time.sleep(1.5)
                 continue
             os.system('cp {} {}'.format(BOOT_LOGO_PATH, backup_dir))  # Make Backup
-            os.system('dd if={}/{}/LOGO of={}'.format(BACKUPS_DIR, selected_backup, BOOT_LOGO_PATH))  # Replace
+            os.system('dd if={}/{}/sde17 of={}'.format(BACKUPS_DIR, selected_backup, BOOT_LOGO_PATH))  # Replace
             print('\nBoot Logo installed successfully! Original backed up to {}'.format(backup_dir))
             print('Press enter to continue!')
             input()
