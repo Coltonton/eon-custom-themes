@@ -28,6 +28,8 @@ else:                                                        #If LeON/Two
   BOOT_LOGO_THEME_PATH = 'LeEco-Logo/SPLASH'                   # Set the boot logo theme path for Leo
   BOOT_LOGO_PATH = '/dev/block/bootdevice/by-name/splash'      # Set the boot logo directory for Leo
 
+start_loop()
+
 def start_loop():
     while 1:
         selected_backup = get_user_backup()
