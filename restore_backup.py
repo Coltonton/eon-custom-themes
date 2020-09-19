@@ -9,8 +9,6 @@ from support.support_functions import get_user_backups, is_affirmative
 
 os.chdir(os.path.dirname(os.path.realpath(__file__)))  # __file__ is safer since it doesn't change based on where this file is called from
 
-self.backup_options = []
-
 # Crude device detection, *shrug* it works! LeEco does not have tristate!
 if path.exists('/sys/devices/virtual/switch/tri-state-key'): #If 3T-ON
   print('\n*** OG OnePlus EON Device Detected ***')
