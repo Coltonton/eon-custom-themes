@@ -4,14 +4,13 @@ import os
 from os import path
 import time
 from datetime import datetime
-#import get_user_backup, is_affirmative from support_functions
-from support_functions import get_user_backup, is_affirmative
+from support.support_variables import BACKUPS_DIR
+from support.support_functions import get_user_backup, is_affirmative
 
 os.chdir(os.path.dirname(os.path.realpath(__file__)))  # __file__ is safer since it doesn't change based on where this file is called from
 
 backup_options = []
 selected_backup = ''
-BACKUPS_DIR = '/storage/emulated/0/theme-backups'
 
 if not os.path.exists('/storage/emulated/0/theme-backups'): # Check if theme backup folder doesnt exist
     os.mkdirs('/storage/emulated/0/theme-backups')              #Create theme backup folder
@@ -38,6 +37,32 @@ def start_loop():
         get_available_options()
         if install_function() == 'exit':
             return
+
+# Created by @ShaneSmiskol modified version of get_user_theme() to get all backups by Coltonton
+def get_user_backups():
+  available_backups = [t for t in os.listdir(BACKUPS_DIR)]
+  available_backups = [t for t in available_backups if os.path.isdir(os.path.join(BACKUPS_DIR, t))]
+  available_backups = [t for t in available_backups if t not in BACKUPS_DIR]
+  lower_available_themes = [t.lower() for t in available_backups]
+  print('\nAvailable themes:')
+  for idx, backup in enumerate(available_backups):
+    print('{}. {}'.format(idx + 1, backup))
+    print('\nType `exit` to exit.')
+    while 1:
+      backup = input('\nChoose a backup folder (by index): ').strip().lower()
+      print()
+      if backup in ['exit', 'Exit', 'E', 'e','']:
+        return None
+
+      if backup.isdigit():                 # If index number was given
+        backup = int(backup)
+        if backup > len(available_backups):
+          print('Index out of range, try again!')
+          continue
+        return available_backups[int(backup) - 1]
+      else:                                # If not a number
+        print("Invalid selection, please enter index number only, or type 'exit'")
+        return None
 
 def get_available_options():  # Check what assets are available for the selected backup
     # Check if the selected backup has a 3T boot logo asset
@@ -146,3 +171,8 @@ def install_function():       # Self installer program, prompts user on what the
             print('Rebooting.... Enjoy your new theme!!!')
             os.system('am start -a android.intent.action.REBOOT')  # reboot intent is safer (reboot sometimes causes corruption)
             return 'exit'
+
+# Created by @ShaneSmiskol
+def is_affirmative():           # Ask user for confirmation
+  u = input('[Yes/No]: ').lower().strip()
+  return u in ['yes', 'ye', 'y', '1']
