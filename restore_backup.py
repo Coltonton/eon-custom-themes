@@ -19,7 +19,7 @@ else:                                                        #If LeON/Two
   BOOT_LOGO_THEME_PATH = 'LeEco-Logo/SPLASH'                   # Set the boot logo theme path for Leo
   BOOT_LOGO_PATH = '/dev/block/bootdevice/by-name/splash'      # Set the boot logo directory for Leo
 
-class ThemeInstaller:
+class BackupInstaller:
     def __init__(self):
         if not os.path.exists(BACKUPS_DIR): # Check if theme backup folder doesnt exist
             os.mkdirs('/storage/emulated/0/theme-backups')              #Create theme backup folder
@@ -151,3 +151,6 @@ class ThemeInstaller:
     def is_affirmative(self):           # Ask user for confirmation
         u = input('[Yes/No]: ').lower().strip()
         return u in ['yes', 'ye', 'y', '1']
+
+if __name__ == '__main__':
+  bi = BackupInstaller()
