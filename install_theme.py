@@ -176,7 +176,7 @@ class ThemeInstaller:
           continue
         os.system('cp {} {}'.format(BOOT_LOGO_PATH, self.backup_dir))  # Make Backup
         os.system('dd if={}/{}/{} of={}'.format(CONTRIB_THEMES, self.selected_theme, BOOT_LOGO_THEME_PATH, BOOT_LOGO_PATH))  # Replace
-        print('\nBoot Logo installed successfully! Original backed up to {}'.format(backup_dir))
+        print('\nBoot Logo installed successfully! Original backed up to {}'.format(self.backup_dir))
         print('Press enter to continue!')
         input()
 

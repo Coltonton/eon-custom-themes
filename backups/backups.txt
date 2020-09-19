@@ -1,3 +1,0 @@
-Every time you run the installer and install a new theme
-the original file will be copied here, 
-
