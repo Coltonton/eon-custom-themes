@@ -153,4 +153,4 @@ class BackupInstaller:
         return u in ['yes', 'ye', 'y', '1']
 
 if __name__ == '__main__':
-  bi = BackupInstaller()
+    bi = BackupInstaller()
