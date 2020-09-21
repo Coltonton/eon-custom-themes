@@ -82,7 +82,7 @@ print('IMPORTANT: Soft-bricking is likely if this detection is incorrect!')
 class ThemeInstaller:
   def __init__(self):
     if not os.path.exists('/storage/emulated/0/theme-backups'): # Check if theme backup folder doesnt exist
-      os.mkdirs('/storage/emulated/0/theme-backups')              #Create theme backup folder
+      os.mkdir('/storage/emulated/0/theme-backups')              #Create theme backup folder
 
     self.backup_dir = datetime.now().strftime('/storage/emulated/0/theme-backups/backup.%m-%d-%y--%I.%M.%S-%p')  # Get current datetime and store
     os.mkdir(self.backup_dir)  # Create the session backup folder
