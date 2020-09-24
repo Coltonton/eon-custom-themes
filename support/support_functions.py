@@ -14,12 +14,12 @@ def installer_chooser():
 
   # See if user has a self installed theme. If not auto install permited!
   if path.exists('/storage/emulated/0/eon_custom_themes_self_installed'):
-    IS_SELF_INSTALLED = true
+    IS_SELF_INSTALLED = True
   else:
-    IS_SELF_INSTALLED = false
+    IS_SELF_INSTALLED = False
 
   # Check if auto install and do_not_auto is false
-  if IS_AUTO_INSTALL == True and DO_NOT_AUTO_INSTALL == false and IS_SELF_INSTALLED == false:  
+  if IS_AUTO_INSTALL == True and DO_NOT_AUTO_INSTALL == False and IS_SELF_INSTALLED == False:  
     #Open auto installed version file & store as CURRENT_AUTO_VER - the currently installed version
     file2 = open('./support/auto_install_ver.txt', 'r')
     CURRENT_AUTO_VER = file2.read()
@@ -34,12 +34,12 @@ def installer_chooser():
       return None
     
   # If is auto install but do_not_install flag set, if so cancel and exi
-  elif IS_AUTO_INSTALL == True and DO_NOT_AUTO_INSTALL == true:
+  elif IS_AUTO_INSTALL == True and DO_NOT_AUTO_INSTALL == True:
     print('Do Not install flag set!! Canceling....') 
     return None
     
   # Check if user has a self installed theme, if so cancel and exit
-  elif IS_AUTO_INSTALL == True and IS_SELF_INSTALLED == true:
+  elif IS_AUTO_INSTALL == True and IS_SELF_INSTALLED == True:
     print('A self installed theme exists!! Canceling....') 
     return None
 
