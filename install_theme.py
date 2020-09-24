@@ -58,7 +58,7 @@ from os import path
 from datetime import datetime
 from support.support_functions import print_welcome_text, print_auto_welcome_text, get_user_theme, get_user_backups, is_affirmative
 from support.support_functions import mark_self_installed, installer_chooser
-from support.support_variables import AUTO_INSTALL_CONF, BACKUPS_DIR, backup_options, CONTRIB_THEMES, IS_AUTO_INSTALL
+from support.support_variables import AUTO_INSTALL_CONF, BACKUPS_DIR, BACKUP_OPTIONS, CONTRIB_THEMES, IS_AUTO_INSTALL
 
 os.chdir(os.path.dirname(os.path.realpath(__file__)))  # __file__ is safer since it doesn't change based on where this file is called from
 
@@ -328,26 +328,26 @@ class ThemeInstaller:
         
     # Check if the selected backup has a boot logo asset
     if os.path.exists('{}/{}/{}'.format(BACKUPS_DIR, self.selected_backup, BOOT_LOGO_NAME)):
-      backup_options.append('Boot Logo')
+      BACKUP_OPTIONS.append('Boot Logo')
 
     # Check if the selected backup has a boot annimation asset
     if os.path.exists('{}/{}/bootanimation.zip'.format(BACKUPS_DIR, self.selected_backup)):
-        backup_options.append('Boot Animation')
+        BACKUP_OPTIONS.append('Boot Animation')
 
     # Check if the selected backup has a OpenPilot Spinner asset
     if os.path.exists('{}/{}/spinner'.format(BACKUPS_DIR, self.selected_backup)):
-      backup_options.append('OpenPilot Spinner')
+      BACKUP_OPTIONS.append('OpenPilot Spinner')
 
     # if os.path.exists('{}/{}/additional'.format(BACKUPS_DIR, self.selected_backup)):  # todo disabled for now
-    #   self.backup_options.append('4. Additional Resources')
+    #   self.BACKUP_OPTIONS.append('4. Additional Resources')
 
-    backup_options.append('-Main Menu-')
-    backup_options.append('-Reboot-')
-    backup_options.append('-Quit-')
+    BACKUP_OPTIONS.append('-Main Menu-')
+    BACKUP_OPTIONS.append('-Reboot-')
+    BACKUP_OPTIONS.append('-Quit-')
 
   def backup_reinstall_function(self):     # Backuo re-installer program, prompts user on what they want to do
     while 1:
-      options = list(backup_options)  # this only contains available options from self.get_available_options
+      options = list(BACKUP_OPTIONS)  # this only contains available options from self.get_available_options
       if not len(options):
         print('The selected backup has no resources available for your device! Try another.')
         time.sleep(2)
@@ -359,7 +359,7 @@ class ThemeInstaller:
       indexChoice = int(input("Enter Index Value: "))
       indexChoice -= 1 
 
-      selected_option = backup_options[indexChoice]
+      selected_option = BACKUP_OPTIONS[indexChoice]
       print(selected_option)
 
       if selected_option == 'Boot Logo':

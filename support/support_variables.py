@@ -4,7 +4,7 @@ MIN_SIM_THRESHOLD = 0.25  # user's input needs to be this percent or higher simi
 
 BACKUPS_DIR = '/storage/emulated/0/theme-backups'
 
-backup_options = []
+BACKUP_OPTIONS = []
 
 # Auto Install variables - see DEVREADME
 IS_AUTO_INSTALL = False     #Do Auto Install
