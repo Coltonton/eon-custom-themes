@@ -402,13 +402,13 @@ class ThemeInstaller:
           time.sleep(1.5)
           continue
               
-                  os.system('mount -o remount,rw /system')  # /system read only, must mount as r/w
-                  os.system('mv /system/media/bootanimation.zip {}'.format(self.backup_dir))  # backup
-                  os.system('cp {}/{}/bootanimation.zip /system/media/bootanimation.zip'.format(BACKUPS_DIR, self.selected_backup))  # replace
-                  os.system('chmod 666 /system/media/bootanimation.zip')
-                  print('\nBoot Animation installed successfully! Original backed up to {}'.format(self.backup_dir))
-                  print('Press enter to continue!')
-                  input()
+        os.system('mount -o remount,rw /system')  # /system read only, must mount as r/w
+        os.system('mv /system/media/bootanimation.zip {}'.format(self.backup_dir))  # backup
+        os.system('cp {}/{}/bootanimation.zip /system/media/bootanimation.zip'.format(BACKUPS_DIR, self.selected_backup))  # replace
+        os.system('chmod 666 /system/media/bootanimation.zip')
+        print('\nBoot Animation installed successfully! Original backed up to {}'.format(self.backup_dir))
+        print('Press enter to continue!')
+        input()
       elif selected_option == 'OpenPilot Spinner':
         print('Selected to install the OP Spinner backup. Continue?')
         if not is_affirmative():
