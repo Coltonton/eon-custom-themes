@@ -55,7 +55,6 @@
 import os
 import time
 from os import path
-from datetime import datetime
 from support.support_functions import print_welcome_text, print_auto_welcome_text, get_user_theme, get_user_backups, is_affirmative
 from support.support_functions import mark_self_installed, make_backup_folder, installer_chooser
 from support.support_variables import AUTO_INSTALL_CONF, BACKUPS_DIR, BACKUP_OPTIONS, CONTRIB_THEMES, IS_AUTO_INSTALL
