@@ -224,7 +224,7 @@ class ThemeInstaller:
 
         #Final make new spinner & finish
         os.system('cd /data/openpilot/selfdrive/ui/spinner && make')
-        print('\n{} spinner installed successfully! Original backed up to {}'.format(opdir.split('/')[2], self.backup_dir))
+        print('\n{} spinner installed successfully! Original backed up to {}'.format(opdir, self.backup_dir))
         mark_self_installed()
         print('Press enter to continue!')
         input()
