@@ -342,7 +342,7 @@ class ThemeInstaller:
       if self.selected_backup is None:
         print('Didn\'t select a backup, exiting.')
         return
-      self.backup_get_available_options(self.backup_dir)
+      self.backup_get_available_options(backup_dir)
       if self.backup_reinstall_function() == 'exit':
         return
   
