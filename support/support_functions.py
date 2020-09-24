@@ -72,7 +72,7 @@ def get_user_theme():           # Auto discover themes and let user choose!
   while 1:
     theme = input('\nChoose a theme to install (by name or index): ').strip().lower()
     print()
-f    if theme in ['restore', 'r']:
+    if theme in ['restore', 'r']:
       return 'restore'
     if theme in ['exit', 'e', '0']:
       exit()
