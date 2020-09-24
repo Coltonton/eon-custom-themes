@@ -25,7 +25,7 @@ def get_user_theme():           # Auto discover themes and let user choose!
     if theme.isdigit():
       theme = int(theme)
       if theme == 69:
-        print('nice\n')
+        print('\nnice\n')
         return 'restore'
       if theme == 70:
         return None

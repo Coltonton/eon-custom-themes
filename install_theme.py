@@ -229,11 +229,11 @@ class ThemeInstaller:
         print('Do you have an OP fork with a custom directory name? (ex. arnepilot, dragonpilot)')  # Ask the user if their OP fork used a diffrent directory.
         if is_affirmative():  # Yes there is a custom OP dir
           print('What is the OP directory name? (case matters, not including /data/)')
-          op_dir = '/data/{}'.format(input('> ').strip('/'))  # get custom dir name, strip slashes for safety
-          print('Your openpilot directory is {}'.format(op_dir))
+          opdir = '/data/{}'.format(input('> ').strip('/'))  # get custom dir name, strip slashes for safety
+          print('Your openpilot directory is {}'.format(opdir))
           input('*** Please enter to continue, or Ctrl+C to abort if this is incorrect! ***')
         else:
-          op_dir = 'openpilot'                                #op directory is not custom so openpilot
+          opdir = 'openpilot'                                #op directory is not custom so openpilot
 
         #Backup files
         os.system('mv /data/{}/selfdrive/assets/img_spinner_comma.png {}/spinner'.format(opdir, self.backup_dir)) #Backup logo
@@ -342,11 +342,11 @@ class ThemeInstaller:
       if self.selected_backup is None:
         print('Didn\'t select a backup, exiting.')
         return
-      self.get_backup_options()
+      self.backup_get_available_options()
       if self.backup_reinstall_function() == 'exit':
         return
   
-  def get_backup_options(self):  # Check what assets are available for the selected backup
+  def backup_get_available_options(self):  # Check what assets are available for the selected backup
         
     # Check if the selected backup has a boot logo asset
     if os.path.exists('{}/{}/{}}'.format(BACKUPS_DIR, self.selected_backup, BOOT_LOGO_NAME)):
