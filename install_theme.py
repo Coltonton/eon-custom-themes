@@ -272,7 +272,7 @@ class ThemeInstaller:
         return 'exit'
 
       elif selected_option == '-Quit-' or selected_option is None:
-        print('Thank you come again! You will see your new theme next reboot!')
+        print('Thank you come again! You will see your changes next reboot!')
         exit()
 
       elif selected_option == 'Boot Animation' or 'Color Boot Animation' or 'White Boot Animation':
@@ -365,7 +365,7 @@ class ThemeInstaller:
 
     backup_options.append('-Main Menu-')
     backup_options.append('-Reboot-')
-    backup_options.append('Quit')
+    backup_options.append('-Quit-')
 
   def backup_reinstall_function(self):       # Self installer program, prompts user on what they want to do
     while 1:
@@ -462,7 +462,9 @@ class ThemeInstaller:
         print('Rebooting.... Enjoy your new theme!!!')
         os.system('am start -a android.intent.action.REBOOT')  # reboot intent is safer (reboot sometimes causes corruption)
         return 'exit'
-
+      elif selected_option == '-Quit-':
+        print('Thank you come again! You will see your changes next reboot!')
+        exit()
 
 if __name__ == '__main__':
   ti = ThemeInstaller()
