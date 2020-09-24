@@ -87,7 +87,7 @@ def is_affirmative():           # Ask user for confirmation
 
 # Created by @ShaneSmiskol modified version of get_user_theme() to get all backups by Coltonton
 def get_user_backups():
-  '''available_themes = [t for t in os.listdir(BACKUPS_DIR)]
+  available_themes = [t for t in os.listdir(BACKUPS_DIR)]
   available_themes = [t for t in available_themes if os.path.isdir(os.path.join(BACKUPS_DIR, t))]
   #available_themes = [t for t in available_themes if t not in EXCLUDED_THEMES]
   lower_available_themes = [t.lower() for t in available_themes]
@@ -128,8 +128,8 @@ def get_user_backups():
         if input().lower().strip() in ['yes', 'y', 1, 'ye', 'Yes', 'Y', 'Ye']:
           return theme
       else:
-        print('Unknown theme, try again!')'''
-  available_backups = [t for t in os.listdir(BACKUPS_DIR)]
+        print('Unknown theme, try again!')
+  '''available_backups = [t for t in os.listdir(BACKUPS_DIR)]
   available_backups = [t for t in available_backups if os.path.isdir(os.path.join(BACKUPS_DIR, t))]
   #available_backups = [t for t in available_backups if t not in BACKUPS_DIR]
   lower_available_backups = [t.lower() for t in available_backups]
@@ -151,4 +151,4 @@ def get_user_backups():
         return available_backups[int(backup) - 1]
       else:                                # If not a number
         print("Invalid selection, please enter index number only, or type 'exit'")
-        return None
+        return None'''
