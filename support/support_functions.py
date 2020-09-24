@@ -2,6 +2,7 @@ import os
 import time
 import difflib
 from support.support_variables import BACKUPS_DIR, CONTRIB_THEMES, EXCLUDED_THEMES, MIN_SIM_THRESHOLD, WELCOME_TEXT, AUTO_WELCOME_TEXT
+from install_theme import backup_dir
 
 # Created by @ShaneSmiskol some modifications by coltonton
 def get_user_theme():           # Auto discover themes and let user choose!
@@ -80,6 +81,7 @@ def str_sim(a, b):              # Part of Shane's theme picker code
 def is_affirmative():           # Ask user for confirmation
   u = input('[1.Yes / 2.No]: ').lower().strip()
   return u in ['yes', 'ye', 'y', '1']
+  print(backup_dir)
 
 # Created by @ShaneSmiskol modified version of get_user_theme() to get all backups by Coltonton
 def get_user_backups():

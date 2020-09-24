@@ -392,7 +392,7 @@ class ThemeInstaller:
           continue
         os.system('cp {} {}'.format(BOOT_LOGO_PATH, self.backup_dir))  # Make Backup
         os.system('dd if={}/{}/{} of={}'.format(BACKUPS_DIR, self.selected_backup, BOOT_LOGO_NAME, BOOT_LOGO_PATH))  # Replace
-        print('\nBoot Logo installed successfully! Original backed up to {}'.format(self.backup_dir))
+        print('\nBoot Logo re-installed successfully! Original backed up to {}'.format(self.backup_dir))
         print('Press enter to continue!')
         input()
       elif selected_option == 'Boot Animation':
@@ -406,7 +406,7 @@ class ThemeInstaller:
         os.system('mv /system/media/bootanimation.zip {}'.format(self.backup_dir))  # backup
         os.system('cp {}/{}/bootanimation.zip /system/media/bootanimation.zip'.format(BACKUPS_DIR, self.selected_backup))  # replace
         os.system('chmod 666 /system/media/bootanimation.zip')
-        print('\nBoot Animation installed successfully! Original backed up to {}'.format(self.backup_dir))
+        print('\nBoot Animation re-installed successfully! Original backed up to {}'.format(self.backup_dir))
         print('Press enter to continue!')
         input()
       elif selected_option == 'OpenPilot Spinner':
@@ -459,9 +459,9 @@ class ThemeInstaller:
       elif selected_option == '-Main Menu-' or selected_option is None:
         return
       elif selected_option == '-Reboot-':
-        print('Rebooting.... Enjoy your new theme!!!')
+        print('Rebooting.... Enjoy your old theme!!!')
         os.system('am start -a android.intent.action.REBOOT')  # reboot intent is safer (reboot sometimes causes corruption)
-        return 'exit'
+        exit()
       elif selected_option == '-Quit-':
         print('Thank you come again! You will see your changes next reboot!')
         exit()
