@@ -245,7 +245,7 @@ class ThemeInstaller:
         if path.exists('{}/{}/spinner/img_spinner_track.png'.format(CONTRIB_THEMES, self.selected_theme)):                   # Check if theme contributer provided a spinner track
           os.system('cp {}/{}/spinner/img_spinner_track.png /data/{}/selfdrive/assets'.format(CONTRIB_THEMES, self.selected_theme, opdir)) #Replace sprinner track supplied custom
         else:
-          os.system('cp ./support/img_spinner_track.png /data/{}/selfdrive/assets'.format(CONTRIB_THEMES, self.selected_theme, op_dir))     #Replace sprinner track with standard 
+          os.system('cp ./support/img_spinner_track.png /data/{}/selfdrive/assets'.format(CONTRIB_THEMES, self.selected_theme, opdir))     #Replace sprinner track with standard 
         if path.exists('{}/{}/spinner/spinner.c'.format(CONTRIB_THEMES, self.selected_theme)):                               # Check if theme contributer provided a spinner.c
           os.system('cp {}/{}/spinner/spinner.c /data/{}/selfdrive/common'.format(CONTRIB_THEMES, self.selected_theme, opdir))             #Replace spinner.c with supplied custom 
         else:
@@ -253,7 +253,7 @@ class ThemeInstaller:
 
         #Final make new spinner & finish
         os.system('cd /data/openpilot/selfdrive/ui/spinner && make')
-        print('\n{} spinner installed successfully! Original backed up to {}'.format(op_dir.split('/')[2], self.backup_dir))
+        print('\n{} spinner installed successfully! Original backed up to {}'.format(opdir.split('/')[2], self.backup_dir))
         print('Press enter to continue!')
         input()
 
@@ -410,27 +410,49 @@ class ThemeInstaller:
         print('Press enter to continue!')
         input()
       elif selected_option == 'OpenPilot Spinner':
-        print('Selected to install the OP Spinner backup. Continue?')
+        #Confirm user wants to install Spinner
+        print('Selected to install the {} OP Spinner backup. Continue?'.format(self.selected_theme))
         if not is_affirmative():
           print('Not installing...')
           time.sleep(1.5)
           continue
+        
+        #Check if there was a backup already this session to prevent accidental overwrites
+        if path.exists('{}/spinner'.format(self.backup_dir)):                  
+            print('It appears you already made a spinner backup this session') 
+            print('continuing will overwrite last spinner backup!')
+            print('Would you like to continue and overwrite previous?')
+            if not is_affirmative():
+              print('Not installed, exiting session..... Please re-run program')
+              exit()      #Exit program if user does not want to overwrite, so they can start a new session
+        else:
+          os.mkdir('{}/spinner'.format(self.backup_dir))
+
+        #Ask user if their OP directory is custom (like arnepilot / dragonpilot)
         print('Do you have an OP fork with a custom directory name? (ex. arnepilot, dragonpilot)')  # Ask the user if their OP fork used a diffrent directory.
         if is_affirmative():  # Yes there is a custom OP dir
           print('What is the OP directory name? (case matters, not including /data/)')
-          op_dir = '/data/{}'.format(input('> ').strip('/'))  # get custom dir name, strip slashes for safety
-          print('Your openpilot directory is {}'.format(op_dir))
+          opdir = '/data/{}'.format(input('> ').strip('/'))  # get custom dir name, strip slashes for safety
+          print('Your openpilot directory is {}'.format(opdir))
           input('*** Please enter to continue, or Ctrl+C to abort if this is incorrect! ***')
+        else:
+          opdir = 'openpilot'                                #op directory is not custom so openpilot
 
-          os.system('mv {}/selfdrive/ui/spinner/spinner {}'.format(op_dir, self.backup_dir))
-          os.system('cp {}/{}/spinner {}/selfdrive/ui/spinner'.format(BACKUPS_DIR, self.selected_backup, op_dir))
-          print('\n{} spinner installed successfully! Original backed up to {}'.format(op_dir.split('/')[2], self.backup_dir))
-        else:  # there is not custom OP dir
-          os.system('mv /data/openpilot/selfdrive/ui/spinner/spinner {}'.format(self.backup_dir))
-          os.system('cp {}/{}/spinner /data/openpilot/selfdrive/ui/spinner'.format(BACKUPS_DIR, self.selected_backup))
-          print('\nopenpilot spinner installed successfully! Original backed up to {}'.format(self.backup_dir))
-          print('Press enter to continue!')
-          input()
+        #Backup files
+        os.system('mv /data/{}/selfdrive/assets/img_spinner_comma.png {}/spinner'.format(opdir, self.backup_dir)) #Backup logo
+        os.system('mv /data/{}/selfdrive/assets/img_spinner_track.png {}/spinner'.format(opdir, self.backup_dir)) #backup sprinner track
+        os.system('mv /data/{}/selfdrive/common/spinner.c {}/spinner'.format(opdir, self.backup_dir))             #backup spinner.c
+
+        #Copy in new files
+        os.system('cp {}/{}/spinner/img_spinner_comma.png /data/{}/selfdrive/assets'.format(BACKUPS_DIR, self.selected_backup, opdir)) #Replace logo
+        os.system('cp {}/{}/spinner/img_spinner_track.png /data/{}/selfdrive/assets'.format(BACKUPS_DIR, self.selected_backup, opdir)) #Replace sprinner
+        os.system('cp {}/{}/spinner/spinner.c /data/{}/selfdrive/common'.format(CONTRIB_THEMES, self.selected_theme, opdir))           #Replace spinner.c
+
+        #Final make new spinner & finish
+        os.system('cd /data/{}/selfdrive/ui/spinner && make'.format(opdir))
+        print('\n{} spinner installed successfully! Original backed up to {}'.format(opdir.split('/')[2], self.backup_dir))
+        print('Press enter to continue!')
+        input()
       elif selected_option == 'Additional Resources':  # additional features
         print('Additional Resources are not an active feature')
         time.sleep(5)
