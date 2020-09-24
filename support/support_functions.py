@@ -29,7 +29,7 @@ def get_user_backups():
         print("Invalid selection, please enter index number only, or type 'exit'")
         return None
 
-# Created by @ShaneSmiskol
+# Created by @ShaneSmiskol some modifications by coltonton
 def get_user_theme():           # Auto discover themes and let user choose!
   available_themes = [t for t in os.listdir(CONTRIB_THEMES)]
   available_themes = [t for t in available_themes if os.path.isdir(os.path.join(CONTRIB_THEMES, t))]
@@ -38,20 +38,23 @@ def get_user_theme():           # Auto discover themes and let user choose!
   print('\nAvailable themes:')
   for idx, theme in enumerate(available_themes):
     print('{}. {}'.format(idx + 1, theme))
-  print('\nType `restore` or exter 69 to restore a backup')
-  print('Type `exit` to exit.')
+  print('\nType `restore` or enter 69 to restore a backup')
+  print('Type `exit` or enter 70 to exit.')
   while 1:
     theme = input('\nChoose a theme to install (by name or index): ').strip().lower()
     print()
-    if theme in ['exit', 'Exit', 'E', 'e']:
-      return None
     if theme in ['restore', 'Restore', 'r', 'R', 69]:
       return 'restore'
+    if theme in ['exit', 'Exit', 'E', 'e', 70]:
+      return None
 
     if theme.isdigit():
       theme = int(theme)
       if theme == 69:
+        print('nice')
         return 'restore'
+      if theme == 70:
+        return None
       if theme > len(available_themes):
         print('Index out of range, try again!')
         continue
