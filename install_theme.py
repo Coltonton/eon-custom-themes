@@ -61,6 +61,8 @@ from support.support_variables import AUTO_INSTALL_CONF, BACKUPS_DIR, CONTRIB_TH
 
 os.chdir(os.path.dirname(os.path.realpath(__file__)))  # __file__ is safer since it doesn't change based on where this file is called from
 
+backup_options = []
+
 if IS_AUTO_INSTALL:
   print_auto_welcome_text()   #Print welcome text with true flag for auto welcome text
 else:
@@ -335,8 +337,6 @@ class ThemeInstaller:
     fi.write(str(DESIRED_AUTO_VER))
 
   def backup_reinstaller_loop(self):     # Backup Reinstaller!
-    backup_options = []
-
     while 1:
       self.selected_backup = get_user_backups()
       if self.selected_backup is None:
