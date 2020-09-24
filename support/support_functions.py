@@ -126,7 +126,7 @@ def print_auto_welcome_text():  # This center formats text automatically
 
 def mark_self_installed():
   if not path.exists('/storage/emulated/0/eon_custom_themes_self_installed'):
-    f = open("eon_custom_themes_self_installed", "x")
+    f = open("/storage/emulated/0/eon_custom_themes_self_installed.txt", "w")
     f.close
 
 # Created by @ShaneSmiskol
