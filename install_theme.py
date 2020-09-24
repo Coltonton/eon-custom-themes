@@ -261,6 +261,8 @@ class ThemeInstaller:
           bootAniColor = "color_"
         elif selected_option == 'White Boot Animation':
           bootAniColor = "white_"
+
+        print(bootAniColor)
         
         os.system('mount -o remount,rw /system')  # /system read only, must mount as r/w
         os.system('mv /system/media/bootanimation.zip {}'.format(self.backup_dir))  # backup
