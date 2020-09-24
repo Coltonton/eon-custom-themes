@@ -50,6 +50,8 @@ def get_user_theme():           # Auto discover themes and let user choose!
 
     if theme.isdigit():
       theme = int(theme)
+      if theme == 69:
+        return 'restore'
       if theme > len(available_themes):
         print('Index out of range, try again!')
         continue
