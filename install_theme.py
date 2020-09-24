@@ -131,7 +131,7 @@ class ThemeInstaller:
         print('Didn\'t select a theme, exiting.')
         return
       if self.selected_theme == 'restore':
-        backup_reinstaller_loop()
+        self.backup_reinstaller_loop()
       self.get_available_options()
       if self.install_function() == 'exit':
         return
