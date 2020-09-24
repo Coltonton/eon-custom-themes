@@ -1,7 +1,48 @@
 import os
 import time
 import difflib
-from support.support_variables import BACKUPS_DIR, CONTRIB_THEMES, EXCLUDED_THEMES, MIN_SIM_THRESHOLD, WELCOME_TEXT, AUTO_WELCOME_TEXT
+from support.support_variables import BACKUPS_DIR, CONTRIB_THEMES, DESIRED_AUTO_VER, EXCLUDED_THEMES, MIN_SIM_THRESHOLD, WELCOME_TEXT, AUTO_WELCOME_TEXT
+
+def installer_chooser():
+  #Get DO_NOT_AUTO_INSTALL var from its file
+  file = open('./support/do_not_auto.txt', 'r')  # Open do_not_auto flag file
+  DO_NOT_AUTO_INSTALL = str(file.read())         # Store flag
+  file.close
+
+  # See if user has a self installed theme. If not auto install permited!
+  if path.exists('/storage/emulated/0/eon_custom_themes_self_installed'):
+    IS_SELF_INSTALLED = true
+  else:
+    IS_SELF_INSTALLED = false
+
+  # Check if auto install and do_not_auto is false
+  if IS_AUTO_INSTALL == True and DO_NOT_AUTO_INSTALL == false and IS_SELF_INSTALLED = false:  
+    #Open auto installed version file & store as CURRENT_AUTO_VER - the currently installed version
+    file2 = open('./support/auto_install_ver.txt', 'r')
+    CURRENT_AUTO_VER = file2.read()
+    file2.close
+
+    # Detrtmine if installed version is desired version and act
+    if CURRENT_AUTO_VER is not DESIRED_AUTO_VER:         # If current installed version != desired version
+      print('First install or new version detected, installing.....')
+      return 'Do_Auto'                                       # Do Auto install theme
+    else:                                                # If current installed version == desired version 
+      print('Most current version installed, canceling.....')
+      return None
+    
+    # If is auto install but do_not_install flag set, if so cancel and exi
+    elif IS_AUTO_INSTALL == True and DO_NOT_AUTO_INSTALL == true:
+      print('Do Not install flag set!! Canceling....') 
+      return None
+    
+    # Check if user has a self installed theme, if so cancel and exit
+    elif IS_AUTO_INSTALL == True and IS_SELF_INSTALLED == true:
+      print('A self installed theme exists!! Canceling....') 
+      return None
+
+    # Else return self installer
+    else:                                                  
+      return 'Do_Self' 
 
 # Created by @ShaneSmiskol some modifications by coltonton
 def get_user_theme():           # Auto discover themes and let user choose!
@@ -71,6 +112,11 @@ def print_auto_welcome_text():  # This center formats text automatically
     print('+{}+'.format(' ' * padding_left + line + ' ' * (padding - padding_left)))
   print(''.join(['+' for _ in range(max_line_length)]))
   time.sleep(2)  # Pause for suspense, and so can be read
+
+def mark_self_installed():
+  if not path.exists('/storage/emulated/0/eon_custom_themes_self_installed'):
+    f = open("eon_custom_themes_self_installed", "x")
+    f.close
 
 # Created by @ShaneSmiskol
 def str_sim(a, b):              # Part of Shane's theme picker code
