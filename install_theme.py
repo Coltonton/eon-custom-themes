@@ -338,7 +338,7 @@ class ThemeInstaller:
 
   def backup_reinstaller_loop(self):     # Backup Reinstaller!
     while 1:
-      self.selected_backup = get_user_backups(backup_dir)
+      self.selected_backup = get_user_backups(self.backup_dir)
       if self.selected_backup is None:
         print('Didn\'t select a backup, exiting.')
         return
