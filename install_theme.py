@@ -283,6 +283,7 @@ class ThemeInstaller:
   # Auto installer stuff
   def auto_installer(self):               # Auto Installer program for incorperating into OP forks SEE DEVREADME
     self.selected_theme = AUTO_INSTALL_CONF['auto_selected_theme']
+    opdir AUTO_INSTALL_CONF['openpilot_dir_name']
     #selected_ani_color = AUTO_INSTALL_CONF['install_color']
 
     if AUTO_INSTALL_CONF['install_logo']:  # Auto BootLogo Install Code
@@ -298,9 +299,25 @@ class ThemeInstaller:
       print('Boot Animation installed successfully! Original backuped to {}'.format(self.backup_dir))
 
     if AUTO_INSTALL_CONF['install_spinner']:  # Auto OP Spinner Code
-      os.system('cp /data/{}/selfdrive/ui/spinner/spinner {}'.format(AUTO_INSTALL_CONF['openpilot_dir_name'], self.backup_dir))  # TEMP DEV EDIT SHOULD BE MV
-      os.system('cp {}/{}/spinner /data/{}/selfdrive/ui/spinner'.format(CONTRIB_THEMES, self.selected_theme, AUTO_INSTALL_CONF['openpilot_dir_name']))
-      print('OP Spinner installed successfully! Original backed up to {}'.format(self.backup_dir))
+      #Backup files
+      os.system('mv /data/{}/selfdrive/assets/img_spinner_comma.png {}/spinner'.format(opdir, self.backup_dir)) #Backup logo
+      os.system('mv /data/{}/selfdrive/assets/img_spinner_track.png {}/spinner'.format(opdir, self.backup_dir)) #backup sprinner track
+      os.system('mv /data/{}/selfdrive/common/spinner.c {}/spinner'.format(opdir, self.backup_dir))             #backup spinner.c
+
+      #Copy in new files
+      os.system('cp {}/{}/spinner/img_spinner_comma.png /data/{}/selfdrive/assets'.format(CONTRIB_THEMES, self.selected_theme, opdir)) #Replace logo
+      if path.exists('{}/{}/spinner/img_spinner_track.png'.format(CONTRIB_THEMES, self.selected_theme)):                   # Check if theme contributer provided a spinner track
+        os.system('cp {}/{}/spinner/img_spinner_track.png /data/{}/selfdrive/assets'.format(CONTRIB_THEMES, self.selected_theme, opdir)) #Replace sprinner track supplied custom
+      else:
+        os.system('cp ./support/img_spinner_track.png /data/{}/selfdrive/assets'.format(opdir))     #Replace sprinner track with standard 
+      if path.exists('{}/{}/spinner/spinner.c'.format(CONTRIB_THEMES, self.selected_theme)):                               # Check if theme contributer provided a spinner.c
+        os.system('cp {}/{}/spinner/spinner.c /data/{}/selfdrive/common'.format(CONTRIB_THEMES, self.selected_theme, opdir))             #Replace spinner.c with supplied custom 
+      else:
+        os.system('cp ./support/spinner.c /data/{}/selfdrive/common'.format(opdir))             #Replace spinner.c with standard file
+
+      #Final make new spinner & finish
+      os.system('cd /data/openpilot/selfdrive/ui/spinner && make')
+      print('\n{} spinner installed successfully! Original backed up to {}'.format(opdir, self.backup_dir))
 
     # if (autoInstallAdditional != 'no'):             #Auto additional features Code (Not An Active feature)
     #  print('Additional Resources are not an active feature')  # todo: this
