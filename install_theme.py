@@ -83,7 +83,7 @@ print('IMPORTANT: Soft-bricking is likely if this detection is incorrect!')
 class ThemeInstaller:
   def __init__(self):                   # Init code runs once. sets up & determines if to run auto or self
     # Create and get backup folder
-    self.self.backup_dir = make_backup_folder()
+    self.backup_dir = make_backup_folder()
 
     # Detrimine if should self install, auto install, or exit
     auto_found_installer = installer_chooser()  
