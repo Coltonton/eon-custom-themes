@@ -450,7 +450,7 @@ class ThemeInstaller:
 
         #Final make new spinner & finish
         os.system('cd /data/{}/selfdrive/ui/spinner && make'.format(opdir))
-        print('\n{} spinner installed successfully! Original backed up to {}'.format(opdir.split('/')[2], self.backup_dir))
+        print('\n{} spinner re-installed successfully! Original backed up to {}'.format(opdir, self.backup_dir))
         print('Press enter to continue!')
         input()
       elif selected_option == 'Additional Resources':  # additional features
