@@ -72,9 +72,9 @@ def get_user_theme():           # Auto discover themes and let user choose!
   while 1:
     theme = input('\nChoose a theme to install (by name or index): ').strip().lower()
     print()
-    if theme in ['restore', 'Restore', 'r', 'R', 69]:
+    if theme in ['restore', 'Restore', 'r', 'R']:
       return 'restore'
-    if theme in ['exit', 'Exit', 'E', 'e', 70]:
+    if theme in ['exit', 'Exit', 'E', 'e', '0']:
       return None
 
     if theme.isdigit():
@@ -82,8 +82,6 @@ def get_user_theme():           # Auto discover themes and let user choose!
       if theme == 69:
         print('\nnice\n')
         return 'restore'
-      if theme == 70:
-        return None
       if theme > len(available_themes):
         print('Index out of range, try again!')
         continue
@@ -150,17 +148,14 @@ def get_user_backups(exclude):
   print('\nAvailable backups:')
   for idx, backup in enumerate(available_backups):
     print('{}. {}'.format(idx + 1, backup))
-  print('Type `exit` or enter 70 to exit.')
+  print('Type `exit` or enter 0 to exit.')
   while 1:
     backup = input('\nChoose a backup to install (by index value): ').strip().lower()
     print()
-    if backup in ['exit', 'Exit', 'E', 'e', 70]:
+    if backup in ['exit', 'Exit', 'E', 'e', '0']:
       return None
-
     if backup.isdigit():
       backup = int(backup)
-      if backup == 70:
-        return None
       if backup > len(available_backups):
         print('Index out of range, try again!')
         continue
