@@ -57,7 +57,7 @@ import time
 from os import path
 from datetime import datetime
 from support.support_functions import print_welcome_text, print_auto_welcome_text, get_user_theme, get_user_backups, is_affirmative
-from support.support_functions import mark_self_installed, installer_chooser
+from support.support_functions import mark_self_installed, make_backup_folder, installer_chooser
 from support.support_variables import AUTO_INSTALL_CONF, BACKUPS_DIR, BACKUP_OPTIONS, CONTRIB_THEMES, IS_AUTO_INSTALL
 
 os.chdir(os.path.dirname(os.path.realpath(__file__)))  # __file__ is safer since it doesn't change based on where this file is called from
@@ -80,15 +80,12 @@ else:                                                        #If LeON/Two
   BOOT_LOGO_NAME = 'splash'                                    # Set the boot logo name for Leo
 print('IMPORTANT: Soft-bricking is likely if this detection is incorrect!')
 
-# Check if theme backup folder doesnt exist then create
-if not os.path.exists('/storage/emulated/0/theme-backups'):
-  os.mkdir('/storage/emulated/0/theme-backups')
-# Create session backup folder named with date & time 
-  backup_dir = datetime.now().strftime('/storage/emulated/0/theme-backups/backup.%m-%d-%y--%I.%M.%S-%p')
-  os.mkdir(backup_dir)  # Create the session backup folder
 
 class ThemeInstaller:
   def __init__(self):                   # Init code runs once. sets up & determines if to run auto or self
+    # Create and get backup folder
+    self.self.backup_dir = make_backup_folder()
+
     # Detrimine if should self install, auto install, or exit
     auto_found_installer = installer_chooser()  
     if auto_found_installer == 'Do_Self':
@@ -96,7 +93,7 @@ class ThemeInstaller:
     elif auto_found_installer == 'Do_Auto':
       self.auto_installer()                                  # Do auto install theme
     elif auto_found_installer is None:
-      os.rmdir(backup_dir)                              # Remove session backup folder as we are doing nada
+      os.rmdir(self.backup_dir)                              # Remove session backup folder as we are doing nada
       exit()                                                 # Terminate program
 
   def start_loop(self):                 # Self Installer loop
@@ -166,7 +163,7 @@ class ThemeInstaller:
           continue
 
         #Check if there was a backup already this session to prevent accidental overwrites
-        if path.exists('{}/{}'.format(backup_dir, BOOT_LOGO_NAME)):                 #Func to see if there was a backup already this session
+        if path.exists('{}/{}'.format(self.backup_dir, BOOT_LOGO_NAME)):                 #Func to see if there was a backup already this session
             print('It appears you already made a boot logo backup this session')         #to prevent accidental overwrites
             print('continuing will overwrite last boot logo backup!')
             print('Would you like to continue and overwrite previous?')
@@ -175,9 +172,9 @@ class ThemeInstaller:
               exit()                  #Exit program if user does not want to overwrite, so they can start a new session
 
         #Backup & install new
-        os.system('cp {} {}'.format(BOOT_LOGO_PATH, backup_dir))  # Make Backup
+        os.system('cp {} {}'.format(BOOT_LOGO_PATH, self.backup_dir))  # Make Backup
         os.system('dd if={}/{}/{} of={}'.format(CONTRIB_THEMES, self.selected_theme, BOOT_LOGO_THEME_PATH, BOOT_LOGO_PATH))  # Replace
-        print('\nBoot Logo installed successfully! Original backed up to {}'.format(backup_dir))
+        print('\nBoot Logo installed successfully! Original backed up to {}'.format(self.backup_dir))
         mark_self_installed()
         print('Press enter to continue!')
         input()
@@ -191,7 +188,7 @@ class ThemeInstaller:
           continue
         
         #Check if there was a backup already this session to prevent accidental overwrites
-        if path.exists('{}/spinner'.format(backup_dir)):                  
+        if path.exists('{}/spinner'.format(self.backup_dir)):                  
             print('It appears you already made a spinner backup this session') 
             print('continuing will overwrite last spinner backup!')
             print('Would you like to continue and overwrite previous?')
@@ -199,7 +196,7 @@ class ThemeInstaller:
               print('Not installed, exiting session..... Please re-run program')
               exit()      #Exit program if user does not want to overwrite, so they can start a new session
         else:
-          os.mkdir('{}/spinner'.format(backup_dir))
+          os.mkdir('{}/spinner'.format(self.backup_dir))
 
         #Ask user if their OP directory is custom (like arnepilot / dragonpilot)
         print('Do you have an OP fork with a custom directory name? (ex. arnepilot, dragonpilot)')  # Ask the user if their OP fork used a diffrent directory.
@@ -212,9 +209,9 @@ class ThemeInstaller:
           opdir = 'openpilot'                                #op directory is not custom so openpilot
 
         #Backup files
-        os.system('mv /data/{}/selfdrive/assets/img_spinner_comma.png {}/spinner'.format(opdir, backup_dir)) #Backup logo
-        os.system('mv /data/{}/selfdrive/assets/img_spinner_track.png {}/spinner'.format(opdir, backup_dir)) #backup sprinner track
-        os.system('mv /data/{}/selfdrive/common/spinner.c {}/spinner'.format(opdir, backup_dir))             #backup spinner.c
+        os.system('mv /data/{}/selfdrive/assets/img_spinner_comma.png {}/spinner'.format(opdir, self.backup_dir)) #Backup logo
+        os.system('mv /data/{}/selfdrive/assets/img_spinner_track.png {}/spinner'.format(opdir, self.backup_dir)) #backup sprinner track
+        os.system('mv /data/{}/selfdrive/common/spinner.c {}/spinner'.format(opdir, self.backup_dir))             #backup spinner.c
 
         #Copy in new files
         os.system('cp {}/{}/spinner/img_spinner_comma.png /data/{}/selfdrive/assets'.format(CONTRIB_THEMES, self.selected_theme, opdir)) #Replace logo
@@ -229,7 +226,7 @@ class ThemeInstaller:
 
         #Final make new spinner & finish
         os.system('cd /data/openpilot/selfdrive/ui/spinner && make')
-        print('\n{} spinner installed successfully! Original backed up to {}'.format(opdir.split('/')[2], backup_dir))
+        print('\n{} spinner installed successfully! Original backed up to {}'.format(opdir.split('/')[2], self.backup_dir))
         mark_self_installed()
         print('Press enter to continue!')
         input()
@@ -259,7 +256,7 @@ class ThemeInstaller:
           continue
         
         #Check if there was a backup already this session to prevent accidental overwrites
-        if path.exists('{}/bootanimation.zip'.format(backup_dir)):                 #Func to see if there was a backup already this session
+        if path.exists('{}/bootanimation.zip'.format(self.backup_dir)):                 #Func to see if there was a backup already this session
             print('It appears you already made a boot animation backup this session')    #to prevent accidental overwrites
             print('continuing will overwrite last boot animation backup!')
             print('Would you like to continue and overwrite previous?')
@@ -277,10 +274,10 @@ class ThemeInstaller:
 
         #Backup And install new bootanimation
         os.system('mount -o remount,rw /system')  # /system read only, must mount as r/w
-        os.system('mv /system/media/bootanimation.zip {}'.format(backup_dir))  # backup
+        os.system('mv /system/media/bootanimation.zip {}'.format(self.backup_dir))  # backup
         os.system('cp {}/{}/{}bootanimation.zip /system/media/bootanimation.zip'.format(CONTRIB_THEMES, self.selected_theme, bootAniColor))  # replace
         os.system('chmod 666 /system/media/bootanimation.zip')
-        print('\nBoot Animation installed successfully! Original backed up to {}'.format(backup_dir))
+        print('\nBoot Animation installed successfully! Original backed up to {}'.format(self.backup_dir))
         mark_self_installed()
         print('Press enter to continue!')
         input()
@@ -291,21 +288,21 @@ class ThemeInstaller:
     #selected_ani_color = AUTO_INSTALL_CONF['install_color']
 
     if AUTO_INSTALL_CONF['install_logo']:  # Auto BootLogo Install Code
-      os.system('cp {} {}'.format(BOOT_LOGO_PATH, backup_dir))  # Make Backup
+      os.system('cp {} {}'.format(BOOT_LOGO_PATH, self.backup_dir))  # Make Backup
       os.system('dd if={}/{}/{} of={}'.format(CONTRIB_THEMES, self.selected_theme, BOOT_LOGO_THEME_PATH, BOOT_LOGO_PATH))  # Replace
-      print('\nBoot Logo installed successfully! Original backed up to {}'.format(backup_dir))
+      print('\nBoot Logo installed successfully! Original backed up to {}'.format(self.backup_dir))
 
     if AUTO_INSTALL_CONF['install_anim'] == True:  # Auto BootAni Install Code
       os.system('mount -o remount,rw /system')
-      os.system('mv /system/media/bootanimation.zip {}'.format(backup_dir))
+      os.system('mv /system/media/bootanimation.zip {}'.format(self.backup_dir))
       os.system('cp {}/{}/{}bootanimation.zip /system/media/bootanimation.zip'.format(CONTRIB_THEMES, self.selected_theme, AUTO_INSTALL_CONF['ani_color']))
       os.system('chmod 666 /system/media/bootanimation.zip')
-      print('Boot Animation installed successfully! Original backuped to {}'.format(backup_dir))
+      print('Boot Animation installed successfully! Original backuped to {}'.format(self.backup_dir))
 
     if AUTO_INSTALL_CONF['install_spinner']:  # Auto OP Spinner Code
-      os.system('cp /data/{}/selfdrive/ui/spinner/spinner {}'.format(AUTO_INSTALL_CONF['openpilot_dir_name'], backup_dir))  # TEMP DEV EDIT SHOULD BE MV
+      os.system('cp /data/{}/selfdrive/ui/spinner/spinner {}'.format(AUTO_INSTALL_CONF['openpilot_dir_name'], self.backup_dir))  # TEMP DEV EDIT SHOULD BE MV
       os.system('cp {}/{}/spinner /data/{}/selfdrive/ui/spinner'.format(CONTRIB_THEMES, self.selected_theme, AUTO_INSTALL_CONF['openpilot_dir_name']))
-      print('OP Spinner installed successfully! Original backed up to {}'.format(backup_dir))
+      print('OP Spinner installed successfully! Original backed up to {}'.format(self.backup_dir))
 
     # if (autoInstallAdditional != 'no'):             #Auto additional features Code (Not An Active feature)
     #  print('Additional Resources are not an active feature')  # todo: refactor this
@@ -316,7 +313,7 @@ class ThemeInstaller:
   # Backup Reinstaller stuff
   def backup_reinstaller_loop(self):       # Backup Reinstaller!
     while 1:
-      self.selected_backup = get_user_backups(backup_dir)
+      self.selected_backup = get_user_backups(self.backup_dir)
       if self.selected_backup is None:
         print('Didn\'t select a backup, exiting.')
         return
@@ -368,9 +365,9 @@ class ThemeInstaller:
           print('Not installing...')
           time.sleep(1.5)
           continue
-        os.system('cp {} {}'.format(BOOT_LOGO_PATH, backup_dir))  # Make Backup
+        os.system('cp {} {}'.format(BOOT_LOGO_PATH, self.backup_dir))  # Make Backup
         os.system('dd if={}/{}/{} of={}'.format(BACKUPS_DIR, self.selected_backup, BOOT_LOGO_NAME, BOOT_LOGO_PATH))  # Replace
-        print('\nBoot Logo re-installed successfully! Original backed up to {}'.format(backup_dir))
+        print('\nBoot Logo re-installed successfully! Original backed up to {}'.format(self.backup_dir))
         print('Press enter to continue!')
         input()
       elif selected_option == 'Boot Animation':
@@ -381,10 +378,10 @@ class ThemeInstaller:
           continue
               
         os.system('mount -o remount,rw /system')  # /system read only, must mount as r/w
-        os.system('mv /system/media/bootanimation.zip {}'.format(backup_dir))  # backup
+        os.system('mv /system/media/bootanimation.zip {}'.format(self.backup_dir))  # backup
         os.system('cp {}/{}/bootanimation.zip /system/media/bootanimation.zip'.format(BACKUPS_DIR, self.selected_backup))  # replace
         os.system('chmod 666 /system/media/bootanimation.zip')
-        print('\nBoot Animation re-installed successfully! Original backed up to {}'.format(backup_dir))
+        print('\nBoot Animation re-installed successfully! Original backed up to {}'.format(self.backup_dir))
         print('Press enter to continue!')
         input()
       elif selected_option == 'OpenPilot Spinner':
@@ -396,7 +393,7 @@ class ThemeInstaller:
           continue
         
         #Check if there was a backup already this session to prevent accidental overwrites
-        if path.exists('{}/spinner'.format(backup_dir)):                  
+        if path.exists('{}/spinner'.format(self.backup_dir)):                  
             print('It appears you already made a spinner backup this session') 
             print('continuing will overwrite last spinner backup!')
             print('Would you like to continue and overwrite previous?')
@@ -404,7 +401,7 @@ class ThemeInstaller:
               print('Not installed, exiting session..... Please re-run program')
               exit()      #Exit program if user does not want to overwrite, so they can start a new session
         else:
-          os.mkdir('{}/spinner'.format(backup_dir))
+          os.mkdir('{}/spinner'.format(self.backup_dir))
 
         #Ask user if their OP directory is custom (like arnepilot / dragonpilot)
         print('Do you have an OP fork with a custom directory name? (ex. arnepilot, dragonpilot)')  # Ask the user if their OP fork used a diffrent directory.
@@ -417,9 +414,9 @@ class ThemeInstaller:
           opdir = 'openpilot'                                #op directory is not custom so openpilot
 
         #Backup files
-        os.system('mv /data/{}/selfdrive/assets/img_spinner_comma.png {}/spinner'.format(opdir, backup_dir)) #Backup logo
-        os.system('mv /data/{}/selfdrive/assets/img_spinner_track.png {}/spinner'.format(opdir, backup_dir)) #backup sprinner track
-        os.system('mv /data/{}/selfdrive/common/spinner.c {}/spinner'.format(opdir, backup_dir))             #backup spinner.c
+        os.system('mv /data/{}/selfdrive/assets/img_spinner_comma.png {}/spinner'.format(opdir, self.backup_dir)) #Backup logo
+        os.system('mv /data/{}/selfdrive/assets/img_spinner_track.png {}/spinner'.format(opdir, self.backup_dir)) #backup sprinner track
+        os.system('mv /data/{}/selfdrive/common/spinner.c {}/spinner'.format(opdir, self.backup_dir))             #backup spinner.c
 
         #Copy in new files
         os.system('cp {}/{}/spinner/img_spinner_comma.png /data/{}/selfdrive/assets'.format(BACKUPS_DIR, self.selected_backup, opdir)) #Replace logo
@@ -428,7 +425,7 @@ class ThemeInstaller:
 
         #Final make new spinner & finish
         os.system('cd /data/{}/selfdrive/ui/spinner && make'.format(opdir))
-        print('\n{} spinner re-installed successfully! Original backed up to {}'.format(opdir, backup_dir))
+        print('\n{} spinner re-installed successfully! Original backed up to {}'.format(opdir, self.backup_dir))
         print('Press enter to continue!')
         input()
       elif selected_option == 'Additional Resources':  # additional features

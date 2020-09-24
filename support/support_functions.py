@@ -7,6 +7,15 @@ from support.support_variables import MIN_SIM_THRESHOLD, WELCOME_TEXT
 
 os.chdir(os.path.dirname(os.path.realpath(__file__)))  # __file__ is safer since it doesn't change based on where this file is called from
 
+def make_backup_folder():
+  # Check if theme backup folder doesnt exist then create
+  if not os.path.exists('/storage/emulated/0/theme-backups'):
+    os.mkdir('/storage/emulated/0/theme-backups')
+  # Create session backup folder named with date & time 
+  backup_dir = datetime.now().strftime('/storage/emulated/0/theme-backups/backup.%m-%d-%y--%I.%M.%S-%p')
+  os.mkdir(backup_dir)  # Create the session backup folder
+  return backup_dir
+
 def installer_chooser():
   #Get DO_NOT_AUTO_INSTALL var from its file
   file = open('./support/do_not_auto.txt', 'r')  # Open do_not_auto flag file
