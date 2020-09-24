@@ -71,10 +71,12 @@ if path.exists('/sys/devices/virtual/switch/tri-state-key'): #If 3T-ON
   print('\n*** OG OnePlus EON Device Detected ***')
   BOOT_LOGO_THEME_PATH = 'OP3T-Logo/LOGO'                      # Set the boot logo theme path for 3T
   BOOT_LOGO_PATH = '/dev/block/sde17'                          # Set the boot logo directory for 3T
+  BOOT_LOGO_NAME = 'sde17'                                     # Set the boot logo name for 3T
 else:                                                        #If LeON/Two
   print('\n*** LeEco EON (Gold/Comma 2) Device Detected ***\n')
   BOOT_LOGO_THEME_PATH = 'LeEco-Logo/SPLASH'                   # Set the boot logo theme path for Leo
   BOOT_LOGO_PATH = '/dev/block/bootdevice/by-name/splash'      # Set the boot logo directory for Leo
+  BOOT_LOGO_NAME = 'splash'                                    # Set the boot logo name for Leo
 
 print('IMPORTANT: Soft-bricking is likely if this detection is incorrect!')
 
@@ -174,6 +176,15 @@ class ThemeInstaller:
           print('Not installing...')
           time.sleep(1.5)
           continue
+
+        if path.exists('{}/{}'.format(self.backup_dir, BOOT_LOGO_NAME)):                 #Func to see if there was a backup already this session
+            print('It appears you already made a boot logo backup this session')         #to prevent accidental overwrites
+            print('continuing will overwrite last boot logo backup!')
+            print('Would you like to continue and overwrite previous?')
+            if not is_affirmative():
+              print('Not installed, exiting session..... Please re-run program')
+              exit()                  #Exit program if user does not want to overwrite, so they can start a new session
+
         os.system('cp {} {}'.format(BOOT_LOGO_PATH, self.backup_dir))  # Make Backup
         os.system('dd if={}/{}/{} of={}'.format(CONTRIB_THEMES, self.selected_theme, BOOT_LOGO_THEME_PATH, BOOT_LOGO_PATH))  # Replace
         print('\nBoot Logo installed successfully! Original backed up to {}'.format(self.backup_dir))
@@ -186,6 +197,17 @@ class ThemeInstaller:
           print('Not installing...')
           time.sleep(1.5)
           continue
+        
+        if path.exists('{}/spinner}'.format(self.backup_dir)):                 #Func to see if there was a backup already this session
+            print('It appears you already made a spinner backup this session') #to prevent accidental overwrites
+            print('continuing will overwrite last spinner backup!')
+            print('Would you like to continue and overwrite previous?')
+            if not is_affirmative():
+              print('Not installed, exiting session..... Please re-run program')
+              exit()                  #Exit program if user does not want to overwrite, so they can start a new session
+        else:
+          os.mkdir('{}/spinner}'.format(self.backup_dir))
+
         print('Do you have an OP fork with a custom directory name? (ex. arnepilot, dragonpilot)')  # Ask the user if their OP fork used a diffrent directory.
         if is_affirmative():  # Yes there is a custom OP dir
           print('What is the OP directory name? (case matters, not including /data/)')
@@ -197,7 +219,10 @@ class ThemeInstaller:
           os.system('cp {}/{}/spinner {}/selfdrive/ui/spinner'.format(CONTRIB_THEMES, self.selected_theme, op_dir))
           print('\n{} spinner installed successfully! Original backed up to {}'.format(op_dir.split('/')[2], self.backup_dir))
         else:  # there is not custom OP dir
-          os.system('mv /data/openpilot/selfdrive/ui/spinner/spinner {}'.format(self.backup_dir))
+          os.system('mv /data/openpilot/selfdrive/assets/img_spinner_comma.png {}'.format(self.backup_dir)) #Backup logo
+          os.system('mv /data/openpilot/selfdrive/assets/img_spinner_track.png {}'.format(self.backup_dir)) #backup sprinner trach
+          os.system('mv /data/openpilot/selfdrive/common/spinner.c {}/spinner'.format(self.backup_dir))             #backup spinner.c
+
           os.system('cp {}/{}/spinner /data/openpilot/selfdrive/ui/spinner'.format(CONTRIB_THEMES, self.selected_theme))
           print('\nopenpilot spinner installed successfully! Original backed up to {}'.format(self.backup_dir))
         print('Press enter to continue!')
@@ -221,6 +246,14 @@ class ThemeInstaller:
           print('Not installing...')
           time.sleep(1.5)
           continue
+
+        if path.exists('{}/bootanimation.zip}'.format(self.backup_dir)):                 #Func to see if there was a backup already this session
+            print('It appears you already made a boot animation backup this session')    #to prevent accidental overwrites
+            print('continuing will overwrite last boot animation backup!')
+            print('Would you like to continue and overwrite previous?')
+            if not is_affirmative():
+              print('Not installed, exiting session..... Please re-run program')
+              exit()                  #Exit program if user does not want to overwrite, so they can start a new session
 
         if selected_option == 'Boot Animation':
           bootAniColor = ""
