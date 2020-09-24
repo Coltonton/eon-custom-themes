@@ -349,7 +349,7 @@ class ThemeInstaller:
   def backup_get_available_options(self):  # Check what assets are available for the selected backup
         
     # Check if the selected backup has a boot logo asset
-    if os.path.exists('{}/{}/{}}'.format(BACKUPS_DIR, self.selected_backup, BOOT_LOGO_NAME)):
+    if os.path.exists('{}/{}/{}'.format(BACKUPS_DIR, self.selected_backup, BOOT_LOGO_NAME)):
       backup_options.append('Boot Logo')
 
     # Check if the selected backup has a boot annimation asset
