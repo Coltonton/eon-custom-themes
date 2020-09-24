@@ -208,7 +208,7 @@ class ThemeInstaller:
               print('Not installed, exiting session..... Please re-run program')
               exit()                  #Exit program if user does not want to overwrite, so they can start a new session
         else:
-          os.mkdir('{}/spinner}'.format(self.backup_dir))
+          os.mkdir('{}/spinner'.format(self.backup_dir))
 
         print('Do you have an OP fork with a custom directory name? (ex. arnepilot, dragonpilot)')  # Ask the user if their OP fork used a diffrent directory.
         if is_affirmative():  # Yes there is a custom OP dir
@@ -218,7 +218,7 @@ class ThemeInstaller:
           input('*** Please enter to continue, or Ctrl+C to abort if this is incorrect! ***')
 
           os.system('mv {}/selfdrive/ui/spinner/spinner {}'.format(op_dir, self.backup_dir))
-          #os.system('cp {}/{}/spinner {}/selfdrive/ui/spinner'.format(CONTRIB_THEMES, self.selected_theme, op_dir))
+          os.system('cp {}/{}/spinner {}/selfdrive/ui/spinner'.format(CONTRIB_THEMES, self.selected_theme, op_dir))
           print('\n{} spinner installed successfully! Original backed up to {}'.format(op_dir.split('/')[2], self.backup_dir))
         else:  # there is not custom OP dir
           os.system('mv /data/openpilot/selfdrive/assets/img_spinner_comma.png {}/spinner'.format(self.backup_dir)) #Backup logo
