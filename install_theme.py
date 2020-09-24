@@ -100,7 +100,7 @@ class ThemeInstaller:
       self.selected_theme = get_user_theme()
       if self.selected_theme is None:
         print('Didn\'t select a theme, exiting.')
-        return
+        continue
       if self.selected_theme == 'restore':
         self.backup_reinstaller_loop()
       self.get_available_options()
@@ -315,7 +315,7 @@ class ThemeInstaller:
       self.selected_backup = get_user_backups(self.backup_dir)
       if self.selected_backup is None:
         print('Didn\'t select a backup, exiting.')
-        return
+        continue
       self.backup_get_available_options()
       if self.backup_reinstall_function() == 'exit':
         return
