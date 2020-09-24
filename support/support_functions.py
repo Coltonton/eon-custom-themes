@@ -24,7 +24,7 @@ def installer_chooser():
   file.close
 
   # See if user has a self installed theme. If not auto install permited!
-  if path.exists('/storage/emulated/0/eon_custom_themes_self_installed'):
+  if path.exists('/storage/emulated/0/eon_custom_themes_self_installed.txt'):
     IS_SELF_INSTALLED = True
   else:
     IS_SELF_INSTALLED = False
@@ -122,7 +122,6 @@ def print_auto_welcome_text():  # This center formats text automatically
     padding_left = padding // 2
     print('+{}+'.format(' ' * padding_left + line + ' ' * (padding - padding_left)))
   print(''.join(['+' for _ in range(max_line_length)]))
-  time.sleep(2)  # Pause for suspense, and so can be read
 
 def mark_self_installed():
   if not path.exists('/storage/emulated/0/eon_custom_themes_self_installed'):
