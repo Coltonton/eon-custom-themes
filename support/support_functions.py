@@ -20,7 +20,7 @@ def make_backup_folder():
 def installer_chooser():
   #Get DO_NOT_AUTO_INSTALL var from its file
   file = open('./support/do_not_auto.txt', 'r')  # Open do_not_auto flag file
-  DO_NOT_AUTO_INSTALL = str(file.read())         # Store flag
+  DO_NOT_AUTO_INSTALL = file.read()         # Store flag
   file.close
 
   # See if user has a self installed theme. If not auto install permited!
@@ -30,7 +30,7 @@ def installer_chooser():
     IS_SELF_INSTALLED = False
 
   # Check if auto install and do_not_auto is false
-  if IS_AUTO_INSTALL == True and DO_NOT_AUTO_INSTALL == False and IS_SELF_INSTALLED == False:  
+  if IS_AUTO_INSTALL == True and DO_NOT_AUTO_INSTALL is '0' and IS_SELF_INSTALLED == False:  
     #Open auto installed version file & store as CURRENT_AUTO_VER - the currently installed version
     file2 = open('./support/auto_install_ver.txt', 'r')
     CURRENT_AUTO_VER = file2.read()
@@ -45,7 +45,7 @@ def installer_chooser():
       return None
     
   # If is auto install but do_not_install flag set, if so cancel and exi
-  elif IS_AUTO_INSTALL == True and DO_NOT_AUTO_INSTALL == True:
+  elif IS_AUTO_INSTALL == True and DO_NOT_AUTO_INSTALL is '1':
     print('Do Not install flag set!! Canceling....') 
     return None
     
