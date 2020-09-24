@@ -152,6 +152,8 @@ class ThemeInstaller:
 
     self.theme_options.append('-Main Menu-')
     self.theme_options.append('-Reboot-')
+    self.theme_options.append('-Quit-')
+
 
   def install_function(self):       # Self installer program, prompts user on what they want to do
     while 1:
@@ -240,6 +242,10 @@ class ThemeInstaller:
         os.system('am start -a android.intent.action.REBOOT')  # reboot intent is safer (reboot sometimes causes corruption)
         return 'exit'
 
+      elif selected_option == '-Quit-' or selected_option is None:
+        print('Thank you come again! You will see your new theme next reboot!')
+        exit()
+
       elif selected_option == 'Boot Animation' or 'Color Boot Animation' or 'White Boot Animation':
         print('Selected to install the {} {}. Continue?'.format(self.selected_theme, selected_option))
         if not is_affirmative():
@@ -262,8 +268,6 @@ class ThemeInstaller:
         elif selected_option == 'White Boot Animation':
           bootAniColor = "white_"
 
-        print(bootAniColor)
-        
         os.system('mount -o remount,rw /system')  # /system read only, must mount as r/w
         os.system('mv /system/media/bootanimation.zip {}'.format(self.backup_dir))  # backup
         os.system('cp {}/{}/{}bootanimation.zip /system/media/bootanimation.zip'.format(CONTRIB_THEMES, self.selected_theme, bootAniColor))  # replace
