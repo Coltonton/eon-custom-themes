@@ -30,18 +30,18 @@ def installer_chooser():
       print('Most current version installed, canceling.....')
       return None
     
-    # If is auto install but do_not_install flag set, if so cancel and exi
-    elif IS_AUTO_INSTALL == True and DO_NOT_AUTO_INSTALL == true:
-      print('Do Not install flag set!! Canceling....') 
-      return None
+  # If is auto install but do_not_install flag set, if so cancel and exi
+  elif IS_AUTO_INSTALL == True and DO_NOT_AUTO_INSTALL == true:
+    print('Do Not install flag set!! Canceling....') 
+    return None
     
-    # Check if user has a self installed theme, if so cancel and exit
-    elif IS_AUTO_INSTALL == True and IS_SELF_INSTALLED == true:
-      print('A self installed theme exists!! Canceling....') 
-      return None
+  # Check if user has a self installed theme, if so cancel and exit
+  elif IS_AUTO_INSTALL == True and IS_SELF_INSTALLED == true:
+    print('A self installed theme exists!! Canceling....') 
+    return None
 
-    # Else return self installer
-    else:                                                  
+  # Else return self installer
+  else:                                                  
       return 'Do_Self' 
 
 # Created by @ShaneSmiskol some modifications by coltonton
