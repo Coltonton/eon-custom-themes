@@ -16,7 +16,7 @@ def installer_chooser():
     IS_SELF_INSTALLED = false
 
   # Check if auto install and do_not_auto is false
-  if IS_AUTO_INSTALL == True and DO_NOT_AUTO_INSTALL == false and IS_SELF_INSTALLED = false:  
+  if IS_AUTO_INSTALL == True and DO_NOT_AUTO_INSTALL == false and IS_SELF_INSTALLED == false:  
     #Open auto installed version file & store as CURRENT_AUTO_VER - the currently installed version
     file2 = open('./support/auto_install_ver.txt', 'r')
     CURRENT_AUTO_VER = file2.read()
