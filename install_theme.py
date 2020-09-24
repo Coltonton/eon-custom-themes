@@ -130,8 +130,8 @@ class ThemeInstaller:
       if self.selected_theme is None:
         print('Didn\'t select a theme, exiting.')
         return
-      if self.selected_theme is 'restore'
-        return
+      #if self.selected_theme is in'restore'
+       # return
       self.get_available_options()
       if self.install_function() == 'exit':
         return
