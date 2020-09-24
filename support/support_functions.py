@@ -38,14 +38,14 @@ def get_user_theme():           # Auto discover themes and let user choose!
   print('\nAvailable themes:')
   for idx, theme in enumerate(available_themes):
     print('{}. {}'.format(idx + 1, theme))
-  print('\nType `restore` or exter 0 to restore a backup')
-  print('\nType `exit` to exit.')
+  print('\nType `restore` or exter 69 to restore a backup')
+  print('Type `exit` to exit.')
   while 1:
     theme = input('\nChoose a theme to install (by name or index): ').strip().lower()
     print()
     if theme in ['exit', 'Exit', 'E', 'e']:
       return None
-    if theme in ['restore', 'Restore', 'r', 'R', 0]:
+    if theme in ['restore', 'Restore', 'r', 'R', 69]:
       return 'restore'
 
     if theme.isdigit():
