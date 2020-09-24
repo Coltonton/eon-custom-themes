@@ -284,7 +284,7 @@ class ThemeInstaller:
   def auto_installer(self):               # Auto Installer program for incorperating into OP forks SEE DEVREADME
     self.selected_theme = AUTO_INSTALL_CONF['auto_selected_theme']
     opdir = AUTO_INSTALL_CONF['openpilot_dir_name']
-    #selected_ani_color = AUTO_INSTALL_CONF['install_color']
+    selected_ani_color = AUTO_INSTALL_CONF['ani_color']
 
     if AUTO_INSTALL_CONF['install_logo']:  # Auto BootLogo Install Code
       os.system('cp {} {}'.format(BOOT_LOGO_PATH, self.backup_dir))  # Make Backup
@@ -294,7 +294,7 @@ class ThemeInstaller:
     if AUTO_INSTALL_CONF['install_anim'] == True:  # Auto BootAni Install Code
       os.system('mount -o remount,rw /system')
       os.system('mv /system/media/bootanimation.zip {}'.format(self.backup_dir))
-      os.system('cp {}/{}/{}bootanimation.zip /system/media/bootanimation.zip'.format(CONTRIB_THEMES, self.selected_theme, AUTO_INSTALL_CONF['ani_color']))
+      os.system('cp {}/{}/{}bootanimation.zip /system/media/bootanimation.zip'.format(CONTRIB_THEMES, self.selected_theme, selected_ani_color))
       os.system('chmod 666 /system/media/bootanimation.zip')
       print('Boot Animation installed successfully! Original backuped to {}'.format(self.backup_dir))
 
