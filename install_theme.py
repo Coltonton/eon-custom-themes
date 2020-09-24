@@ -57,7 +57,7 @@ import time
 from os import path
 from datetime import datetime
 from support.support_functions import print_welcome_text, print_auto_welcome_text, get_user_theme, get_user_backups, is_affirmative
-from support.support_variables import AUTO_INSTALL_CONF, CONTRIB_THEMES, DESIRED_AUTO_VER, IS_AUTO_INSTALL
+from support.support_variables import AUTO_INSTALL_CONF, BACKUPS_DIR, CONTRIB_THEMES, DESIRED_AUTO_VER, IS_AUTO_INSTALL
 
 os.chdir(os.path.dirname(os.path.realpath(__file__)))  # __file__ is safer since it doesn't change based on where this file is called from
 
@@ -77,8 +77,8 @@ else:                                                        #If LeON/Two
   BOOT_LOGO_THEME_PATH = 'LeEco-Logo/SPLASH'                   # Set the boot logo theme path for Leo
   BOOT_LOGO_PATH = '/dev/block/bootdevice/by-name/splash'      # Set the boot logo directory for Leo
   BOOT_LOGO_NAME = 'splash'                                    # Set the boot logo name for Leo
-
 print('IMPORTANT: Soft-bricking is likely if this detection is incorrect!')
+
 
 
 class ThemeInstaller:
