@@ -72,11 +72,10 @@ def get_user_theme():           # Auto discover themes and let user choose!
   while 1:
     theme = input('\nChoose a theme to install (by name or index): ').strip().lower()
     print()
-    if theme in ['restore', 'Restore', 'r', 'R']:
+f    if theme in ['restore', 'r']:
       return 'restore'
-    if theme in ['exit', 'Exit', 'E', 'e', '0']:
-      return None
-
+    if theme in ['exit', 'e', '0']:
+      exit()
     if theme.isdigit():
       theme = int(theme)
       if theme == 69:
@@ -96,7 +95,7 @@ def get_user_theme():           # Auto discover themes and let user choose!
         print('Selected theme: {}'.format(theme))
         print('Is this correct?')
         print('[Y/n]: ', end='')
-        if input().lower().strip() in ['yes', 'y', 1, 'ye', 'Yes', 'Y', 'Ye']:
+        if input().lower().strip() in ['yes', 'y', 1, 'ye']:
           return theme
       else:
         print('Unknown theme, try again!')
@@ -153,7 +152,7 @@ def get_user_backups(exclude):
     backup = input('\nChoose a backup to install (by index value): ').strip().lower()
     print()
     if backup in ['exit', 'Exit', 'E', 'e', '0']:
-      return None
+      exit()
     if backup.isdigit():
       backup = int(backup)
       if backup > len(available_backups):

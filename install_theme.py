@@ -100,7 +100,7 @@ class ThemeInstaller:
       self.selected_theme = get_user_theme()
       if self.selected_theme is None:
         print('Didn\'t select a theme, exiting.')
-        continue
+        return
       if self.selected_theme == 'restore':
         self.backup_reinstaller_loop()
       self.get_available_options()
@@ -151,7 +151,6 @@ class ThemeInstaller:
       indexChoice -= 1 
 
       selected_option = self.theme_options[indexChoice]
-      print(selected_option)
 
       if selected_option == 'Boot Logo':
         #Confirm user wants to install bootlogo
@@ -282,7 +281,7 @@ class ThemeInstaller:
         input()
    
   # Auto installer stuff
-  def auto_installer(self):             # Auto Installer program for incorperating into OP forks SEE DEVREADME
+  def auto_installer(self):               # Auto Installer program for incorperating into OP forks SEE DEVREADME
     self.selected_theme = AUTO_INSTALL_CONF['auto_selected_theme']
     #selected_ani_color = AUTO_INSTALL_CONF['install_color']
 
@@ -310,17 +309,17 @@ class ThemeInstaller:
     fi.write(str(DESIRED_AUTO_VER))
 
   # Backup Reinstaller stuff
-  def backup_reinstaller_loop(self):       # Backup Reinstaller!
+  def backup_reinstaller_loop(self):        # Backup Reinstaller!
     while 1:
       self.selected_backup = get_user_backups(self.backup_dir)
       if self.selected_backup is None:
         print('Didn\'t select a backup, exiting.')
-        continue
+        return
       self.backup_get_available_options()
       if self.backup_reinstall_function() == 'exit':
         return
   
-  def backup_get_available_options(self):  # Check what assets are available for the selected backup
+  def backup_get_available_options(self):   # Check what assets are available for the selected backup
         
     # Check if the selected backup has a boot logo asset
     if os.path.exists('{}/{}/{}'.format(BACKUPS_DIR, self.selected_backup, BOOT_LOGO_NAME)):
@@ -341,7 +340,7 @@ class ThemeInstaller:
     BACKUP_OPTIONS.append('-Reboot-')
     BACKUP_OPTIONS.append('-Quit-')
 
-  def backup_reinstall_function(self):     # Backuo re-installer program, prompts user on what they want to do
+  def backup_reinstall_function(self):      # Backuo re-installer program, prompts user on what they want to do
     while 1:
       options = list(BACKUP_OPTIONS)  # this only contains available options from self.get_available_options
       if not len(options):
@@ -356,7 +355,6 @@ class ThemeInstaller:
       indexChoice -= 1 
 
       selected_option = BACKUP_OPTIONS[indexChoice]
-      print(selected_option)
 
       if selected_option == 'Boot Logo':
         print('Selected to install the Boot Logo backup. Continue?')
