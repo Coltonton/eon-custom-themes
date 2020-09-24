@@ -87,10 +87,52 @@ def is_affirmative():           # Ask user for confirmation
 
 # Created by @ShaneSmiskol modified version of get_user_theme() to get all backups by Coltonton
 def get_user_backups():
+  '''available_themes = [t for t in os.listdir(BACKUPS_DIR)]
+  available_themes = [t for t in available_themes if os.path.isdir(os.path.join(BACKUPS_DIR, t))]
+  #available_themes = [t for t in available_themes if t not in EXCLUDED_THEMES]
+  lower_available_themes = [t.lower() for t in available_themes]
+  print('\nAvailable themes:')
+  for idx, theme in enumerate(available_themes):
+    print('{}. {}'.format(idx + 1, theme))
+  print('\nType `restore` or enter 69 to restore a backup')
+  print('Type `exit` or enter 70 to exit.')
+  while 1:
+    theme = input('\nChoose a theme to install (by name or index): ').strip().lower()
+    print()
+    if theme in ['restore', 'Restore', 'r', 'R', 69]:
+      return 'restore'
+    if theme in ['exit', 'Exit', 'E', 'e', 70]:
+      return None
+
+    if theme.isdigit():
+      theme = int(theme)
+      if theme == 69:
+        print('nice\n')
+        return 'restore'
+      if theme == 70:
+        return None
+      if theme > len(available_themes):
+        print('Index out of range, try again!')
+        continue
+      return available_themes[int(theme) - 1]
+    else:
+      if theme in lower_available_themes:
+        return available_themes[lower_available_themes.index(theme)]
+      sims = [str_sim(theme, t.lower()) for t in available_themes]
+      most_sim_idx = max(range(len(sims)), key=sims.__getitem__)
+      theme = available_themes[most_sim_idx]
+      if sims[most_sim_idx] >= MIN_SIM_THRESHOLD:
+        print('Selected theme: {}'.format(theme))
+        print('Is this correct?')
+        print('[Y/n]: ', end='')
+        if input().lower().strip() in ['yes', 'y', 1, 'ye', 'Yes', 'Y', 'Ye']:
+          return theme
+      else:
+        print('Unknown theme, try again!')'''
   available_backups = [t for t in os.listdir(BACKUPS_DIR)]
   available_backups = [t for t in available_backups if os.path.isdir(os.path.join(BACKUPS_DIR, t))]
-  available_backups = [t for t in available_backups if t not in BACKUPS_DIR]
-  lower_available_themes = [t.lower() for t in available_backups]
+  #available_backups = [t for t in available_backups if t not in BACKUPS_DIR]
+  lower_available_backups = [t.lower() for t in available_backups]
   print('\nAvailable themes:')
   for idx, backup in enumerate(available_backups):
     print('{}. {}'.format(idx + 1, backup))
