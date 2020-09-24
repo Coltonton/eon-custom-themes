@@ -1,4 +1,5 @@
 import os
+from os import path
 import time
 import difflib
 from support.support_variables import BACKUPS_DIR, CONTRIB_THEMES, DESIRED_AUTO_VER, EXCLUDED_THEMES, MIN_SIM_THRESHOLD, WELCOME_TEXT, AUTO_WELCOME_TEXT
