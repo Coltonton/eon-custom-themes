@@ -35,7 +35,6 @@ def get_user_theme():           # Auto discover themes and let user choose!
   available_themes = [t for t in available_themes if os.path.isdir(os.path.join(CONTRIB_THEMES, t))]
   available_themes = [t for t in available_themes if t not in EXCLUDED_THEMES]
   lower_available_themes = [t.lower() for t in available_themes]
-  available_themes.append 'Exit'
   print('\nAvailable themes:')
   for idx, theme in enumerate(available_themes):
     print('{}. {}'.format(idx + 1, theme))
