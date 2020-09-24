@@ -57,7 +57,7 @@ import time
 from os import path
 from support.support_functions import print_welcome_text, print_auto_welcome_text, get_user_theme, get_user_backups, is_affirmative
 from support.support_functions import mark_self_installed, make_backup_folder, installer_chooser
-from support.support_variables import AUTO_INSTALL_CONF, BACKUPS_DIR, BACKUP_OPTIONS, CONTRIB_THEMES, IS_AUTO_INSTALL
+from support.support_variables import AUTO_INSTALL_CONF, BACKUPS_DIR, BACKUP_OPTIONS, CONTRIB_THEMES, DESIRED_AUTO_VER, IS_AUTO_INSTALL
 
 os.chdir(os.path.dirname(os.path.realpath(__file__)))  # __file__ is safer since it doesn't change based on where this file is called from
 
@@ -303,7 +303,7 @@ class ThemeInstaller:
       print('OP Spinner installed successfully! Original backed up to {}'.format(self.backup_dir))
 
     # if (autoInstallAdditional != 'no'):             #Auto additional features Code (Not An Active feature)
-    #  print('Additional Resources are not an active feature')  # todo: refactor this
+    #  print('Additional Resources are not an active feature')  # todo: this
 
     fi = open("./support/auto_install_ver.txt", "w")
     fi.write(str(DESIRED_AUTO_VER))
