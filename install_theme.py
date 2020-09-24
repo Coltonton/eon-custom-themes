@@ -247,7 +247,7 @@ class ThemeInstaller:
           time.sleep(1.5)
           continue
 
-        if path.exists('{}/bootanimation.zip}'.format(self.backup_dir)):                 #Func to see if there was a backup already this session
+        if path.exists('{}/bootanimation.zip'.format(self.backup_dir)):                 #Func to see if there was a backup already this session
             print('It appears you already made a boot animation backup this session')    #to prevent accidental overwrites
             print('continuing will overwrite last boot animation backup!')
             print('Would you like to continue and overwrite previous?')
