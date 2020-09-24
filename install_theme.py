@@ -283,7 +283,7 @@ class ThemeInstaller:
   # Auto installer stuff
   def auto_installer(self):               # Auto Installer program for incorperating into OP forks SEE DEVREADME
     self.selected_theme = AUTO_INSTALL_CONF['auto_selected_theme']
-    opdir AUTO_INSTALL_CONF['openpilot_dir_name']
+    opdir = AUTO_INSTALL_CONF['openpilot_dir_name']
     #selected_ani_color = AUTO_INSTALL_CONF['install_color']
 
     if AUTO_INSTALL_CONF['install_logo']:  # Auto BootLogo Install Code
