@@ -2,8 +2,8 @@ import os
 from os import path
 import time
 import difflib
-from support.support_variables import BACKUPS_DIR, CONTRIB_THEMES, DESIRED_AUTO_VER, EXCLUDED_THEMES, IS_AUTO_INSTALL, MIN_SIM_THRESHOLD
-                                    , WELCOME_TEXT, AUTO_WELCOME_TEXT
+from support.support_variables import BACKUPS_DIR, CONTRIB_THEMES, DESIRED_AUTO_VER, EXCLUDED_THEMES, IS_AUTO_INSTALL, MIN_SIM_THRESHOLD,
+                                      WELCOME_TEXT, AUTO_WELCOME_TEXT
 
 os.chdir(os.path.dirname(os.path.realpath(__file__)))  # __file__ is safer since it doesn't change based on where this file is called from
 
