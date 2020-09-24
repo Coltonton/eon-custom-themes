@@ -200,7 +200,7 @@ class ThemeInstaller:
           time.sleep(1.5)
           continue
         
-        if path.exists('{}/spinner}'.format(self.backup_dir)):                 #Func to see if there was a backup already this session
+        if path.exists('{}/spinner'.format(self.backup_dir)):                 #Func to see if there was a backup already this session
             print('It appears you already made a spinner backup this session') #to prevent accidental overwrites
             print('continuing will overwrite last spinner backup!')
             print('Would you like to continue and overwrite previous?')
