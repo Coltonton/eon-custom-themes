@@ -82,7 +82,7 @@ def is_affirmative():           # Ask user for confirmation
   return u in ['yes', 'ye', 'y', '1']
 
 # Created by @ShaneSmiskol modified version of get_user_theme() to get all backups by Coltonton
-def get_user_backups(exclude):
+def get_user_backups(self, exclude):
   excludes = exclude
   available_backups = [t for t in os.listdir(BACKUPS_DIR)]
   available_backups = [t for t in available_backups if os.path.isdir(os.path.join(BACKUPS_DIR, t))]
