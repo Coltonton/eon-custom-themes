@@ -221,11 +221,17 @@ class ThemeInstaller:
           os.system('cp {}/{}/spinner {}/selfdrive/ui/spinner'.format(CONTRIB_THEMES, self.selected_theme, op_dir))
           print('\n{} spinner installed successfully! Original backed up to {}'.format(op_dir.split('/')[2], self.backup_dir))
         else:  # there is not custom OP dir
-          os.system('mv /data/openpilot/selfdrive/assets/img_spinner_comma.png {}'.format(self.backup_dir)) #Backup logo
-          os.system('mv /data/openpilot/selfdrive/assets/img_spinner_track.png {}'.format(self.backup_dir)) #backup sprinner trach
+          os.system('mv /data/openpilot/selfdrive/assets/img_spinner_comma.png {}/spinner'.format(self.backup_dir)) #Backup logo
+          os.system('mv /data/openpilot/selfdrive/assets/img_spinner_track.png {}/spinner'.format(self.backup_dir)) #backup sprinner track
           os.system('mv /data/openpilot/selfdrive/common/spinner.c {}/spinner'.format(self.backup_dir))             #backup spinner.c
 
-          os.system('cp {}/{}/spinner /data/openpilot/selfdrive/ui/spinner'.format(CONTRIB_THEMES, self.selected_theme))
+          os.system('cp {}/{}/spinner/img_spinner_comma.png /data/openpilot/selfdrive/assets'.format(CONTRIB_THEMES, self.selected_theme)) #Replace logo
+          os.system('cp {}/{}/spinner/img_spinner_track.png /data/openpilot/selfdrive/assets'.format(CONTRIB_THEMES, self.selected_theme)) #Replace sprinner track
+          os.system('cp {}/{}/spinner/spinner.c /data/openpilot/selfdrive/common'.format(CONTRIB_THEMES, self.selected_theme))             #Replace spinner.c
+
+          os.system('cd /data/openpilot/selfdrive/ui/spinner && make')
+
+          #os.system('cp {}/{}/spinner /data/openpilot/selfdrive/ui/spinner'.format(CONTRIB_THEMES, self.selected_theme))
           print('\nopenpilot spinner installed successfully! Original backed up to {}'.format(self.backup_dir))
         print('Press enter to continue!')
         input()
