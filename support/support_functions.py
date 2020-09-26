@@ -72,6 +72,7 @@ def update_every_second():
       time.sleep(1)
       waitedTime += 1
       if waitedTime >= 15:
+        result is 'exit'
         exit()
 
 def auto_wait_loop():
