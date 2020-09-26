@@ -1,4 +1,5 @@
 import os
+import sys
 from os import path
 import time
 from datetime import datetime
@@ -73,7 +74,7 @@ def update_every_second():
       waitedTime += 1
       if waitedTime >= 15:
         result is 'exit'
-        exit()
+        sys.exit()
 
 def auto_wait_loop():
   print('starting wait timer')
@@ -82,6 +83,7 @@ def auto_wait_loop():
   result = input('? ')
 
   print("The user typed"), result
+  t.stop()
 
   '''startTime = datetime.now().strftime('%I%M')
   startTime = int(startTime)
