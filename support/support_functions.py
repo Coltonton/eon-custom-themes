@@ -83,7 +83,7 @@ def auto_wait_loop():
   result = input('? ')
 
   print("The user typed"), result
-  t.stop()
+  t._stop
 
   '''startTime = datetime.now().strftime('%I%M')
   startTime = int(startTime)
