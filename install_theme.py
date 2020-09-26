@@ -56,7 +56,7 @@ import os
 import time
 from os import path
 from support.support_functions import print_welcome_text, print_auto_welcome_text, get_user_theme, get_user_backups, is_affirmative
-from support.support_functions import mark_self_installed, make_backup_folder, installer_chooser
+from support.support_functions import mark_self_installed, make_backup_folder, installer_chooser, auto_wait_loop
 from support.support_variables import AUTO_INSTALL_CONF, BACKUPS_DIR, BACKUP_OPTIONS, CONTRIB_THEMES, DESIRED_AUTO_VER, IS_AUTO_INSTALL
 
 os.chdir(os.path.dirname(os.path.realpath(__file__)))  # __file__ is safer since it doesn't change based on where this file is called from
@@ -85,6 +85,8 @@ class ThemeInstaller:
     # Create and get backup folder
     self.backup_dir = make_backup_folder()
 
+    auto_wait_loop()
+
     # Detrimine if should self install, auto install, or exit
     auto_found_installer = installer_chooser()  
     if auto_found_installer == 'Do_Self':
@@ -92,6 +94,7 @@ class ThemeInstaller:
     elif auto_found_installer == 'Do_Auto':
       self.auto_installer()                                  # Do auto install theme
     elif auto_found_installer is None:
+      auto_wait_loop()
       os.rmdir(self.backup_dir)                              # Remove session backup folder as we are doing nada
       exit()                                                 # Terminate program
 

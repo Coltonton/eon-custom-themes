@@ -6,6 +6,9 @@ BACKUPS_DIR = '/storage/emulated/0/theme-backups'
 
 BACKUP_OPTIONS = []
 
+
+INSTALL_CONF = 2    # 0 = Do not auto install, 1 = Auto Installer, 2 = Self Installer 
+
 # Auto Install variables - see DEVREADME
 IS_AUTO_INSTALL = False     #Do Auto Install
 DESIRED_AUTO_VER = '1'     #Desired theme version, add 1 to update users theme.

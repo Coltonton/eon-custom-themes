@@ -3,10 +3,13 @@ from os import path
 import time
 from datetime import datetime
 import difflib
-from support.support_variables import AUTO_WELCOME_TEXT, BACKUPS_DIR, CONTRIB_THEMES, DESIRED_AUTO_VER, EXCLUDED_THEMES, IS_AUTO_INSTALL
+from support.support_variables import AUTO_WELCOME_TEXT, BACKUPS_DIR, CONTRIB_THEMES, DESIRED_AUTO_VER, EXCLUDED_THEMES
 from support.support_variables import MIN_SIM_THRESHOLD, WELCOME_TEXT
+from threading import Thread
 
 os.chdir(os.path.dirname(os.path.realpath(__file__)))  # __file__ is safer since it doesn't change based on where this file is called from
+
+result = None
 
 def make_backup_folder():
   # Check if theme backup folder doesnt exist then create
@@ -18,9 +21,14 @@ def make_backup_folder():
   return backup_dir
 
 def installer_chooser():
+  #Get IS_AUTO_INSTALL var from its file
+  file = open('./support/is_auto_installer.txt', 'r')  # Open do_not_auto flag file
+  IS_AUTO_INSTALL = file.read()                          # Store flag
+  file.close
+
   #Get DO_NOT_AUTO_INSTALL var from its file
-  file = open('./support/do_not_auto.txt', 'r')  # Open do_not_auto flag file
-  DO_NOT_AUTO_INSTALL = file.read()         # Store flag
+  file = open('./support/do_not_auto.txt', 'r')       # Open do_not_auto flag file
+  DO_NOT_AUTO_INSTALL = file.read()                     # Store flag
   file.close
 
   # See if user has a self installed theme. If not auto install permited!
@@ -57,6 +65,31 @@ def installer_chooser():
   # Else return self installer
   else:                                                  
       return 'Do_Self' 
+
+def update_every_second():
+  waitedTime = 0
+  while result is None:
+      time.sleep(1)
+      waitedTime += 1
+      if waitedTime >= 15:
+        exit()
+
+def auto_wait_loop():
+  print('starting wait timer')
+  t = Thread(target=update_every_second)
+  t.start()
+  result = input('? ')
+
+  print("The user typed"), result
+
+  '''startTime = datetime.now().strftime('%I%M')
+  startTime = int(startTime)
+  currentTime = datetime.now().strftime('%I%M')
+  currentTime = int(currentTime)
+  endTime = startTime + 2
+  while currentTime <= endTime:
+    time.sleep(15)
+    currentTime = datetime.now().strftime('%I%M')'''
 
 # Created by @ShaneSmiskol some modifications by coltonton
 def get_user_theme():           # Auto discover themes and let user choose!
