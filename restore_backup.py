@@ -1,0 +1,3 @@
+from install_theme import ThemeInstaller
+
+ThemeInstaller.backup_reinstaller_loop()

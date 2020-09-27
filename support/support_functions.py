@@ -10,8 +10,6 @@ from threading import Thread
 
 os.chdir(os.path.dirname(os.path.realpath(__file__)))  # __file__ is safer since it doesn't change based on where this file is called from
 
-result = None
-
 def make_backup_folder():
   # Check if theme backup folder doesnt exist then create
   if not os.path.exists('/storage/emulated/0/theme-backups'):
@@ -66,33 +64,6 @@ def installer_chooser():
   # Else return self installer
   else:                                                  
       return 'Do_Self' 
-
-def update_every_second():
-  waitedTime = 0
-  while result is None:
-      time.sleep(1)
-      waitedTime += 1
-      if waitedTime >= 15:
-        result is 'exit'
-        sys.exit()
-
-def auto_wait_loop():
-  print('starting wait timer')
-  t = Thread(target=update_every_second)
-  t.start()
-  result = input('? ')
-
-  print("The user typed"), result
-  t._stop
-
-  '''startTime = datetime.now().strftime('%I%M')
-  startTime = int(startTime)
-  currentTime = datetime.now().strftime('%I%M')
-  currentTime = int(currentTime)
-  endTime = startTime + 2
-  while currentTime <= endTime:
-    time.sleep(15)
-    currentTime = datetime.now().strftime('%I%M')'''
 
 # Created by @ShaneSmiskol some modifications by coltonton
 def get_user_theme():           # Auto discover themes and let user choose!
