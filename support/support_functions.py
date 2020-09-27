@@ -5,7 +5,7 @@ import time
 from datetime import datetime
 import difflib
 from support.support_variables import AUTO_WELCOME_TEXT, BACKUPS_DIR, CONTRIB_THEMES, DESIRED_AUTO_VER, EXCLUDED_THEMES
-from support.support_variables import MIN_SIM_THRESHOLD, WELCOME_TEXT
+from support.support_variables import MIN_SIM_THRESHOLD, WELCOME_TEXT, RESTORE_WELCOME_TEXT
 from threading import Thread
 
 os.chdir(os.path.dirname(os.path.realpath(__file__)))  # __file__ is safer since it doesn't change based on where this file is called from
@@ -18,6 +18,21 @@ def make_backup_folder():
   backup_dir = datetime.now().strftime('/storage/emulated/0/theme-backups/backup.%m-%d-%y--%I.%M.%S-%p')
   os.mkdir(backup_dir)  # Create the session backup folder
   return backup_dir
+
+def get_device_theme_data():
+  # Crude device detection, *shrug* it works! LeEco does not have tristate!
+  if path.exists('/sys/devices/virtual/switch/tri-state-key'): #If 3T-ON
+    print('\n*** OG OnePlus EON Device Detected ***')
+    BOOT_LOGO_THEME_PATH = 'OP3T-Logo/LOGO'                      # Set the boot logo theme path for 3T
+    BOOT_LOGO_PATH = '/dev/block/sde17'                          # Set the boot logo directory for 3T
+    BOOT_LOGO_NAME = 'sde17'                                     # Set the boot logo name for 3T
+  else:                                                        #If LEON/Two
+    print('\n*** LeEco EON (Gold/Comma 2) Device Detected ***\n')
+    BOOT_LOGO_THEME_PATH = 'LeEco-Logo/SPLASH'                   # Set the boot logo theme path for Leo
+    BOOT_LOGO_PATH = '/dev/block/bootdevice/by-name/splash'      # Set the boot logo directory for Leo
+    BOOT_LOGO_NAME = 'splash'                                    # Set the boot logo name for Leo
+  print('IMPORTANT: Soft-bricking is likely if this detection is incorrect!')
+  return BOOT_LOGO_THEME_PATH, BOOT_LOGO_PATH, BOOT_LOGO_NAME
 
 def installer_chooser():
   #Get IS_AUTO_INSTALL var from its file
@@ -74,20 +89,20 @@ def get_user_theme():           # Auto discover themes and let user choose!
   print('\nAvailable themes:')
   for idx, theme in enumerate(available_themes):
     print('{}. {}'.format(idx + 1, theme))
-  print('\nType `restore` or enter 69 to restore a backup')
+  #print('\nType `restore` or enter 69 to restore a backup')
   print('Type `exit` or enter 0 to exit.')
   while 1:
     theme = input('\nChoose a theme to install (by name or index): ').strip().lower()
     print()
-    if theme in ['restore', 'r']:
-      return 'restore'
+    #if theme in ['restore', 'r']:
+    #  return 'restore'
     if theme in ['exit', 'e', '0']:
       exit()
     if theme.isdigit():
       theme = int(theme)
-      if theme == 69:
-        print('\nnice\n')
-        return 'restore'
+      #if theme == 69:
+      #  print('\nnice\n')
+      #  return 'restore'
       if theme > len(available_themes):
         print('Index out of range, try again!')
         continue
@@ -108,29 +123,24 @@ def get_user_theme():           # Auto discover themes and let user choose!
         print('Unknown theme, try again!')
 
 # Created by @ShaneSmiskol
-def print_welcome_text():       # This center formats text automatically
+def print_welcome_text(text):   # This center formats text automatically
+  if text == 's':        # If self text
+    showText = WELCOME_TEXT
+  elif text == 'a':      # If auto text
+    showText = AUTO_WELCOME_TEXT
+  elif text == 'r':      # If restore text
+    showText = RESTORE_WELCOME_TEXT
 
-  max_line_length = max([len(line) for line in WELCOME_TEXT]) + 4
+  max_line_length = max([len(line) for line in showText]) + 4
   print(''.join(['+' for _ in range(max_line_length)]))
-  for line in WELCOME_TEXT:
+  for line in showText:
     padding = max_line_length - len(line) - 2
     padding_left = padding // 2
     print('+{}+'.format(' ' * padding_left + line + ' ' * (padding - padding_left)))
   print(''.join(['+' for _ in range(max_line_length)]))
   time.sleep(2)  # Pause for suspense, and so can be read
 
-# Created by @ShaneSmiskol
-def print_auto_welcome_text():  # This center formats text automatically
-
-  max_line_length = max([len(line) for line in AUTO_WELCOME_TEXT]) + 4
-  print(''.join(['+' for _ in range(max_line_length)]))
-  for line in AUTO_WELCOME_TEXT:
-    padding = max_line_length - len(line) - 2
-    padding_left = padding // 2
-    print('+{}+'.format(' ' * padding_left + line + ' ' * (padding - padding_left)))
-  print(''.join(['+' for _ in range(max_line_length)]))
-
-def mark_self_installed():
+def mark_self_installed():      # Creates a file letting the auto installer know if a self theme installed
   if not path.exists('/storage/emulated/0/eon_custom_themes_self_installed'):
     f = open("/storage/emulated/0/eon_custom_themes_self_installed.txt", "w")
     f.close
@@ -139,7 +149,6 @@ def mark_self_installed():
 def str_sim(a, b):              # Part of Shane's theme picker code
   return difflib.SequenceMatcher(a=a, b=b).ratio()
 
-# Created by @ShaneSmiskol
 def is_affirmative():           # Ask user for confirmation
   u = input('[1.Yes / 2.No]: ').lower().strip()
   return u in ['yes', 'ye', 'y', '1']

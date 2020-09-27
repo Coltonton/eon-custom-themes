@@ -34,4 +34,11 @@ AUTO_WELCOME_TEXT = ['Created By: Colton (Brandon) S. EndLine \\n',
                 'clone https://github.com/Coltonton/eon-custom-themes.git',
                 'to cd /data to use the full program!']
 
-
+RESTORE_WELCOME_TEXT = ['Created By: Colton (Brandon) S. EndLine \\n',
+                'Special Thanks to @ShaneSmiskol for all the help!!!',
+                'Free to use! Free to Edit! Free to integrate!',
+                'Design and contribute your themes today!',
+                '(See the developer folder in this repo)',
+                'It\'s your EON, do what you want!',
+                ' ',
+                '*NOTE* this it the backup restore program']
