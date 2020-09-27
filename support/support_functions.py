@@ -1,24 +1,15 @@
 import os
 import sys
-from os import path
 import time
-from datetime import datetime
 import difflib
-from support.support_variables import AUTO_WELCOME_TEXT, BACKUPS_DIR, CONTRIB_THEMES, DESIRED_AUTO_VER, EXCLUDED_THEMES
-from support.support_variables import MIN_SIM_THRESHOLD, WELCOME_TEXT, RESTORE_WELCOME_TEXT
-from threading import Thread
+from os import path
+from datetime import datetime
+from support.support_variables import AUTO_WELCOME_TEXT, BACKUPS_DIR, CONTRIB_THEMES, DESIRED_AUTO_VER, EXCLUDED_THEMES, MIN_SIM_THRESHOLD
+from support.support_variables import RESTORE_WELCOME_TEXT, WELCOME_TEXT
 
 os.chdir(os.path.dirname(os.path.realpath(__file__)))  # __file__ is safer since it doesn't change based on where this file is called from
 
-def make_backup_folder():
-  # Check if theme backup folder doesnt exist then create
-  if not os.path.exists('/storage/emulated/0/theme-backups'):
-    os.mkdir('/storage/emulated/0/theme-backups')
-  # Create session backup folder named with date & time 
-  backup_dir = datetime.now().strftime('/storage/emulated/0/theme-backups/backup.%m-%d-%y--%I.%M.%S-%p')
-  os.mkdir(backup_dir)  # Create the session backup folder
-  return backup_dir
-
+## ================= Shared ================= ##
 def get_device_theme_data():
   # Crude device detection, *shrug* it works! LeEco does not have tristate!
   if path.exists('/sys/devices/virtual/switch/tri-state-key'): #If 3T-ON
@@ -33,6 +24,63 @@ def get_device_theme_data():
     BOOT_LOGO_NAME = 'splash'                                    # Set the boot logo name for Leo
   print('IMPORTANT: Soft-bricking is likely if this detection is incorrect!')
   return BOOT_LOGO_THEME_PATH, BOOT_LOGO_PATH, BOOT_LOGO_NAME
+
+def is_affirmative():           # Ask user for confirmation
+  u = input('[1.Yes / 2.No]: ').lower().strip()
+  return u in ['yes', 'ye', 'y', '1']
+
+def make_backup_folder():
+  # Check if theme backup folder doesnt exist then create
+  if not os.path.exists('/storage/emulated/0/theme-backups'):
+    os.mkdir('/storage/emulated/0/theme-backups')
+  # Create session backup folder named with date & time 
+  backup_dir = datetime.now().strftime('/storage/emulated/0/theme-backups/backup.%m-%d-%y--%I.%M.%S-%p')
+  os.mkdir(backup_dir)  # Create the session backup folder
+  return backup_dir
+
+
+## =============== Installer ================ ##.
+# Created by @ShaneSmiskol some modifications by coltonton
+def get_user_theme():           # Auto discover themes and let user choose!
+  available_themes = [t for t in os.listdir(CONTRIB_THEMES)]
+  available_themes = [t for t in available_themes if os.path.isdir(os.path.join(CONTRIB_THEMES, t))]
+  available_themes = [t for t in available_themes if t not in EXCLUDED_THEMES]
+  lower_available_themes = [t.lower() for t in available_themes]
+  print('\nAvailable themes:')
+  for idx, theme in enumerate(available_themes):
+    print('{}. {}'.format(idx + 1, theme))
+  #print('\nType `restore` or enter 69 to restore a backup')
+  print('Type `exit` or enter 0 to exit.')
+  while 1:
+    theme = input('\nChoose a theme to install (by name or index): ').strip().lower()
+    print()
+    #if theme in ['restore', 'r']:
+    #  return 'restore'
+    if theme in ['exit', 'e', '0']:
+      exit()
+    if theme.isdigit():
+      theme = int(theme)
+      #if theme == 69:
+      #  print('\nnice\n')
+      #  return 'restore'
+      if theme > len(available_themes):
+        print('Index out of range, try again!')
+        continue
+      return available_themes[int(theme) - 1]
+    else:
+      if theme in lower_available_themes:
+        return available_themes[lower_available_themes.index(theme)]
+      sims = [str_sim(theme, t.lower()) for t in available_themes]
+      most_sim_idx = max(range(len(sims)), key=sims.__getitem__)
+      theme = available_themes[most_sim_idx]
+      if sims[most_sim_idx] >= MIN_SIM_THRESHOLD:
+        print('Selected theme: {}'.format(theme))
+        print('Is this correct?')
+        print('[Y/n]: ', end='')
+        if input().lower().strip() in ['yes', 'y', 1, 'ye']:
+          return theme
+      else:
+        print('Unknown theme, try again!')
 
 def installer_chooser():
   #Get IS_AUTO_INSTALL var from its file
@@ -80,49 +128,12 @@ def installer_chooser():
   else:                                                  
       return 'Do_Self' 
 
-# Created by @ShaneSmiskol some modifications by coltonton
-def get_user_theme():           # Auto discover themes and let user choose!
-  available_themes = [t for t in os.listdir(CONTRIB_THEMES)]
-  available_themes = [t for t in available_themes if os.path.isdir(os.path.join(CONTRIB_THEMES, t))]
-  available_themes = [t for t in available_themes if t not in EXCLUDED_THEMES]
-  lower_available_themes = [t.lower() for t in available_themes]
-  print('\nAvailable themes:')
-  for idx, theme in enumerate(available_themes):
-    print('{}. {}'.format(idx + 1, theme))
-  #print('\nType `restore` or enter 69 to restore a backup')
-  print('Type `exit` or enter 0 to exit.')
-  while 1:
-    theme = input('\nChoose a theme to install (by name or index): ').strip().lower()
-    print()
-    #if theme in ['restore', 'r']:
-    #  return 'restore'
-    if theme in ['exit', 'e', '0']:
-      exit()
-    if theme.isdigit():
-      theme = int(theme)
-      #if theme == 69:
-      #  print('\nnice\n')
-      #  return 'restore'
-      if theme > len(available_themes):
-        print('Index out of range, try again!')
-        continue
-      return available_themes[int(theme) - 1]
-    else:
-      if theme in lower_available_themes:
-        return available_themes[lower_available_themes.index(theme)]
-      sims = [str_sim(theme, t.lower()) for t in available_themes]
-      most_sim_idx = max(range(len(sims)), key=sims.__getitem__)
-      theme = available_themes[most_sim_idx]
-      if sims[most_sim_idx] >= MIN_SIM_THRESHOLD:
-        print('Selected theme: {}'.format(theme))
-        print('Is this correct?')
-        print('[Y/n]: ', end='')
-        if input().lower().strip() in ['yes', 'y', 1, 'ye']:
-          return theme
-      else:
-        print('Unknown theme, try again!')
+def mark_self_installed():      # Creates a file letting the auto installer know if a self theme installed
+  if not path.exists('/storage/emulated/0/eon_custom_themes_self_installed'):
+    f = open("/storage/emulated/0/eon_custom_themes_self_installed.txt", "w")
+    f.close
 
-# Created by @ShaneSmiskol
+# Created by @ShaneSmiskol some modifications by coltonton
 def print_welcome_text(text):   # This center formats text automatically
   if text == 's':        # If self text
     showText = WELCOME_TEXT
@@ -140,19 +151,8 @@ def print_welcome_text(text):   # This center formats text automatically
   print(''.join(['+' for _ in range(max_line_length)]))
   time.sleep(2)  # Pause for suspense, and so can be read
 
-def mark_self_installed():      # Creates a file letting the auto installer know if a self theme installed
-  if not path.exists('/storage/emulated/0/eon_custom_themes_self_installed'):
-    f = open("/storage/emulated/0/eon_custom_themes_self_installed.txt", "w")
-    f.close
 
-# Created by @ShaneSmiskol
-def str_sim(a, b):              # Part of Shane's theme picker code
-  return difflib.SequenceMatcher(a=a, b=b).ratio()
-
-def is_affirmative():           # Ask user for confirmation
-  u = input('[1.Yes / 2.No]: ').lower().strip()
-  return u in ['yes', 'ye', 'y', '1']
-
+## ================ Restorer ================ ##
 # Created by @ShaneSmiskol modified version of get_user_theme() to get all backups by Coltonton
 def get_user_backups(exclude):
   available_backups = [t for t in os.listdir(BACKUPS_DIR)]
@@ -177,3 +177,9 @@ def get_user_backups(exclude):
     else:
       print('Please enter only Index number value!!')
       continue
+
+
+## ================== Misc ================== ##
+# Created by @ShaneSmiskol
+def str_sim(a, b):              # Part of Shane's get_user_theme code
+  return difflib.SequenceMatcher(a=a, b=b).ratio()

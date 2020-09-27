@@ -16,7 +16,7 @@
 #                                                                                #
 #                                                                                #
 #    ===Created by Colton (Brandon) S. (@C-ton) for the OpenPilot Community===   #
-#                === http://endoflinetech.com/eon-themes ===                     #
+#              === http://endoflinetech.com/eon-custom-themes ===                #
 #                                                                                #
 #              With a mission to rid all EONS of Comma.ai branding               #
 #             And give the people the freedom, knowlage, and power!              #
@@ -39,13 +39,13 @@
 #                                cd /data                                        #
 #       git clone https://github.com/Coltonton/eon-custom-themes.git             #
 #                      cd /data/eon-custom-themes                                #
-#                        python install_theme.py                                 #
+#                        exec ./install_theme.py                                 #
 #                                                                                #
-#            Now follow the prompts and make your selections!                    #
-#               Everything will be done automagically!!!!!                       #
+#               Now follow the prompts and make your selections!                 #
+#                  Everything will be done automagically!!!!!                    #
 #                                                                                #
-#                   Don't forget to tell your friends!!                          #
-#                            Love Cole (@C-ton)                                  #
+#                      Don't forget to tell your friends!!                       #
+#                               Love Cole (@C-ton)                               #
 #                                                                                #
 #        Did you know that if you have a custom OP fork you can use this         #
 #     program to auto install your custom theme for your users automagiclly?     #
@@ -55,29 +55,18 @@
 import os
 import time
 from os import path
-from support.support_functions import print_welcome_text,  get_user_theme, get_user_backups, is_affirmative
-from support.support_functions import mark_self_installed, make_backup_folder, installer_chooser
+from support.support_functions import get_device_theme_data, get_user_backups, get_user_theme, installer_chooser, is_affirmative
+from support.support_functions import make_backup_folder, mark_self_installed, print_welcome_text
 from support.support_variables import AUTO_INSTALL_CONF, BACKUPS_DIR, BACKUP_OPTIONS, CONTRIB_THEMES, DESIRED_AUTO_VER, IS_AUTO_INSTALL
 
+
+##======================= CODE START ================================================================
 os.chdir(os.path.dirname(os.path.realpath(__file__)))  # __file__ is safer since it doesn't change based on where this file is called from
-
 if IS_AUTO_INSTALL:
-  print_welcome_text('a')        #Print welcome text with the flag for auto welcome text
+  print_welcome_text('a')               #Print welcome text with the flag for auto welcome text
 else:
-  print_welcome_text('s')        #Print welcome text with the flag for normal welcome text  
-
-# Crude device detection, *shrug* it works! LeEco does not have tristate!
-if path.exists('/sys/devices/virtual/switch/tri-state-key'): #If 3T-ON
-  print('\n*** OG OnePlus EON Device Detected ***')
-  BOOT_LOGO_THEME_PATH = 'OP3T-Logo/LOGO'                      # Set the boot logo theme path for 3T
-  BOOT_LOGO_PATH = '/dev/block/sde17'                          # Set the boot logo directory for 3T
-  BOOT_LOGO_NAME = 'sde17'                                     # Set the boot logo name for 3T
-else:                                                        #If LeON/Two
-  print('\n*** LeEco EON (Gold/Comma 2) Device Detected ***\n')
-  BOOT_LOGO_THEME_PATH = 'LeEco-Logo/SPLASH'                   # Set the boot logo theme path for Leo
-  BOOT_LOGO_PATH = '/dev/block/bootdevice/by-name/splash'      # Set the boot logo directory for Leo
-  BOOT_LOGO_NAME = 'splash'                                    # Set the boot logo name for Leo
-print('IMPORTANT: Soft-bricking is likely if this detection is incorrect!')
+  print_welcome_text('s')               #Print welcome text with the flag for normal welcome text
+BOOT_LOGO_THEME_PATH, BOOT_LOGO_PATH, BOOT_LOGO_NAME = get_device_theme_data() # Get Perams based off detected device
 
 
 class ThemeInstaller:
