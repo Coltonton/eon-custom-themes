@@ -326,7 +326,7 @@ class ThemeInstaller:
     fi.write(str(DESIRED_AUTO_VER))
 
   # Backup Reinstaller stuff
-  def backup_reinstaller_loop(self, whereFrom):        # Backup Reinstaller!
+  def backup_reinstaller_loop(self):        # Backup Reinstaller!
     # Try to see if self.backup_dir exists. Used if backup_reinstaller_loop() called from another program.
     try:     
       self.backup_dir
