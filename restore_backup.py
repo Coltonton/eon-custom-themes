@@ -1,5 +1,7 @@
 #!/usr/bin/python
 ##################################################################################
+#                                   VER 1.0                                      #
+#                                                                                #
 #      Permission is granted to anyone to use this software for any purpose,     #
 #     excluding commercial applications, and to alter it and redistribute it     #
 #               freely, subject to the following restrictions:                   #
@@ -20,7 +22,7 @@
 #                                                                                #
 #              With a mission to rid all EONS of Comma.ai branding               #
 #             And give the people the freedom, knowlage, and power!              #
-#                       & to make their EONS purdy!                              #
+#                         & to make their EONS purdy!                            #
 #                                                                                #
 #                         Grab life by the horns                                 #
 #                                                                                #
@@ -35,8 +37,11 @@
 #                              SSH into your EON:                                #
 #  (https://medium.com/@jfrux/comma-eon-getting-connected-with-ssh-3ed6136e4a75) #
 #                                                                                #
-#                        Type the following commands:                            #
-#                         cd /data/eon-custom-themes                             #
+#              Type the following command if using the main project              #
+#                  exec /data/eon-custom-themes/restore_backup.py                #
+#                                                                                #
+#            Or if trying to use the included package with an OP Fork:           #
+#              cd /data/(your openpilot directory)/eon-custom-themes             #
 #                          exec ./restore_backup.py                              #
 #                                                                                #
 #               Now follow the prompts and make your selections!                 #
@@ -54,7 +59,7 @@ import os
 import time
 from os import path
 from support.support_variables import BACKUPS_DIR, BACKUP_OPTIONS
-from support.support_functions import get_device_theme_data, get_user_backups, is_affirmative, make_backup_folder, print_welcome_text
+from support.support_functions import get_device_theme_data, get_user_backups, is_affirmative, make_backup_folder, mark_self_installed, print_welcome_text
 
 
 ##======================= CODE START ================================================================
@@ -101,7 +106,7 @@ class BackupReinstaller:
 
     def backup_reinstall_function(self):      # Backuo re-installer program, prompts user on what they want to do
         while 1:
-            options = list(BACKUP_OPTIONS)  # this only contains available options from self.get_available_options
+            options = list(BACKUP_OPTIONS)      # this only contains available options from self.get_available_options
             if not len(options):
                 print('The selected backup has no resources available for your device! Try another.')
                 time.sleep(2)
@@ -121,10 +126,11 @@ class BackupReinstaller:
                     print('Not installing...')
                     time.sleep(1.5)
                     continue
-                os.system('cp {} {}'.format(BOOT_LOGO_PATH, self.backup_dir))  # Make Backup
-                os.system('dd if={}/{}/{} of={}'.format(BACKUPS_DIR, self.selected_backup, BOOT_LOGO_NAME, BOOT_LOGO_PATH))  # Replace
+                os.system('cp {} {}'.format(BOOT_LOGO_PATH, self.backup_dir))      # Make Backup
+                os.system('dd if={}/{}/{} of={}'.format(BACKUPS_DIR, self.selected_backup, BOOT_LOGO_NAME, BOOT_LOGO_PATH))   # Replace
                 print('\nBoot Logo re-installed successfully! Original backed up to {}'.format(self.backup_dir))
                 print('Press enter to continue!')
+                mark_self_installed()       # Create flag in /sdcard so auto installer knows there is a self installation
                 input()
             elif selected_option == 'Boot Animation':
                 print('Selected to install the Boot Animation backup. Continue?')
@@ -139,6 +145,7 @@ class BackupReinstaller:
                 os.system('chmod 666 /system/media/bootanimation.zip')
                 print('\nBoot Animation re-installed successfully! Original backed up to {}'.format(self.backup_dir))
                 print('Press enter to continue!')
+                mark_self_installed()       # Create flag in /sdcard so auto installer knows there is a self installation
                 input()
             elif selected_option == 'OpenPilot Spinner':
                 #Confirm user wants to install Spinner
@@ -183,6 +190,7 @@ class BackupReinstaller:
                 os.system('cd /data/{}/selfdrive/ui/spinner && make'.format(opdir))
                 print('\n{} spinner re-installed successfully! Original backed up to {}'.format(opdir, self.backup_dir))
                 print('Press enter to continue!')
+                mark_self_installed()        # Create flag in /sdcard so auto installer knows there is a self installation
                 input()
             elif selected_option == 'Additional Resources':  # additional features
                 print('Additional Resources are not an active feature')
@@ -191,7 +199,7 @@ class BackupReinstaller:
                 return
             elif selected_option == '-Reboot-':
                 print('Rebooting.... Enjoy your old theme!!!')
-                os.system('am start -a android.intent.action.REBOOT')  # reboot intent is safer (reboot sometimes causes corruption)
+                os.system('am start -a android.intent.action.REBOOT') #create an android action to reboot
                 exit()
             elif selected_option == '-Quit-':
                 print('Thank you come again! You will see your changes next reboot!')

@@ -1,5 +1,7 @@
 #!/usr/bin/python
 ##################################################################################
+#                                   VER 1.0                                      #
+#                                                                                #
 #      Permission is granted to anyone to use this software for any purpose,     #
 #     excluding commercial applications, and to alter it and redistribute it     #
 #               freely, subject to the following restrictions:                   #
@@ -20,7 +22,7 @@
 #                                                                                #
 #              With a mission to rid all EONS of Comma.ai branding               #
 #             And give the people the freedom, knowlage, and power!              #
-#                       & to make their EONS purdy!                              #
+#                         & to make their EONS purdy!                            #
 #                                                                                #
 #                         Grab life by the horns                                 #
 #                                                                                #
@@ -35,11 +37,12 @@
 #                              SSH into your EON:                                #
 #  (https://medium.com/@jfrux/comma-eon-getting-connected-with-ssh-3ed6136e4a75) #
 #                                                                                #
-#                        Type the following commands:                            #
-#                                cd /data                                        #
-#       git clone https://github.com/Coltonton/eon-custom-themes.git             #
-#                      cd /data/eon-custom-themes                                #
-#                        exec ./install_theme.py                                 #
+#              Type the following command if using the main project              #
+#                  exec /data/eon-custom-themes/restore_backup.py                #
+#                                                                                #
+#            Or if trying to use the included package with an OP Fork:           #
+#              cd /data/(your openpilot directory)/eon-custom-themes             #
+#                          exec ./install_theme.py                               #
 #                                                                                #
 #               Now follow the prompts and make your selections!                 #
 #                  Everything will be done automagically!!!!!                    #
@@ -80,7 +83,7 @@ class ThemeInstaller:
       self.start_loop()                                      # Do self install theme
     elif auto_found_installer == 'Do_Auto':
       self.auto_installer()                                  # Do auto install theme
-    elif auto_found_installer is None:
+    else:
       os.rmdir(self.backup_dir)                              # Remove session backup folder as we are doing nada
       exit()                                                 # Terminate program
 
@@ -162,7 +165,7 @@ class ThemeInstaller:
         os.system('cp {} {}'.format(BOOT_LOGO_PATH, self.backup_dir))  # Make Backup
         os.system('dd if={}/{}/{} of={}'.format(CONTRIB_THEMES, self.selected_theme, BOOT_LOGO_THEME_PATH, BOOT_LOGO_PATH))  # Replace
         print('\nBoot Logo installed successfully! Original backed up to {}'.format(self.backup_dir))
-        mark_self_installed()
+        mark_self_installed()       # Create flag in /sdcard so auto installer knows there is a self installation
         print('Press enter to continue!')
         input()
 
@@ -214,7 +217,7 @@ class ThemeInstaller:
         #Final make new spinner & finish
         os.system('cd /data/openpilot/selfdrive/ui/spinner && make')
         print('\n{} spinner installed successfully! Original backed up to {}'.format(opdir, self.backup_dir))
-        mark_self_installed()
+        mark_self_installed()        # Create flag in /sdcard so auto installer knows there is a self installation
         print('Press enter to continue!')
         input()
 
@@ -260,12 +263,12 @@ class ThemeInstaller:
           bootAniColor = "white_"
 
         #Backup And install new bootanimation
-        os.system('mount -o remount,rw /system')  # /system read only, must mount as r/w
+        os.system('mount -o remount,rw /system')                                    # /system read only, must mount as r/w
         os.system('mv /system/media/bootanimation.zip {}'.format(self.backup_dir))  # backup
         os.system('cp {}/{}/{}bootanimation.zip /system/media/bootanimation.zip'.format(CONTRIB_THEMES, self.selected_theme, bootAniColor))  # replace
-        os.system('chmod 666 /system/media/bootanimation.zip')
+        os.system('chmod 666 /system/media/bootanimation.zip')                      #Need to chmod and edet permissions to 666
         print('\nBoot Animation installed successfully! Original backed up to {}'.format(self.backup_dir))
-        mark_self_installed()
+        mark_self_installed()        # Create flag in /sdcard so auto installer knows there is a self installation
         print('Press enter to continue!')
         input()
    
