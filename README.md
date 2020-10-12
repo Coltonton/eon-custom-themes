@@ -1,4 +1,4 @@
-Initial Release Coming Soon! Expected by 8/28/20!!
+Initial Release Coming Soon! Slowly Getting er done :)
 
 [![](https://i.imgur.com/IcCeUD7.png)](#)
 # EON-Custom-Themes
@@ -24,9 +24,10 @@ Table of Contents
 ### How To Contribute
 *  [Contribute Your Work!](#contribute-your-work)
 
----
----
----
+### Minimal Self Installer Assistance (Included with OP Forks)
+
+
+
 
 # What is this?
 
@@ -101,9 +102,9 @@ This is the default linup, I will be creating coupple others. Happy to hear sugg
 ## Contributed Themes
 | Theme Name            |Boot Logo? (3T)| Boot Logo? (LeEco) | Boot Animation? | Custom OP Files?                 | Contributor/ Author|
 | ----------------------| --------------| ------------------ | ----------------| ---------------------------------| -------------------|
-| Comma-Stock           | see folder    | see folder         | see folder      | No                               | Comma.ai           |
-| Colton-HooeyPilot     | Yes           | No                 | Yes              | Elements, & Sounds              | Colton             |
-| Khonsu-LemmonCurd     | Yes           | No                 | Yes             | No                               | Colton             |
+| Comma-Stock           | Yes           | Yes                | Yes             | OP Spinner                      | Comma.ai           |
+| Colton-HooeyPilot     | Yes           | No                 | Yes             | Elements, & Sounds              | Colton             |
+| Khonsu-LemmonCurd     | Yes           | No                 | Yes             | No                              | Colton             |
 ---
 ---
 
