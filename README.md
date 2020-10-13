@@ -1,6 +1,6 @@
 Release 1.0
 
-[![](https://i.imgur.com/IcCeUD7.png)](#)
+[![](https://i.imgur.com/w9jylkJ.png[/img])](#)
 # EON-Custom-Themes
 Upgrade your EON/Leon/Two's Looks!!! This is a pretty all inclusive guide to modify your device themingly. It's your own device! You own it, do with it as you please despite what someeee people may say, which is ironic dont you think?..... Lets Light It Up!!! (Contest)
 
@@ -29,6 +29,8 @@ Table of Contents
 * [Features](#Features)
 * [Support](#Support)
 
+[![](https://i.imgur.com/TSJz3iI.png[/img])](#)
+[![](https://i.imgur.com/qgRTseD.png[/img])](#)
 
 
 
