@@ -32,6 +32,11 @@ Table of Contents
 [![](https://i.imgur.com/TSJz3iI.png)](#)
 [![](https://i.imgur.com/qgRTseD.png)](#)
 
+# Todo
+- Make all of the developer documentation
+- Make some more themes!
+- Have you heard the word???
+
 
 
 # What is this?
