@@ -29,8 +29,8 @@ Table of Contents
 * [Features](#Features)
 * [Support](#Support)
 
-[![](https://i.imgur.com/TSJz3iI.png[/img])](#)
-[![](https://i.imgur.com/qgRTseD.png[/img])](#)
+[![](https://i.imgur.com/TSJz3iI.png)](#)
+[![](https://i.imgur.com/qgRTseD.png)](#)
 
 
 
