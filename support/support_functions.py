@@ -4,8 +4,8 @@ import time
 import difflib
 from os import path
 from datetime import datetime
-from support.support_variables import AUTO_WELCOME_TEXT, BACKUPS_DIR, CONTRIB_THEMES, DESIRED_AUTO_VER, EXCLUDED_THEMES, MIN_SIM_THRESHOLD
-from support.support_variables import RESTORE_WELCOME_TEXT, WELCOME_TEXT
+from support.support_variables import AUTO_WELCOME_TEXT, BACKUPS_DIR, CONTRIB_THEMES, DESIRED_AUTO_VER, EXCLUDED_THEMES, IS_AUTO_INSTALL
+from support.support_variables import MIN_SIM_THRESHOLD, RESTORE_WELCOME_TEXT, WELCOME_TEXT
 
 os.chdir(os.path.dirname(os.path.realpath(__file__)))  # __file__ is safer since it doesn't change based on where this file is called from
 
@@ -83,11 +83,6 @@ def get_user_theme():           # Auto discover themes and let user choose!
         print('Unknown theme, try again!')
 
 def installer_chooser():
-  #Get IS_AUTO_INSTALL var from its file
-  file = open('./support/is_auto_installer.txt', 'r')  # Open do_not_auto flag file
-  IS_AUTO_INSTALL = file.read()                          # Store flag
-  file.close
-
   #Get DO_NOT_AUTO_INSTALL var from its file
   file = open('./support/do_not_auto.txt', 'r')       # Open do_not_auto flag file
   DO_NOT_AUTO_INSTALL = file.read()                     # Store flag

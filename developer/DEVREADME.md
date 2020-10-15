@@ -1,4 +1,16 @@
-[![](https://i.imgur.com/IcCeUD7.png)](#)
+
+# Check Back here soon! Still working on developer documentation!!!!
+
+
+---
+---
+---
+---
+---
+---
+---
+---
+
 # EON-Custom-Themes
 Upgrade your EON/Leon/Two's Looks!!! This is a pretty all inclusive guide to modify your device themingly, if you are wanting a simpler to the point guide [you can find that here!](https://github.com/Coltonton/EON-Custom-Themes/blob/master/GetANewTheme.md) It's your own device! You own it, do with it as you please despite what someeee people may say, which is ironic ain't it?.....
 
