@@ -42,6 +42,88 @@ Table of Contents
 *  [List of themes:](#List-Of-Themes)
 *  [Contribute Your Work!](#Contribute-Your-Work)
 
+
+---
+### Boot Logo Information:
+* [General Information](#Boot-Logo-Information)
+* [Making a Boot Logo](Making-a-Boot-Logo)
+* * [For OnePlus 3T EONs](#Making-For-OnePlus-EONs)
+* * [For LeEco EONs](#Making-For-LeEco-EONs)
+* [Creating The Boot Logo Package](#Creating-The-Boot-Logo-Package)
+* [How To Install The Boot Logo](#How-To-Install-The-Boot-Logo)
+* * [The Easy Way](#The-Easy-Way)
+* * [The Manual Way](#The-Manual-Way)
+
+
+
+# Boot Logo Information
+The boot logo is really a simple part of an android device; it lives as part of the bootloader. Saying that means I have to give a big WARNING! Make sure you use the proper command if manually replacing the boot logo!! The OnePlus EON and LeEco EON have different paths for the boot logo. Using the wrong command / replacing the wrong file may lead to a corrupted bootloader!!!! requiring you to reinstall the bootloader.... If the file is dammaged or wrong then you should be okay but you will see a linux penguin as the boot logo. 
+
+But now back to your regualar sceduled information; you need not read this unless you want to "learn you sumthin" or currious; just skip to the sub-sections below!!!! Anyhow... since the bootloader is a very "simple" program; tasked with getting android up and running; that means its not that complex. Everything you see up to the android boot animation is from the bootloader, such as the boot logo, the screen that appears when your battery does not have enough juice and is charging and some other things. All it does is displays a 1080*1920 image it's that simple! These images are built into a "partition" file of sorts. In the case of the OnePlus 3T it is the `sde17` (Aka logo) partition file located in `/dev/block` and for the LeEco LePro it is `sde32` (Aka splash) in `/dev/block`. In the case of the LeEco due to some funny buisness you need to actually replace `/dev/block/bootdevice/by-name/splash` but its all the same, just symlinks anyway. See the sub-sections bellow for more information! Particularly [Making a Boot Logo](#Making-a-Boot-Logo).
+
+## Making a Boot Logo
+
+ Using your favorite image creation program ex. Photoshop/Gimp create a canvas 1920*1080 and create your design). Once finished you will need to rotate the asset positive 90 degrees  (so its vertical - we are dealing with a phone afterall) and export as a png and replace the desired asset in the applicable boot logo maker tool outlined bellow.
+
+### Making For OnePlus EONs:
+- Clone or download this project to your Windows PC (yes... it is unfortunatly required) then navigate to where you cloned/downloaded this and go to `./Boot-Logo-Tools/OnePlus3TBootLogoMaker/`
+- Here lies all the files you need, all the PNG files in this directory are all the possible 'bootloader' displays!
+- - `fhd_oppo_1080_1920_result.raw` Is the main boot logo.
+- - `fhd_charger_1080_1920_result.raw` Is the screen that shows up when your EONs battery is dead but charging
+- - `fhd_lowpower_1080_1920_result.raw` (never appears) is supposed to be the "EON is dead, please plug in" display
+- - `fhd_fastboot_1080_1920_result.raw` (never appears) but is the fastboot splash screen
+- - `fhd_battery_1080_1920_result.raw` Is a battery error message
+- Edit these files in your prefered image creator/editor (gimp/photoshop/etc) to your hearts desire then export as a png and overwrite the desired asset. 
+- I have made new horizontal assets for the EON to match its orientation. These are free for you to use :) All the assets that are in the folder need to stay there, if you want to remove one for whatever reason just make it a full black image.
+- Proceed to [Create the boot logo package](#Creating-the-boot-logo-package)
+
+### Making For LeEco EONs:
+- Clone or download this project to your Windows PC (yes... it is unfortunatly required) then navigate to where you cloned/downloaded this and go to `./Boot-Logo-Tools/LeEcoBootLogoMaker/pics/`
+- Here lies all the files you need, all the PNG files in this directory are all the possible 'bootloader' displays! These are more self explanatory as to what they do but the LeEco has a special trick up its sleeve. You will notice there are 3 files `logo1`, `logo2`, and `logo3` these all are the main boot logo! The device will display these three images alternately!
+- Edit these files in your prefered image creator/editor (gimp/photoshop/etc) to your hearts desire then export as a png and overwrite the desired asset. 
+- I have made new horizontal assets for the EON to match its orientation. These are free for you to use :) All the assets that are in the folder need to stay there, if you want to remove one for whatever reason just make it a full black image.
+- Proceed to [Create the boot logo package](#Creating-the-boot-logo-package)
+
+## Creating the boot logo package:
+- Once you have all the assets you desire edited how you want all you need to do is run the `CREATE_LOGO` batch script and the provided tools (not created by me) will package up the logo automagically! 
+- - The OnePlus3T tool a new file will appear (or overwite) called `modified.logo.bin`, go ahead and rename this to LOGO removing the extention (ensure '[show file name extentions](https://www.howtogeek.com/205086/beginner-how-to-make-windows-show-file-extensions/)' is turned on for your machine to do this).
+- - The LeEco tool it will appear in `/output/splash.img`, go ahead and rename this to SPLASH removing the extention (ensure '[show file name extentions](https://www.howtogeek.com/205086/beginner-how-to-make-windows-show-file-extensions/)' is turned on for your machine to do this).
+
+## How To Install The Boot Logo:
+### The Easy Way!
+- The easiest most convienient way to get your boot logo on your device is by forking this project and creating your own theme folder in `eon-custom-themes/contributed-themes` follow the guide HERE for information on how to properly structure your theme folder so the program recognizes it. You do not need to modify any code, just create your folder as outlined, clone your fork to your device, and run. If you did everything right it will show up and work! The program scans `contributed-themes` and thats how it populates available themes!
+- Going this route allows for easyier future changes, automagic backuping, and no fiddling with commands/android stuff/filezilla. but you have to be somewhat familiar with git. 
+### The Manual Way:
+- Okay... Okay... its not as bad as it seems to go this route. You need to use ADB or Filezilla (click for guide) to upload your LOGO or SPLASH to /sdcard then run the respective command from SSH below. SECOND WARNING!!! Be careful doing this next step, replaacing the wrong file or using the wrong script may lead to a curropted bootloader!!!! 
+
+To Backup (Recomended but optional): 
+- - For OnePlus3T EONs run `if=/dev/block/sde17 of=/sdcard/LOGO.backup`
+- - For LeEco EONs run `if=/dev/block/bootdevice/by-name/splash of=/sdcard/SPLASH.backup`
+
+To install:
+- - For OnePlus3T EONs run `if=/sdcard/LOGO of=/dev/block/sde17`
+- - For LeEco EONs run `if=sdcard/SPLASH of=/dev/block/bootdevice/by-name/splash`
+
+If you see a linux penguin on next reboot something is wrong with your file. you uploaded
+
+# Boot Animation Information
+The Android boot animation is also a pretty "simple" and non complex as well. It is Androids loading screen to tell the user... well... it's loading... Basicly its an "un-zipped gif" by what I mean you provide all of the "frames" of the animation, then the device does the rest! The "frames" consist of 1920*1080 jpg files. To Start the boot animation is a non-compression zip folder containing a desc.txt, then folders for each 'part' of the animation. Most common and what comma uses is the 3 part animation (part0, part1, part2). part0 is the first part and is only played once this typically is used to transiston from the boot logo then fade in the main boot animation to make the boot visual process look cleaner. part1 is the main animation that will play on loop until Android fully boots then finishes its current animation. part2 plays once as well and is used as an out-transistion
+
+
+
+# OpenPilot Spinner Information
+
+# Auto Installer Information 
+
+
+
+
+
+
+
+
+
+
 ---
 ---
 ---
