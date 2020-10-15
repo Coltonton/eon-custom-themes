@@ -11,8 +11,8 @@
 ---
 ---
 
-# EON-Custom-Themes
-Upgrade your EON/Leon/Two's Looks!!! This is a pretty all inclusive guide to modify your device themingly, if you are wanting a simpler to the point guide [you can find that here!](https://github.com/Coltonton/EON-Custom-Themes/blob/master/GetANewTheme.md) It's your own device! You own it, do with it as you please despite what someeee people may say, which is ironic ain't it?.....
+# EON-Custom-Themes-DEVREADME
+Here contains a whole lot of information on the technical aspects of this project. How to make boot logos, boot animations, and edit OpenPilot visual files! Please take a look at the Table of Contents... THere is alotttt of information here!
 
 This is a new project, find any errors? submit an issue, or make a pull request! This is not my project but our project!! * **Soviet national anthem plays** *
 
@@ -21,13 +21,7 @@ Table of Contents
 * [What is this?](#what-is-this)
 * [Setting Up FileZilla](#Setting-Up-FileZilla)
 
-### Boot Animation & OP Loading Screen
-*  [Boot Animation:](#Boot-Animation)
-*  [OpenPilot Loading Screen:](#OpenPilot-Loading-Screen)
 
-
-
----
 ### Boot Logo Information:
 * [General Information](#Boot-Logo-Information)
 * [Making a Boot Logo](Making-a-Boot-Logo)
@@ -38,7 +32,7 @@ Table of Contents
 * * [The Easy Way](#The-Easy-Way)
 * * [The Manual Way](#The-Manual-Way)
 
-### Boot Logo Information:
+### Boot Animation Information:
 * [General Information](#Boot-Animation-Information)
 * [Making a Boot Animation](#Making-a-Boot-Animation)
 * [Zipping The Animation](#Zipping-The-Animation)
@@ -49,10 +43,13 @@ Table of Contents
 ### OpenPilot Spinner Information:
 * [General Information](#Boot-Animation-Information)
 
+### OpenPilot UI Information:
+* [General Information](#Boot-Animation-Information)
+
 
 
 # Boot Logo Information
-The boot logo is really a simple part of an android device; it lives as part of the bootloader. Saying that means I have to give a big WARNING! Make sure you use the proper command if manually replacing the boot logo!! The OnePlus EON and LeEco EON have different paths for the boot logo. Using the wrong command / replacing the wrong file may lead to a corrupted bootloader!!!! requiring you to reinstall the bootloader.... If the file is dammaged or wrong then you should be okay but you will see a linux penguin as the boot logo. 
+The boot logo is really a simple part of an android device; it lives as part of the bootloader. Saying that means I have to give a big WARNING! Make sure you use the proper command if manually replacing the boot logo!! The OnePlus EON and LeEco EON have different paths for the boot logo. Using the wrong command / replacing the wrong file may lead to a corrupted bootloader!!!! requiring you to reinstall the bootloader.... and an expensive potato. If the file is dammaged or wrong then you should be okay but you will see a linux penguin as the boot logo. 
 
 But now back to your regualar sceduled information; you need not read this unless you want to "learn you sumthin" or currious; just skip to the sub-sections below!!!! Anyhow... since the bootloader is a very "simple" program; tasked with getting android up and running; that means its not that complex. Everything you see up to the android boot animation is from the bootloader, such as the boot logo, the screen that appears when your battery does not have enough juice and is charging and some other things. All it does is displays a 1080*1920 image it's that simple! These images are built into a "partition" file of sorts. In the case of the OnePlus 3T it is the `sde17` (Aka logo) partition file located in `/dev/block` and for the LeEco LePro it is `sde32` (Aka splash) in `/dev/block`. In the case of the LeEco due to some funny buisness you need to actually replace `/dev/block/bootdevice/by-name/splash` but its all the same, just symlinks anyway. See the sub-sections bellow for more information! Particularly [Making a Boot Logo](#Making-a-Boot-Logo).
 
@@ -153,17 +150,23 @@ I have found this can be quite a pain to deal with so what I opt to do is select
 
 
 
-
-
 # OpenPilot Spinner Information
+Ah, finally some simpler information, the OpenPilot loading spinner. I'm not going to go into 100% depth about how the spinner program works but I'll be sure to point out the main things most people would want to change. The `spinenr.c` program is located in `openpilot/selfdrive/common/` (well in unbuilt code form). And is the program responsible for the OpenPilot spinner! Who could of guessed!! 
+## Changing the Spinner Logo:
+- **To change** the spinner logo that appears all you have to do is edit/replace `openpilot/selfdrive/assets/img_spinner_comma.png` in your editing program of choice. To edit its just easiest to [download from here](#https://github.com/commaai/openpilot/blob/master/selfdrive/assets/img_spinner_comma.png) unless of course you run an OpenPilot fork which just makes this all easier! You also must maintain the 848*848 resolution. Just remember you dont have the full square to work with when designing; there is the spinner track that spins around the logo! Fortunatly it also is the same resolution as the logo file and the spinner track is ~848 pixles in diamater
+- **To Upload** the spinner logo, the easiest way of course is to maintain your own OpenPilot fork and just replace the files there. As with the boot logo and boot animation you can also run your own fork of this project and create your own theme folder ###folowing this guide### to set up your theme folder properly. And ofcourse ADB and FileZilla work to
+
+## Changing the Spinner Track:
+- **To change** the spinner logo that appears all you have to do is edit/replace `openpilot/selfdrive/assets/img_spinner_track.png` in your editing program of choice. To edit its just easiest to [download from here](#https://github.com/commaai/openpilot/blob/master/selfdrive/assets/img_spinner_track.png) unless of course you run an OpenPilot fork which just makes this all easier! You also must maintain the 848*848 resolution! You can do what your heart desires, just know the code rotates the image, so best to stick to circular designs for it. Don't want the spinner track? All you need to do is erase all the pixles leaving a fully transparent png file.
+- **To Upload** the spinner track, the easiest way as mentoned is to maintain your own OpenPilot fork and just replace the files there. As with the boot logo and boot animation you can also run your own fork of this project and create your own theme folder ###folowing this guide### to set up your theme folder properly. And ofcourse ADB and FileZilla work to
+
+## Changing the Spinner Progress Bar:
+- Ah finally something interisting! Fortunatly for this you need not worry about an OpenPilot fork, EON-Custom-Theme fork, or trying to upload files to your EON, this all can be done from SSH/Workbench! (Well, you still can and if you are going the fork route you might as well continue down that path as you're already doing it)
+- We need to edit spinner.c as located in `openpilot/selfdrive/common/` if editing on device over SSH run `nano /data/openpilot/selfdrive/common/spinner.c`
+
+
 
 # Auto Installer Information 
-
-
-
-
-
-
 
 
 
