@@ -114,9 +114,9 @@ This is the default linup, I will be creating coupple others. Happy to hear sugg
 ## Contributed Themes
 | Theme Name            |Boot Logo? (3T)| Boot Logo? (LeEco) | Boot Animation? | Custom OP Files?                 | Contributor/ Author|
 | ----------------------| --------------| ------------------ | ----------------| ---------------------------------| -------------------|
-| Comma-Stock           | Yes           | Yes                | Yes             | OP Spinner                      | Comma.ai           |
-| Colton-HooeyPilot     | Yes           | No                 | Yes             | No                              | Colton             |
-| Khonsu-LemmonCurd     | Yes           | No                 | Yes             | OP Spinner                      | Colton             |
+| Comma-Stock           | Yes           | Yes                | Yes             | OP Spinner                       | Comma.ai           |
+| Colton-HooeyPilot     | Yes           | No                 | Yes             | No                               | Colton             |
+| Khonsu-LemmonCurd     | Yes           | No                 | Yes             | OP Spinner                       | Colton             |
 
 
 ## Contribute Your Work!:
