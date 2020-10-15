@@ -21,26 +21,10 @@ Table of Contents
 * [What is this?](#what-is-this)
 * [Setting Up FileZilla](#Setting-Up-FileZilla)
 
-### 3T-EON Boot Logo Instructions
-* [Retrive 3T Boot Logo](#Retrive-3T-Boot-Logo)
-* [Modifying 3T Files](#Modifying-3T-Files)
-* [Uploading Modified 3T Logo/Custom Logo:](#Uploading-Modified-3T-Logo/Custom-Logo)
-
-
-### LEON/TWO Boot Logo Instructions HALP ME!!!
-* [HELP WANTED!!!!](#Help-Wanted)
-* [Find The LEON/TWO logo.bin:](#Find-The-LEON/TWO-logo.bin)
-
-
 ### Boot Animation & OP Loading Screen
 *  [Boot Animation:](#Boot-Animation)
 *  [OpenPilot Loading Screen:](#OpenPilot-Loading-Screen)
 
-### Themes
-
-*  [How To Use:](#How-To-Use)
-*  [List of themes:](#List-Of-Themes)
-*  [Contribute Your Work!](#Contribute-Your-Work)
 
 
 ---
@@ -53,6 +37,17 @@ Table of Contents
 * [How To Install The Boot Logo](#How-To-Install-The-Boot-Logo)
 * * [The Easy Way](#The-Easy-Way)
 * * [The Manual Way](#The-Manual-Way)
+
+### Boot Logo Information:
+* [General Information](#Boot-Animation-Information)
+* [Making a Boot Animation](#Making-a-Boot-Animation)
+* [Zipping The Animation](#Zipping-The-Animation)
+* [How To Install The Boot Animation](#How-To-Install-The-Boot-Animation)
+* * [The Easy Way](#The-Easy-Way-Boot-Animation)
+* * [The Manual Way](#The-Manual-Way-Boot-Animation)
+
+### OpenPilot Spinner Information:
+* [General Information](#Boot-Animation-Information)
 
 
 
@@ -76,6 +71,7 @@ But now back to your regualar sceduled information; you need not read this unles
 - Edit these files in your prefered image creator/editor (gimp/photoshop/etc) to your hearts desire then export as a png and overwrite the desired asset. 
 - I have made new horizontal assets for the EON to match its orientation. These are free for you to use :) All the assets that are in the folder need to stay there, if you want to remove one for whatever reason just make it a full black image.
 - Proceed to [Create the boot logo package](#Creating-the-boot-logo-package)
+- (If you want to extract the assets from a given 3T boot logo simply move it to `./developer/boot-logo-tools/OnePlus3TBootLogoMaker` deleting the file sde17.bin then renaming the desired 3T logo to sde17.bin. Now run `EXTRACT_LOGO` and well... the logo file will be extracted!!!)
 
 ### Making For LeEco EONs:
 - Clone or download this project to your Windows PC (yes... it is unfortunatly required) then navigate to where you cloned/downloaded this and go to `./Boot-Logo-Tools/LeEcoBootLogoMaker/pics/`
@@ -84,7 +80,7 @@ But now back to your regualar sceduled information; you need not read this unles
 - I have made new horizontal assets for the EON to match its orientation. These are free for you to use :) All the assets that are in the folder need to stay there, if you want to remove one for whatever reason just make it a full black image.
 - Proceed to [Create the boot logo package](#Creating-the-boot-logo-package)
 
-## Creating the boot logo package:
+## Creating the Boot Logo Package:
 - Once you have all the assets you desire edited how you want all you need to do is run the `CREATE_LOGO` batch script and the provided tools (not created by me) will package up the logo automagically! 
 - - The OnePlus3T tool a new file will appear (or overwite) called `modified.logo.bin`, go ahead and rename this to LOGO removing the extention (ensure '[show file name extentions](https://www.howtogeek.com/205086/beginner-how-to-make-windows-show-file-extensions/)' is turned on for your machine to do this).
 - - The LeEco tool it will appear in `/output/splash.img`, go ahead and rename this to SPLASH removing the extention (ensure '[show file name extentions](https://www.howtogeek.com/205086/beginner-how-to-make-windows-show-file-extensions/)' is turned on for your machine to do this).
@@ -107,7 +103,55 @@ To install:
 If you see a linux penguin on next reboot something is wrong with your file. you uploaded
 
 # Boot Animation Information
-The Android boot animation is also a pretty "simple" and non complex as well. It is Androids loading screen to tell the user... well... it's loading... Basicly its an "un-zipped gif" by what I mean you provide all of the "frames" of the animation, then the device does the rest! The "frames" consist of 1920*1080 jpg files. To Start the boot animation is a non-compression zip folder containing a desc.txt, then folders for each 'part' of the animation. Most common and what comma uses is the 3 part animation (part0, part1, part2). part0 is the first part and is only played once this typically is used to transiston from the boot logo then fade in the main boot animation to make the boot visual process look cleaner. part1 is the main animation that will play on loop until Android fully boots then finishes its current animation. part2 plays once as well and is used as an out-transistion
+The Android boot animation is also a pretty "simple" and non complex as well. It is Androids loading screen to tell the user... well... it's loading... Basicly its an "un-zipped gif" by what I mean you provide all of the "frames" of the animation, then the device does the rest! The "frames" consist of 1920*1080 jpg files in sequental name order. (yes jpg, you will see refrence to using png but EON doesnt like png that much...) To Start the boot animation is a non-compression zip folder containing a desc.txt, then folders for each 'part' of the animation. Most common and what Comma and I use is the 3 part animation (part0, part1, part2)(Intro, Main Loop, Outro). part0 is the first part and is only played once this typically is used to transiston from the boot logo then fade in the main boot animation to make the boot visual process look cleaner. part1 is the main animation that will play on loop until Android fully boots then finishes its current animation. part2 plays once as well and is used as an out-transistion. There is so much you can do with the "code" of the boot animation, the desc.text. [Here is Androids offical documentation on this](https://android.googlesource.com/platform/frameworks/base/+/master/cmds/bootanimation/FORMAT.md). But simply put it is a simple text file that acts as the progam and all you need to know is a few things if you decide to edit this. and you do have to mind your whitespaces, and newlines! The final line should have a newline after it or it will not work properly. 
+
+-(unzip a bootanimation.zip to see if you are more visual, how everything operates) The very first line is formated as `WIDTH HEIGHT FPS`, this is the resolution you want it to show and at what speed (FPS). For example the default for my themes is `1920 1080 30` showing the animation at EONs full resolution, and at 30 frames per second targeted.
+ The following lines are used to program the actual animation, in the format `TYPE COUNT PAUSE PATH` 
+ - **TYPE:** a single char indicating what type of animation segment this is:
+- - `p` -- this part will play until interrupted by the end of the boot
+- - `c` -- this part will play to completion, no matter what
+- **COUNT:** how many times to play the animation, or 0 to loop forever until boot is complete
+- **PAUSE:** number of FRAMES to delay after this part ends
+- **PATH:** directory in which to find the frames for this part (e.g. part0)
+
+My desc.txt looks like:
+
+    1920 1080 30
+    c 1 0 part0
+    c 0 0 part1
+    c 1 30 part2
+
+
+
+## Making a Boot Animation:
+Designing is simple as well as the boot logo, and again ai wont teach you to design! But arguably one of the most time consuming parts. Just fire up your favorite editor again that allows you to make frames. I personally prefer photoshop as I'm very familiar with it but understand its an expensive option for most. But they do have a 7 day free trial you can exploit! You can also use the free tool Gimp with [this helpful plugin](https://github.com/khalim19/gimp-plugin-export-layers.git), that allows you to easily export each of your layers as images. Just create a layer for each frame! Back to photoshop see ###this link### to download the photoshop templetes I created and use to create my designs! More instructions will be provided with that on how to use them. Or you can use any tool you like that allows you to export each frame as an image **in sequential order**. This is important! Upon exporting you will want each frame sequentialy exported ex 00001.jpg 00002.jpg 00003.jpg... etc. As Android needs some way to know what order to display the immages. 
+
+
+## Zipping The Animation
+Once designed, export in an order like the standard above, put each 'part' of the animation in its own folder (again the standard way is starting with part0). And placing those part folders in a folder called `bootanimation` with the appropriate desc.txt. Zip with WinRar/7Zip with **NO** compression/store. you can also use the following command as provided from the android developer docs:
+
+    cd <path-to-pieces>
+    zip -0qry -i \*.txt \*.jpg @ ../bootanimation.zip *.txt part*
+
+I have found this can be quite a pain to deal with so what I opt to do is select the part folders and desc.txt and inject them into a existing bootanimation.zip overwriting the files.
+[![](https://i.imgur.com/s7wEUYt.png)](#)
+
+## How To Install the Boot Animation
+### The Easy Way Boot Animation!
+- The easiest most convienient way to get your boot animation on your device is by forking this project and creating your own theme folder in `eon-custom-themes/contributed-themes` follow the guide ###HERE### for information on how to properly structure your theme folder so the program recognizes it. You do not need to modify any code, just create your folder as outlined, clone your fork to your device, and run. If you did everything right it will show up and work! The program scans `contributed-themes` and thats how it populates available themes!
+- Going this route allows for easyier future changes, automagic backuping, and no fiddling with commands/android stuff/filezilla. but you have to be somewhat familiar with git. 
+### The Manual Way Boot Animation:
+- This manual way is a bit easier to deal with then the manual boot logo but still requires some work. Firstly you need to SSH into your eon and run `mount -o remount,rw /system` before you begin. Then you will need to use ADB or Filezilla (click for guide) to upload your bootanimation.zip to /system/media
+
+- - For ADB, copy your bootanimaion.zip to your ADB directory and run:
+
+        adb push bootanimation.zip /system/media
+
+- - For FileZilla after connecting to your EON, on the left side naviagte to where your bootanimation.zip is on your computer and on the right to /system/media. Double click your bootanimation.zip on the left side to upload, and confirm to overwrite
+
+- After you successfully copy it over you will need to run `chmod 666 /system/media/bootanimation.zip` from a SSH terminal
+
+
 
 
 
