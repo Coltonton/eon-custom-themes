@@ -8,9 +8,10 @@ MIN_SIM_THRESHOLD = 0.25  # user's input needs to be this percent or higher simi
 
 # ==============  Auto Installer Vars ============== ## - see DEVREADME
 IS_AUTO_INSTALL = False     #Do Auto Install
-DESIRED_AUTO_VER = '1'     #Desired theme version, add 1 to update users theme.
+DESIRED_AUTO_VER = '1'      #Desired theme version, add 1 to update users theme.
 AUTO_INSTALL_CONF = {'auto_selected_theme': 'Arne', 'install_logo': True, 'install_anim': True,
-                     'ani_color': 'white_', 'install_spinner': True, 'openpilot_dir_name': 'openpilot', 'install_additional': False}
+                     'ani_color': 'white_', 'install_spinner': True, 'openpilot_dir_name': 'openpilot',
+                     'install_kurmar_black_apk': False, 'install_apk': False}
 
 # =================  Welcome Texts ================= ##
 WELCOME_TEXT = ['Created By: Colton (Brandon) S. EndLine \\n',

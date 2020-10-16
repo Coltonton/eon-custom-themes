@@ -110,7 +110,7 @@ int spin(int argc, char** argv) {
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
     nvgBeginFrame(vg, fb_w, fb_h, 1.0f);
 
-    // background
+    // background color
     nvgBeginPath(vg);
     NVGpaint bg = nvgLinearGradient(vg, fb_w, 0, fb_w, fb_h,
     nvgRGBA(0, 0, 0, 175), nvgRGBA(0, 0, 0, 255));
@@ -120,9 +120,9 @@ int spin(int argc, char** argv) {
 
     // spin track
     nvgSave(vg);
-    nvgTranslate(vg, spinner_img_xc, spinner_img_yc);
-    nvgRotate(vg, (3.75*M_PI * cnt/120.0));
-    nvgTranslate(vg, -spinner_img_xc, -spinner_img_yc);
+    nvgTranslate(vg, spinner_img_xc, spinner_img_yc);       // Transform the context to the point on the canvas that the object should rotate about.
+    nvgRotate(vg, (3.75*M_PI * cnt/120.0));                 // Rotate the context.
+    nvgTranslate(vg, -spinner_img_xc, -spinner_img_yc);     // Transform the context by the negative offset within the object for the center of rotation.
     NVGpaint spinner_imgPaint = nvgImagePattern(vg, spinner_img_x, spinner_img_y,
       spinner_img_s, spinner_img_s, 0, spinner_img, 0.6f);
     nvgBeginPath(vg);
@@ -140,11 +140,11 @@ int spin(int argc, char** argv) {
     nvgFill(vg);
 
     if (draw_progress){
-      // draw progress bar
-      int progress_width = 1000;
-      int progress_x = fb_w/2-progress_width/2;
-      int progress_y = 775;
-      int progress_height = 25;
+      // draw progress bar   -   The coordinate values for the possition is (imagine a rectangle) the top left point, not the center of the object
+      int progress_width = 1000;                 // How wide you want the progress bar
+      int progress_height = 25;                  // How tall you want the progress bar
+      int progress_x = fb_w/2-progress_width/2;  // X position (half the screens width - center) minus (half the bar width) to get the top left point X cord
+      int progress_y = 775;                      // Y position (to set where the top left Y point cord is )
 
       NVGpaint paint = nvgBoxGradient(
           vg, progress_x + 1, progress_y + 1,
@@ -159,7 +159,7 @@ int spin(int argc, char** argv) {
       paint = nvgBoxGradient(
           vg, progress_x, progress_y,
           bar_pos+1.5f, progress_height-1, 3, 4,
-          nvgRGB(245, 245, 245), nvgRGB(105, 105, 105));
+          nvgRGB(245, 245, 245), nvgRGB(105, 105, 105));  // The color of the progress bar (Completed color, uncompleded color)
 
       nvgBeginPath(vg);
       nvgRoundedRect(

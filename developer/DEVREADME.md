@@ -1,16 +1,3 @@
-
-# Check Back here soon! Still working on developer documentation!!!!
-
-
----
----
----
----
----
----
----
----
-
 # EON-Custom-Themes-DEVREADME
 Here contains a whole lot of information on the technical aspects of this project. How to make boot logos, boot animations, and edit OpenPilot visual files! Please take a look at the Table of Contents... THere is alotttt of information here!
 
@@ -19,7 +6,6 @@ This is a new project, find any errors? submit an issue, or make a pull request!
 Table of Contents
 =======================
 * [What is this?](#what-is-this)
-* [Setting Up FileZilla](#Setting-Up-FileZilla)
 
 
 ### Boot Logo Information:
@@ -41,10 +27,32 @@ Table of Contents
 * * [The Manual Way](#The-Manual-Way-Boot-Animation)
 
 ### OpenPilot Spinner Information:
-* [General Information](#Boot-Animation-Information)
+* [General Information](#OpenPilot-Spinner-Information)
+* [Changing the Spinner Logo](#Changing-the-Spinner-Logo)
+* [Changing the Spinner Track](#Changing-the-Spinner-Track)
+* [Getting loading text](#Getting-loading-text)
+* [Installing Spinner Changes](#Installing-Spinner.c-Code-Changes)
 
 ### OpenPilot UI Information:
 * [General Information](#Boot-Animation-Information)
+
+
+### Auto Installer Information:
+
+### How to Make Your Own Theme Folder:
+* [General Information](#Boot-Animation-Information)
+
+
+
+### Misc Info:
+* [FileZilla Mini Guide](#FileZilla-Mini-Guide)
+* [ADB Mini Guide]((#ADB-Mini-Guide))
+
+## What is this?
+
+Thanks for asking young one! This is a project dedicated to de-comma-ing your EON! Wether you dont like Comma.ai the company or want to personalize your EON, I gotchu fam!
+
+Included in this repository is all the info you need to start hacking around! This is also a community project so here you can find boot logos, boot animations, and OpenPilot loading annimations for your device! Created by myself and other community members, free to use!!! Made your own and want to share it with the world? Wonderful! check [Contribute Your Work!](#Contribute-Your-Work!)
 
 
 
@@ -160,195 +168,100 @@ Ah, finally some simpler information, the OpenPilot loading spinner. I'm not goi
 - **To change** the spinner logo that appears all you have to do is edit/replace `openpilot/selfdrive/assets/img_spinner_track.png` in your editing program of choice. To edit its just easiest to [download from here](#https://github.com/commaai/openpilot/blob/master/selfdrive/assets/img_spinner_track.png) unless of course you run an OpenPilot fork which just makes this all easier! You also must maintain the 848*848 resolution! You can do what your heart desires, just know the code rotates the image, so best to stick to circular designs for it. Don't want the spinner track? All you need to do is erase all the pixles leaving a fully transparent png file.
 - **To Upload** the spinner track, the easiest way as mentoned is to maintain your own OpenPilot fork and just replace the files there. As with the boot logo and boot animation you can also run your own fork of this project and create your own theme folder ###folowing this guide### to set up your theme folder properly. And ofcourse ADB and FileZilla work to
 
-## Changing the Spinner Progress Bar:
-- Ah finally something interisting! Fortunatly for this you need not worry about an OpenPilot fork, EON-Custom-Theme fork, or trying to upload files to your EON, this all can be done from SSH/Workbench! (Well, you still can and if you are going the fork route you might as well continue down that path as you're already doing it)
-- We need to edit spinner.c as located in `openpilot/selfdrive/common/` if editing on device over SSH run `nano /data/openpilot/selfdrive/common/spinner.c`
+## Changing the Spinner Code:
+Ah finally something interisting! Fortunatly for this you need not worry about an OpenPilot fork, EON-Custom-Theme fork, or trying to upload files to your EON, this all can be done from SSH/Workbench! (Well, you still can and if you are going the fork route you might as well continue down that path as you're already doing it) I have also actually documented the program (unlike comma has) giving even more information then what is shared here!
+### Changing the progress bar:
+- Changing The Progress Bar Color:
+- - We need to edit spinner.c as located in `openpilot/selfdrive/common/` if editing on device over SSH run `nano /data/openpilot/selfdrive/common/spinner.c` then find line 162, and this is what you need to edit. 
+
+        nvgRGB(245, 245, 245), nvgRGB(105, 105, 105));
+
+    These are the RGB values for the loading bar the first is the "completed" portion of the bar, while the second is the "uncompleted" section. 
+- Changing the Progress Bar Size:
+- - This is accomplished in lines 144 - 147 in spinner.c. All the values are pretty self explanatory the only note I want to make is for `progress_x` for those of you who are not familiar with ui coding `fb_w/2-progress_width/2` translates to (framebuffer_width(or screen width) ÷ 2) - (the_width_of_the_progress_bar ÷ 2). This is to mathematically get the top left X point of the progress bar rectangle so that its centered on the display. When placing objects for most UI applications like this the point where the program draws the asset is the top left point, not the center; thats why we need to subtract half of the progress bar's width from half the screens width. Then `progress_y` (the Y component of the point) is just a number, for whatever reason. Sloppy programing Comma...
+
+### Getting loading text:
+- come back soon! sorry!
+
+
+### Installing Spinner Changes:
+As with the boot logo and boot animmation you have a few options, plus one more! 
+- If you maintain your own OpenPilot fork just replace the changed files in your fork, if you `git pull` these changes to your eon you will need to run `cd /data/openpilot/selfdrive/ui/spinner && make` to make the new changes, if you fresh install OpenPilot, it will be made as part of the innital initialization of OP. Also doing it this way ensures you never have to worry about the spinner reverting.
+- As with the others you can fork this project and create your own theme folder ###Following this guide### and use my installer to get it on device.
+- FileZilla and ADB are options too, just use these tools to replace the appropriate files. See the guides on those for more.
 
 
 
-# Auto Installer Information 
+# Auto Installer Information:
+Well you want to include the auto installer as part of your OpenPilot fork? Well congrats I'm happy for you! Read this section to see how to implement it! Its actully quite easy to do dont worry! Also feel free to check out ArnePilot to see how I've implemented it there! So lets get started with the requirements, that seems like a good place!
+
+## Requirments:
+- The following files are required/not to remain as they are vital or contain licence information.
+- - Install_theme.py & restore_backup.py are required
+- - The main readme and the licence file are required
+- - Everything in `/support` except `eonkey.pem`, `img_spinner_track`, and `spinenr.c` is required (note if you remove `img_spinner_track` and `spinner.c` you **MUST** have a copy of these files in your theme folder or the program will  not work!!!!!)
+- - `/developer` and everything in it is not required
+- - Any theme that is not the one you want to install & `ignoreme` & `example` are not required.
+- - Git related files can be removed
+
+- Plese do not modify the code or files in a way that may negatively effect the user, I have spent alot of time overthinking this project. If you have an idea about improving user experence, please create an issue on github.
+
+- I expect the same community standards to be applied see [requirements to contribute](#How-To-Contribute)
+
+## How It Works:
+Inside `./support/support_variables.py` there is a section titled **Auto Installer Vars**; here is where you set up your theme and setting `IS_AUTO_INSTALL` to true when the program is executed it runs the auto installer checker first, and if it fails it checks it installs your theme how you desire based off the `AUTO_INSTALL_CONF` configuration. What are the checks? Glad you asked! There are a few! 
+- Firstly it opens and checks the contents of `./support/do_not_auto.txt` This is a way for the user to easily disable auto installation if they choose, its all about the users choice not yours, if its a 0 the program is okay to continue, if its 1, it will lead to termination. 
+- The next check, checks if `/sdcard/eon_custom_themes_self_installed.txt` exists; this allows the program to see if a user has installed a theme using the program previously of their choice. This is to not overwrite their earlier decision. Again the program will lead to temination if this exists. (The user can choose to run your theme by deleting that file, then next reboot it will install successfully)
+- The third and final check is for version contol, so every boot the installer only runs if a.) it was not auto installed before (to prevent unnecessary, installs), and b.) there is a new "version" of your theme available(more on this later). This works with the `DESIRED_AUTO_VER` in the **Auto Installer Vars** and `./support/auto_install_ver.txt` file. You as the developer set the `DESIRED_AUTO_VER` for your current version adding 1 each time, the program will compare the `DESIRED_AUTO_VER` with the `auto_install_ver` and if they do not match it allows the program to continue. If they are the same value, it will lead the program to terminate. The program will update `auto_install_ver` to the `DESIRED_AUTO_VER` if all these checks 'fail' and the installer actully installs, this circles us back around to the top, next boot the program will not install anything as the most current version is already installed. If you make changes and want to update users devices just increment `DESIRED_AUTO_VER` by one; next time they pull your OP fork and reboot it will install your updated theme!
+
+If users are having issues have them run `exec /data/openpilot/eon-custom-themes/install_theme.py`. The program will print the exit condion(s) and the output of the 3 checks above. 
 
 
 
 
----
----
----
-
-## What is this?
-
-Thanks for asking young one! This is a project dedicated to de-comma-ing your EON! Wether you dont like Comma.ai the company or want to personalize your EON, I gotchu fam!
-
-Included in this repository is all the info you need to start hacking around! This is also a community project so here you can find boot logos, boot animations, and OpenPilot loading annimations for your device! Created by myself and other community members, free to use!!! Made your own and want to share it with the world? Wonderful! check [Contribute Your Work!](#Contribute-Your-Work!)
-
-
-## Setting Up FileZilla:
-0. [Download Filezilla](https://filezilla-project.org/download.php?type=client)
-1. Install FileZilla
-2. Open Site Manager (Top leftmost icon - looks like 3 server racks)
-3. Create a new site and call it EON
-4. For Protocol select SFTP
-5. Enter the IP adress of your eon in Host
-6. Port: 8022
-7. Login Type: Key File
-8. User: root
-9. Key File: choose eonkey.pem from root in this repo
-
-3T-EON Instructions:
-=======================
-
-## 3T Boot Logo:
-### Retrive 3T Boot Logo
-
-1. Connect with FileZilla
-2. and go to `/dev/block`
-3. In the left handed pannel choose where you want to save.
-4. Doubble click the file sde17 to transfer and backup
-
-### Modifying 3T Files:
-(Windows Required)
-
-#### Extracting 3T Boot Images:
-If you want to create your own boot logo(s) you can use the provided files in OnePlus3T assets folder, and can skip this section, use this section only if you wish to modify an existing bootlogo set.
-
-1. Download this repo.
-2. If you wish to modify a 3T boot logo, take it and replplace the sde17.bin file in `Boot Logo Tools\OnePlus3TInjector` with it, being sure to add the .bin extention 
-4. Doubble click `Extractor.cmd`
-5. All the files will extract and replace into the `Boot Logo Tools\OnePlus3TInjector` folder.
-
-#### Editing 3T Boot Images
-This is not a Photoshop or Gimp tutorial. 
-Although there are a few files that get extracted you only need to worry about 3 of them (edit the others as you like, I have already made new horizontal themes, that you are free to use use).
-
-* FHD_Charger... is the low battery screen shown while it is pluged in.
-* FHD_lowpower... is the low battery screen shown while not pluged in.
-* FHD_oppo... is the main boot logo.
-0. Download this repo if you haven't.
-1. GENTLEMEN! START... YOUR.... ENG..oh...favorite image editors...
-2. Remember were dealing with a phone. So you can set your canvas to 1920w x 1080h  but you will need to rotate the image +90 degrees once done editing.
-3. Do not go extravagant with the boot logo there is not alot of program memory for anything crazy.
-4. Once you have made your logo(s), again remember to rotate it +90 degrees and export as a png file using the EXACT name as the file you want to change, and replace it in the `Boot Logo Tools\OnePlus3TInjector` directory that you are changing.
-#### Reinjecting 3T Boot Images
-
-0. Download this repo if you haven't.
-1. Doubble click `Injector.cmd`
-3. This will create a file called modified.logo.bin, rename it to sde17 (with no file extention)
-4. FIN! You can now [Upload your modified 3T logo](#Uploading-modified/custom-3T-Logo:)
-
-### Uploading modified/custom 3T Logo:
-0. Make sure you are NOT about to follow these steps to install on a LeEco Based EON (LEON,GOLD,TWO) THIS IS ONLY FOR OP3T EON's, YOUR DEVICE WILL BE HARD BRICKED! DEAD! CAPUT! JEFFREY EPSTEIN'ED!!!!!
-1. Connect with FileZilla.
-2. Go to `/dev/block`
-3. In the left pane area in FileZilla, navigate to the boot logo you want to use.
-4. Right click and choose upload, then overwrite.
-
-Reboot and enjoy! If EON shows a Linux penguin you done screwed sumthin' up! (Or somebody else did) Try again!
-
-
-LEON/TWO_Instructions
-=======================
-
-## DO NOT DON NOT!!!!! TRY TO PUT A OP3T BOOT LOGO ON YOUR LEECO EON
-
-## HELP WANTED!!
-
-I do not have a LEON and I need your help! 
-If you want to send in a LEON/Two logo.bin it would be much appriciated! 
-Email it to Cole@endoflinetech.com and I will get a working! It would be appricieated if you would help verify my work is working
-I'm also C-ton#2169 on discord if you want help / want to chat!
 
 
 
-## Installing ADB (Windows):
-1. [Download ADB](https://dl.google.com/android/repository/platform-tools-latest-windows.zip)
-2. Extract zip to c:\ADB
+# How To Make Your Own Theme Folder:
+## General Information:
+The EON-Custom-Themes installer is quite a complex program just to move a few files around; while designing I wanted to make it as intuitive for the developer to to develop as it is for the user to use! Alot of things are done automagiclly, such as finding available themes, and what all assets that particular theme supports. This requires your theme folder & files to be structrured and named properly so the program can recognize them. But first some backgroud on the program; I urge you to check it out if you havent already to see how it opperates. When the program starts it scans the `contributed-themes` folder for directories, then prints out everything it saw. After the user selects a theme they want the program again scans but this time the particular theme folder looking for the specific files it needs then presenting what it does find to the user!
 
-## Find The LEON/TWO logo.bin:
+Anyway enough rambling! lets get down to it 
 
-0. [Install ADB](#Installing-ADB-(Windows):)
-1. SSH Into Eon
-2. Run `am start -a android.settings.SETTINGS`
-3. Find Developer Options and verify/enable *ADB over Network*
-4. Open windows command prompt and navigate to cd /ADB/platform-tools 
-5. `adb connect YOUR_EON_IP:5555`
-6. `adb shell`
-7. `su`
-8. `cd /dev/block/bootdevice/byname`
-9. `ls -all`
-10. You will need to look through the list and detrimine where LOGO is; on the 3T-ON
-    it is /dev/block/sde17
-11. Save to sdard memory making sure if=/location_of_LOGO ex: `dd if=/dev/block/sde17 of=/sdcard/logo.img`
-12. Exit from shell (ctl+D) `adb pull /sdcard/logo.bin C:\ADB` (Or wherever you like)
-13. Email to to Cole@endoflinetech.com including name/github/other info to be credited! 
+## Directory Structure:
+
+How to format your theme folder, only use what you need. But there are some important notes! 
+- You do not need to include the kumar-black APK in your folder, it will auto populate with all themes! Only add an apk here if you made your own custom one, it will show with the the Kumar-Black APK. 
+- By default just place your bootanimation.zip in the directory, you can use the two others if you want to be more specific, or have a color and white version. You can use all 3 if you choose.
+- Inside the `spinner` folder you only need to include your `img_spinner_comma.png` minimum, the program will take the `img_spinner_track` and `spinner.c` from /support to reduce wasting storage with duplicate copies. Currently you need to always include the logo file (to be fixed) even if you only want to change the track (which I assume is not likely to be an issue so its at the bottom of my list to do.)
 
 
-Boot Animation & OP Loading Screen
-=======================
-## Boot Animation:
-(Universal Method For OP3T EONS and LeEco Eons (Gold/TWO))
-1. Download this repo to your computer.
-2. SSH into EON and run `mount -o remount,rw /system`.
-3. SSH into EON with FileZilla, navigate to your downloads  in the left section (your computer) and `/system/media` on the EON Side.
-4. Doubble click bootanimation.zip on the eon side to backup the stock Comma boot animation.
-5. With FileZilla, navigate to this downloaded repo in the left section (your computer) and `/system/media` on the EON Side.
-6. Doubble click bootanimation.zip in your desired theme folder in the left section, and choose to overwrite.
-7. Reboot and enjoy!
+Structure example:
 
-## OpenPilot Loading Screen:
-* Not Available yet sorry :(
+    .
+    └──Theme Name                    # Name Of your Theme
+        |──APK                       # Your OP APK 
+        |──bootanimation.zip         # Default Boot Animation name
+        |──white_bootanimation.zip   # A white theme boot animation
+        |──color_bootanimation.zip   # A color theme boot animation
+        |──Contrib.txt               # Add your info/licence here
+        |──Screenshots               # Place screenshots in this folder
+        |──Spinner                   # Folder for spinner assets
+        |──LEONLogo                  # LEON/GOLD/TWO Boot Logo folder
+        |  └──SPLASH
+        └──OP3TLogo                  # 3T-EON Boot Logo folder
+           └──LOGO
 
-
-
-Community-Files:
-=======================
-
-## How To Use:
-
-Looking to theme your EON? This is the place see [List Of Themes](#List-of-themes:) to see contributed themes! Just Clone/download this repo, and follow the guide relevant to you from the below list  
-
-* [3T Boot Logo Upload Instructions](#Uploading-Modified-3T-Logo/Custom-Logo:)
-* [LEON Boot Logo Upload Instructions](#null:) 
-* [EON Boot Animation Instructions](#Boot-Animation:)
-* Or the info/instructions provided by the author for other custom files.
-
-## List Of Themes: 
-| Theme Number | Theme Name            |Boot Logo?(3T)| Boot Logo? (LeEco) | Boot Animation? | Custom OP Files?                 | Contributor/ Author|
-|----------- | ----------------------| -------------| ------------------ | ----------------| ---------------------------------| -------------------|
-|  1         | Acura                 | Yes          | No                 | No              | No                               | Colton             |
-|  2         | Android               | Yes          | No                 | Yes             | No                               | Colton             |
-|  3         | Apple                 | Yes          | No                 | No              | No                               | Colton             |
-|  4         | Arne-Pilot            | Yes          | No                 | Yes             | No                               | Colton             |
-|  5         | Chevy                 | Yes          | No                 | No              | No                               | Colton             |
-|  6         | Colton-HooeyPilot     | Yes          | No                 | No              | Elements, & Sounds               | Colton             |
-|  n/a       | Comma-Stock           | Yes          | No                 | Yes             | No                               | Comma.ai           |
-|  7         | CommunityPilot        | Yes          | No                 | No              | No                               | Colton             |
-|  8         | DragonPilot           | Yes          | No                 | Yes             | No                               | Colton             |
-|  9         | A General Theme       | Yes          | No                 | Yes             | No                               | Colton             |
-| 10         | Honda                 | Yes          | No                 | Yes             | No                               | Colton             |
-| 11         | Hyundai               | Yes          | No                 | No              | No                               | Colton             |
-| 12         | Kia                   | Yes          | No                 | No              | No                               | Colton             |
-| 13         | Lexus                 | Yes          | No                 | No              | No                               | Colton             |
-| 14         | OnePlus               | Yes          | No                 | No              | No                               | Colton             |
-| 15         | Subaru                | Yes          | No                 | Yes             | No                               | Colton             |
-| 16         | Toyota                | Yes          | No                 | Yes             | No                               | Colton             |
-
-This is the default linup, I will be finishing up whats here, with maybe a coupple others. Happy to hear suggestions for others!!! 
-I still need your help, to make LEON boot logos. Want to help? See [HELP WANTED!!!!](#Help-Wanted)
-
-## Donations accepted and very much not required!:
-I also hate to ask but I've put quite an ammount of time in to this project. If you like what I've done and do want to help you can buy me a bee....coffee! by donating on [PayPal](https://paypal.me/dattech?locale.x=en_US). Just a coupple dollary doo's will mean alot, plese dont feel overly generous I did this for my fun and the community!!
-
-## Contribute Your Work!:
 
 ### How To Contribute:
-Just Fork this repo, and clone it, add in youre theme following the example theme, looking at others, and the 
+Just Fork this repo, and clone it, add in your theme following the guidlines, and looking at others if you need assistance formating.
+
 Looking to theme your EON? This is the place see [Directory Structure](#Directory-Structure:) You can add whatever you like! Made a custom boot logo? boot Animation? Wonderful!!! Did you edit UI.c? spinner.c? Spinner assets? OP assets? or make your own APK? You can also share your work!! share, you can do that too!!! Just leave instructions in your folder letting them know what to do!
 
 Requirements To Contribute:
 * Logo/animation/etc must be in the correct orientation.
 * You must follow the directory structure/ how files & folders should be names.
-* Inside `Other Files` is free rein.
-* No Pornographic/Obscene/GreyLine content will we accepted - Keep it clean.
+* No Pornographic/Obscene/GreyLine content will be accepted - Keep it clean.
 * No "off-color" or controversial content of any kind.
 * You are willing to accept responsibility for your theme, I will not maintain your themes.
 * You accept legal responsibility over anything in your theme folder, if I receive a copyright notice, I will take down your theme and forward the notice to you until you resolve the issue.
@@ -356,20 +269,57 @@ Requirements To Contribute:
 
 Ready to submit? Create a pull request, I will reveiw and merge in!
 
-### Directory Structure:
+# Misc Info
 
-How to format your theme folder, only use what you need
+## FileZilla Mini Guide:
+- Getting connected
+- -  [Download Filezilla](https://filezilla-project.org/download.php?type=client)
+- -  Install FileZilla
+- -  Open Site Manager (Top leftmost icon - looks like 3 server racks)
+- -  Create a new site and call it EON
+- -  For Protocol select SFTP
+- -  Enter the IP adress of your eon in Host
+- -  Port: 8022
+- -  Login Type: Key File
+- -  User: root
+- -  Key File: choose eonkey.pem from /support in this repo
+- -  Click connect
 
-    .
-    └──Theme Name                 # Name Of your Theme
-        |──APK                    #Your OP APK
-        ├──Assets                 #OP/selfdrive/assets folder
-        |──Other Files            #Edited UI.C or spinenr.c?
-        |──Bootanimation.zip      # Android Boot Animation
-        |──Contrib.txt            # Add your info here,
-        |──Screenshots            # Place screenshots here so people can see what it looks like!!
-        |──LEONLogo               # LEON/GOLD/TWO Boot Logo folder
-        └──OP3TLogo               # 3T-EON Boot Logo folder - place the sde17 file in here
+- [How to use filezilla](https://wiki.filezilla-project.org/Using)
+
+
+
+## ADB Mini Guide:
+### Installing and Connecting with ADB
+- [Download ADB](https://dl.google.com/android/repository/platform-tools-latest-windows.zip)
+- Extract zip to c:\ADB
+- SSH Into Eon
+- Run `am start -a android.settings.SETTINGS`
+- Find Developer Options and enable **ADB over Network** (this must be done after every reboot)
+- Open windows command prompt and navigate to `cd /ADB/platform-tools`
+- `adb connect YOUR_EON_IP:5555`
+
+
+### Using ADB to Copy Files
+- To "Push" Files To EON (After connecting)
+       
+      adb pull windows\path\to\file /eon/path/to/destiination 
+
+- To "Pull" Files From EON (After connecting)
+       
+      adb push /eon/path/to/file %HOME%\Desktop\
+
+- You can easily get the windows path of a file by selecting `HOME -> Copy Path` in the windows explore menu bar, or dragging the file onto the Windows Command Prompt.
+
+- Copying things like the bootanimation.zip requires you to run `mount -o remount,rw /system` from an SSH terminal or the ADB Shell (type `adb shell` then `su`)(you can exit by pressing ctrl+D to get back to adb) as /system is a read-only file system.
+
+
+
+
+# Donations accepted and very much not required!:
+I also hate to ask but I've put quite an ammount of time in to this project. If you like what I've done and do want to help you can buy me a bee....coffee! by donating on [PayPal](paypal.me/BrandonSheaffer). Just a coupple dollary doo's will mean alot, plese dont feel overly generous I did this for my fun and the community!!
+
+
         
         
         

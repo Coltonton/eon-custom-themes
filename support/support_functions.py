@@ -34,7 +34,7 @@ def make_backup_folder():
   if not os.path.exists('/storage/emulated/0/theme-backups'):
     os.mkdir('/storage/emulated/0/theme-backups')
   # Create session backup folder named with date & time 
-  backup_dir = datetime.now().strftime('/storage/emulated/0/theme-backups/backup.%m-%d-%y--%I.%M.%S-%p')
+  backup_dir = datetime.now().strftime('/storage/emulated/0/theme-backups/backup.%m-%d-%y--%I:%M.%S-%p')
   os.mkdir(backup_dir)  # Create the session backup folder
   return backup_dir
 
@@ -83,44 +83,54 @@ def get_user_theme():           # Auto discover themes and let user choose!
         print('Unknown theme, try again!')
 
 def installer_chooser():
-  #Get DO_NOT_AUTO_INSTALL var from its file
-  file = open('./support/do_not_auto.txt', 'r')       # Open do_not_auto flag file
-  DO_NOT_AUTO_INSTALL = file.read()                     # Store flag
-  file.close
+  # Do self install checks
+  if IS_AUTO_INSTALL == True:
+    #Get DO_NOT_AUTO_INSTALL var from its file
+    file = open('./support/do_not_auto.txt', 'r')       # Open do_not_auto flag file
+    DO_NOT_AUTO_INSTALL = file.read()                     # Store flag
+    file.close
+    print('Debug: The value as read from do_not_auto.txt is {}'.format(DO_NOT_AUTO_INSTALL))
 
-  # See if user has a self installed theme. If not auto install permited!
-  if path.exists('/storage/emulated/0/eon_custom_themes_self_installed.txt'):
-    IS_SELF_INSTALLED = True
-  else:
-    IS_SELF_INSTALLED = False
+    # See if user has a self installed theme. If not - auto install is permited!
+    if path.exists('/storage/emulated/0/eon_custom_themes_self_installed.txt'):
+      IS_SELF_INSTALLED = True
+    else:
+      IS_SELF_INSTALLED = False
+    print('DEBUG: IS_SELF_INSTALLED is {}'.format(IS_SELF_INSTALLED)
 
-  # Check if auto install and do_not_auto is false
-  if IS_AUTO_INSTALL == True and DO_NOT_AUTO_INSTALL is '0' and IS_SELF_INSTALLED == False:  
-    #Open auto installed version file & store as CURRENT_AUTO_VER - the currently installed version
-    file2 = open('./support/auto_install_ver.txt', 'r')
-    CURRENT_AUTO_VER = file2.read()
-    file2.close
+    # Check if is auto install and do_not_auto is false and IS_SELF_INSTALLED is false
+    if DO_NOT_AUTO_INSTALL is '0' and IS_SELF_INSTALLED == False:  
+      #Open auto installed version file & store as CURRENT_AUTO_VER - the currently installed version
+      file2 = open('./support/auto_install_ver.txt', 'r')
+      CURRENT_AUTO_VER = file2.read()
+      file2.close
+      print('DEBUG: The Value of the read auto_install_ver.txt is {}'.format(CURRENT_AUTO_VER))
 
-    # Detrtmine if installed version is desired version and act
-    if CURRENT_AUTO_VER is not DESIRED_AUTO_VER:         # If current installed version != desired version
-      print('First install or new version detected, installing.....')
-      return 'Do_Auto'                                       # Do Auto install theme
-    else:                                                # If current installed version == desired version 
-      print('Most current version installed, canceling.....')
+      # Detrtmine if installed version is desired version and act
+      if CURRENT_AUTO_VER is not DESIRED_AUTO_VER:         # If current installed version != desired version
+        print('First install or new version detected, installing.....')
+        return 'Do_Auto'                                       # Do Auto install theme
+      else:                                                # If current installed version == desired version 
+        print('Most current version installed, Terminating.....')
+        return None
+    
+    # If both the do_not_install flag is set and user has a self installed theme, return none to cancel and exit
+    elif DO_NOT_AUTO_INSTALL is '1' and IS_SELF_INSTALLED is True:
+      print('Do Not install flag set by user & a self installed theme exists terminating....') 
+      return None
+
+    # If do_not_install flag set,return none to cancel and exit
+    elif DO_NOT_AUTO_INSTALL is '1':
+      print('Do Not install flag set by user!! Terminating....') 
       return None
     
-  # If is auto install but do_not_install flag set, if so cancel and exi
-  elif IS_AUTO_INSTALL == True and DO_NOT_AUTO_INSTALL is '1':
-    print('Do Not install flag set!! Canceling....') 
-    return None
-    
-  # Check if user has a self installed theme, if so cancel and exit
-  elif IS_AUTO_INSTALL == True and IS_SELF_INSTALLED == True:
-    print('A self installed theme exists!! Canceling....') 
-    return None
+    # Check if user has a self installed theme, return none to cancel and exit
+    elif IS_SELF_INSTALLED == True:
+      print('A self installed theme exists!! Terminating....') 
+      return None
 
   # Else return self installer
-  else:                                                  
+  elif IS_AUTO_INSTALL == False:                                                  
       return 'Do_Self' 
 
 def mark_self_installed():      # Creates a file letting the auto installer know if a self theme installed

@@ -166,7 +166,7 @@ This program and project was designed with the intent to not just be a program u
 - Message me on discord @C-ton#2169 if you need any additional help :)
 
 # Shameless Plug For A Bee....Cup Of Coffee:
-I also hate to ask but I've put quite an ammount of time in to this project. If you like what I've done and do want to help you can buy me a bee....coffee! By donating on [PayPal](https://paypal.me/dattech?locale.x=en_US). Just a coupple dollary doo's will mean alot, plese dont feel overly generous I did this for my fun and the community!! 
+I also hate to ask but I've put quite an ammount of time in to this project. If you like what I've done and do want to help you can buy me a bee....coffee! By donating on [PayPal](paypal.me/BrandonSheaffer). Just a coupple dollary doo's will mean alot, plese dont feel overly generous I did this for my fun and the community!! 
         
         
         
