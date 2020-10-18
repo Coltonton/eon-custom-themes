@@ -195,7 +195,7 @@ As with the boot logo and boot animmation you have a few options, plus one more!
 # Auto Installer Information:
 Well you want to include the auto installer as part of your OpenPilot fork? Well congrats I'm happy for you! Read this section to see how to implement it! Its actully quite easy to do dont worry! Also feel free to check out ArnePilot to see how I've implemented it there! So lets get started with the requirements, that seems like a good place! Please note! The auto installer is semi-redudant when it comes to the OpenPilot spinner and APK and those features have been disabled and are not installed by this program; insted please replace the files in your OpenPilot Fork manually!
 
-## Requirments:
+## Auto Installer Requirments:
 - The following files are required/not to remain as they are vital or contain licence information.
 - - Install_theme.py & restore_backup.py are required
 - - The main readme and the licence file are required
@@ -212,12 +212,33 @@ Well you want to include the auto installer as part of your OpenPilot fork? Well
 - In your OpenPilot README; At the top or with your installation instructions there **MUST** be a notice that the EON Custom Themes auto installer is part of your fork. Also you **MUST** include the 'EON-Custom-Themes' information section in your OP README somewhere as provided in the `sample-README.md` of this developer folder. As this has helpful information for the user.
 - Please be etical :) this project is all about user choice, even if they want to keep the icky Comma.ai theme. We're not like them. 
 
-## How It Works:
-Inside `./support/support_variables.py` there is a section titled **Auto Installer Vars**; here is where you set up your theme and setting `IS_AUTO_INSTALL` to true when the program is executed it runs the auto installer checker first, and if it fails it checks it installs your theme how you desire based off the `AUTO_INSTALL_CONF` configuration. What are the checks? Glad you asked! There are a few! 
+## How the Auto Installer Works:
+The program begins by identifying what device it is running on. This is done by seeing if `/sys/devices/virtual/switch/tri-state-key` exists, only the OnePlus 3T EON has the tri-state switch so this is a crude way to identify, reliably, the device. This needs to be done becasue the OP3T and LeEco boot logs are diffrent, and in different places. Then inside `./support/support_variables.py` there is a section titled **Auto Installer Vars**; here is where you set up your theme and setting `IS_AUTO_INSTALL` to true when the program is executed it runs the auto installer checker first, and if it fails it checks it installs your theme how you desire based off the `AUTO_INSTALL_CONF` configuration. What are the checks? Glad you asked! There are a few! 
 - Firstly it opens and checks the contents of `./support/do_not_auto.txt` This is a way for the user to easily disable auto installation if they choose, its all about the users choice not yours, if its a 0 the program is okay to continue, if its 1, it will lead to termination. 
 - The next check, checks if `/sdcard/eon_custom_themes_self_installed.txt` exists; this allows the program to see if a user has installed a theme using the program previously of their choice. This is to not overwrite their earlier decision. Again the program will lead to temination if this exists. (The user can choose to run your theme by deleting that file, then next reboot it will install successfully)
 - The third and final check is for version contol, so every boot the installer only runs if a.) it was not auto installed before (to prevent unnecessary, installs), and b.) there is a new "version" of your theme available(more on this later). This works with the `DESIRED_AUTO_VER` in the **Auto Installer Vars** and `./support/auto_install_ver.txt` file. You as the developer set the `DESIRED_AUTO_VER` for your current version adding 1 each time, the program will compare the `DESIRED_AUTO_VER` with the `auto_install_ver` and if they do not match it allows the program to continue. If they are the same value, it will lead the program to terminate. The program will update `auto_install_ver` to the `DESIRED_AUTO_VER` if all these checks 'fail' and the installer actully installs, this circles us back around to the top, next boot the program will not install anything as the most current version is already installed. If you make changes and want to update users devices just increment `DESIRED_AUTO_VER` by one; next time they pull your OP fork and reboot it will install your updated theme!
 
+Then it just installs! (and of course also makes backups to `/sdcard/theme-backups`) not much to be said there, if you want, take a look at the ###code###. Not much exciting after the logic, just copying files to where they need to go!
+
+## How to Integrate Auto Installer:
+Simply download this project and place in the root of your OpenPilot directory removing any non required files as covered in [Auto Installer Requirements](#Auto-Installer-Requirments). Remember to replace the `launch_openpilot.sh` file in this developer folder with the one in your OpenPilot fork and copy the data from the `sample-README.md` to your OpenPilots README following the [Auto Installer Requirements](#Auto-Installer-Requirments), before deleting.
+
+Next you need to head to ./support/support_variables.py to edit the **Auto Installer Vars**
+- Start by setting `IS_AUTO_INSTALL` to `TRUE`
+- `DESIRED_AUTO_VER` is already set to one for version 1! No need to edit this, you only need to edit this var if you want to push an updated theme to your users devices!
+- Now you need to edit `AUTO_INSTALL_CONF` 
+- - `auto_selected_theme` Is the case sensitive name of your theme folder directory (excluding path)
+- - `install_3T_logo` Is a bool, If you have a logo to install for the OnePlus 3T EONs
+- - `install_Leo_logo` Is a bool, If you have a logo to install for the LeEco EONs
+- - `install_anim` Is a bool as well, and tells the program if you have a bootanimation to install
+- - `ani_color` is if you used one of the optional white_bootanimation.zip names, valid entries are 'white_' 'color_' or '' (nothing if using just bootanimation.zip)
+
+- Don't forget (if applicable) to put your custom spinner files in OpenPilot itself. The img_spinner_comma.png and img_spinner_track.png are located in `openpilot/selfdrive/assets` and spinner.c is located in `openpilot/selfdrive/common/`
+
+- Doubble don't forget (if applicable) to replace `openpilot/apk/ai.comma.plus.offroad_stock.apk` and `openpilot/selfdrive/manager.py` for dark mode! 
+
+
+## Support:
 If users are having issues have them manually run `exec /data/openpilot/eon-custom-themes/install_theme.py`. The program will print the exit condion(s) and the output of the 3 checks above. That will tell them what is preventing the installer from running.
 
 I mentoned this earlier a bit but I will restate it here. Every time the installer installs it makes a backup to `/sdcard/theme-backups`; that goes for the auto installer too. If a user uses your OpenPilot fork with the EON-Custom-Themes auto installer and is A.) upset there theme was changed without there permission and no one told them (There should be a notice as stated in the requirements) and wants to go back to the Comma-Default theme B.) Needs to revert the theme back as they need to send the device back for warranty repair so Comma doesnt say anything use this guide per senario!
@@ -229,8 +250,7 @@ B.) If a user wants/needs to go back to the comma default theme there are multip
 - If you did not include the Comma-Default theme tell them to ssh into their eon and run `exec /data/openpilot/eon-custom-themes/restore_theme.py` and in theory only one backup should appear, if there are multiple it is most likely the oldest. The backup folders are named by date and time. ex. `backup.11-23-20--1:25.32am` All they need to do is select that backup and it will prompt them with the available assets they can restore, they must select each one to install in this case
 - If those two avenues are not an option tell them to clone the main repo by SSHing into their EON and running `cd /data && git clone https://github.com/Coltonton/eon-custom-themes.git` then `cd /data/eon-custom-themes/install_theme.py` after it completes selecting the 'Comma-Default' theme and choising what all they want to install.
 
-
-
+If you have any issues, questions, or what you have it please feel free to hit me up on discord! Im in all the groups @Coltonton#2169! Hell, i might just be bored enought to do all this for you! 
 
 
 
@@ -255,6 +275,8 @@ Structure example:
     .
     └──Theme Name                    # Name Of your Theme
         |──APK                       # Your OP APK 
+           |──ai.comma.plus.offroad.apk
+           └──manager.py
         |──bootanimation.zip         # Default Boot Animation name
         |──white_bootanimation.zip   # A white theme boot animation
         |──color_bootanimation.zip   # A color theme boot animation

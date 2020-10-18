@@ -96,7 +96,7 @@ def installer_chooser():
       IS_SELF_INSTALLED = True
     else:
       IS_SELF_INSTALLED = False
-    print('DEBUG: IS_SELF_INSTALLED is {}'.format(IS_SELF_INSTALLED)
+    print('DEBUG: IS_SELF_INSTALLED is {}'.format(IS_SELF_INSTALLED))
 
     # Check if is auto install and do_not_auto is false and IS_SELF_INSTALLED is false
     if DO_NOT_AUTO_INSTALL is '0' and IS_SELF_INSTALLED == False:  
@@ -168,11 +168,18 @@ def get_user_backups(exclude):
   for idx, backup in enumerate(available_backups):
     print('{}. {}'.format(idx + 1, backup))
   print('Type `exit` or enter 0 to exit.')
+  if os.path.exists('./{}/Comma-Default'.format(CONTRIB_THEMES)):
+    default_restore_exists = 1
+    print("Enter 'r' to restore the Comma-Default theme")
+  else:
+    default_restore_exists = 0
   while 1:
     backup = input('\nChoose a backup to install (by index value): ').strip().lower()
     print()
     if backup in ['exit', 'Exit', 'E', 'e', '0']:
       exit()
+    if backup in ['r', 'R' and default_restore_exists is 1]:
+      return 'Comma-Default-r'
     if backup.isdigit():
       backup = int(backup)
       if backup > len(available_backups):

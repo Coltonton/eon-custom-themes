@@ -79,12 +79,17 @@ class BackupReinstaller:
             if self.selected_backup is None:
                 print('Didn\'t select a backup, exiting.')
                 return
+            if self.selected_backup == 'Comma-Default-r':
+                self.restore_default_comma()
             self.backup_get_available_options()
             if self.backup_reinstall_function() == 'exit':
                 return
   
     def backup_get_available_options(self):   # Check what assets are available for the selected backup
-        
+        # Check if the selected backup has a APK asset
+        if os.path.exists('{}/{}/spinner'.format(BACKUPS_DIR, self.selected_backup)):
+            BACKUP_OPTIONS.append('APK')
+
         # Check if the selected backup has a boot logo asset
         if os.path.exists('{}/{}/{}'.format(BACKUPS_DIR, self.selected_backup, BOOT_LOGO_NAME)):
             BACKUP_OPTIONS.append('Boot Logo')
@@ -96,6 +101,10 @@ class BackupReinstaller:
         # Check if the selected backup has a OpenPilot Spinner asset
         if os.path.exists('{}/{}/spinner'.format(BACKUPS_DIR, self.selected_backup)):
             BACKUP_OPTIONS.append('OpenPilot Spinner')
+
+        # Check if the selected backup has a APK asset
+        if os.path.exists('{}/{}/spinner'.format(BACKUPS_DIR, self.selected_backup)):
+            BACKUP_OPTIONS.append('APK')
 
         # if os.path.exists('{}/{}/additional'.format(BACKUPS_DIR, self.selected_backup)):  # todo disabled for now
         #   self.BACKUP_OPTIONS.append('4. Additional Resources')
@@ -120,7 +129,50 @@ class BackupReinstaller:
 
             selected_option = BACKUP_OPTIONS[indexChoice]
 
-            if selected_option == 'Boot Logo':
+            if selected_option == 'APK':
+                print('Selected to install the APK backup. Continue?')
+                if not is_affirmative():
+                    print('Not installing...')
+                    time.sleep(1.5)
+                    continue
+                os.system('cp /data/openpilot/apk/ai.comma.plus.offroad.apk {}'.format(self.backup_dir))      # Make Backup
+                os.system('dd if={}/{}/{} of={}'.format(BACKUPS_DIR, self.selected_backup, BOOT_LOGO_NAME, BOOT_LOGO_PATH))   # Replace
+                print('\nBoot Logo re-installed successfully! Original backed up to {}'.format(self.backup_dir))
+                print('Press enter to continue!')
+                mark_self_installed()       # Create flag in /sdcard so auto installer knows there is a self installation
+                input()
+
+
+
+                #Confirm user wants to install APK
+                print('Selected to install the {} APK backup. Continue?'.format(self.selected_theme))
+                if not is_affirmative():
+                    print('Not installing...')
+                    time.sleep(1.5)
+                    continue
+        
+                #Check if there was a backup already this session to prevent accidental overwrites
+                if path.exists('{}/spinner'.format(self.backup_dir)):                  
+                    print('It appears you already made a APK install this session') 
+                    print('continuing will overwrite the last APK backup')
+                    print('the program made this session already!!!')
+                    print('Would you like to continue and overwrite previous?')
+                    if not is_affirmative():
+                        print('Not installed, exiting session..... Please re-run program')
+                        exit()      #Exit program if user does not want to overwrite, so they can start a new session
+                else:
+                    os.mkdir('{}/spinner'.format(self.backup_dir))
+
+                #Ask user if their OP directory is custom (like arnepilot / dragonpilot)
+                print('Do you have an OP fork with a custom directory name? (ex. arnepilot, dragonpilot)')  # Ask the user if their OP fork used a diffrent directory.
+                if is_affirmative():  # Yes there is a custom OP dir
+                    print('What is the OP directory name? (case matters, not including /data/)')
+                    opdir = '/data/{}'.format(input('> ').strip('/'))  # get custom dir name, strip slashes for safety
+                    print('Your openpilot directory is {}'.format(opdir))
+                    input('*** Please enter to continue, or Ctrl+C to abort if this is incorrect! ***')
+                else:
+                    opdir = 'openpilot'                                #op directory is not custom so openpilot
+            elif selected_option == 'Boot Logo':
                 print('Selected to install the Boot Logo backup. Continue?')
                 if not is_affirmative():
                     print('Not installing...')
@@ -192,7 +244,7 @@ class BackupReinstaller:
                 print('Press enter to continue!')
                 mark_self_installed()        # Create flag in /sdcard so auto installer knows there is a self installation
                 input()
-            elif selected_option == 'Additional Resources':  # additional features
+            elif selected_option == 'OpenPilot UI':
                 print('Additional Resources are not an active feature')
                 time.sleep(5)
             elif selected_option == '-Main Menu-' or selected_option is None:
@@ -204,6 +256,25 @@ class BackupReinstaller:
             elif selected_option == '-Quit-':
                 print('Thank you come again! You will see your changes next reboot!')
                 exit()
+
+    def restore_default_comma(self):
+        print('Selected to restore Comma-Default theme. Continue?')
+        if not is_affirmative():
+            print('Not restoring...')
+            time.sleep(1.5)
+            self.backup_reinstaller_loop()
+
+        os.system('cp {} {}'.format(BOOT_LOGO_PATH, self.backup_dir))      # Make Backup
+        os.system('dd if={}/{}/{} of={}'.format(BACKUPS_DIR, self.selected_backup, BOOT_LOGO_NAME, BOOT_LOGO_PATH))   # Replace
+        print('\n Factory Boot Logo restored successfully! Original backed up to {}'.format(self.backup_dir))
+
+        os.system('mount -o remount,rw /system')  # /system read only, must mount as r/w
+        os.system('mv /system/media/bootanimation.zip {}'.format(self.backup_dir))  # backup
+        os.system('cp {}/{}/bootanimation.zip /system/media/bootanimation.zip'.format(BACKUPS_DIR, self.selected_backup))  # replace
+        os.system('chmod 666 /system/media/bootanimation.zip')
+        print('\n Factory Boot Animation restored successfully! Original backed up to {}'.format(self.backup_dir))
+        print('Thank you come again!')
+        exit()
 
 if __name__ == '__main__':
   bi = BackupReinstaller()

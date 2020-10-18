@@ -1,4 +1,5 @@
 BACKUPS_DIR = '/storage/emulated/0/theme-backups'
+APK_DIR = '/data/openpilot/apk/ai.comma.plus.offroad.apk'
 BACKUP_OPTIONS = []
 
 # =============  get_user_theme() vars ============= ##
@@ -9,9 +10,8 @@ MIN_SIM_THRESHOLD = 0.25  # user's input needs to be this percent or higher simi
 # ==============  Auto Installer Vars ============== ## - see DEVREADME
 IS_AUTO_INSTALL = False     #Do Auto Install
 DESIRED_AUTO_VER = '1'      #Desired theme version, add 1 to update users theme.
-AUTO_INSTALL_CONF = {'auto_selected_theme': 'Arne', 'install_logo': True, 'install_anim': True,
-                     'ani_color': 'white_', 'install_spinner': True, 'openpilot_dir_name': 'openpilot',
-                     'install_kurmar_black_apk': False, 'install_apk': False}
+AUTO_INSTALL_CONF = {'auto_selected_theme': 'Arne', 'install_3T_logo': True, 'install_Leo_logo': True, 'install_anim': True,
+                     'ani_color': ''}
 
 # =================  Welcome Texts ================= ##
 WELCOME_TEXT = ['Created By: Colton (Brandon) S. EndLine \\n',

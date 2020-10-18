@@ -204,15 +204,18 @@ class ThemeInstaller:
         os.system('mv /data/{}/selfdrive/common/spinner.c {}/spinner'.format(opdir, self.backup_dir))             #backup spinner.c
 
         #Copy in new files
-        os.system('cp {}/{}/spinner/img_spinner_comma.png /data/{}/selfdrive/assets'.format(CONTRIB_THEMES, self.selected_theme, opdir)) #Replace logo
+        if path.exists('{}/{}/spinner/img_spinner_comma.png'.format(CONTRIB_THEMES, self.selected_theme)):                   # Check if theme contributer provided a spinner track
+          os.system('cp {}/{}/spinner/img_spinner_comma.png /data/{}/selfdrive/assets'.format(CONTRIB_THEMES, self.selected_theme, opdir)) #Replace sprinner track supplied custom
+        else:
+          os.system('cp ./support/spinner/img_spinner_comma.png /data/{}/selfdrive/assets'.format(opdir))     #Replace sprinner track with standard 
         if path.exists('{}/{}/spinner/img_spinner_track.png'.format(CONTRIB_THEMES, self.selected_theme)):                   # Check if theme contributer provided a spinner track
           os.system('cp {}/{}/spinner/img_spinner_track.png /data/{}/selfdrive/assets'.format(CONTRIB_THEMES, self.selected_theme, opdir)) #Replace sprinner track supplied custom
         else:
-          os.system('cp ./support/img_spinner_track.png /data/{}/selfdrive/assets'.format(opdir))     #Replace sprinner track with standard 
+          os.system('cp ./support/spinner/img_spinner_track.png /data/{}/selfdrive/assets'.format(opdir))     #Replace sprinner track with standard 
         if path.exists('{}/{}/spinner/spinner.c'.format(CONTRIB_THEMES, self.selected_theme)):                               # Check if theme contributer provided a spinner.c
           os.system('cp {}/{}/spinner/spinner.c /data/{}/selfdrive/common'.format(CONTRIB_THEMES, self.selected_theme, opdir))             #Replace spinner.c with supplied custom 
         else:
-          os.system('cp ./support/spinner.c /data/{}/selfdrive/common'.format(opdir))             #Replace spinner.c with standard file
+          os.system('cp ./support/spinner/spinner.c /data/{}/selfdrive/common'.format(opdir))             #Replace spinner.c with standard file
 
         #Final make new spinner & finish
         os.system('cd /data/openpilot/selfdrive/ui/spinner && make')
