@@ -1,6 +1,6 @@
 #!/usr/bin/python
 ##################################################################################
-#                                   VER 1.0                                      #
+#                                   VER 1.1                                      #
 #                                                                                #
 #      Permission is granted to anyone to use this software for any purpose,     #
 #     excluding commercial applications, and to alter it and redistribute it     #
@@ -59,7 +59,7 @@ import os
 import time
 from os import path
 from support.support_functions import get_device_theme_data, get_user_backups, get_user_theme, installer_chooser, is_affirmative
-from support.support_functions import make_backup_folder, mark_self_installed, print_welcome_text
+from support.support_functions import make_backup_folder, mark_self_installed, print_welcome_text, backup_overide_check, op_dir_finder
 from support.support_variables import AUTO_INSTALL_CONF, BACKUPS_DIR, BACKUP_OPTIONS, CONTRIB_THEMES, DESIRED_AUTO_VER, IS_AUTO_INSTALL
 
 
@@ -177,41 +177,28 @@ class ThemeInstaller:
           time.sleep(1.5)
           continue
         
-        #Check if there was a backup already this session to prevent accidental overwrites
-        if path.exists('{}/spinner'.format(self.backup_dir)):                  
-            print('It appears you already made a spinner backup this session') 
-            print('continuing will overwrite last spinner backup!')
-            print('Would you like to continue and overwrite previous?')
-            if not is_affirmative():
-              print('Not installed, exiting session..... Please re-run program')
-              exit()      #Exit program if user does not want to overwrite, so they can start a new session
-        else:
-          os.mkdir('{}/spinner'.format(self.backup_dir))
+        #Check if there was a spinner backup already this session to prevent accidental overwrites
+        #Returns false if okay to proceed. Gets self.backup_dir & asset type name
+        if backup_overide_check(self.backup_dir, 'spinner') is True:
+          exit()
 
         #Ask user if their OP directory is custom (like arnepilot / dragonpilot)
-        print('Do you have an OP fork with a custom directory name? (ex. arnepilot, dragonpilot)')  # Ask the user if their OP fork used a diffrent directory.
-        if is_affirmative():  # Yes there is a custom OP dir
-          print('What is the OP directory name? (case matters, not including /data/)')
-          opdir = '/data/{}'.format(input('> ').strip('/'))  # get custom dir name, strip slashes for safety
-          print('Your openpilot directory is {}'.format(opdir))
-          input('*** Please enter to continue, or Ctrl+C to abort if this is incorrect! ***')
-        else:
-          opdir = 'openpilot'                                #op directory is not custom so openpilot
+        opdir = op_dir_finder()
 
         #Backup files
         os.system('mv /data/{}/selfdrive/assets/img_spinner_comma.png {}/spinner'.format(opdir, self.backup_dir)) #Backup logo
-        os.system('mv /data/{}/selfdrive/assets/img_spinner_track.png {}/spinner'.format(opdir, self.backup_dir)) #backup sprinner track
+        os.system('mv /data/{}/selfdrive/assets/img_spinner_track.png {}/spinner'.format(opdir, self.backup_dir)) #backup spinner track
         os.system('mv /data/{}/selfdrive/common/spinner.c {}/spinner'.format(opdir, self.backup_dir))             #backup spinner.c
 
         #Copy in new files
         if path.exists('{}/{}/spinner/img_spinner_comma.png'.format(CONTRIB_THEMES, self.selected_theme)):                   # Check if theme contributer provided a spinner track
-          os.system('cp {}/{}/spinner/img_spinner_comma.png /data/{}/selfdrive/assets'.format(CONTRIB_THEMES, self.selected_theme, opdir)) #Replace sprinner track supplied custom
+          os.system('cp {}/{}/spinner/img_spinner_comma.png /data/{}/selfdrive/assets'.format(CONTRIB_THEMES, self.selected_theme, opdir)) #Replace spinner track supplied custom
         else:
-          os.system('cp ./support/spinner/img_spinner_comma.png /data/{}/selfdrive/assets'.format(opdir))     #Replace sprinner track with standard 
+          os.system('cp ./support/spinner/img_spinner_comma.png /data/{}/selfdrive/assets'.format(opdir))     #Replace spinner track with standard 
         if path.exists('{}/{}/spinner/img_spinner_track.png'.format(CONTRIB_THEMES, self.selected_theme)):                   # Check if theme contributer provided a spinner track
-          os.system('cp {}/{}/spinner/img_spinner_track.png /data/{}/selfdrive/assets'.format(CONTRIB_THEMES, self.selected_theme, opdir)) #Replace sprinner track supplied custom
+          os.system('cp {}/{}/spinner/img_spinner_track.png /data/{}/selfdrive/assets'.format(CONTRIB_THEMES, self.selected_theme, opdir)) #Replace spinner track supplied custom
         else:
-          os.system('cp ./support/spinner/img_spinner_track.png /data/{}/selfdrive/assets'.format(opdir))     #Replace sprinner track with standard 
+          os.system('cp ./support/spinner/img_spinner_track.png /data/{}/selfdrive/assets'.format(opdir))     #Replace spinner track with standard 
         if path.exists('{}/{}/spinner/spinner.c'.format(CONTRIB_THEMES, self.selected_theme)):                               # Check if theme contributer provided a spinner.c
           os.system('cp {}/{}/spinner/spinner.c /data/{}/selfdrive/common'.format(CONTRIB_THEMES, self.selected_theme, opdir))             #Replace spinner.c with supplied custom 
         else:
@@ -224,9 +211,77 @@ class ThemeInstaller:
         print('Press enter to continue!')
         input()
 
-      elif selected_option == 'Additional Resources':  # additional features
-        print('Additional Resources are not an active feature')
-        time.sleep(5)
+      elif selected_option == 'APK':
+        #Confirm user wants to install Kumar Nightmode APK
+        print('**PLEASE NOTE** ')
+        print("This is ONLY installable on 'stock' OpenPilot installs")
+        print('If you have a fork like ArnePilot, or any other with')
+        print('a modified UI DO NOT USE THIS!! OpenPilot will fail to run!! \n')
+        print('Instead refer to the DEVREADME located in this project')
+        print("at ./developer, in the 'APK' section for more info!!\n")
+        print('Selected to install the {} APK. Continue?'.format(self.selected_theme))
+        if not is_affirmative():
+          print('Not installing...')
+          time.sleep(1.5)
+          continue
+
+        #Check if there was an APK backup already this session to prevent accidental overwrites
+        #Returns false if okay to proceed. Gets self.backup_dir & asset type name
+        if backup_overide_check(self.backup_dir, 'apk') is True:
+          exit()
+    
+        #Ask user if their OP directory is custom (like arnepilot / dragonpilot)
+        opdir = op_dir_finder()
+
+        #Backup files
+        os.system('mv /data/{}/apk/ai.comma.plus.offroad.apk {}/apk'.format(opdir, self.backup_dir)) # Backup apk
+        os.system('mv /data/{}/selfdrive/ui/ui.hpp {}/apk'.format(opdir, self.backup_dir))           # backup ui.hpp
+
+        #Copy in new files
+        os.system('cp {}/{}/apk/ai.comma.plus.offroad.apk /data/{}/apk'.format(CONTRIB_THEMES, self.selected_theme, opdir)) # Copy APK
+        os.system('cp {}/{}/apk/ui.hpp /data/{}/selfdrive/ui'.format(CONTRIB_THEMES, self.selected_theme, opdir))           # Copy ui.hpp
+
+        # Finish
+        print('\n{} apk installed successfully! Original backed up to {}'.format(self.selected_theme, self.backup_dir))
+        mark_self_installed()        # Create flag in /sdcard so auto installer knows there is a self installation
+        print('Press enter to continue!')
+        input()
+
+      elif selected_option == 'Kumar-Nightmode-APK':  # Kumar-Nightmode-APK
+        #Confirm user wants to install Kumar Nightmode APK
+        print('**PLEASE NOTE** ')
+        print("This is ONLY installable on 'stock' OpenPilot installs")
+        print('If you have a fork like ArnePilot, or any other with')
+        print('a modified UI DO NOT USE THIS!! OpenPilot will fail to run!! \n')
+        print('Instead refer to the DEVREADME located in this project')
+        print("at ./developer, in the 'Kumar-Nightmode-APK' section for more info!!\n")
+        print('Selected to install the Kumar Nightmode APK. Continue?')
+        if not is_affirmative():
+          print('Not installing...')
+          time.sleep(1.5)
+          continue
+
+        #Check if there was an APK backup already this session to prevent accidental overwrites
+        #Returns true if okay to proceed. Gets self.backup_dir & asset type name
+        if backup_overide_check(self.backup_dir, 'apk') is False:
+          exit()
+    
+        #Ask user if their OP directory is custom (like arnepilot / dragonpilot)
+        opdir = op_dir_finder()
+
+        #Backup files
+        os.system('mv /data/{}/apk/ai.comma.plus.offroad.apk {}/apk'.format(opdir, self.backup_dir)) # Backup apk
+        os.system('mv /data/{}/selfdrive/ui/ui.hpp {}/apk'.format(opdir, self.backup_dir))           # Backup ui.hpp
+
+        #Copy in new files
+        os.system('cp ./support/nightmode-apk/ai.comma.plus.offroad.apk /data/{}/apk'.format(opdir)) # Copy APK
+        os.system('cp ./support/nightmode-apk/ui.hpp /data/{}/selfdrive/ui'.format(opdir))           # Copy ui.hpp
+
+        # Finish
+        print('\nkumar-nightmode-apk installed successfully! Original backed up to {}'.format(self.backup_dir))
+        mark_self_installed()        # Create flag in /sdcard so auto installer knows there is a self installation
+        print('Press enter to continue!')
+        input()
 
       elif selected_option == '-Main Menu-' or selected_option is None:
         return

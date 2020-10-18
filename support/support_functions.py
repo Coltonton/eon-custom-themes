@@ -156,6 +156,32 @@ def print_welcome_text(text):   # This center formats text automatically
   print(''.join(['+' for _ in range(max_line_length)]))
   time.sleep(2)  # Pause for suspense, and so can be read
 
+def backup_overide_check(backup_dir, theme_type):
+  #Check if there was a backup already this session to prevent accidental overwrites
+  if path.exists('{}/{}'.format(backup_dir, theme_type)):
+    print('It appears you already made a(n) {} install this session'.format(theme_type)) 
+    print('continuing will overwrite the last {} backup'.format(theme_type))
+    print('the program made this session already!!!')
+    print('Would you like to continue and overwrite previous?')
+    if not is_affirmative():
+      print('Not installed, exiting session..... Please re-run program')
+      return True
+  else:
+    os.mkdir('{}/{}'.format(backup_dir, theme_type))
+    return False
+
+def op_dir_finder():
+  #Ask user if their OP directory is custom (like arnepilot / dragonpilot)
+  print('Do you have an OP fork with a custom directory name? (ex. arnepilot, dragonpilot)')  # Ask the user if their OP fork used a diffrent directory.
+  if is_affirmative():  # Yes there is a custom OP dir
+    print('What is the OP directory name? (case matters, not including /data/)')
+    opdir = '/data/{}'.format(input('> ').strip('/'))  # get custom dir name, strip slashes for safety
+    print('Your openpilot directory is {}'.format(opdir))
+    input('*** Please enter to continue, or Ctrl+C to abort if this is incorrect! ***')
+  else:
+    opdir = 'openpilot'                                #op directory is not custom so openpilot
+
+  return opdir
 
 ## ================ Restorer ================ ##
 # Created by @ShaneSmiskol modified version of get_user_theme() to get all backups by Coltonton
