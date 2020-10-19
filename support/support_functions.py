@@ -13,7 +13,7 @@ os.chdir(os.path.dirname(os.path.realpath(__file__)))  # __file__ is safer since
 def get_device_theme_data():
   # Crude device detection, *shrug* it works! LeEco does not have tristate!
   if path.exists('/sys/devices/virtual/switch/tri-state-key'): #If 3T-ON
-    print('\n*** OG OnePlus EON Device Detected! Sup G? ***')
+    print('\n*** OG OnePlus EON Device Detected! Nice Cut G! ***')
     EON_TYPE             = 'OP3T'                                # EON type 
     BOOT_LOGO_THEME_PATH = 'OP3T-Logo/LOGO'                      # Set the boot logo theme path for 3T
     BOOT_LOGO_PATH       = '/dev/block/sde17'                    # Set the boot logo directory for 3T
@@ -192,15 +192,18 @@ def get_user_backups(exclude):
   available_backups = [t for t in available_backups if os.path.isdir(os.path.join(BACKUPS_DIR, t))]
   available_backups = [t for t in available_backups if t not in exclude]
   lower_available_backups = [t.lower() for t in available_backups]
+  
+  if os.path.exists('./{contributed-themes/Comma-Default'):
+    default_restore_exists = 1
+    print("\nEnter 'r' to restore the Comma-Default theme")
+  else:
+    default_restore_exists = 0
+  
   print('\nAvailable backups:')
   for idx, backup in enumerate(available_backups):
     print('{}. {}'.format(idx + 1, backup))
   print('Type `exit` or enter 0 to exit.')
-  if os.path.exists('./{}/Comma-Default'.format(CONTRIB_THEMES)):
-    default_restore_exists = 1
-    print("Enter 'r' to restore the Comma-Default theme")
-  else:
-    default_restore_exists = 0
+  
   while 1:
     backup = input('\nChoose a backup to install (by index value): ').strip().lower()
     print()
