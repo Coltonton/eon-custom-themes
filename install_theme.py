@@ -103,12 +103,12 @@ class ThemeInstaller:
     self.theme_options = []
 
     # Check if the selected theme has an apk asset
-    if os.path.exists('{}/{}/apk'.format(CONTRIB_THEMES, self.selected_theme)):
+    if self.selected_theme != 'Kumar-Nightmode-APK' and os.path.exists('{}/{}/apk'.format(CONTRIB_THEMES, self.selected_theme)):
       self.theme_options.append('APK')
 
     # Add Kumar Nightmode APK always as option if exists!
-    if os.path.exists('{}/Kumar-Nightmode-APK/apk'.format(CONTRIB_THEMES)):
-      self.theme_options.append('Kumar Nightmode APK')
+    if os.path.exists('{}/Kumar-Nightmode-APK'.format(CONTRIB_THEMES)):
+      self.theme_options.append('Kumar-Nightmode-APK')
 
     # Check if the selected theme has a boot logo asset
     if os.path.exists('{}/{}/{}'.format(CONTRIB_THEMES, self.selected_theme, BOOT_LOGO_THEME_PATH)):
@@ -213,7 +213,15 @@ class ThemeInstaller:
         print('Press enter to continue!')
         input()
 
-      elif selected_option == 'APK':
+      elif selected_option == 'APK' or selected_option == 'Kumar-Nightmode-APK':
+        # Hack to get apk & kumar-nightmode-apk in same installer
+        if selected_option== 'Kumar-Nightmode-APK':
+          local_selected_theme = 'Kumar-Nightmode-APK'  # make a locally used selected_theme using Kumar to hax program
+          show_apk = ''       #Another hack so in print statments, it doesnt say 'Kumar-Nightmode-APK apk' cuz OCD. YES I AM that OCD!!
+        else:
+          local_selected_theme = self.selected_theme    # make a locally used selected_theme from global
+          show_apk = ' APK'   #Another hack so in print statments, it doesnt say 'Kumar-Nightmode-APK apk' cuz OCD. YES I AM that OCD!!
+
         #Confirm user wants to install Kumar Nightmode APK
         print('**PLEASE NOTE** ')
         print("This is ONLY installable on 'stock' OpenPilot installs")
@@ -221,7 +229,7 @@ class ThemeInstaller:
         print('a modified UI DO NOT USE THIS!! OpenPilot will fail to run!! \n')
         print('Instead refer to the DEVREADME located in this project')
         print("at ./developer, in the 'APK' section for more info!!\n")
-        print('Selected to install the {} APK. Continue?'.format(self.selected_theme))
+        print('Selected to install the {}{}. Continue?'.format(local_selected_theme, show_apk))
         if not is_affirmative():
           print('Not installing...')
           time.sleep(1.5)
@@ -240,47 +248,11 @@ class ThemeInstaller:
         os.system('mv /data/{}/selfdrive/ui/ui.hpp {}/apk'.format(opdir, self.backup_dir))           # backup ui.hpp
 
         #Copy in new files
-        os.system('cp {}/{}/apk/ai.comma.plus.offroad.apk /data/{}/apk'.format(CONTRIB_THEMES, self.selected_theme, opdir)) # Copy APK
-        os.system('cp {}/{}/apk/ui.hpp /data/{}/selfdrive/ui'.format(CONTRIB_THEMES, self.selected_theme, opdir))           # Copy ui.hpp
+        os.system('cp {}/{}/apk/ai.comma.plus.offroad.apk /data/{}/apk'.format(CONTRIB_THEMES, local_selected_theme, opdir)) # Copy APK
+        os.system('cp {}/{}/apk/ui.hpp /data/{}/selfdrive/ui'.format(CONTRIB_THEMES, local_selected_theme, opdir))           # Copy ui.hpp
 
         # Finish
-        print('\n{} apk installed successfully! Original file(s) backed up to {}'.format(self.selected_theme, self.backup_dir))
-        mark_self_installed()        # Create flag in /sdcard so auto installer knows there is a self installation
-        print('Press enter to continue!')
-        input()
-
-      elif selected_option == 'Kumar Nightmode APK':  # Kumar-Nightmode-APK
-        #Confirm user wants to install Kumar Nightmode APK
-        print('**PLEASE NOTE** ')
-        print("This is ONLY installable on 'stock' OpenPilot installs")
-        print('If you have a fork like ArnePilot, or any other with')
-        print('a modified UI DO NOT USE THIS!! OpenPilot will fail to run!! \n')
-        print('Instead refer to the DEVREADME located in this project')
-        print("at ./developer, in the 'Kumar-Nightmode-APK' section for more info!!\n")
-        print('Selected to install the Kumar Nightmode APK. Continue?')
-        if not is_affirmative():
-          print('Not installing...')
-          time.sleep(1.5)
-          continue
-
-        #Check if there was an APK backup already this session to prevent accidental overwrites
-        #Returns true if okay to proceed. Gets self.backup_dir & asset type name
-        if backup_overide_check(self.backup_dir, 'apk') == True:
-          exit()
-    
-        #Ask user if their OP directory is custom (like arnepilot / dragonpilot)
-        opdir = op_dir_finder()
-
-        #Backup files
-        os.system('mv /data/{}/apk/ai.comma.plus.offroad.apk {}/apk'.format(opdir, self.backup_dir)) # Backup apk
-        os.system('mv /data/{}/selfdrive/ui/ui.hpp {}/apk'.format(opdir, self.backup_dir))           # Backup ui.hpp
-
-        #Copy in new files
-        os.system('cp {}/Kumar-Nightmode-APK/nightmode-apk/ai.comma.plus.offroad.apk /data/{}/apk'.format(CONTRIB_THEMES, opdir)) # Copy APK
-        os.system('cp {}/Kumar-Nightmode-APK/nightmode-apk/ui.hpp /data/{}/apk'.format(CONTRIB_THEMES, opdir))                    # Copy ui.hpp
-
-        # Finish
-        print('\nkumar-nightmode-apk installed successfully! Original file(s) backed up to {}'.format(self.backup_dir))
+        print('{}{} installed successfully! Original file(s) backed up to {}\n'.format(local_selected_theme, show_apk, self.backup_dir))
         mark_self_installed()        # Create flag in /sdcard so auto installer knows there is a self installation
         print('Press enter to continue!')
         input()
