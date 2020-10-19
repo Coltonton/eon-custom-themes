@@ -166,7 +166,7 @@ class ThemeInstaller:
         #Backup & install new
         os.system('cp {} {}/logo'.format(BOOT_LOGO_PATH, self.backup_dir))  # Make Backup
         os.system('dd if={}/{}/{} of={}'.format(CONTRIB_THEMES, self.selected_theme, BOOT_LOGO_THEME_PATH, BOOT_LOGO_PATH))  # Replace
-        print('\nBoot Logo installed successfully! Original file(s) backed up to {}'.format(self.backup_dir))
+        print('\nBoot Logo installed successfully! Original file(s) backed up to {}/logo'.format(self.backup_dir))
         mark_self_installed()       # Create flag in /sdcard so auto installer knows there is a self installation
         print('Press enter to continue!')
         input()
@@ -181,7 +181,7 @@ class ThemeInstaller:
         
         #Check if there was a spinner backup already this session to prevent accidental overwrites
         #Returns false if okay to proceed. Gets self.backup_dir & asset type name
-        if backup_overide_check(self.backup_dir, 'spinner') is True:
+        if backup_overide_check(self.backup_dir, 'spinner') == True:
           exit()
 
         #Ask user if their OP directory is custom (like arnepilot / dragonpilot)
@@ -229,7 +229,7 @@ class ThemeInstaller:
 
         #Check if there was an APK backup already this session to prevent accidental overwrites
         #Returns false if okay to proceed. Gets self.backup_dir & asset type name
-        if backup_overide_check(self.backup_dir, 'apk') is True:
+        if backup_overide_check(self.backup_dir, 'apk') == True:
           exit()
     
         #Ask user if their OP directory is custom (like arnepilot / dragonpilot)
@@ -265,7 +265,7 @@ class ThemeInstaller:
 
         #Check if there was an APK backup already this session to prevent accidental overwrites
         #Returns true if okay to proceed. Gets self.backup_dir & asset type name
-        if backup_overide_check(self.backup_dir, 'apk') is False:
+        if backup_overide_check(self.backup_dir, 'apk') == True:
           exit()
     
         #Ask user if their OP directory is custom (like arnepilot / dragonpilot)
@@ -307,7 +307,7 @@ class ThemeInstaller:
         
         #Check if there was an APK backup already this session to prevent accidental overwrites
         #Returns true if okay to proceed. Gets self.backup_dir & asset type name
-        if backup_overide_check(self.backup_dir, 'apk') is False:
+        if backup_overide_check(self.backup_dir, 'bootanimation.zip') == True:
           exit()
 
         #Set bootAniColor based off the selected option - if white_, color, or standard bootanimation 
