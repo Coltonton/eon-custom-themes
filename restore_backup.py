@@ -58,7 +58,7 @@
 import os
 import time
 from os import path
-from support.support_variables import BACKUPS_DIR, BACKUP_OPTIONS, CONTRIB_THEMES
+from support.support_variables import BACKUPS_DIR, BACKUP_OPTIONS, CONTRIB_THEMES, ECT_LOCATION
 from support.support_functions import get_device_theme_data, get_user_backups, is_affirmative, make_backup_folder, mark_self_installed, print_welcome_text
 
 
@@ -266,15 +266,14 @@ class BackupReinstaller:
             self.backup_reinstaller_loop()
 
         os.system('cp {} {}'.format(BOOT_LOGO_PATH, self.backup_dir))      # Make Backup
-        #os.system('dd if= {}/Comma-Default/{} of={}'.format(CONTRIB_THEMES, BOOT_LOGO_THEME_PATH, BOOT_LOGO_PATH))   # Replace
-        os.system('dd if={}/{}/{} of={}'.format(CONTRIB_THEMES, self.selected_backup, BOOT_LOGO_THEME_PATH, BOOT_LOGO_PATH))  # Replace
-        print('\n Factory Boot Logo restored successfully! Custom file(s) backed up to {}'.format(self.backup_dir))
+        os.system('dd if={}/{}/{}/{} of={}'.format(ECT_LOCATION, CONTRIB_THEMES, self.selected_backup, BOOT_LOGO_THEME_PATH, BOOT_LOGO_PATH))  # Replace
+        print('Factory Boot Logo restored successfully! Custom file(s) backed up to {}\n'.format(self.backup_dir))
 
         os.system('mount -o remount,rw /system')  # /system read only, must mount as r/w
         os.system('mv /system/media/bootanimation.zip {}'.format(self.backup_dir))  # backup
-        os.system('cp {}/{}/bootanimation.zip /system/media/bootanimation.zip'.format(BACKUPS_DIR, self.selected_backup))  # replace
+        os.system('cp ./{}/{}/bootanimation.zip /system/media/bootanimation.zip'.format(CONTRIB_THEMES, self.selected_backup,))  # replace
         os.system('chmod 666 /system/media/bootanimation.zip')
-        print('\n Factory Boot Animation restored successfully! Custom file(s) backed up to {}'.format(self.backup_dir))
+        print('Factory Boot Animation restored successfully! Custom file(s) backed up to {}\n'.format(self.backup_dir))
         print('Thank you come again!')
         exit()
 
