@@ -170,7 +170,6 @@ def backup_overide_check(backup_dir, theme_type):
       return True
   else:
     os.mkdir('{}/{}'.format(backup_dir, theme_type))
-    print('no existy')
     return False
 
 def op_dir_finder():

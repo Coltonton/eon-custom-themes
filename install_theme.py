@@ -164,7 +164,7 @@ class ThemeInstaller:
           exit()
 
         #Backup & install new
-        os.system('cp {} {}'.format(BOOT_LOGO_PATH, self.backup_dir))  # Make Backup
+        os.system('cp {} {}/logo'.format(BOOT_LOGO_PATH, self.backup_dir))  # Make Backup
         os.system('dd if={}/{}/{} of={}'.format(CONTRIB_THEMES, self.selected_theme, BOOT_LOGO_THEME_PATH, BOOT_LOGO_PATH))  # Replace
         print('\nBoot Logo installed successfully! Original file(s) backed up to {}'.format(self.backup_dir))
         mark_self_installed()       # Create flag in /sdcard so auto installer knows there is a self installation
