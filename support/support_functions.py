@@ -13,17 +13,19 @@ os.chdir(os.path.dirname(os.path.realpath(__file__)))  # __file__ is safer since
 def get_device_theme_data():
   # Crude device detection, *shrug* it works! LeEco does not have tristate!
   if path.exists('/sys/devices/virtual/switch/tri-state-key'): #If 3T-ON
-    print('\n*** OG OnePlus EON Device Detected ***')
+    print('\n*** OG OnePlus EON Device Detected! Sup G? ***')
+    EON_TYPE             = 'OP3T'                                # EON type 
     BOOT_LOGO_THEME_PATH = 'OP3T-Logo/LOGO'                      # Set the boot logo theme path for 3T
-    BOOT_LOGO_PATH = '/dev/block/sde17'                          # Set the boot logo directory for 3T
-    BOOT_LOGO_NAME = 'sde17'                                     # Set the boot logo name for 3T
+    BOOT_LOGO_PATH       = '/dev/block/sde17'                    # Set the boot logo directory for 3T
+    BOOT_LOGO_NAME       = 'sde17'                               # Set the boot logo name for 3T
   else:                                                        #If LEON/Two
-    print('\n*** LeEco EON (Gold/Comma 2) Device Detected ***\n')
+    print('\n*** LeEco EON (LeON/Gold/Comma 2) Device Detected ***\n')
+    EON_TYPE             = 'LeEco'                               # EON type 
     BOOT_LOGO_THEME_PATH = 'LeEco-Logo/SPLASH'                   # Set the boot logo theme path for Leo
-    BOOT_LOGO_PATH = '/dev/block/bootdevice/by-name/splash'      # Set the boot logo directory for Leo
-    BOOT_LOGO_NAME = 'splash'                                    # Set the boot logo name for Leo
+    BOOT_LOGO_PATH       = '/dev/block/bootdevice/by-name/splash'# Set the boot logo directory for Leo
+    BOOT_LOGO_NAME       = 'splash'                              # Set the boot logo name for Leo
   print('IMPORTANT: Soft-bricking is likely if this detection is incorrect!')
-  return BOOT_LOGO_THEME_PATH, BOOT_LOGO_PATH, BOOT_LOGO_NAME
+  return EON_TYPE, BOOT_LOGO_THEME_PATH, BOOT_LOGO_PATH, BOOT_LOGO_NAME
 
 def is_affirmative():           # Ask user for confirmation
   u = input('[1.Yes / 2.No]: ').lower().strip()

@@ -1,6 +1,6 @@
 #!/usr/bin/python
 ##################################################################################
-#                                   VER 1.0                                      #
+#                                   VER 1.1                                      #
 #                                                                                #
 #      Permission is granted to anyone to use this software for any purpose,     #
 #     excluding commercial applications, and to alter it and redistribute it     #
@@ -58,7 +58,7 @@
 import os
 import time
 from os import path
-from support.support_variables import BACKUPS_DIR, BACKUP_OPTIONS
+from support.support_variables import BACKUPS_DIR, BACKUP_OPTIONS, CONTRIB_THEMES
 from support.support_functions import get_device_theme_data, get_user_backups, is_affirmative, make_backup_folder, mark_self_installed, print_welcome_text
 
 
@@ -259,20 +259,21 @@ class BackupReinstaller:
 
     def restore_default_comma(self):
         print('Selected to restore Comma-Default theme. Continue?')
+        print('Process is fully automagic!')
         if not is_affirmative():
             print('Not restoring...')
             time.sleep(1.5)
             self.backup_reinstaller_loop()
 
         os.system('cp {} {}'.format(BOOT_LOGO_PATH, self.backup_dir))      # Make Backup
-        os.system('dd if={}/{}/{} of={}'.format(BACKUPS_DIR, self.selected_backup, BOOT_LOGO_NAME, BOOT_LOGO_PATH))   # Replace
-        print('\n Factory Boot Logo restored successfully! Original backed up to {}'.format(self.backup_dir))
+        os.system('dd if= {}/Comma-Default/{} of={}'.format(CONTRIB_THEMES, BOOT_LOGO_THEME_PATH, BOOT_LOGO_PATH))   # Replace
+        print('\n Factory Boot Logo restored successfully! Custom file(s) backed up to {}'.format(self.backup_dir))
 
         os.system('mount -o remount,rw /system')  # /system read only, must mount as r/w
         os.system('mv /system/media/bootanimation.zip {}'.format(self.backup_dir))  # backup
         os.system('cp {}/{}/bootanimation.zip /system/media/bootanimation.zip'.format(BACKUPS_DIR, self.selected_backup))  # replace
         os.system('chmod 666 /system/media/bootanimation.zip')
-        print('\n Factory Boot Animation restored successfully! Original backed up to {}'.format(self.backup_dir))
+        print('\n Factory Boot Animation restored successfully! Custom file(s) backed up to {}'.format(self.backup_dir))
         print('Thank you come again!')
         exit()
 

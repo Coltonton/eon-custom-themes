@@ -69,7 +69,7 @@ if IS_AUTO_INSTALL:
   print_welcome_text('a')               #Print welcome text with the flag for auto welcome text
 else:
   print_welcome_text('s')               #Print welcome text with the flag for normal welcome text
-BOOT_LOGO_THEME_PATH, BOOT_LOGO_PATH, BOOT_LOGO_NAME = get_device_theme_data() # Get Perams based off detected device
+EON_TYPE, BOOT_LOGO_THEME_PATH, BOOT_LOGO_PATH, BOOT_LOGO_NAME = get_device_theme_data() # Get Perams based off detected device
 
 
 class ThemeInstaller:
@@ -101,6 +101,15 @@ class ThemeInstaller:
 
   def get_available_options(self):      # Check what assets are available for the selected theme
     self.theme_options = []
+
+    # Check if the selected theme has an apk asset
+    if os.path.exists('{}/{}/apk'.format(CONTRIB_THEMES, self.selected_theme)):
+      self.theme_options.append('APK')
+
+    # Add Kumar Nightmode APK always as option if exists!
+    if os.path.exists('{}/Kumar-Nightmode-APK/apk'.format(CONTRIB_THEMES)):
+      self.theme_options.append('Kumar Nightmode APK')
+
     # Check if the selected theme has a boot logo asset
     if os.path.exists('{}/{}/{}'.format(CONTRIB_THEMES, self.selected_theme, BOOT_LOGO_THEME_PATH)):
       self.theme_options.append('Boot Logo')
@@ -120,9 +129,6 @@ class ThemeInstaller:
     # Check if the selected theme has a OpenPilot Spinner asset
     if os.path.exists('{}/{}/spinner'.format(CONTRIB_THEMES, self.selected_theme)):
       self.theme_options.append('OpenPilot Spinner')
-
-    # if os.path.exists('{}/{}/additional'.format(CONTRIB_THEMES, self.selected_theme)):  # todo disabled for now
-    #   self.theme_options.append('4. Additional Resources')
 
     self.theme_options.append('-Main Menu-')
     self.theme_options.append('-Reboot-')
@@ -152,19 +158,15 @@ class ThemeInstaller:
           time.sleep(1.5)
           continue
 
-        #Check if there was a backup already this session to prevent accidental overwrites
-        if path.exists('{}/{}'.format(self.backup_dir, BOOT_LOGO_NAME)):                 #Func to see if there was a backup already this session
-            print('It appears you already made a boot logo backup this session')         #to prevent accidental overwrites
-            print('continuing will overwrite last boot logo backup!')
-            print('Would you like to continue and overwrite previous?')
-            if not is_affirmative():
-              print('Not installed, exiting session..... Please re-run program')
-              exit()                  #Exit program if user does not want to overwrite, so they can start a new session
+        #Check if there was an APK backup already this session to prevent accidental overwrites
+        #Returns true if okay to proceed. Gets self.backup_dir & asset type name
+        if backup_overide_check(self.backup_dir, 'B') is False:
+          exit()
 
         #Backup & install new
         os.system('cp {} {}'.format(BOOT_LOGO_PATH, self.backup_dir))  # Make Backup
         os.system('dd if={}/{}/{} of={}'.format(CONTRIB_THEMES, self.selected_theme, BOOT_LOGO_THEME_PATH, BOOT_LOGO_PATH))  # Replace
-        print('\nBoot Logo installed successfully! Original backed up to {}'.format(self.backup_dir))
+        print('\nBoot Logo installed successfully! Original file(s) backed up to {}'.format(self.backup_dir))
         mark_self_installed()       # Create flag in /sdcard so auto installer knows there is a self installation
         print('Press enter to continue!')
         input()
@@ -206,7 +208,7 @@ class ThemeInstaller:
 
         #Final make new spinner & finish
         os.system('cd /data/openpilot/selfdrive/ui/spinner && make')
-        print('\n{} spinner installed successfully! Original backed up to {}'.format(opdir, self.backup_dir))
+        print('\n{} spinner installed successfully! Original file(s) backed up to {}'.format(opdir, self.backup_dir))
         mark_self_installed()        # Create flag in /sdcard so auto installer knows there is a self installation
         print('Press enter to continue!')
         input()
@@ -242,12 +244,12 @@ class ThemeInstaller:
         os.system('cp {}/{}/apk/ui.hpp /data/{}/selfdrive/ui'.format(CONTRIB_THEMES, self.selected_theme, opdir))           # Copy ui.hpp
 
         # Finish
-        print('\n{} apk installed successfully! Original backed up to {}'.format(self.selected_theme, self.backup_dir))
+        print('\n{} apk installed successfully! Original file(s) backed up to {}'.format(self.selected_theme, self.backup_dir))
         mark_self_installed()        # Create flag in /sdcard so auto installer knows there is a self installation
         print('Press enter to continue!')
         input()
 
-      elif selected_option == 'Kumar-Nightmode-APK':  # Kumar-Nightmode-APK
+      elif selected_option == 'Kumar Nightmode APK':  # Kumar-Nightmode-APK
         #Confirm user wants to install Kumar Nightmode APK
         print('**PLEASE NOTE** ')
         print("This is ONLY installable on 'stock' OpenPilot installs")
@@ -274,11 +276,11 @@ class ThemeInstaller:
         os.system('mv /data/{}/selfdrive/ui/ui.hpp {}/apk'.format(opdir, self.backup_dir))           # Backup ui.hpp
 
         #Copy in new files
-        os.system('cp ./support/nightmode-apk/ai.comma.plus.offroad.apk /data/{}/apk'.format(opdir)) # Copy APK
-        os.system('cp ./support/nightmode-apk/ui.hpp /data/{}/selfdrive/ui'.format(opdir))           # Copy ui.hpp
+        os.system('cp {}/Kumar-Nightmode-APK/nightmode-apk/ai.comma.plus.offroad.apk /data/{}/apk'.format(CONTRIB_THEMES, opdir)) # Copy APK
+        os.system('cp {}/Kumar-Nightmode-APK/nightmode-apk/ui.hpp /data/{}/apk'.format(CONTRIB_THEMES, opdir))                    # Copy ui.hpp
 
         # Finish
-        print('\nkumar-nightmode-apk installed successfully! Original backed up to {}'.format(self.backup_dir))
+        print('\nkumar-nightmode-apk installed successfully! Original file(s) backed up to {}'.format(self.backup_dir))
         mark_self_installed()        # Create flag in /sdcard so auto installer knows there is a self installation
         print('Press enter to continue!')
         input()
@@ -303,14 +305,10 @@ class ThemeInstaller:
           time.sleep(1.5)
           continue
         
-        #Check if there was a backup already this session to prevent accidental overwrites
-        if path.exists('{}/bootanimation.zip'.format(self.backup_dir)):                 #Func to see if there was a backup already this session
-            print('It appears you already made a boot animation backup this session')    #to prevent accidental overwrites
-            print('continuing will overwrite last boot animation backup!')
-            print('Would you like to continue and overwrite previous?')
-            if not is_affirmative():
-              print('Not installed, exiting session..... Please re-run program')
-              exit()                  #Exit program if user does not want to overwrite, so they can start a new session
+        #Check if there was an APK backup already this session to prevent accidental overwrites
+        #Returns true if okay to proceed. Gets self.backup_dir & asset type name
+        if backup_overide_check(self.backup_dir, 'apk') is False:
+          exit()
 
         #Set bootAniColor based off the selected option - if white_, color, or standard bootanimation 
         if selected_option == 'Boot Animation':
@@ -325,7 +323,7 @@ class ThemeInstaller:
         os.system('mv /system/media/bootanimation.zip {}'.format(self.backup_dir))  # backup
         os.system('cp {}/{}/{}bootanimation.zip /system/media/bootanimation.zip'.format(CONTRIB_THEMES, self.selected_theme, bootAniColor))  # replace
         os.system('chmod 666 /system/media/bootanimation.zip')                      #Need to chmod and edet permissions to 666
-        print('\nBoot Animation installed successfully! Original backed up to {}'.format(self.backup_dir))
+        print('\nBoot Animation installed successfully! Original file(s) backed up to {}'.format(self.backup_dir))
         mark_self_installed()        # Create flag in /sdcard so auto installer knows there is a self installation
         print('Press enter to continue!')
         input()
@@ -333,47 +331,34 @@ class ThemeInstaller:
   # Auto installer stuff
   def auto_installer(self):               # Auto Installer program for incorperating into OP forks SEE DEVREADME
     self.selected_theme = AUTO_INSTALL_CONF['auto_selected_theme']
-    opdir = AUTO_INSTALL_CONF['openpilot_dir_name']
-    selected_ani_color = AUTO_INSTALL_CONF['ani_color']
+    opdir               = AUTO_INSTALL_CONF['op_dir_name']
+    install_3t_logo     = AUTO_INSTALL_CONF['install_3T_logo']
+    install_leo_logo    = AUTO_INSTALL_CONF['install_Leo_logo']
+    install_bootani     = AUTO_INSTALL_CONF['install_bootanim']
+    selected_ani_color  = AUTO_INSTALL_CONF['ani_color']
+    
 
-    if AUTO_INSTALL_CONF['install_logo']:  # Auto BootLogo Install Code
-      os.system('cp {} {}'.format(BOOT_LOGO_PATH, self.backup_dir))  # Make Backup
+    if (EON_TYPE == 'OP3T' and install_3t_logo == True) or (EON_TYPE == 'LeEco' and install_leo_logo == True): # Auto BootLogo Install Code
+      os.system('cp {} {}'.format(BOOT_LOGO_PATH, self.backup_dir))                                                        # Make Backup
       os.system('dd if={}/{}/{} of={}'.format(CONTRIB_THEMES, self.selected_theme, BOOT_LOGO_THEME_PATH, BOOT_LOGO_PATH))  # Replace
-      print('\nBoot Logo installed successfully! Original backed up to {}'.format(self.backup_dir))
+      print('\nBoot Logo installed successfully! Original file(s) backed up to {}'.format(self.backup_dir))
+    else:
+      print('Debug: No Boot Logo to install for device: {} EON'.format(EON_TYPE))
 
-    if AUTO_INSTALL_CONF['install_anim'] == True:  # Auto BootAni Install Code
+    if install_bootani == True:  # Auto BootAni Install Code
       os.system('mount -o remount,rw /system')
       os.system('mv /system/media/bootanimation.zip {}'.format(self.backup_dir))
       os.system('cp {}/{}/{}bootanimation.zip /system/media/bootanimation.zip'.format(CONTRIB_THEMES, self.selected_theme, selected_ani_color))
       os.system('chmod 666 /system/media/bootanimation.zip')
-      print('Boot Animation installed successfully! Original backuped to {}'.format(self.backup_dir))
-
-    if AUTO_INSTALL_CONF['install_spinner']:  # Auto OP Spinner Code
-      #Backup files
-      os.system('mv /data/{}/selfdrive/assets/img_spinner_comma.png {}/spinner'.format(opdir, self.backup_dir)) #Backup logo
-      os.system('mv /data/{}/selfdrive/assets/img_spinner_track.png {}/spinner'.format(opdir, self.backup_dir)) #backup sprinner track
-      os.system('mv /data/{}/selfdrive/common/spinner.c {}/spinner'.format(opdir, self.backup_dir))             #backup spinner.c
-
-      #Copy in new files
-      os.system('cp {}/{}/spinner/img_spinner_comma.png /data/{}/selfdrive/assets'.format(CONTRIB_THEMES, self.selected_theme, opdir)) #Replace logo
-      if path.exists('{}/{}/spinner/img_spinner_track.png'.format(CONTRIB_THEMES, self.selected_theme)):                   # Check if theme contributer provided a spinner track
-        os.system('cp {}/{}/spinner/img_spinner_track.png /data/{}/selfdrive/assets'.format(CONTRIB_THEMES, self.selected_theme, opdir)) #Replace sprinner track supplied custom
-      else:
-        os.system('cp ./support/img_spinner_track.png /data/{}/selfdrive/assets'.format(opdir))     #Replace sprinner track with standard 
-      if path.exists('{}/{}/spinner/spinner.c'.format(CONTRIB_THEMES, self.selected_theme)):                               # Check if theme contributer provided a spinner.c
-        os.system('cp {}/{}/spinner/spinner.c /data/{}/selfdrive/common'.format(CONTRIB_THEMES, self.selected_theme, opdir))             #Replace spinner.c with supplied custom 
-      else:
-        os.system('cp ./support/spinner.c /data/{}/selfdrive/common'.format(opdir))             #Replace spinner.c with standard file
-
-      #Final make new spinner & finish
-      os.system('cd /data/openpilot/selfdrive/ui/spinner && make')
-      print('\n{} spinner installed successfully! Original backed up to {}'.format(opdir, self.backup_dir))
-
-    # if (autoInstallAdditional != 'no'):             #Auto additional features Code (Not An Active feature)
-    #  print('Additional Resources are not an active feature')  # todo: this
+      print('Boot Animation installed successfully! Original file(s) backuped to {}'.format(self.backup_dir))
+    else:
+      print('Debug: No Boot Animation to install for device: {} EON'.format(EON_TYPE))
 
     fi = open("./support/auto_install_ver.txt", "w")
     fi.write(str(DESIRED_AUTO_VER))
+    print('Have a wonderful day, program run complete, terminating!')
+    exit()
+
 
 if __name__ == '__main__':
   ti = ThemeInstaller()
