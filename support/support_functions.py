@@ -198,6 +198,7 @@ def get_user_backups(exclude):
     print("\nEnter 'r' to restore the Comma-Default theme")
   else:
     default_restore_exists = 0
+    print('nein')
   
   print('\nAvailable backups:')
   for idx, backup in enumerate(available_backups):
