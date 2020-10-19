@@ -307,10 +307,10 @@ class ThemeInstaller:
         
         #Check if there was an APK backup already this session to prevent accidental overwrites
         #Returns true if okay to proceed. Gets self.backup_dir & asset type name
-        if backup_overide_check(self.backup_dir, 'bootanimation.zip') == True:
+        if backup_overide_check(self.backup_dir, 'bootanimation') == True:
           exit()
 
-        #Set bootAniColor based off the selected option - if white_, color, or standard bootanimation 
+        #Set bootAniColor based off the selected option - if 'white_', 'color_', or standard bootanimation 
         if selected_option == 'Boot Animation':
           bootAniColor = ""
         elif selected_option == 'Color Boot Animation':
