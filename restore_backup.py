@@ -265,13 +265,16 @@ class BackupReinstaller:
             time.sleep(1.5)
             self.backup_reinstaller_loop()
 
+        current_dir = os.system('pwd')
+        print(current_dir)
+
         os.system('cp {} {}'.format(BOOT_LOGO_PATH, self.backup_dir))      # Make Backup
         os.system('dd if={}/{}/{}/{} of={}'.format(ECT_LOCATION, CONTRIB_THEMES, self.selected_backup, BOOT_LOGO_THEME_PATH, BOOT_LOGO_PATH))  # Replace
         print('Factory Boot Logo restored successfully! Custom file(s) backed up to {}\n'.format(self.backup_dir))
 
         os.system('mount -o remount,rw /system')  # /system read only, must mount as r/w
         os.system('mv /system/media/bootanimation.zip {}'.format(self.backup_dir))  # backup
-        os.system('cp ./{}/{}/bootanimation.zip /system/media/bootanimation.zip'.format(CONTRIB_THEMES, self.selected_backup,))  # replace
+        os.system('cp {}/{}/{}/bootanimation.zip /system/media/bootanimation.zip'.format(ECT_LOCATION, CONTRIB_THEMES, self.selected_backup,))  # replace
         os.system('chmod 666 /system/media/bootanimation.zip')
         print('Factory Boot Animation restored successfully! Custom file(s) backed up to {}\n'.format(self.backup_dir))
         print('Thank you come again!')
