@@ -160,7 +160,7 @@ class ThemeInstaller:
 
         #Check if there was an APK backup already this session to prevent accidental overwrites
         #Returns true if okay to proceed. Gets self.backup_dir & asset type name
-        if backup_overide_check(self.backup_dir, 'B') is False:
+        if backup_overide_check(self.backup_dir, 'logo') is False:
           exit()
 
         #Backup & install new
