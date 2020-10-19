@@ -269,7 +269,7 @@ class BackupReinstaller:
         print(current_dir)
 
         os.system('cp {} {}'.format(BOOT_LOGO_PATH, self.backup_dir))      # Make Backup
-        os.system('dd if={}/{}/{}/{} of={}'.format(ECT_LOCATION, CONTRIB_THEMES, self.selected_backup, BOOT_LOGO_THEME_PATH, BOOT_LOGO_PATH))  # Replace
+        os.system('dd if=./{}/{}/{} of={}'.format(CONTRIB_THEMES, self.selected_backup, BOOT_LOGO_THEME_PATH, BOOT_LOGO_PATH))  # Replace
         print('Factory Boot Logo restored successfully! Custom file(s) backed up to {}\n'.format(self.backup_dir))
 
         os.system('mount -o remount,rw /system')  # /system read only, must mount as r/w
