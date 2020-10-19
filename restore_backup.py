@@ -79,7 +79,7 @@ class BackupReinstaller:
             if self.selected_backup is None:
                 print('Didn\'t select a backup, exiting.')
                 return
-            if self.selected_backup == 'Comma-Default-r':
+            if self.selected_backup == 'Comma-Default':
                 self.restore_default_comma()
             self.backup_get_available_options()
             if self.backup_reinstall_function() == 'exit':
@@ -266,7 +266,8 @@ class BackupReinstaller:
             self.backup_reinstaller_loop()
 
         os.system('cp {} {}'.format(BOOT_LOGO_PATH, self.backup_dir))      # Make Backup
-        os.system('dd if= {}/Comma-Default/{} of={}'.format(CONTRIB_THEMES, BOOT_LOGO_THEME_PATH, BOOT_LOGO_PATH))   # Replace
+        #os.system('dd if= {}/Comma-Default/{} of={}'.format(CONTRIB_THEMES, BOOT_LOGO_THEME_PATH, BOOT_LOGO_PATH))   # Replace
+        os.system('dd if={}/{}/{} of={}'.format(CONTRIB_THEMES, self.selected_backup, BOOT_LOGO_THEME_PATH, BOOT_LOGO_PATH))  # Replace
         print('\n Factory Boot Logo restored successfully! Custom file(s) backed up to {}'.format(self.backup_dir))
 
         os.system('mount -o remount,rw /system')  # /system read only, must mount as r/w

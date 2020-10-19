@@ -196,15 +196,12 @@ def get_user_backups(exclude):
   print('\nAvailable backups:')
   for idx, backup in enumerate(available_backups):
     print('{}. {}'.format(idx + 1, backup))
-
-  if os.path.exists('/data/eon-custom-themes/contributed-themes/Comma-Default/bootanimation.zip'):
+  if os.path.exists('/data/eon-custom-themes/{}/Comma-Default'.format(CONTRIB_THEMES)):
     default_restore_exists = 1
     print("\nEnter 'r' to restore the Comma-Default theme")
   else:
     default_restore_exists = 0
-    print('nein')
-
-  print('Type `exit` or enter 0 to exit.')
+  print('\nType `exit` or enter 0 to exit.')
   
   while 1:
     backup = input('\nChoose a backup to install (by index value): ').strip().lower()
@@ -212,7 +209,7 @@ def get_user_backups(exclude):
     if backup in ['exit', 'Exit', 'E', 'e', '0']:
       exit()
     if backup in ['r', 'R' and default_restore_exists is 1]:
-      return 'Comma-Default-r'
+      return 'Comma-Default'
     if backup.isdigit():
       backup = int(backup)
       if backup > len(available_backups):
