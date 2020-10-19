@@ -65,7 +65,7 @@ from support.support_functions import get_device_theme_data, get_user_backups, i
 ##======================= CODE START ================================================================
 os.chdir(os.path.dirname(os.path.realpath(__file__)))  # __file__ is safer since it doesn't change based on where this file is called from
 print_welcome_text('r')                                #Print welcome text with the flag for restore welcome text
-BOOT_LOGO_THEME_PATH, BOOT_LOGO_PATH, BOOT_LOGO_NAME = get_device_theme_data() # Get Perams based off detected device
+EON_TYPE, BOOT_LOGO_THEME_PATH, BOOT_LOGO_PATH, BOOT_LOGO_NAME = get_device_theme_data() # Get Perams based off detected device
 
 class BackupReinstaller:
     def __init__(self):                       # Init code runs once. sets up.
