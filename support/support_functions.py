@@ -193,7 +193,7 @@ def get_user_backups(exclude):
   available_backups = [t for t in available_backups if t not in exclude]
   lower_available_backups = [t.lower() for t in available_backups]
   
-  if os.path.exists('./{contributed-themes/Comma-Default'):
+  if os.path.exists('./contributed-themes/Comma-Default'):
     default_restore_exists = 1
     print("\nEnter 'r' to restore the Comma-Default theme")
   else:
