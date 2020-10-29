@@ -62,6 +62,8 @@ from support.support_functions import get_device_theme_data, get_user_backups, g
 from support.support_functions import make_backup_folder, mark_self_installed, print_welcome_text, backup_overide_check, op_dir_finder
 from support.support_variables import AUTO_INSTALL_CONF, BACKUPS_DIR, BACKUP_OPTIONS, CONTRIB_THEMES, DESIRED_AUTO_VER, IS_AUTO_INSTALL
 
+show_console_output = False             #
+
 
 ##======================= CODE START ================================================================
 os.chdir(os.path.dirname(os.path.realpath(__file__)))  # __file__ is safer since it doesn't change based on where this file is called from
@@ -76,6 +78,11 @@ class ThemeInstaller:
   def __init__(self):                   # Init code runs once. sets up & determines if to run auto or self
     # Create and get backup folder
     self.backup_dir = make_backup_folder()
+
+    if show_console_output == False:     # Dev function to show console output when this program calls make for example....
+      self.con_output = ' >/dev/null 2>&1'
+    else:
+      self.con_output = ''
 
     # Detrimine if should self install, auto install, or exit
     auto_found_installer = installer_chooser()  
@@ -207,7 +214,8 @@ class ThemeInstaller:
           os.system('cp ./support/spinner/spinner.c /data/{}/selfdrive/common'.format(opdir))             #Replace spinner.c with standard file
 
         #Final make new spinner & finish
-        os.system('cd /data/openpilot/selfdrive/ui/spinner && make')
+        print('\nBuilding new spinner files, please wait..... This should take under a minute....')
+        os.system('cd /data/openpilot/selfdrive/ui/spinner && make{}'.format(self.con_output))
         print('\n{} spinner installed successfully! Original file(s) backed up to {}'.format(opdir, self.backup_dir))
         mark_self_installed()        # Create flag in /sdcard so auto installer knows there is a self installation
         print('Press enter to continue!')
@@ -223,7 +231,7 @@ class ThemeInstaller:
           show_apk = ' APK'   #Another hack so in print statments, it doesnt say 'Kumar-Nightmode-APK apk' cuz OCD. YES I AM that OCD!!
 
         #Confirm user wants to install Kumar Nightmode APK
-        print('**PLEASE NOTE** ')
+        print('\n**PLEASE NOTE** ')
         print("This is ONLY installable on 'stock' OpenPilot installs")
         print('If you have a fork like ArnePilot, or any other with')
         print('a modified UI DO NOT USE THIS!! OpenPilot will fail to run!! \n')
@@ -252,10 +260,11 @@ class ThemeInstaller:
         os.system('cp {}/{}/apk/ui.hpp /data/{}/selfdrive/ui'.format(CONTRIB_THEMES, local_selected_theme, opdir))           # Copy ui.hpp
 
         #Build
-        os.system('cd /data/{}/selfdrive/ui/ && scons -u'.format(opdir))
+        print('\nBuilding new APK files, please wait..... This should take under a minute....')
+        os.system('cd /data/{}/selfdrive/ui/ && scons -u{}'.format(opdir, self.con_output))
 
         # Finish
-        print('{}{} installed successfully! Original file(s) backed up to {}\n'.format(local_selected_theme, show_apk, self.backup_dir))
+        print('\n{}{} installed successfully! Original file(s) backed up to {}'.format(local_selected_theme, show_apk, self.backup_dir))
         mark_self_installed()        # Create flag in /sdcard so auto installer knows there is a self installation
         print('Press enter to continue!')
         input()
