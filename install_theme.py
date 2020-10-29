@@ -48,7 +48,7 @@
 #                  Everything will be done automagically!!!!!                    #
 #                                                                                #
 #                      Don't forget to tell your friends!!                       #
-#                               Love Cole (@C-ton)                               #
+#                              Love, Cole (@C-ton)                               #
 #                                                                                #
 #        Did you know that if you have a custom OP fork you can use this         #
 #     program to auto install your custom theme for your users automagiclly?     #
@@ -59,7 +59,7 @@ import os
 import time
 from os import path
 from support.support_functions import get_device_theme_data, get_user_backups, get_user_theme, installer_chooser, is_affirmative
-from support.support_functions import make_backup_folder, mark_self_installed, print_welcome_text, backup_overide_check, op_dir_finder
+from support.support_functions import make_backup_folder, mark_self_installed, print_welcome_text, backup_overide_check, op_dir_finder, get_op_ver
 from support.support_variables import AUTO_INSTALL_CONF, BACKUPS_DIR, BACKUP_OPTIONS, CONTRIB_THEMES, DESIRED_AUTO_VER, IS_AUTO_INSTALL
 
 show_console_output = False             #
@@ -78,6 +78,8 @@ class ThemeInstaller:
   def __init__(self):                   # Init code runs once. sets up & determines if to run auto or self
     # Create and get backup folder
     self.backup_dir = make_backup_folder()
+
+    get_op_ver()
 
     if show_console_output == False:     # Dev function to show console output when this program calls make for example....
       self.con_output = ' >/dev/null 2>&1'
@@ -243,6 +245,9 @@ class ThemeInstaller:
           time.sleep(1.5)
           continue
 
+        print('Please enter your current OpenPilot Version')
+        print("(As found in the top right corner ex '0.7.11' ")
+
         #Check if there was an APK backup already this session to prevent accidental overwrites
         #Returns false if okay to proceed. Gets self.backup_dir & asset type name
         if backup_overide_check(self.backup_dir, 'apk') == True:
@@ -261,6 +266,7 @@ class ThemeInstaller:
 
         #Build
         print('\nBuilding new APK files, please wait..... This should take under a minute....')
+        print('Please note, {} will trigger a full re-compile next reboot'.format(opdir))
         os.system('cd /data/{}/selfdrive/ui/ && scons -u{}'.format(opdir, self.con_output))
 
         # Finish

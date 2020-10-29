@@ -1,4 +1,3 @@
-
 #pragma once
 #include "messaging.hpp"
 
@@ -77,7 +76,7 @@ typedef enum UIStatus {
 } UIStatus;
 
 static std::map<UIStatus, NVGcolor> bg_colors = {
-  {STATUS_OFFROAD, nvgRGBA(0x07, 0x23, 0x39, 0xf1)},
+  {STATUS_OFFROAD, nvgRGBA(0x20, 0x20, 0x20, 0xf1)},
   {STATUS_DISENGAGED, nvgRGBA(0x17, 0x33, 0x49, 0xc8)},
   {STATUS_ENGAGED, nvgRGBA(0x17, 0x86, 0x44, 0xf1)},
   {STATUS_WARNING, nvgRGBA(0xDA, 0x6F, 0x25, 0xf1)},

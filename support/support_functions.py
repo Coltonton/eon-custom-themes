@@ -40,6 +40,9 @@ def make_backup_folder():
   os.mkdir(backup_dir)  # Create the session backup folder
   return backup_dir
 
+def get_op_ver():
+  f = open("/data/openpilot/selfdrive/common/version.h", "r")
+  print(f.read())
 
 ## =============== Installer ================ ##.
 # Created by @ShaneSmiskol some modifications by coltonton
