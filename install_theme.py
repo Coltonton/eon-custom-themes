@@ -158,7 +158,7 @@ class ThemeInstaller:
           time.sleep(1.5)
           continue
 
-        #Check if there was an APK backup already this session to prevent accidental overwrites
+        #Check if there was an Boot logo backup already this session to prevent accidental overwrites
         #Returns true if okay to proceed. Gets self.backup_dir & asset type name
         if backup_overide_check(self.backup_dir, 'logo') == True:
           exit()
@@ -250,6 +250,9 @@ class ThemeInstaller:
         #Copy in new files
         os.system('cp {}/{}/apk/ai.comma.plus.offroad.apk /data/{}/apk'.format(CONTRIB_THEMES, local_selected_theme, opdir)) # Copy APK
         os.system('cp {}/{}/apk/ui.hpp /data/{}/selfdrive/ui'.format(CONTRIB_THEMES, local_selected_theme, opdir))           # Copy ui.hpp
+
+        #Build
+        os.system('cd /data/{}/selfdrive/ui/ && scons -u'.format(opdir))
 
         # Finish
         print('{}{} installed successfully! Original file(s) backed up to {}\n'.format(local_selected_theme, show_apk, self.backup_dir))
