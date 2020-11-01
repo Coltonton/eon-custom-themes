@@ -87,8 +87,8 @@ class BackupReinstaller:
   
     def backup_get_available_options(self):   # Check what assets are available for the selected backup
         # Check if the selected backup has a APK asset
-        if os.path.exists('{}/{}/spinner'.format(BACKUPS_DIR, self.selected_backup)):
-            BACKUP_OPTIONS.append('APK')
+        #if os.path.exists('{}/{}/spinner'.format(BACKUPS_DIR, self.selected_backup)):
+        #    BACKUP_OPTIONS.append('APK')
 
         # Check if the selected backup has a boot logo asset
         if os.path.exists('{}/{}/{}'.format(BACKUPS_DIR, self.selected_backup, BOOT_LOGO_NAME)):
@@ -129,50 +129,50 @@ class BackupReinstaller:
 
             selected_option = BACKUP_OPTIONS[indexChoice]
 
-            if selected_option == 'APK':
-                print('Selected to install the APK backup. Continue?')
-                if not is_affirmative():
-                    print('Not installing...')
-                    time.sleep(1.5)
-                    continue
-                os.system('cp /data/openpilot/apk/ai.comma.plus.offroad.apk {}'.format(self.backup_dir))      # Make Backup
-                os.system('dd if={}/{}/{} of={}'.format(BACKUPS_DIR, self.selected_backup, BOOT_LOGO_NAME, BOOT_LOGO_PATH))   # Replace
-                print('\nBoot Logo re-installed successfully! Original backed up to {}'.format(self.backup_dir))
-                print('Press enter to continue!')
-                mark_self_installed()       # Create flag in /sdcard so auto installer knows there is a self installation
-                input()
+            # if selected_option == 'APK':
+                #     print('Selected to install the APK backup. Continue?')
+                #     if not is_affirmative():
+                #         print('Not installing...')
+                #         time.sleep(1.5)
+                #         continue
+                #     os.system('cp /data/openpilot/apk/ai.comma.plus.offroad.apk {}'.format(self.backup_dir))      # Make Backup
+                #     os.system('dd if={}/{}/{} of={}'.format(BACKUPS_DIR, self.selected_backup, BOOT_LOGO_NAME, BOOT_LOGO_PATH))   # Replace
+                #     print('\nBoot Logo re-installed successfully! Original backed up to {}'.format(self.backup_dir))
+                #     print('Press enter to continue!')
+                #     mark_self_installed()       # Create flag in /sdcard so auto installer knows there is a self installation
+                #     input()
 
 
 
-                #Confirm user wants to install APK
-                print('Selected to install the {} APK backup. Continue?'.format(self.selected_theme))
-                if not is_affirmative():
-                    print('Not installing...')
-                    time.sleep(1.5)
-                    continue
-        
-                #Check if there was a backup already this session to prevent accidental overwrites
-                if path.exists('{}/spinner'.format(self.backup_dir)):                  
-                    print('It appears you already made a APK install this session') 
-                    print('continuing will overwrite the last APK backup')
-                    print('the program made this session already!!!')
-                    print('Would you like to continue and overwrite previous?')
-                    if not is_affirmative():
-                        print('Not installed, exiting session..... Please re-run program')
-                        exit()      #Exit program if user does not want to overwrite, so they can start a new session
-                else:
-                    os.mkdir('{}/spinner'.format(self.backup_dir))
+                #     #Confirm user wants to install APK
+                #     print('Selected to install the {} APK backup. Continue?'.format(self.selected_theme))
+                #     if not is_affirmative():
+                #         print('Not installing...')
+                #         time.sleep(1.5)
+                #         continue
+            
+                #     #Check if there was a backup already this session to prevent accidental overwrites
+                #     if path.exists('{}/spinner'.format(self.backup_dir)):                  
+                #         print('It appears you already made a APK install this session') 
+                #         print('continuing will overwrite the last APK backup')
+                #         print('the program made this session already!!!')
+                #         print('Would you like to continue and overwrite previous?')
+                #         if not is_affirmative():
+                #             print('Not installed, exiting session..... Please re-run program')
+                #             exit()      #Exit program if user does not want to overwrite, so they can start a new session
+                #     else:
+                #         os.mkdir('{}/spinner'.format(self.backup_dir))
 
-                #Ask user if their OP directory is custom (like arnepilot / dragonpilot)
-                print('Do you have an OP fork with a custom directory name? (ex. arnepilot, dragonpilot)')  # Ask the user if their OP fork used a diffrent directory.
-                if is_affirmative():  # Yes there is a custom OP dir
-                    print('What is the OP directory name? (case matters, not including /data/)')
-                    opdir = '/data/{}'.format(input('> ').strip('/'))  # get custom dir name, strip slashes for safety
-                    print('Your openpilot directory is {}'.format(opdir))
-                    input('*** Please enter to continue, or Ctrl+C to abort if this is incorrect! ***')
-                else:
-                    opdir = 'openpilot'                                #op directory is not custom so openpilot
-            elif selected_option == 'Boot Logo':
+                #     #Ask user if their OP directory is custom (like arnepilot / dragonpilot)
+                #     print('Do you have an OP fork with a custom directory name? (ex. arnepilot, dragonpilot)')  # Ask the user if their OP fork used a diffrent directory.
+                #     if is_affirmative():  # Yes there is a custom OP dir
+                #         print('What is the OP directory name? (case matters, not including /data/)')
+                #         opdir = '/data/{}'.format(input('> ').strip('/'))  # get custom dir name, strip slashes for safety
+                #         print('Your openpilot directory is {}'.format(opdir))
+                #         input('*** Please enter to continue, or Ctrl+C to abort if this is incorrect! ***')
+                #     else:
+                #         opdir = 'openpilot'                                #op directory is not custom so openpilot
+            if selected_option == 'Boot Logo':
                 print('Selected to install the Boot Logo backup. Continue?')
                 if not is_affirmative():
                     print('Not installing...')
@@ -244,9 +244,9 @@ class BackupReinstaller:
                 print('Press enter to continue!')
                 mark_self_installed()        # Create flag in /sdcard so auto installer knows there is a self installation
                 input()
-            elif selected_option == 'OpenPilot UI':
-                print('Additional Resources are not an active feature')
-                time.sleep(5)
+            #elif selected_option == 'OpenPilot UI':
+              #  print('Additional Resources are not an active feature')
+              #  time.sleep(5)
             elif selected_option == '-Main Menu-' or selected_option is None:
                 return
             elif selected_option == '-Reboot-':
