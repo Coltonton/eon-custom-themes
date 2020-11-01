@@ -46,3 +46,18 @@ RESTORE_WELCOME_TEXT = ['Created By: Colton (Brandon) S. EndLine \\n',
                 'It\'s your EON, do what you want!',
                 ' ',
                 '*NOTE* this is the backup restore program']
+
+# ================= APK Notify Text================ ##
+
+'''APK_NOTICE_TEXT = ['\n\n**PLEASE NOTE** '
+                   "Unfortunatly this process is difficult to fully automize"
+                   'And requires some manual labor. One of the files that needs edited'
+                   'for the full expericence is a core file to OpenPilot and is frequently'
+                   'changed; or you may be on a different version. It would be a futal'
+                   'task to constantly play catchup / support all possible commits & versions'
+
+                    "\nMay I suggest runing my OpenPilot Fork? It's stock or you can choose with Comma Junk removed"
+                    'It comes default with the Kumar-Nightmode-APK and better intergration with custom themes!'
+                    'https://github.com/Coltonton/openpilot.git'
+                    
+                    '\nYou can still install this but the sidebar'] '''

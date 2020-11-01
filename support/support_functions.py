@@ -41,8 +41,13 @@ def make_backup_folder():
   return backup_dir
 
 def get_op_ver():
-  f = open("/data/openpilot/selfdrive/common/version.h", "r")
-  print(f.read())
+  #f = open("/data/openpilot/selfdrive/common/version.h", "r")
+  #print(f.read())
+  print('Please enter your current OpenPilot Version')
+  print("(As found in the top right corner of your EON home screen ex. 0.7.11")
+  op_ver = input('?: ')
+  return opdir
+  
 
 ## =============== Installer ================ ##.
 # Created by @ShaneSmiskol some modifications by coltonton

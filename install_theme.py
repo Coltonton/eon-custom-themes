@@ -112,12 +112,12 @@ class ThemeInstaller:
     self.theme_options = []
 
     # Check if the selected theme has an apk asset
-    if self.selected_theme != 'Kumar-Nightmode-APK' and os.path.exists('{}/{}/apk'.format(CONTRIB_THEMES, self.selected_theme)):
-      self.theme_options.append('APK')
+    #if self.selected_theme != 'Kumar-Nightmode-APK' and os.path.exists('{}/{}/apk'.format(CONTRIB_THEMES, self.selected_theme)):
+    #  self.theme_options.append('APK')
 
     # Add Kumar Nightmode APK always as option if exists!
-    if os.path.exists('{}/Kumar-Nightmode-APK'.format(CONTRIB_THEMES)):
-      self.theme_options.append('Kumar-Nightmode-APK')
+    #if os.path.exists('{}/Kumar-Nightmode-APK'.format(CONTRIB_THEMES)):
+    #  self.theme_options.append('Kumar-Nightmode-APK')
 
     # Check if the selected theme has a boot logo asset
     if os.path.exists('{}/{}/{}'.format(CONTRIB_THEMES, self.selected_theme, BOOT_LOGO_THEME_PATH)):
@@ -223,63 +223,72 @@ class ThemeInstaller:
         print('Press enter to continue!')
         input()
 
-      elif selected_option == 'APK' or selected_option == 'Kumar-Nightmode-APK':
-        # Hack to get apk & kumar-nightmode-apk in same installer
-        if selected_option== 'Kumar-Nightmode-APK':
-          local_selected_theme = 'Kumar-Nightmode-APK'  # make a locally used selected_theme using Kumar to hax program
-          show_apk = ''       #Another hack so in print statments, it doesnt say 'Kumar-Nightmode-APK apk' cuz OCD. YES I AM that OCD!!
-        else:
-          local_selected_theme = self.selected_theme    # make a locally used selected_theme from global
-          show_apk = ' APK'   #Another hack so in print statments, it doesnt say 'Kumar-Nightmode-APK apk' cuz OCD. YES I AM that OCD!!
+      # elif selected_option == 'APK' or selected_option == 'Kumar-Nightmode-APK':
+        #   # Hack to get apk & kumar-nightmode-apk in same installer
+        #   if selected_option== 'Kumar-Nightmode-APK':
+        #     local_selected_theme = 'Kumar-Nightmode-APK'  # make a locally used selected_theme using Kumar to hax program
+        #     show_apk = ''       #Another hack so in print statments, it doesnt say 'Kumar-Nightmode-APK apk' cuz OCD. YES I AM that OCD!!
+        #   else:
+        #     local_selected_theme = self.selected_theme    # make a locally used selected_theme from global
+        #     show_apk = ' APK'   #Another hack so in print statments, it doesnt say 'Kumar-Nightmode-APK apk' cuz OCD. YES I AM that OCD!!
 
-        #Confirm user wants to install Kumar Nightmode APK
-        print('\n**PLEASE NOTE** ')
-        print("This is ONLY installable on 'stock' OpenPilot installs")
-        print('If you have a fork like ArnePilot, or any other with')
-        print('a modified UI DO NOT USE THIS!! OpenPilot will fail to run!! \n')
-        print('Instead refer to the DEVREADME located in this project')
-        print("at ./developer, in the 'APK' section for more info!!\n")
-        print('Selected to install the {}{}. Continue?'.format(local_selected_theme, show_apk))
-        if not is_affirmative():
-          print('Not installing...')
-          time.sleep(1.5)
-          continue
+        #   #Confirm user wants to install Kumar Nightmode APK
+        #   #print('\n\n**PLEASE NOTE** ')
+        #   print("Unfortunatly this process is difficult to fully automize")
+        #   print('And requires some manual labor. One of the files that needs edited')
+        #   print('for the full expericence is a core file to OpenPilot and is frequently')
+        #   print('changed; or you may be on a different version. It would be a futal')
+        #   print('task to constantly play catchup / support all possible commits & versions')
 
-        print('Please enter your current OpenPilot Version')
-        print("(As found in the top right corner ex '0.7.11' ")
+        #   print("\nMay I suggest runing my OpenPilot Fork? It's stock or you can choose with Comma Junk removed")
+        #   print('It comes default with the Kumar-Nightmode-APK and better intergration with custom themes!')
+        #   print('                    https://github.com/Coltonton/openpilot.git')
 
-        #Check if there was an APK backup already this session to prevent accidental overwrites
-        #Returns false if okay to proceed. Gets self.backup_dir & asset type name
-        if backup_overide_check(self.backup_dir, 'apk') == True:
-          exit()
-    
-        #Ask user if their OP directory is custom (like arnepilot / dragonpilot)
-        opdir = op_dir_finder()
 
-        #Backup files
-        os.system('mv /data/{}/apk/ai.comma.plus.offroad.apk {}/apk'.format(opdir, self.backup_dir)) # Backup apk
-        os.system('mv /data/{}/selfdrive/ui/ui.hpp {}/apk'.format(opdir, self.backup_dir))           # backup ui.hpp
+        #   print('If you have a fork like ArnePilot, or any other with')
+        #   print('a modified UI DO NOT USE THIS!! OpenPilot will fail to run!! \n')
+        #   print('Instead refer to the DEVREADME located in this project')
+        #   print("at ./developer, in the 'APK' section for more info!!\n")
+        #   print('Selected to install the {}{}. Continue?'.format(local_selected_theme, show_apk))
+        #   if not is_affirmative():
+        #     print('Not installing...')
+        #     time.sleep(1.5)
+        #     continue
 
-        #Copy in new files
-        os.system('cp {}/{}/apk/ai.comma.plus.offroad.apk /data/{}/apk'.format(CONTRIB_THEMES, local_selected_theme, opdir)) # Copy APK
-        os.system('cp {}/{}/apk/ui.hpp /data/{}/selfdrive/ui'.format(CONTRIB_THEMES, local_selected_theme, opdir))           # Copy ui.hpp
+        #   op_ver = get_op_ver()
 
-        #Build
-        print('\nBuilding new APK files, please wait..... This should take under a minute....')
-        print('Please note, {} will trigger a full re-compile next reboot'.format(opdir))
-        os.system('cd /data/{}/selfdrive/ui/ && scons -u{}'.format(opdir, self.con_output))
+        #   #Check if there was an APK backup already this session to prevent accidental overwrites
+        #   #Returns false if okay to proceed. Gets self.backup_dir & asset type name
+        #   if backup_overide_check(self.backup_dir, 'apk') == True:
+        #     exit()
+      
+        #   #Ask user if their OP directory is custom (like arnepilot / dragonpilot)
+        #   opdir = op_dir_finder()
 
-        # Finish
-        print('\n{}{} installed successfully! Original file(s) backed up to {}'.format(local_selected_theme, show_apk, self.backup_dir))
-        mark_self_installed()        # Create flag in /sdcard so auto installer knows there is a self installation
-        print('Press enter to continue!')
-        input()
+        #   #Backup files
+        #   os.system('mv /data/{}/apk/ai.comma.plus.offroad.apk {}/apk'.format(opdir, self.backup_dir)) # Backup apk
+        #   os.system('mv /data/{}/selfdrive/ui/ui.hpp {}/apk'.format(opdir, self.backup_dir))           # backup ui.hpp
 
+        #   #Copy in new files
+        #   os.system('cp {}/{}/apk/ai.comma.plus.offroad.apk /data/{}/apk'.format(CONTRIB_THEMES, local_selected_theme, opdir)) # Copy APK
+        #   os.system('cp {}/{}/apk/ui.hpp /data/{}/selfdrive/ui'.format(CONTRIB_THEMES, local_selected_theme, opdir))           # Copy ui.hpp
+
+        #   #Build
+        #   print('\nBuilding new APK files, please wait..... This should take under a minute....')
+        #   print('Please note, {} will trigger a full re-compile next reboot'.format(opdir))
+        #   os.system('cd /data/{}/selfdrive/ui/ && scons -u{}'.format(opdir, self.con_output))
+
+        #   # Finish
+        #   print('\n{}{} installed successfully! Original file(s) backed up to {}'.format(local_selected_theme, show_apk, self.backup_dir))
+        #   mark_self_installed()        # Create flag in /sdcard so auto installer knows there is a self installation
+        #   print('Press enter to continue!')
+        #   input()
+        
       elif selected_option == '-Main Menu-' or selected_option is None:
         return
 
       elif selected_option == '-Reboot-':
-        print('Rebooting.... Enjoy your new theme!!!')
+        print('Rebooting.... Thank You, Come Again!!!')
         os.system('am start -a android.intent.action.REBOOT')  # reboot intent is safer (reboot sometimes causes corruption)
         return 'exit'
 
