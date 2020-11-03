@@ -50,7 +50,7 @@ RESTORE_WELCOME_TEXT = ['Created By: Colton (Brandon) S. EndLine \\n',
                 '(See the developer folder in this repo)',
                 'It\'s your EON, do what you want!',
                 ' ',
-                '*NOTE* this is the backup restore program']
+                '*NOTE* this is the backup & default restore program']
 
 # ================= APK Notify Text================ ##
 
