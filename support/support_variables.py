@@ -1,3 +1,4 @@
+#!/usr/bin/python
 # ===================  Misc vars =================== ##
 SHOW_CONSOLE_OUTPUT = False                # Show the console output when 'make' is called?
 
