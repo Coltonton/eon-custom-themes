@@ -1,7 +1,7 @@
 #!/usr/bin/python
 import os
 
-print('Welcome to the uninstall - cleanup utility')
+print('\n\nWelcome to the uninstall - cleanup utility')
 print("I'm sad to see you go... :(")
 print('\nThis program removes the following files not stored in the main directory:')
 print('- WARNING!!!! ALL BACKUPS!!! Stored in /sdcard/theme-backups')
@@ -23,12 +23,11 @@ if u == '1':
     print('Removed eon_custom_themes_self_installed.txt')
     print('\nPlease take a look and make sure the file and directory is removed....')
     os.system('cd /storage/emulated/0 && ls')
-    print('\n\n Thank you! You will be missed dont forget to run')
+    print('\n\nThank you! You will be missed dont forget to run')
     print('cd /data && rm -rf eon-custom-themes')
     print('to finish your complete un-installation')
     print('Goodbye....')
     exit()
-    
 else:
     print('Program terminating...')
     exit()

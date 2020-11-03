@@ -29,12 +29,15 @@ Table of Contents
 * [Features](#Features)
 * [Support](#Support)
 
+### Un-Installing EON-Custom-Themes
+* [Main Info](#UnInstalling-EON-Custom-Themes)
+
 [![](https://i.imgur.com/TSJz3iI.png)](#)
 [![](https://i.imgur.com/qgRTseD.png)](#)
 
 # Todo
-- Make all of the developer documentation
 - Make some more themes!
+- All new auto installer!!!
 - Have you heard the word???
 
 
@@ -48,6 +51,8 @@ This is a community project so here you can find new boot logos, boot animations
 Also included in this repository is all the info you need to start hacking and making your own extra custom themes! See the [DEVREADME](https://github.com/Coltonton/eon-custom-themes/blob/master/developer/DEVREADME.md) in this repo in the developer folder. 
 
 Did you make your own and want to share it with the world? Wonderful! Check out that [DEVREADME](https://github.com/Coltonton/eon-custom-themes/blob/master/developer/DEVREADME.md) to learn how to contribute and submit!
+
+Also feel free to check out the [main unoffical community discord server](http://discord.gg/4UKcsmGJDq), and find my own little chat #custom-themes for more support from other then just me! Or just to catch me easier!!
 
 # How To Use:
 Thanks to many hours of coding, thinking, and courtious help of @ShaneSmiskol this project couldn't be easier to install and run! If you have installed a custom fork of OpenPilot, can answer simple questions, or can just follow this simple guide you will be up and running with a new look in no time! 
@@ -126,7 +131,6 @@ This is the default linup, I will be creating coupple others. Happy to hear sugg
 Please see the [DEVREADME](https://github.com/Coltonton/eon-custom-themes/blob/master/developer/DEVREADME.md)  in the developer folder of this repo to find out about contributing your designed theme! 
 
 
-
 # Minimal Self Installer Assistance:
 
 This program and project was designed with the intent to not just be a program users can run but also a program OpenPilot developers can include in their fork to theme their users EONs with their theme. Please see the [DEVREADME](https://github.com/Coltonton/eon-custom-themes/blob/master/developer/DEVREADME.md) for more information if you are a developer wanting to include the auto installer as part of your fork! If you have stumbled across this as part of an OpenPilot fork, bellow is alot of helpful information! 
@@ -166,6 +170,17 @@ This program and project was designed with the intent to not just be a program u
 - How does all this sorcery work? How do I include the self installer in my fork? How do I design my own theme to use? And possibly publish??
 - - All good questions! The code is all open source so please take a look! There is also lotsss of information available on how the program works, how to include it in your fork, and even how to design your own in the [DEVREADME](https://github.com/Coltonton/eon-custom-themes/blob/master/developer/DEVREADME.md)
 - Message me on discord @C-ton#2169 if you need any additional help :)
+-  Feel free to check out the [main unoffical community discord server](http://discord.gg/4UKcsmGJDq), and find my own little chat #custom-themes for more support from other then just me! Or just to catch me easier!!
+
+# UnInstalling EON-Custom-Themes:
+Well... this is akward.... I'LL CHANGE!!!! Haha but seriously... Want to remove EON-Custom-Themes without a trace? It couldnt be more simple!!
+
+0.  (Optional, to restore default boot logo & boot animation) run `exec /data/eon-custom-themes/restore_backup.py` and enter `r` to restore the Comma.ai factory boot logo and boot animation for your device. 
+1. Run `exec /data/eon-custom-themes/support/cleanup_files.py` reading and following the prompts, this program will remove any files from EON-Custom-Themes not stored in the main project directory!
+2. Run `cd /data && rm -rf eon-custom-themes` to finish un-installation there should now be no trace of EON-Custom-Themes (unless you skipped step 0)
+3. Cry because you removed EON-Custom-Themes
+4. If doing this because you are sending your device back to Comma/selling be sure to delete all versions of OpenPilot and install their main repo.
+5. Don't forget to unpair your device in the Comma connect app ;)
 
 # Shameless Plug For A Bee....Cup Of Coffee:
 I also hate to ask but I've put quite an ammount of time in to this project. If you like what I've done and do want to help you can buy me a bee....coffee! By donating on [PayPal](paypal.me/BrandonSheaffer). Just a coupple dollary doo's will mean alot, plese dont feel overly generous I did this for my fun and the community!! 
