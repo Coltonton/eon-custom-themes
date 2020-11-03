@@ -28,6 +28,7 @@ if u == '1':
     print('to finish your complete un-installation')
     print('Goodbye....')
     exit()
+    
 else:
     print('Program terminating...')
     exit()
