@@ -103,8 +103,8 @@ class BackupReinstaller:
             BACKUP_OPTIONS.append('OpenPilot Spinner')
 
         # Check if the selected backup has a APK asset
-        if os.path.exists('{}/{}/spinner'.format(BACKUPS_DIR, self.selected_backup)):
-            BACKUP_OPTIONS.append('APK')
+        #if os.path.exists('{}/{}/spinner'.format(BACKUPS_DIR, self.selected_backup)):
+        #   BACKUP_OPTIONS.append('APK')
 
         # if os.path.exists('{}/{}/additional'.format(BACKUPS_DIR, self.selected_backup)):  # todo disabled for now
         #   self.BACKUP_OPTIONS.append('4. Additional Resources')

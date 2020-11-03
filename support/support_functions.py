@@ -101,7 +101,7 @@ def installer_chooser():
     print('DEBUG: IS_SELF_INSTALLED is {}'.format(IS_SELF_INSTALLED))
 
     # Check if is auto install and do_not_auto is false and IS_SELF_INSTALLED is false
-    if DO_NOT_AUTO_INSTALL is '0' and IS_SELF_INSTALLED == False:  
+    if DO_NOT_AUTO_INSTALL == '0' and IS_SELF_INSTALLED == False:  
       #Open auto installed version file & store as CURRENT_AUTO_VER - the currently installed version
       file2 = open('./support/auto_install_ver.txt', 'r')
       CURRENT_AUTO_VER = file2.read()
@@ -117,12 +117,12 @@ def installer_chooser():
         return None
     
     # If both the do_not_install flag is set and user has a self installed theme, return none to cancel and exit
-    elif DO_NOT_AUTO_INSTALL is '1' and IS_SELF_INSTALLED is True:
+    elif DO_NOT_AUTO_INSTALL == '1' and IS_SELF_INSTALLED is True:
       print('Do Not install flag set by user & a self installed theme exists terminating....') 
       return None
 
     # If do_not_install flag set,return none to cancel and exit
-    elif DO_NOT_AUTO_INSTALL is '1':
+    elif DO_NOT_AUTO_INSTALL == '1':
       print('Do Not install flag set by user!! Terminating....') 
       return None
     
@@ -220,7 +220,7 @@ def get_user_backups(exclude):
     print()
     if backup in ['exit', 'Exit', 'E', 'e', '0']:
       exit()
-    if backup in ['r', 'R' and default_restore_exists is 1]:
+    if backup in ['r', 'R' and default_restore_exists == 1]:
       return 'Comma-Default'
     if backup.isdigit():
       backup = int(backup)
