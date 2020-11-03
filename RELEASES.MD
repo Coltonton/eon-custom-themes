@@ -1,4 +1,4 @@
-Version 1.1 (2020-XX-XX)
+Version 1.1 (2020-11-03)
 ========================
 * Add @ShaneSmiskol rave rainbow OpenPilot spinner option (It makes the progress bar turn into a rave!)
 * Fix **ALL** LeEco based EON boot logos, showing the "battery dead but charging" boot screen when pluged in. These can still be identified by the red chevrons in the top cornors for troubleshooting reasons. Just in case the battery is not working/Comma2 Uno board is not working properly to signify "power issue" insted of making the user think there device is "boot looping" or stuck on the boot logo; when it's a power issue.... like Comma.ai's...
@@ -10,6 +10,7 @@ Version 1.1 (2020-XX-XX)
 * Add discords @cgw1968 custom Bat theme!
 * Add @ShaneSmiskol's custom theme for all his help! Thanks again!
 * Modify user themes to have the prefix "User-"
+* Make restore_backup.py restore_theme.py!
 * Move Comma-Default restore utility to restore_theme.py to make it accessible to those with the minimal auto installer!
 * Move backup override check to support_functions
 * Code Cleanup & fixs
