@@ -147,7 +147,7 @@ Once designed, export in an order like the standard above, put each 'part' of th
     cd <path-to-pieces>
     zip -0qry -i \*.txt \*.jpg @ ../bootanimation.zip *.txt part*
 
-I have found this can be quite a pain to deal with so what I opt to do is select the part folders and desc.txt and inject them into a existing bootanimation.zip overwriting the files.
+I have found this can be quite a pain to deal with so what I opt to do is select the part folders and desc.txt and inject them into a existing bootanimation.zip overwriting the files. And Android is very picky on this subject matter... So follow the zipping guide exactly! It's what works for me.
 [![](https://i.imgur.com/s7wEUYt.png)](#)
 
 ## How To Install the Boot Animation
