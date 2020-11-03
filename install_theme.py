@@ -222,9 +222,11 @@ class ThemeInstaller:
           os.system('cp ./support/spinner/spinner.c /data/{}/selfdrive/common'.format(opdir))                                              #Replace spinner.c with standard file
 
         #Hack to keep OpenPilot from overriding
-        print('\nImplementing hack to prevent git pulls from overwriting....')
-        print('If comma ever updates spinner files (unlikely) when you git pull')
-        print('it will conflict, just "git stash && git pull" you may need to reinstall, this spinner after!')
+        print('=========== NOTICE ===========')
+        print('\nImplementing hack to prevent git from overwriting....')
+        print('If comma ever updates spinner files (unlikely) when you git pull it will')
+        print('conflict, just "git stash && git pull" you may need to reinstall this spinner after!')
+        print('==============================')
         os.system('cd /data/{} && git update-index --assume-unchanged ./selfdrive/assets/img_spinner_comma.png'.format(opdir))
         os.system('cd /data/{} && git update-index --assume-unchanged ./selfdrive/assets/img_spinner_track.png'.format(opdir))
         os.system('cd /data/{} && git update-index --assume-unchanged ./selfdrive/common/spinner.c'.format(opdir))
@@ -307,7 +309,7 @@ class ThemeInstaller:
         return 'exit'
 
       elif selected_option == '-Quit-' or selected_option is None:
-        print('\nThank you come again! You will see your changes next reboot!')
+        print('\nThank you come again! You will see your changes next reboot!\n')
         exit()
 
       elif selected_option == 'Boot Animation' or 'Color Boot Animation' or 'White Boot Animation':

@@ -13,7 +13,7 @@ os.chdir(os.path.dirname(os.path.realpath(__file__)))  # __file__ is safer since
 def get_device_theme_data():
   # Crude device detection, *shrug* it works! LeEco does not have tristate!
   if path.exists('/sys/devices/virtual/switch/tri-state-key'): #If 3T-ON
-    print('\n*** OG OnePlus EON Device Detected! Nice Cut G! ***')
+    print('\n*** OG OnePlus EON Device Detected! I Like Your Cut G! ***')
     EON_TYPE             = 'OP3T'                                # EON type 
     BOOT_LOGO_THEME_PATH = 'OP3T-Logo/LOGO'                      # Set the boot logo theme path for 3T
     BOOT_LOGO_PATH       = '/dev/block/sde17'                    # Set the boot logo directory for 3T
@@ -161,7 +161,7 @@ def print_welcome_text(text):   # This center formats text automatically
 def backup_overide_check(backup_dir, theme_type):
   #Check if there was a backup already this session to prevent accidental overwrites
   if path.exists('{}/{}'.format(backup_dir, theme_type)):
-    print('It appears you already made a(n) {} install this session'.format(theme_type)) 
+    print('\nIt appears you already made a(n) {} install this session'.format(theme_type)) 
     print('continuing will overwrite the last {} backup'.format(theme_type))
     print('the program made this session already!!!')
     print('Would you like to continue and overwrite previous?')
