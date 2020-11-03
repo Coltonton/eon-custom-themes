@@ -207,6 +207,7 @@ Well you want to include the auto installer as part of your OpenPilot fork? Well
 ## Auto Installer Requirements:
 - The following files are required/not to remain as they are vital or contain license information.
 - - Install_theme.py & restore_backup.py are required
+- - cleanup_files.py in /support is required
 - - The main readme and the license file are required
 - - Everything in `/support` except `eonkey.pem`, `img_spinner_track`, and `spinenr.c` is required (note if you remove `img_spinner_track` and `spinner.c` you **MUST** have a copy of these files in your theme folder or the program will  not work!!!!!)
 - - `/developer` and everything in it is not required
