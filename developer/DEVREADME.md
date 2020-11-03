@@ -1,7 +1,7 @@
 # EON-Custom-Themes-DEVREADME
 Here contains a whole lot of information on the technical aspects of this project. How to make boot logos, boot animations, and edit OpenPilot visual files! Please take a look at the Table of Contents... There is alotttt of information here!
 
-This is a new project, find any errors? submit an issue, or make a pull request! This is not my project but our project!! * **Soviet national anthem plays** * Please check out the [main unofficial-community discord server](http://discord.gg/4UKcsmGJDq) to also find #custom-themes. The room dedicated to this community project and everything themey!
+This is a new project, find any errors? submit an issue, or make a pull request! This is not my project but our project!! * **Soviet national anthem plays** * Please check out the [main unofficial-community discord server](https://discord.gg/2rxE2r3ywe) to also find #custom-themes. The room dedicated to this community project and everything themey!
 
 Table of Contents
 =======================
@@ -259,7 +259,7 @@ B.) If a user wants/needs to go back to the comma default theme there are multip
 - If you included the comma default theme as part of your integration simply tell them to ssh into their eon and run `exec /data/openpilot/eon-custom-themes/restore_theme.py` and the 'Restore Comma-Default Theme' should be an option. Selecting this option will revert both the boot logo and boot animation, but not the spinner as that’s part of your fork and not controlled by this program. The user should revert to the main OpenPilot repo anyway if returning their device for warranty. Which will get rid of your changes such as the spinner and APK. If they really want the comma spinner and comma stock APK point them in the direction of the main project, they can do that from there!
 - If those two avenues are not an option tell them to clone the main repo by SSHing into their EON and running `cd /data && git clone https://github.com/Coltonton/eon-custom-themes.git` then `exec /data/eon-custom-themes/restore_theme.py` after it completes selecting the 'Comma-Default' theme and choosing what all they want to install.
 
-If you have any issues, questions, or what you have it please feel free to hit me up on discord! I’m in all the groups (except the main Comma.ai Server... Banned for nothing!) @Coltonton#2169! Hell, I might just be bored enough to do all this for you! Feel free to check out the [main unoffical community discord server](http://discord.gg/4UKcsmGJDq), and find my own little chat #custom-themes for more support from other then just me!
+If you have any issues, questions, or what you have it please feel free to hit me up on discord! I’m in all the groups (except the main Comma.ai Server... Banned for nothing!) @Coltonton#2169! Hell, I might just be bored enough to do all this for you! Feel free to check out the [main unoffical community discord server](https://discord.gg/2rxE2r3ywe), and find my own little chat #custom-themes for more support from other then just me!
 
 
 

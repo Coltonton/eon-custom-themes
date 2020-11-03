@@ -6,6 +6,8 @@ Upgrade your EON/Leon/Two's Looks!!! This is a pretty all inclusive guide to mod
 
 This is a new project, find any errors? submit an issue, or make a pull request! This is not my project but our project!! * **Soviet national anthem plays** * You may also message me @C-ton#2169 on discord (I'm in all the servers)
 
+Feel free to check out the [main unoffical community discord server](https://discord.gg/2rxE2r3ywe), and find my own little chat #custom-themes for more support from other then just me!
+
 Table of Contents
 =======================
 * [What is this?](#what-is-this)
