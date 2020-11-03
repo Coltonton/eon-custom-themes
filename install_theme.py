@@ -76,9 +76,6 @@ class ThemeInstaller:
     # Create and get backup folder
     self.backup_dir = make_backup_folder()
 
-    os.system('cd /data/eon-custom-themes && chmod +x restore_backup.py  >/dev/null 2>&1')
-    os.system('cd /data/eon-custom-themes/support && chmod +x cleanup_files.py  >/dev/null 2>&1')
-
     # Dev function to show console output when this program calls make for example....
     if SHOW_CONSOLE_OUTPUT == False:
       self.con_output = ' >/dev/null 2>&1'  # string to surpress output
@@ -88,7 +85,7 @@ class ThemeInstaller:
     # Detrimine if should self install, auto install, or exit
     auto_found_installer = installer_chooser()  
     if auto_found_installer == 'Do_Self':
-      self.start_loop()                                      # Do self install theme
+      self.start_loop()                                      # Do self install theme git
     elif auto_found_installer == 'Do_Auto':
       self.auto_installer()                                  # Do auto install theme
     else:

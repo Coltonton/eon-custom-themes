@@ -38,11 +38,11 @@
 #  (https://medium.com/@jfrux/comma-eon-getting-connected-with-ssh-3ed6136e4a75) #
 #                                                                                #
 #              Type the following command if using the main project              #
-#                  exec /data/eon-custom-themes/restore_backup.py                #
+#                  exec /data/eon-custom-themes/restore_theme.py                 #
 #                                                                                #
 #            Or if trying to use the included package with an OP Fork:           #
 #              cd /data/(your openpilot directory)/eon-custom-themes             #
-#                          exec ./restore_backup.py                              #
+#                           exec ./restore_theme.py                              #
 #                                                                                #
 #               Now follow the prompts and make your selections!                 #
 #                  Everything will be done automagically!!!!!                    #
@@ -67,12 +67,12 @@ os.chdir(os.path.dirname(os.path.realpath(__file__)))  # __file__ is safer since
 print_welcome_text('r')                                #Print welcome text with the flag for restore welcome text
 EON_TYPE, BOOT_LOGO_THEME_PATH, BOOT_LOGO_PATH, BOOT_LOGO_NAME = get_device_theme_data() # Get Perams based off detected device
 
-class BackupReinstaller:
+class ThemeRestorer:
     def __init__(self):                       # Init code runs once. sets up.
         self.backup_dir = make_backup_folder()  # Create and get backup folder
-        self.backup_reinstaller_loop()          # Start main loop
+        self.theme_restore_loop()          # Start main loop
 
-    def backup_reinstaller_loop(self):        # Backup Reinstaller!
+    def theme_restore_loop(self):           # Theme_restorer!
         # Backup_restore Loop
         while 1:
             self.selected_backup = get_user_backups(self.backup_dir)
@@ -278,4 +278,4 @@ class BackupReinstaller:
         exit()
 
 if __name__ == '__main__':
-  bi = BackupReinstaller()
+  bi = ThemeRestorer()

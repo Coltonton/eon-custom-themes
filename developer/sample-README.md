@@ -49,7 +49,7 @@ Table of Contents (Pre-Made, if you have...)
 
 ### WHY DID MY EONS THEME CHANGE NO ONE TOLD ME!!
 - Didn't know this version of ArnePilot auto installs a custom theme and dont like it or Simply want to go back to the Comma stock EON theme? Firstly may I recomend the main [EON Custom Themes](https://github.com/Coltonton/eon-custom-themes) project that this minimal version is a subsidiary of? If you dont know it is a community project created by @Coltonton for the community and allows you to chage your EONs boot logo and boot animation, and OP spinenr (as you saw if you're reading this...) With many themes available for all the major supported cars! ex. Honda, Hyundai, Toyota, Subaru, and much more, including others! [Check it out!!](https://github.com/Coltonton/eon-custom-themes) N...No? Oh...Okay you want the Comma stock one back eh? You Sure? Colton put many weeks of work into creating that project and making it easy and intuitive for you to get a custom look!! O..oh... okay... still not interested.... that's fine! This wonderfully overengineered and overthought program made a backup when it installed this theme automagicly! To restore the comma stock theme ssh into your EON and:
-- - `exec /data/openpilot/eon-custom-themes/restore_backup.py` and follow the prompts of the easy to use program! You will not need to follow the steps above and set the `do_not_auto.txt` file to 1 (unless you want to) since you used the program to install a chosen theme (or restore in this case) it will remember that! Even if its a backup! 
+- - `exec /data/openpilot/eon-custom-themes/restore_theme.py` and follow the prompts of the easy to use program! You will not need to follow the steps above and set the `do_not_auto.txt` file to 1 (unless you want to) since you used the program to install a chosen theme (or restore in this case) it will remember that! Even if its a backup! 
 - - If you lost the backup somehow please clone the [main project here](https://github.com/Coltonton/eon-custom-themes), and use the simple program to install the 'comma-default' theme
 
 ### Features:
@@ -57,7 +57,7 @@ Table of Contents (Pre-Made, if you have...)
 - Don't like the white boot animation? Get it in ArneBlue! just edit `AUTO_INSTALL_CONF = {anicolor}` in `/openpilot/eon-custom-themes/support_variables/.py` under the `AUTO_INSTALL_CONF` var to `color_`
 - You can disable automatic installation by editing `/openpilot/eon-custom-themes/support/do_not_auto.txt ` by changing the 0 to a 1 
 - This program has the ability to auto update themes so dont be alarmed if it changes
-- Backups are stored in `/sdcard/theme-backups` and can also be easily restored by running `exec /data/openpilot/eon-custom-themes/restore_backup.py` and following the prompts.
+- Backups are stored in `/sdcard/theme-backups` and can also be easily restored by running `exec /data/openpilot/eon-custom-themes/restore_theme.py` and following the prompts.
 - If you already used the EON-Custom-Themes program to install/restore a new custom theme of your choosing this intelligent program will not auto install this theme 
 - The Installer and this project was designed so the main program and this minimal program would be able to work togeter in unision. No stones were left unturned in development....
 
@@ -73,7 +73,7 @@ Table of Contents (Pre-Made, if you have...)
 ### UnInstalling EON-Custom-Themes:
 Well... this is akward.... I'LL CHANGE!!!! Haha but seriously... Want to remove EON-Custom-Themes without a trace? It couldnt be more simple!!
 
-0.  (Optional, to restore default boot logo & boot animation) run `exec /data/eon-custom-themes/restore_backup.py` and enter `r` to restore the Comma.ai factory boot logo and boot animation for your device. 
+0.  (Optional, to restore default boot logo & boot animation) run `exec /data/eon-custom-themes/restore_theme.py` and enter `r` to restore the Comma.ai factory boot logo and boot animation for your device. 
 1. Run `exec /data/eon-custom-themes/support/cleanup_files.py` reading and following the prompts, this program will remove any files from EON-Custom-Themes not stored in the main project directory!
 2. Run `cd /data && rm -rf eon-custom-themes` to finish un-installation there should now be no trace of EON-Custom-Themes (unless you skipped step 0)
 3. Cry because you removed EON-Custom-Themes

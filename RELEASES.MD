@@ -10,7 +10,7 @@ Version 1.1 (2020-XX-XX)
 * Add discords @cgw1968 custom Bat theme!
 * Add @ShaneSmiskol's custom theme for all his help! Thanks again!
 * Modify user themes to have the prefix "User-"
-* Move Comma-Default restore utility to restore_backup.py to make it accessible to those with the minimal auto installer!
+* Move Comma-Default restore utility to restore_theme.py to make it accessible to those with the minimal auto installer!
 * Move backup override check to support_functions
 * Code Cleanup & fixs
 * Bug finding & squashing

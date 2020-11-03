@@ -8,7 +8,7 @@ print('- WARNING!!!! ALL BACKUPS!!! Stored in /sdcard/theme-backups')
 print('- eon_custom_themes_self_installed.txt in /sdcard used as a marker to the auto installer')
 print('\nIt does not remove:')
 print('- The main project directory')
-print('- Any installed themes, please run restore_backup.py and choose')
+print('- Any installed themes, please run restore_theme.py and choose')
 print('  option r to restore the comma-default boot logo and boot animation')
 print('  BEFORE running this utility')
 
