@@ -86,7 +86,8 @@ Thanks to many hours of coding, thinking, and courtious help of @ShaneSmiskol th
 - Simply SSH into your EON and run `exec /data/eon-custom-themes/restore_backup.py` and it works just like the main program but serches for all the backups that were made in `/sdcard` insted. The backup folders are created and named with the date/time the backup occured
 
 ### Restoring The Comma Stock Theme If Backup Lost:
-- Use the main `exec /data/eon-custom-themes/install_theme.py` and select the 'comma-default' theme.
+- SSH into your eon and run `exec /data/eon-custom-themes/restore_backup.py` and use oprtion "r" to restore the Comma-Default theme. This will only restore the Boot-Logo and Boot-Animation. If you need to send your device back to Comma for any reason or selling, it's best to load the main Comma.ai OpenPilot branch, which will restore spinner and anything else.
+- If you have the auto installer installed as part of your current OpenPilot fork and `Enter 'r' to restore the Comma-Default theme` is not an option please clone the [main repo from here](https://github.com/Coltonton/eon-custom-themes).
 
 
 
@@ -106,6 +107,7 @@ You can see screenshots of what the theme looks like in the desired theme folder
 | Honda                 | Yes           | Yes                | White & Color   | OP Spinner                           |
 | Hyundai               | Yes           | Yes                | White & Color   | OP Spinner                           |
 | Kia                   | Yes           | Yes                | White & Color   | OP Spinner                           |
+| OnePlus               | Yes           | No                 | N/a             | N/a                                  |
 | Subaru                | Yes           | Yes                | White & Color   | OP Spinner                           |
 | Toyota                | Yes           | Yes                | White & Color   | OP Spinner                           |
 
@@ -115,9 +117,9 @@ This is the default linup, I will be creating coupple others. Happy to hear sugg
 | Theme Name            |Boot Logo? (3T)| Boot Logo? (LeEco) | Boot Animation? | Custom OP Files?                 | Contributor/ Author|
 | ----------------------| --------------| ------------------ | ----------------| ---------------------------------| -------------------|
 | Comma-Stock           | Yes           | Yes                | Yes             | OP Spinner                       | Comma.ai           |
-| Colton-HooeyPilot     | Yes           | No                 | Yes             | No                               | Colton             |
-| Khonsu-LemmonCurd     | Yes           | No                 | Yes             | OP Spinner                       | Colton             |
-
+| cgw1968-Bat           | No            | Yes                | Color           | OP Spinner                       | Colton             |
+| Khonsu-LemmonCurd     | Yes           | No                 | White           | OP Spinner                       | Colton             |
+| ShaneSmiskol-Toyota   | Yes           | Yes                | White & Color   | OP Spinner                       | Colton             |
 
 ## Contribute Your Work!:
 

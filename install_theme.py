@@ -58,12 +58,9 @@
 import os
 import time
 from os import path
-from support.support_functions import get_device_theme_data, get_user_backups, get_user_theme, installer_chooser, is_affirmative
-from support.support_functions import make_backup_folder, mark_self_installed, print_welcome_text, backup_overide_check, op_dir_finder, get_op_ver
-from support.support_variables import AUTO_INSTALL_CONF, BACKUPS_DIR, BACKUP_OPTIONS, CONTRIB_THEMES, DESIRED_AUTO_VER, IS_AUTO_INSTALL
-
-show_console_output = False             #
-
+from support.support_functions import ask_rainbow_spinner, backup_overide_check, get_device_theme_data, get_user_backups, get_user_theme
+from support.support_functions import installer_chooser, is_affirmative, make_backup_folder, mark_self_installed, print_welcome_text, op_dir_finder
+from support.support_variables import AUTO_INSTALL_CONF, BACKUPS_DIR, BACKUP_OPTIONS, CONTRIB_THEMES, DESIRED_AUTO_VER, IS_AUTO_INSTALL, SHOW_CONSOLE_OUTPUT
 
 ##======================= CODE START ================================================================
 os.chdir(os.path.dirname(os.path.realpath(__file__)))  # __file__ is safer since it doesn't change based on where this file is called from
@@ -79,10 +76,9 @@ class ThemeInstaller:
     # Create and get backup folder
     self.backup_dir = make_backup_folder()
 
-    get_op_ver()
-
-    if show_console_output == False:     # Dev function to show console output when this program calls make for example....
-      self.con_output = ' >/dev/null 2>&1'
+    # Dev function to show console output when this program calls make for example....
+    if SHOW_CONSOLE_OUTPUT == False:
+      self.con_output = ' >/dev/null 2>&1'  # string to surpress output
     else:
       self.con_output = ''
 
@@ -181,39 +177,55 @@ class ThemeInstaller:
         input()
 
       elif selected_option == 'OpenPilot Spinner':
-        #Confirm user wants to install Spinner
+        ##Confirm user wants to install Spinner
         print('Selected to install the {} OP Spinner. Continue?'.format(self.selected_theme))
         if not is_affirmative():
           print('Not installing...')
           time.sleep(1.5)
           continue
         
-        #Check if there was a spinner backup already this session to prevent accidental overwrites
+        ##Check if there was a spinner backup already this session to prevent accidental overwrites
         #Returns false if okay to proceed. Gets self.backup_dir & asset type name
         if backup_overide_check(self.backup_dir, 'spinner') == True:
           exit()
 
-        #Ask user if their OP directory is custom (like arnepilot / dragonpilot)
+        ##Ask user if their OP directory is custom (like arnepilot / dragonpilot)
         opdir = op_dir_finder()
 
-        #Backup files
+        ##Ask user if they want @shaneSmiskol rave rainbow spinner
+        raveRainbow = ask_rainbow_spinner()
+
+        ##Backup files
         os.system('mv /data/{}/selfdrive/assets/img_spinner_comma.png {}/spinner'.format(opdir, self.backup_dir)) #Backup logo
         os.system('mv /data/{}/selfdrive/assets/img_spinner_track.png {}/spinner'.format(opdir, self.backup_dir)) #backup spinner track
         os.system('mv /data/{}/selfdrive/common/spinner.c {}/spinner'.format(opdir, self.backup_dir))             #backup spinner.c
 
-        #Copy in new files
-        if path.exists('{}/{}/spinner/img_spinner_comma.png'.format(CONTRIB_THEMES, self.selected_theme)):                   # Check if theme contributer provided a spinner track
-          os.system('cp {}/{}/spinner/img_spinner_comma.png /data/{}/selfdrive/assets'.format(CONTRIB_THEMES, self.selected_theme, opdir)) #Replace spinner track supplied custom
-        else:
-          os.system('cp ./support/spinner/img_spinner_comma.png /data/{}/selfdrive/assets'.format(opdir))     #Replace spinner track with standard 
-        if path.exists('{}/{}/spinner/img_spinner_track.png'.format(CONTRIB_THEMES, self.selected_theme)):                   # Check if theme contributer provided a spinner track
+        ##Copy in new files
+        # Check if theme contributer provided a spinner logo
+        if path.exists('{}/{}/spinner/img_spinner_comma.png'.format(CONTRIB_THEMES, self.selected_theme)):                               #Contibuter Did Provide
+          os.system('cp {}/{}/spinner/img_spinner_comma.png /data/{}/selfdrive/assets'.format(CONTRIB_THEMES, self.selected_theme, opdir)) #Replace spinner logo supplied custom
+        else:                                                                                                                            #Contibuter Did Not Provide
+          os.system('cp ./support/spinner/img_spinner_comma.png /data/{}/selfdrive/assets'.format(opdir))                                  #Replace spinner logo with standard 
+
+        # Check if theme contributer provided a spinner track
+        if path.exists('{}/{}/spinner/img_spinner_track.png'.format(CONTRIB_THEMES, self.selected_theme)):                               #Contibuter Did Provide
           os.system('cp {}/{}/spinner/img_spinner_track.png /data/{}/selfdrive/assets'.format(CONTRIB_THEMES, self.selected_theme, opdir)) #Replace spinner track supplied custom
-        else:
-          os.system('cp ./support/spinner/img_spinner_track.png /data/{}/selfdrive/assets'.format(opdir))     #Replace spinner track with standard 
-        if path.exists('{}/{}/spinner/spinner.c'.format(CONTRIB_THEMES, self.selected_theme)):                               # Check if theme contributer provided a spinner.c
+        else:                                                                                                                            #Contibuter Did Not Provide
+          os.system('cp ./support/spinner/img_spinner_track.png /data/{}/selfdrive/assets'.format(opdir))                                  #Replace spinner track with standard 
+
+        # Check if user wants rave rainbow spinner or if theme contributer provided a spinner.c
+        if raveRainbow == True:                                                                                                          #User wants rave rainbow
+          os.system('cp ./support/spinner/rainbow_spinner.c /data/{}/selfdrive/common/spinner.c'.format(opdir))                            #Replace spinner.c with rave rainbow spinner.c
+        elif path.exists('{}/{}/spinner/spinner.c'.format(CONTRIB_THEMES, self.selected_theme)) and raveRainbow == False:                #Contibuter Did Provide                      
           os.system('cp {}/{}/spinner/spinner.c /data/{}/selfdrive/common'.format(CONTRIB_THEMES, self.selected_theme, opdir))             #Replace spinner.c with supplied custom 
-        else:
-          os.system('cp ./support/spinner/spinner.c /data/{}/selfdrive/common'.format(opdir))             #Replace spinner.c with standard file
+        else:                                                                                                                            #Contibuter Did Not Provide
+          os.system('cp ./support/spinner/spinner.c /data/{}/selfdrive/common'.format(opdir))                                              #Replace spinner.c with standard file
+
+        #Hack to keep OpenPilot from overriding
+        print('\nImplementing hack to prevent git pulls from overwriting....')
+        os.system('cd /data/{} && git update-index --skip-worktree ./selfdrive/assets/img_spinner_comma.png'.format(opdir))
+        os.system('cd /data/{} && git update-index --skip-worktree ./selfdrive/assets/img_spinner_track.png'.format(opdir))
+        os.system('cd /data/{} && git update-index --skip-worktree ./selfdrive/common/spinner.c'.format(opdir))
 
         #Final make new spinner & finish
         print('\nBuilding new spinner files, please wait..... This should take under a minute....')

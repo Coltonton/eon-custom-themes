@@ -1,10 +1,14 @@
+# ===================  Misc vars =================== ##
+SHOW_CONSOLE_OUTPUT = False                # Show the console output when 'make' is called?
+
+# ==============  Backup related vars ============== ##
 BACKUPS_DIR = '/storage/emulated/0/theme-backups'
 BACKUP_OPTIONS = []
 
 # =============  get_user_theme() vars ============= ##
 CONTRIB_THEMES = 'contributed-themes'
-EXCLUDED_THEMES = ['Example', 'ignoreme', 'Kumar-Nightmode-APK']
-MIN_SIM_THRESHOLD = 0.25  # user's input needs to be this percent or higher similar to a theme to select it
+EXCLUDED_THEMES = ['Example', 'ignoreme', 'Kumar-Nightmode-APK', 'Colton']
+MIN_SIM_THRESHOLD = 0.25      # user's input needs to be this percent or higher similar to a theme to select it
 
 # ==============  Auto Installer Vars ============== ## - see DEVREADME
 IS_AUTO_INSTALL = False                    # Do Auto Install

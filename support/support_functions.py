@@ -40,14 +40,6 @@ def make_backup_folder():
   os.mkdir(backup_dir)  # Create the session backup folder
   return backup_dir
 
-def get_op_ver():
-  #f = open("/data/openpilot/selfdrive/common/version.h", "r")
-  #print(f.read())
-  print('Please enter your current OpenPilot Version')
-  print("(As found in the top right corner of your EON home screen ex. 0.7.11")
-  op_ver = input('?: ')
-  return opdir
-  
 
 ## =============== Installer ================ ##.
 # Created by @ShaneSmiskol some modifications by coltonton
@@ -182,7 +174,7 @@ def backup_overide_check(backup_dir, theme_type):
 
 def op_dir_finder():
   #Ask user if their OP directory is custom (like arnepilot / dragonpilot)
-  print('Do you have an OP fork with a custom directory name? (ex. arnepilot, dragonpilot)')  # Ask the user if their OP fork used a diffrent directory.
+  print('Do you have an OP fork with a custom directory name? (ex. arnepilot, dragonpilot)')
   if is_affirmative():  # Yes there is a custom OP dir
     print('What is the OP directory name? (case matters, not including /data/)')
     opdir = '/data/{}'.format(input('> ').strip('/'))  # get custom dir name, strip slashes for safety
@@ -192,6 +184,18 @@ def op_dir_finder():
     opdir = 'openpilot'                                #op directory is not custom so openpilot
 
   return opdir
+
+def ask_rainbow_spinner():
+  #Ask user if they would like to install rainbow spinner
+  print("Would you like to install @ShaneSmiskol's rainbow spinner?")
+  print("It makes the progress bar go rave rainbow mode!!!")
+  if is_affirmative():  # Yes they want to!!!
+    print('RAVE RAINBOW SELECTED!!!!')
+    raveRainbow = True       # Rave Rainbow Spinner!!!
+  else:
+    raveRainbow = False      # Standard boring spinner
+
+  return raveRainbow
 
 ## ================ Restorer ================ ##
 # Created by @ShaneSmiskol modified version of get_user_theme() to get all backups by Coltonton
