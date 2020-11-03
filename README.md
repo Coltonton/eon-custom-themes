@@ -109,6 +109,7 @@ You can see screenshots of what the theme looks like in the desired theme folder
 | Chevy                 | Yes           | Yes                | White & Color   | OP Spinner                           |
 | DragonPilot           | Yes           | Yes                | White           | OP Spinner                           |
 | A General Theme       | Yes           | Yes                | White           | OP Spinner                           | 
+| Genesis               | Yes           | Yes                | White           | OP Spinner                           |
 | Honda                 | Yes           | Yes                | White & Color   | OP Spinner                           |
 | Hyundai               | Yes           | Yes                | White & Color   | OP Spinner                           |
 | Kia                   | Yes           | Yes                | White & Color   | OP Spinner                           |
@@ -125,6 +126,7 @@ This is the default linup, I will be creating coupple others. Happy to hear sugg
 | cgw1968-Bat           | No            | Yes                | Color           | OP Spinner                       | Colton             |
 | Khonsu-LemmonCurd     | Yes           | No                 | White           | OP Spinner                       | Colton             |
 | ShaneSmiskol-Toyota   | Yes           | Yes                | White & Color   | OP Spinner                       | Colton             |
+(Check out forks of this project for potentially more)
 
 ## Contribute Your Work!:
 
