@@ -6,6 +6,7 @@ Version 1.1 (2020-XX-XX)
 * Added cleanup_files.py in /support for easy removal of files not kept in /data/eon-custom-themes
 * Add all the developer info! So everyone can hack and make their EON their own
 * Add OnePlus Boot Logo Option
+* Add Genesis Theme
 * Add discords @cgw1968 custom Bat theme!
 * Add @ShaneSmiskol's custom theme for all his help! Thanks again!
 * Modify user themes to have the prefix "User-"
