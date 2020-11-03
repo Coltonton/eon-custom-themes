@@ -38,7 +38,7 @@
 #  (https://medium.com/@jfrux/comma-eon-getting-connected-with-ssh-3ed6136e4a75) #
 #                                                                                #
 #              Type the following command if using the main project              #
-#                  exec /data/eon-custom-themes/restore_backup.py                #
+#                  exec /data/eon-custom-themes/install_theme.py                #
 #                                                                                #
 #            Or if trying to use the included package with an OP Fork:           #
 #              cd /data/(your openpilot directory)/eon-custom-themes             #
@@ -67,7 +67,7 @@ os.chdir(os.path.dirname(os.path.realpath(__file__)))  # __file__ is safer since
 if IS_AUTO_INSTALL:
   print_welcome_text('a')               #Print welcome text with the flag for auto welcome text
 else:
-  print_welcome_text('s')               #Print welcome text with the flag for normal welcome text
+  print_welcome_text('s')               #Print welcome text with the flag for self welcome text
 EON_TYPE, BOOT_LOGO_THEME_PATH, BOOT_LOGO_PATH, BOOT_LOGO_NAME = get_device_theme_data() # Get Perams based off detected device
 
 
@@ -157,7 +157,7 @@ class ThemeInstaller:
 
       if selected_option == 'Boot Logo':
         #Confirm user wants to install bootlogo
-        print('Selected to install the {} Boot Logo. Continue?'.format(self.selected_theme))
+        print('\nSelected to install the {} Boot Logo. Continue?'.format(self.selected_theme))
         if not is_affirmative():
           print('Not installing...')
           time.sleep(1.5)
@@ -178,7 +178,7 @@ class ThemeInstaller:
 
       elif selected_option == 'OpenPilot Spinner':
         ##Confirm user wants to install Spinner
-        print('Selected to install the {} OP Spinner. Continue?'.format(self.selected_theme))
+        print('\nSelected to install the {} OP Spinner. Continue?'.format(self.selected_theme))
         if not is_affirmative():
           print('Not installing...')
           time.sleep(1.5)
@@ -223,9 +223,9 @@ class ThemeInstaller:
 
         #Hack to keep OpenPilot from overriding
         print('\nImplementing hack to prevent git pulls from overwriting....')
-        os.system('cd /data/{} && git update-index --skip-worktree ./selfdrive/assets/img_spinner_comma.png'.format(opdir))
-        os.system('cd /data/{} && git update-index --skip-worktree ./selfdrive/assets/img_spinner_track.png'.format(opdir))
-        os.system('cd /data/{} && git update-index --skip-worktree ./selfdrive/common/spinner.c'.format(opdir))
+        os.system('cd /data/{} && git update-index --assume-unchanged ./selfdrive/assets/img_spinner_comma.png'.format(opdir))
+        os.system('cd /data/{} && git update-index --assume-unchanged ./selfdrive/assets/img_spinner_track.png'.format(opdir))
+        os.system('cd /data/{} && git update-index --assume-unchanged ./selfdrive/common/spinner.c'.format(opdir))
 
         #Final make new spinner & finish
         print('\nBuilding new spinner files, please wait..... This should take under a minute....')
@@ -300,17 +300,17 @@ class ThemeInstaller:
         return
 
       elif selected_option == '-Reboot-':
-        print('Rebooting.... Thank You, Come Again!!!')
+        print('\nRebooting.... Thank You, Come Again!!!')
         os.system('am start -a android.intent.action.REBOOT')  # reboot intent is safer (reboot sometimes causes corruption)
         return 'exit'
 
       elif selected_option == '-Quit-' or selected_option is None:
-        print('Thank you come again! You will see your changes next reboot!')
+        print('\nThank you come again! You will see your changes next reboot!')
         exit()
 
       elif selected_option == 'Boot Animation' or 'Color Boot Animation' or 'White Boot Animation':
         #Confirm user wants to install bootlogo
-        print('Selected to install the {} {}. Continue?'.format(self.selected_theme, selected_option))
+        print('\nSelected to install the {} {}. Continue?'.format(self.selected_theme, selected_option))
         if not is_affirmative():
           print('Not installing...')
           time.sleep(1.5)

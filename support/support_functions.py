@@ -174,7 +174,7 @@ def backup_overide_check(backup_dir, theme_type):
 
 def op_dir_finder():
   #Ask user if their OP directory is custom (like arnepilot / dragonpilot)
-  print('Do you have an OP fork with a custom directory name? (ex. arnepilot, dragonpilot)')
+  print('\nDo you have an OP fork with a custom directory name? (ex. arnepilot, dragonpilot)')
   if is_affirmative():  # Yes there is a custom OP dir
     print('What is the OP directory name? (case matters, not including /data/)')
     opdir = '/data/{}'.format(input('> ').strip('/'))  # get custom dir name, strip slashes for safety
@@ -187,7 +187,7 @@ def op_dir_finder():
 
 def ask_rainbow_spinner():
   #Ask user if they would like to install rainbow spinner
-  print("Would you like to install @ShaneSmiskol's rainbow spinner?")
+  print("\nWould you like to install @ShaneSmiskol's rainbow spinner?")
   print("It makes the progress bar go rave rainbow mode!!!")
   if is_affirmative():  # Yes they want to!!!
     print('RAVE RAINBOW SELECTED!!!!')
