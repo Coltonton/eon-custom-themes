@@ -1,3 +1,6 @@
+# DEAR ALL! The time has come, that I have been waiting for! Comma released their QT UI. at this time any information related to spinner/UI is outdated unless your OP version is .7.x and lower! Untill i start wrok again please do not install spinner assets! I will be keeping it live for legacy users for now untill I work on the new files and info!! You CAN still choose a boot Logo and Boot Animation!!!!!
+
+
 Release 1.1
 
 [![](https://i.imgur.com/w9jylkJ.png[/img])](#)
