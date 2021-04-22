@@ -15,6 +15,7 @@ def get_device_theme_data():
   # Crude device detection, *shrug* it works! LeEco does not have tristate!
   if path.exists('/sys/devices/virtual/switch/tri-state-key'): #If 3T-ON
     print('\n*** OG OnePlus EON Device Detected! I Like Your Cut G! ***')
+    print('\n*** What a rebel!!! Enjoy the darkside!! ***')
     EON_TYPE             = 'OP3T'                                # EON type 
     BOOT_LOGO_THEME_PATH = 'OP3T-Logo/LOGO'                      # Set the boot logo theme path for 3T
     BOOT_LOGO_PATH       = '/dev/block/sde17'                    # Set the boot logo directory for 3T

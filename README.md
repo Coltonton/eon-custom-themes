@@ -1,4 +1,4 @@
-# DEAR ALL! The time has come, that I have been waiting for! Comma released their QT UI. at this time any information related to spinner/UI is outdated unless your OP version is .7.x and lower! Untill i start wrok again please do not install spinner assets! I will be keeping it live for legacy users for now untill I work on the new files and info!! You CAN still choose a boot Logo and Boot Animation!!!!!
+# DEAR ALL! The time has come, that I have been waiting for! Comma released their QT UI. at this time any information related to spinner/UI is outdated unless your OP version is .7.x and lower! Untill i start wrok again please do not install spinner assets! I will be keeping it live for legacy users for now untill I work on the new files and info!! You CAN still choose a boot Logo and Boot Animation!!!!! - Cole 4/22/21
 
 
 Release 1.1
@@ -129,7 +129,7 @@ This is the default linup, I will be creating coupple others. Happy to hear sugg
 | ----------------------| --------------| ------------------ | ----------------| ---------------------------------| -------------------|
 | Comma-Stock           | Yes           | Yes                | Yes             | OP Spinner                       | Comma.ai           |
 | cgw1968-Bat           | No            | Yes                | Color           | OP Spinner                       | Colton             |
-| Khonsu-LemmonCurd     | Yes           | No                 | White           | OP Spinner                       | Colton             |
+| Khonsu-LemmonCurd     | Yes           | Yes                | White           | OP Spinner                       | Colton             |
 | ShaneSmiskol-Toyota   | Yes           | Yes                | White & Color   | OP Spinner                       | Colton             |
 (Check out forks of this project for potentially more)
 
