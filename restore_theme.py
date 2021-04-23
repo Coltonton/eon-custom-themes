@@ -1,6 +1,6 @@
 #!/usr/bin/python
 ################################################################################## 
-#                                   VER 1.1                                      # 
+#                                   VER 1.1.1                                    # 
 #                                                                                #
 #      Permission is granted to anyone to use this software for any purpose,     #
 #     excluding commercial applications, and to alter it and redistribute it     #
@@ -48,7 +48,7 @@
 #                  Everything will be done automagically!!!!!                    #
 #                                                                                #
 #                      Don't forget to tell your friends!!                       #
-#                               Love Cole (@C-ton)                               #
+#                           Love Cole (@Coltonton)                               #
 #                                                                                #
 #        Did you know that if you have a custom OP fork you can use this         #
 #     program to auto install your custom theme for your users automagiclly?     #
@@ -59,12 +59,12 @@ import os
 import time
 from os import path
 from support.support_variables import BACKUPS_DIR, BACKUP_OPTIONS, CONTRIB_THEMES
-from support.support_functions import get_device_theme_data, get_user_backups, is_affirmative, make_backup_folder, mark_self_installed, print_welcome_text
+from support.support_functions import get_device_theme_data, get_user_backups, is_affirmative, make_backup_folder, mark_self_installed, print_text
 
 
 ##======================= CODE START ================================================================
 os.chdir(os.path.dirname(os.path.realpath(__file__)))  # __file__ is safer since it doesn't change based on where this file is called from
-print_welcome_text('r')                                #Print welcome text with the flag for restore welcome text
+print_text('restore')                                #Print welcome text with the flag for restore welcome text
 EON_TYPE, BOOT_LOGO_THEME_PATH, BOOT_LOGO_PATH, BOOT_LOGO_NAME = get_device_theme_data() # Get Perams based off detected device
 
 class ThemeRestorer:
@@ -192,8 +192,8 @@ class ThemeRestorer:
                     continue
               
                 os.system('mount -o remount,rw /system')  # /system read only, must mount as r/w
-                os.system('mv /system/media/bootanimation.zip {}'.format(self.backup_dir))  # backup
-                os.system('cp {}/{}/bootanimation.zip /system/media/bootanimation.zip'.format(BACKUPS_DIR, self.selected_backup))  # replace
+                os.system('mv /system/media/bootanimation.zip {}/bootanimation'.format(self.backup_dir))  # backup
+                os.system('cp {}/{}/bootanimation/bootanimation.zip /system/media/bootanimation.zip'.format(BACKUPS_DIR, self.selected_backup))  # replace
                 os.system('chmod 666 /system/media/bootanimation.zip')
                 print('\nBoot Animation re-installed successfully! Original backed up to {}'.format(self.backup_dir))
                 print('Press enter to continue!')
@@ -207,36 +207,27 @@ class ThemeRestorer:
                     time.sleep(1.5)
                     continue
         
-                #Check if there was a backup already this session to prevent accidental overwrites
-                if path.exists('{}/spinner'.format(self.backup_dir)):                  
-                    print('It appears you already made a spinner backup this session') 
-                    print('continuing will overwrite last spinner backup!')
-                    print('Would you like to continue and overwrite previous?')
-                    if not is_affirmative():
-                        print('Not installed, exiting session..... Please re-run program')
-                        exit()      #Exit program if user does not want to overwrite, so they can start a new session
-                else:
-                    os.mkdir('{}/spinner'.format(self.backup_dir))
+                ##Check if there was a spinner backup already this session to prevent accidental overwrites
+                #Returns false if okay to proceed. Gets self.backup_dir & asset type name
+                if backup_overide_check(self.backup_dir, 'spinner') == True:
+                    exit()
 
-                #Ask user if their OP directory is custom (like arnepilot / dragonpilot)
-                print('Do you have an OP fork with a custom directory name? (ex. arnepilot, dragonpilot)')  # Ask the user if their OP fork used a diffrent directory.
-                if is_affirmative():  # Yes there is a custom OP dir
-                    print('What is the OP directory name? (case matters, not including /data/)')
-                    opdir = '/data/{}'.format(input('> ').strip('/'))  # get custom dir name, strip slashes for safety
-                    print('Your openpilot directory is {}'.format(opdir))
-                    input('*** Please enter to continue, or Ctrl+C to abort if this is incorrect! ***')
-                else:
-                    opdir = 'openpilot'                                #op directory is not custom so openpilot
+                ##Ask user if their OP directory is custom (like arnepilot / dragonpilot)
+                opdir = op_dir_finder()
 
-                #Backup files
-                os.system('mv /data/{}/selfdrive/assets/img_spinner_comma.png {}/spinner'.format(opdir, self.backup_dir)) #Backup logo
-                os.system('mv /data/{}/selfdrive/assets/img_spinner_track.png {}/spinner'.format(opdir, self.backup_dir)) #backup sprinner track
-                os.system('mv /data/{}/selfdrive/common/spinner.c {}/spinner'.format(opdir, self.backup_dir))             #backup spinner.c
-
-                #Copy in new files
-                os.system('cp {}/{}/spinner/img_spinner_comma.png /data/{}/selfdrive/assets'.format(BACKUPS_DIR, self.selected_backup, opdir)) #Replace logo
-                os.system('cp {}/{}/spinner/img_spinner_track.png /data/{}/selfdrive/assets'.format(BACKUPS_DIR, self.selected_backup, opdir)) #Replace sprinner
-                os.system('cp {}/{}/spinner/spinner.c /data/{}/selfdrive/common'.format(BACKUPS_DIR, self.selected_backup, opdir))             #Replace spinner.c
+                ##Backup & Copy in relevant files
+                # Check if backup has a spinner logo
+                if path.exists('{}/{}/spinner/img_spinner_comma.png'.format(CONTRIB_THEMES, self.selected_theme)):                               #Backup does haz
+                    os.system('mv /data/{}/selfdrive/assets/img_spinner_comma.png {}/spinner'.format(opdir, self.backup_dir))                      #Backup logo
+                    os.system('cp {}/{}/spinner/img_spinner_comma.png /data/{}/selfdrive/assets'.format(BACKUPS_DIR, self.selected_backup, opdir)) #Replace logo
+                # Check if backup has a spinner track
+                if path.exists('{}/{}/spinner/img_spinner_track.png'.format(CONTRIB_THEMES, self.selected_theme)):                               #Backup does haz
+                    os.system('mv /data/{}/selfdrive/assets/img_spinner_track.png {}/spinner'.format(opdir, self.backup_dir))                      #Backup sprinner track
+                    os.system('cp {}/{}/spinner/img_spinner_track.png /data/{}/selfdrive/assets'.format(BACKUPS_DIR, self.selected_backup, opdir)) #Replace spinner
+                # Check if backup has a spinner.c
+                elif path.exists('{}/{}/spinner/spinner.c'.format(CONTRIB_THEMES, self.selected_theme)) and raveRainbow == False:                #Backup does haz     
+                    os.system('mv /data/{}/selfdrive/common/spinner.c {}/spinner'.format(opdir, self.backup_dir))                                  #Backup spinner.c               
+                    os.system('cp {}/{}/spinner/spinner.c /data/{}/selfdrive/common'.format(BACKUPS_DIR, self.selected_backup, opdir))             #Replace spinner.c 
 
                 #Final make new spinner & finish
                 os.system('cd /data/{}/selfdrive/ui/spinner && make'.format(opdir))

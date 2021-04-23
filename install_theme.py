@@ -1,6 +1,6 @@
 #!/usr/bin/python
 ##################################################################################
-#                                   VER 1.1                                      #
+#                                   VER 1.1.1                                      #
 #                                                                                #
 #      Permission is granted to anyone to use this software for any purpose,     #
 #     excluding commercial applications, and to alter it and redistribute it     #
@@ -59,16 +59,19 @@ import os
 import time
 from os import path
 from support.support_functions import ask_rainbow_spinner, backup_overide_check, get_device_theme_data, get_user_backups, get_user_theme
-from support.support_functions import installer_chooser, is_affirmative, make_backup_folder, mark_self_installed, print_welcome_text, op_dir_finder
+from support.support_functions import installer_chooser, is_affirmative, make_backup_folder, mark_self_installed, print_text, op_dir_finder
 from support.support_variables import AUTO_INSTALL_CONF, BACKUPS_DIR, BACKUP_OPTIONS, CONTRIB_THEMES, DESIRED_AUTO_VER, IS_AUTO_INSTALL, SHOW_CONSOLE_OUTPUT
+
+from support.support_functions import INSTALL_BOOT_LOGO, INSTALL_BOOTANIMATION, INSTALL_SPINNER
 
 ##======================= CODE START ================================================================
 os.chdir(os.path.dirname(os.path.realpath(__file__)))  # __file__ is safer since it doesn't change based on where this file is called from
 if IS_AUTO_INSTALL:
-  print_welcome_text('a')               #Print welcome text with the flag for auto welcome text
+  print_text('auto')               #Print welcome text with the flag for auto welcome text
 else:
-  print_welcome_text('s')               #Print welcome text with the flag for self welcome text
-EON_TYPE, BOOT_LOGO_THEME_PATH, BOOT_LOGO_PATH, BOOT_LOGO_NAME = get_device_theme_data() # Get Perams based off detected device
+  print_text('self')               #Print welcome text with the flag for self welcome text
+  
+EON_TYPE, BOOT_LOGO_THEME_NAME, BOOT_LOGO_THEME_PATH, BOOT_LOGO_DEVICE_NAME, BOOT_LOGO_DEVICE_PATH = get_device_theme_data() # Get Perams based off detected device
 
 
 class ThemeInstaller:
@@ -169,9 +172,8 @@ class ThemeInstaller:
           exit()
 
         #Backup & install new
-        os.system('cp {} {}/logo'.format(BOOT_LOGO_PATH, self.backup_dir))  # Make Backup
-        os.system('dd if={}/{}/{} of={}'.format(CONTRIB_THEMES, self.selected_theme, BOOT_LOGO_THEME_PATH, BOOT_LOGO_PATH))  # Replace
-        print('\nBoot Logo installed successfully! Original file(s) backed up to {}/logo'.format(self.backup_dir))
+        install_from_path = ('{}/{}/{}'.format(CONTRIB_THEMES, self.selected_theme, BOOT_LOGO_THEME_PATH))
+        INSTALL_BOOT_LOGO(EON_TYPE, self.backup_dir, install_from_path)
         mark_self_installed()       # Create flag in /sdcard so auto installer knows there is a self installation
         print('Press enter to continue!')
         input()
@@ -183,7 +185,16 @@ class ThemeInstaller:
           print('Not installing...')
           time.sleep(1.5)
           continue
-        
+
+        ##Ask user if they want to --skip-worktree
+          print_text('spin warn')
+          print('\nHave you read the statment above, understand, and wish to use it? (its optional)')
+          print('Please look at the main README at the `Spinner OP Hack` section for more info....')
+          if is_affirmative():
+            skip_worktree = True
+          else:
+            skip_worktree = False
+
         ##Check if there was a spinner backup already this session to prevent accidental overwrites
         #Returns false if okay to proceed. Gets self.backup_dir & asset type name
         if backup_overide_check(self.backup_dir, 'spinner') == True:
@@ -195,41 +206,38 @@ class ThemeInstaller:
         ##Ask user if they want @shaneSmiskol rave rainbow spinner
         raveRainbow = ask_rainbow_spinner()
 
-        ##Backup files
-        os.system('mv /data/{}/selfdrive/assets/img_spinner_comma.png {}/spinner'.format(opdir, self.backup_dir)) #Backup logo
-        os.system('mv /data/{}/selfdrive/assets/img_spinner_track.png {}/spinner'.format(opdir, self.backup_dir)) #backup spinner track
-        os.system('mv /data/{}/selfdrive/common/spinner.c {}/spinner'.format(opdir, self.backup_dir))             #backup spinner.c
-
-        ##Copy in new files
+        ##Backup & Copy in relevant files
+        install_from_path = ('{}/{}/spinner'.format(CONTRIB_THEMES, self.selected_theme,))
+        INSTALL_SPINNER(self.backup_dir, opdir, install_from_path, rave_rainbow, skip_worktree, self.con_output)
         # Check if theme contributer provided a spinner logo
         if path.exists('{}/{}/spinner/img_spinner_comma.png'.format(CONTRIB_THEMES, self.selected_theme)):                               #Contibuter Did Provide
+          os.system('mv /data/{}/selfdrive/assets/img_spinner_comma.png {}/spinner'.format(opdir, self.backup_dir))                        #Backup spinner logo
           os.system('cp {}/{}/spinner/img_spinner_comma.png /data/{}/selfdrive/assets'.format(CONTRIB_THEMES, self.selected_theme, opdir)) #Replace spinner logo supplied custom
-        else:                                                                                                                            #Contibuter Did Not Provide
-          os.system('cp ./support/spinner/img_spinner_comma.png /data/{}/selfdrive/assets'.format(opdir))                                  #Replace spinner logo with standard 
-
+          custom_logo = True                                                                                                               #Add custom_logo flag
         # Check if theme contributer provided a spinner track
         if path.exists('{}/{}/spinner/img_spinner_track.png'.format(CONTRIB_THEMES, self.selected_theme)):                               #Contibuter Did Provide
+          os.system('mv /data/{}/selfdrive/assets/img_spinner_track.png {}/spinner'.format(opdir, self.backup_dir))                        #Backup spinner track
           os.system('cp {}/{}/spinner/img_spinner_track.png /data/{}/selfdrive/assets'.format(CONTRIB_THEMES, self.selected_theme, opdir)) #Replace spinner track supplied custom
-        else:                                                                                                                            #Contibuter Did Not Provide
-          os.system('cp ./support/spinner/img_spinner_track.png /data/{}/selfdrive/assets'.format(opdir))                                  #Replace spinner track with standard 
-
+          custom_track = True                                                                                                              #Add custom_track flag
         # Check if user wants rave rainbow spinner or if theme contributer provided a spinner.c
         if raveRainbow == True:                                                                                                          #User wants rave rainbow
+          os.system('mv /data/{}/selfdrive/common/spinner.c {}/spinner'.format(opdir, self.backup_dir))                                    #Backup spinner.c
           os.system('cp ./support/spinner/rainbow_spinner.c /data/{}/selfdrive/common/spinner.c'.format(opdir))                            #Replace spinner.c with rave rainbow spinner.c
-        elif path.exists('{}/{}/spinner/spinner.c'.format(CONTRIB_THEMES, self.selected_theme)) and raveRainbow == False:                #Contibuter Did Provide                      
+          custom_c = True                                                                                                                  #Add custom_C flag                                                                                                                  #Add custom_C flag
+        elif path.exists('{}/{}/spinner/spinner.c'.format(CONTRIB_THEMES, self.selected_theme)) and raveRainbow == False:                #Contibuter Did Provide      
+          os.system('mv /data/{}/selfdrive/common/spinner.c {}/spinner'.format(opdir, self.backup_dir))                                    #Backup spinner.c                
           os.system('cp {}/{}/spinner/spinner.c /data/{}/selfdrive/common'.format(CONTRIB_THEMES, self.selected_theme, opdir))             #Replace spinner.c with supplied custom 
-        else:                                                                                                                            #Contibuter Did Not Provide
-          os.system('cp ./support/spinner/spinner.c /data/{}/selfdrive/common'.format(opdir))                                              #Replace spinner.c with standard file
+          custom_c = True                                                                                                                  #Add custom_C flag
 
         #Hack to keep OpenPilot from overriding
-        print('=========== NOTICE ===========')
-        print('\nImplementing hack to prevent git from overwriting....')
-        print('If comma ever updates spinner files (unlikely) when you git pull it will')
-        print('conflict, just "git stash && git pull" you may need to reinstall this spinner after!')
-        print('==============================')
-        os.system('cd /data/{} && git update-index --assume-unchanged ./selfdrive/assets/img_spinner_comma.png'.format(opdir))
-        os.system('cd /data/{} && git update-index --assume-unchanged ./selfdrive/assets/img_spinner_track.png'.format(opdir))
-        os.system('cd /data/{} && git update-index --assume-unchanged ./selfdrive/common/spinner.c'.format(opdir))
+        if skip_worktree == True:
+          if custom_logo == True:
+            os.system('cd /data/{} && git update-index --skip-worktree ./selfdrive/assets/img_spinner_comma.png'.format(opdir))
+          if custom_track == True:    
+            os.system('cd /data/{} && git update-index --skip-worktree ./selfdrive/assets/img_spinner_track.png'.format(opdir))
+          if custom_c == True:
+            os.system('cd /data/{} && git update-index --skip-worktree ./selfdrive/common/spinner.c'.format(opdir))
+          print('--skip-worktree flag(s) set for custom files')
 
         #Final make new spinner & finish
         print('\nBuilding new spinner files, please wait..... This should take under a minute....')
@@ -327,18 +335,15 @@ class ThemeInstaller:
 
         #Set bootAniColor based off the selected option - if 'white_', 'color_', or standard bootanimation 
         if selected_option == 'Boot Animation':
-          bootAniColor = ""
+          bootAniColor = ''
         elif selected_option == 'Color Boot Animation':
-          bootAniColor = "color_"
+          bootAniColor = 'color_'
         elif selected_option == 'White Boot Animation':
-          bootAniColor = "white_"
+          bootAniColor = 'white_'
 
         #Backup And install new bootanimation
-        os.system('mount -o remount,rw /system')                                    # /system read only, must mount as r/w
-        os.system('mv /system/media/bootanimation.zip {}'.format(self.backup_dir))  # backup
-        os.system('cp {}/{}/{}bootanimation.zip /system/media/bootanimation.zip'.format(CONTRIB_THEMES, self.selected_theme, bootAniColor))  # replace
-        os.system('chmod 666 /system/media/bootanimation.zip')                      #Need to chmod and edet permissions to 666
-        print('\nBoot Animation installed successfully! Original file(s) backed up to {}'.format(self.backup_dir))
+        install_from_path = ('{}/{}/{}'.format(CONTRIB_THEMES, self.selected_theme, bootAniColor))
+        INSTALL_BOOTANIMATION(self.backup_dir, install_from_path)
         mark_self_installed()        # Create flag in /sdcard so auto installer knows there is a self installation
         print('Press enter to continue!')
         input()

@@ -6,7 +6,7 @@ import difflib
 from os import path
 from datetime import datetime
 from support.support_variables import AUTO_WELCOME_TEXT, BACKUPS_DIR, CONTRIB_THEMES, DESIRED_AUTO_VER, EXCLUDED_THEMES, IS_AUTO_INSTALL
-from support.support_variables import MIN_SIM_THRESHOLD, RESTORE_WELCOME_TEXT, WELCOME_TEXT
+from support.support_variables import MIN_SIM_THRESHOLD, RESTORE_WELCOME_TEXT, SPINER_NOTIF_TEXT, WELCOME_TEXT, UTIL_WELCOME_TEXT
 
 os.chdir(os.path.dirname(os.path.realpath(__file__)))  # __file__ is safer since it doesn't change based on where this file is called from
 
@@ -14,19 +14,25 @@ os.chdir(os.path.dirname(os.path.realpath(__file__)))  # __file__ is safer since
 def get_device_theme_data():
   # Crude device detection, *shrug* it works! LeEco does not have tristate!
   if path.exists('/sys/devices/virtual/switch/tri-state-key'): #If 3T-ON
-    print('\n*** OG OnePlus EON Device Detected! I Like Your Cut G! ***')
-    EON_TYPE             = 'OP3T'                                # EON type 
-    BOOT_LOGO_THEME_PATH = 'OP3T-Logo/LOGO'                      # Set the boot logo theme path for 3T
-    BOOT_LOGO_PATH       = '/dev/block/sde17'                    # Set the boot logo directory for 3T
-    BOOT_LOGO_NAME       = 'sde17'                               # Set the boot logo name for 3T
+    print('\n*** OG OnePlus EON Device Detected! OooOoOooo we got a rebel! ***')
+    print('PLEASE NOTE! Comma wrongfully depicated the 3T-EON, this program')
+    print('will still work for a long time but may not be as maintaind as the')
+    print('Eon-Gold and possibly with less features.. I do this for free and fun')
+    print('making money by force upgrading is the least of my concern...')
+    EON_TYPE             = 'OP3T'                                # EON type is OP3T
+    BOOT_LOGO_THEME_NAME = 'LOGO'                                # Set the theme name for the logo for 3T
+    BOOT_LOGO_THEME_PATH = 'OP3T-Logo/LOGO'                      # Set the theme boot logo path for 3T
+    BOOT_LOGO_NAME       = 'sde17'                               # Set the device boot logo name for 3T
+    BOOT_LOGO_PATH       = '/dev/block/sde17'                    # Set the device boot logo directory for 3T
   else:                                                        #If LEON/Two
     print('\n*** LeEco EON (LeON/Gold/Comma 2) Device Detected ***\n')
-    EON_TYPE             = 'LeEco'                               # EON type 
-    BOOT_LOGO_THEME_PATH = 'LeEco-Logo/SPLASH'                   # Set the boot logo theme path for Leo
-    BOOT_LOGO_PATH       = '/dev/block/bootdevice/by-name/splash'# Set the boot logo directory for Leo
-    BOOT_LOGO_NAME       = 'splash'                              # Set the boot logo name for Leo
+    EON_TYPE             = 'LeEco'                               # EON type is LeEco
+    BOOT_LOGO_THEME_NAME = 'LOGO'                                # Set the theme name for the logo for Leo
+    BOOT_LOGO_THEME_PATH = 'LeEco-Logo/SPLASH'                   # Set the theme boot logo path for  Leo
+    BOOT_LOGO_NAME       = 'splash'                              # Set the device boot logo name for Leo
+    BOOT_LOGO_PATH       = '/dev/block/bootdevice/by-name/splash'# Set the device boot logo directory for Leo
   print('IMPORTANT: Soft-bricking is likely if this detection is incorrect!')
-  return EON_TYPE, BOOT_LOGO_THEME_PATH, BOOT_LOGO_PATH, BOOT_LOGO_NAME
+  return EON_TYPE, BOOT_LOGO_THEME_NAME, BOOT_LOGO_THEME_PATH, BOOT_LOGO_NAME, BOOT_LOGO_PATH
 
 def is_affirmative():           # Ask user for confirmation
   u = input('[1.Yes / 2.No]: ').lower().strip()
@@ -41,6 +47,21 @@ def make_backup_folder():
   os.mkdir(backup_dir)  # Create the session backup folder
   return backup_dir
 
+def selector_picker(listvar, printtext):
+  options = list(listvar)      # this only contains available options from self.get_available_options
+  if not len(options):
+    print('No options were given')
+    time.sleep(2)
+    return
+        
+  print('\n{}'.format(printtext))
+  for idx, select in enumerate(options):
+    print('{}. {}'.format(idx + 1, select))
+  indexChoice = int(input("Enter Index Value: "))
+  indexChoice -= 1 
+
+  selected_option = listvar[indexChoice]
+  return selected_option
 
 ## =============== Installer ================ ##.
 # Created by @ShaneSmiskol some modifications by coltonton
@@ -141,14 +162,72 @@ def mark_self_installed():      # Creates a file letting the auto installer know
     f = open("/storage/emulated/0/eon_custom_themes_self_installed.txt", "w")
     f.close
 
+
+##
+def INSTALL_BOOT_LOGO(eon_type, backup_dir, install_from_path):
+  if eon_type == 'OP3T':
+    boot_logo_device_path = '/dev/block/sde17'
+  elif eon_type == 'LeEco'
+    boot_logo_device_path = '/dev/block/bootdevice/by-name/splash'
+  os.system('cp {} {}/logo'.format(boot_logo_device_path, backup_dir))              # Make Backup
+  os.system('dd if={} of={}'.format(install_from_path, boot_logo_device_path))      # Replace
+  print('\nBoot Logo installed! Original file(s) backed up to {}/logo'.format(backup_dir))
+
+def INSTALL_BOOTANIMATION(backup_dir, install_from_path, color):
+  os.system('mount -o remount,rw /system')                                                       # /system read only, must mount as rw
+  os.system('mv /system/media/bootanimation.zip {}/bootanimation'.format(self.backup_dir))       # Backup
+  os.system('cp {}bootanimation.zip /system/media/bootanimation.zip'.format(install_from_path))  # Replace
+  os.system('chmod 666 /system/media/bootanimation.zip')                                         # Need to chmod to edet permissions to 666
+  print('\nBoot Animation installed! Original file(s) backed up to {}'.format(self.backup_dir))
+
+def INSTALL_SPINNER(backup_dir, opdir, install_from_path, rave_rainbow, skip_worktree, con_output):
+  # Check if theme contributer provided a spinner logo
+  if path.exists('{}/img_spinner_comma.png'.format(install_from_path)):                               #Contibuter Did Provide
+    os.system('mv /data/{}/selfdrive/assets/img_spinner_comma.png {}/spinner'.format(opdir, backup_dir))                        #Backup spinner logo
+    os.system('cp {}/img_spinner_comma.png /data/{}/selfdrive/assets'.format(install_from_path, opdir)) #Replace spinner logo supplied custom
+    custom_logo = True                                                                                                               #Add custom_logo flag
+  # Check if theme contributer provided a spinner track
+  if path.exists('{}/img_spinner_track.png'.format(install_from_path)):                               #Contibuter Did Provide
+    os.system('mv /data/{}/selfdrive/assets/img_spinner_track.png {}/spinner'.format(opdir, backup_dir))                        #Backup spinner track
+    os.system('cp {}/img_spinner_track.png /data/{}/selfdrive/assets'.format(CONTRIB_THEMES, self.selected_theme, opdir)) #Replace spinner track supplied custom
+    custom_track = True                                                                                                              #Add custom_track flag
+  # Check if user wants rave rainbow spinner or if theme contributer provided a spinner.c
+  if raveRainbow == True:                                                                                                          #User wants rave rainbow
+    os.system('mv /data/{}/selfdrive/common/spinner.c {}/spinner'.format(opdir, backup_dir))                                    #Backup spinner.c
+    os.system('cp ./support/spinner/rainbow_spinner.c /data/{}/selfdrive/common/spinner.c'.format(opdir))                            #Replace spinner.c with rave rainbow spinner.c
+    custom_c = True                                                                                                                  #Add custom_C flag                                                                                                                  #Add custom_C flag
+  elif path.exists('{}/spinner.c'.format(install_from_path)) and raveRainbow == False:                #Contibuter Did Provide      
+    os.system('mv /data/{}/selfdrive/common/spinner.c {}/spinner'.format(opdir, backup_dir))                                    #Backup spinner.c                
+    os.system('cp {}/spinner.c /data/{}/selfdrive/common'.format(CONTRIB_THEMES, self.selected_theme, opdir))             #Replace spinner.c with supplied custom 
+    custom_c = True                                                                                                                  #Add custom_C flag
+
+  #Hack to keep OpenPilot from overriding
+  if skip_worktree == True:
+    if custom_logo == True:
+      os.system('cd /data/{} && git update-index --skip-worktree ./selfdrive/assets/img_spinner_comma.png'.format(opdir))
+    if custom_track == True:    
+      os.system('cd /data/{} && git update-index --skip-worktree ./selfdrive/assets/img_spinner_track.png'.format(opdir))
+    if custom_c == True:
+      os.system('cd /data/{} && git update-index --skip-worktree ./selfdrive/common/spinner.c'.format(opdir))
+    print('--skip-worktree flag(s) set for custom files')
+
+  #Final make new spinner & finish
+  print('\nBuilding new spinner files, please wait..... This should take under a minute....')
+  os.system('cd /data/openpilot/selfdrive/ui/spinner && make{}'.format(self.con_output))
+  print('\n{} spinner installed successfully! Original file(s) backed up to {}'.format(opdir, self.backup_dir))
+
 # Created by @ShaneSmiskol some modifications by coltonton
-def print_welcome_text(text):   # This center formats text automatically
-  if text == 's':        # If self text
+def print_text(text):   # This center formats text automatically
+  if text == 'self':        # If self text
     showText = WELCOME_TEXT
-  elif text == 'a':      # If auto text
+  elif text == 'auto':      # If auto text
     showText = AUTO_WELCOME_TEXT
-  elif text == 'r':      # If restore text
+  elif text == 'restore':   # If restore text
     showText = RESTORE_WELCOME_TEXT
+  elif text == 'util':      # If utility text
+    showText = UTIL_WELCOME_TEXT
+  elif text == 'spin warn':   # If Spinner warning text
+    showText = SPINER_NOTIF_TEXT
 
   max_line_length = max([len(line) for line in showText]) + 4
   print(''.join(['+' for _ in range(max_line_length)]))
@@ -175,11 +254,11 @@ def backup_overide_check(backup_dir, theme_type):
 
 def op_dir_finder():
   #Ask user if their OP directory is custom (like arnepilot / dragonpilot)
-  print('\nDo you have an OP fork with a custom directory name? (ex. arnepilot, dragonpilot)')
+  print('\nDo you have an OP fork with a custom directory name?')
   if is_affirmative():  # Yes there is a custom OP dir
     print('What is the OP directory name? (case matters, not including /data/)')
-    opdir = '/data/{}'.format(input('> ').strip('/'))  # get custom dir name, strip slashes for safety
-    print('Your openpilot directory is {}'.format(opdir))
+    opdir = '{}'.format(input('> ').strip('/'))  # get custom dir name, strip slashes for safety
+    print('Your openpilot directory name is {}'.format(opdir))
     input('*** Please enter to continue, or Ctrl+C to abort if this is incorrect! ***')
   else:
     opdir = 'openpilot'                                #op directory is not custom so openpilot

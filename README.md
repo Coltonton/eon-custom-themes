@@ -1,4 +1,4 @@
-Release 1.1
+Release 1.1.1
 
 [![](https://i.imgur.com/w9jylkJ.png[/img])](#)
 # EON-Custom-Themes
@@ -18,6 +18,9 @@ Table of Contents
 * [What Are The Availble Assets?](#what-are-the-availble-assets)
 * [Restoring From Backup](#restoring-theme-assets-from-backup)
 * [Restoring The Comma.ai Stock Theme (if backup lost)](#restoring-the-comma-stock-theme-if-backup-lost)
+
+### Theme Utils Package
+* [General Info](#)
 
 ### List Of Themes:
 *  [Stock Themes:](#stock-themes)

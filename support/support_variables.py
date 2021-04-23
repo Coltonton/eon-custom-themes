@@ -51,9 +51,37 @@ RESTORE_WELCOME_TEXT = ['Created By: Colton (Brandon) S. EndLine \\n',
                 'It\'s your EON, do what you want!',
                 ' ',
                 '*NOTE* this is the backup & default restore program']
+UTIL_WELCOME_TEXT = ['Created By: Colton (Brandon) S. EndLine \\n',
+                'Special Thanks to @ShaneSmiskol for all the help!!!',
+                'Free to use! Free to Edit! Free to integrate!',
+                'Design and contribute your themes today!',
+                '(See the developer folder in this repo)',
+                'It\'s your EON, do what you want!',
+                ' ',
+                '*NOTE* this is the theme utility program for misc functions']
 
-# ================= APK Notify Text================ ##
+# =============== Spinner Notify Text ================ ##
+SPINER_NOTIF_TEXT = ['\n\n ************************* PLEASE READ *************************',
+                        'Before continuing please note! Due to the issues with',
+                        'replacing files in OpenPilot due to it being git version cotrolled;',
+                        'this program has a temporary workaround until its next verion.',
+                        'In order to prevent local OpenPilot spinner changes from being',
+                        'discarded at random without user prompt (if you choose) this',
+                        'program will mark the changed spinner files to: `git update-index --skip-worktree`',
+                        ' ',
+                        'In essence this tells git that the files are always unchanged',
+                        'thus when anything like `git stash`, `git pull` or `git reset` is called',
+                        'the files are ignored and not changed and does NOT prevent pull updates!',
+                        ' ',
+                        'This does have the side effect where if the spinner files are',
+                        'changed upstream (the OP repo) and you try to `git pull` it will',
+                        'conflict and tell you to stash changes (which wont work) and prevent',
+                        'you from pulling changes. You must undo the --skip-worktree flag',
+                        'by running the `theme_utils.py` program  and choosing `Remove git --skip-worktree flag(s)`',
+                        'with the command `/data/eon-custom-themes/theme_utils.py`']
 
+
+# ================= APK Notify Text ================ ##
 '''APK_NOTICE_TEXT = ['\n\n**PLEASE NOTE** '
                    "Unfortunatly this process is difficult to fully automize"
                    'And requires some manual labor. One of the files that needs edited'
