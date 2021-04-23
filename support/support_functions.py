@@ -5,8 +5,9 @@ import time
 import difflib
 from os import path
 from datetime import datetime
-from support.support_variables import AUTO_WELCOME_TEXT, BACKUPS_DIR, CONTRIB_THEMES, DESIRED_AUTO_VER, EXCLUDED_THEMES, IS_AUTO_INSTALL
-from support.support_variables import MIN_SIM_THRESHOLD, RESTORE_WELCOME_TEXT, SPINER_NOTIF_TEXT, WELCOME_TEXT, UTIL_WELCOME_TEXT
+from support.support_variables import AUTO_WELCOME_TEXT, BACKUPS_DIR, CONTRIB_THEMES, DESIRED_AUTO_VER, EXCLUDED_THEMES, MIN_SIM_THRESHOLD,
+                                      RESTORE_WELCOME_TEXT, SPINER_NOTIF_TEXT, WELCOME_TEXT, UTIL_WELCOME_TEXT
+from support.auto_config import IS_AUTO_INSTALL
 
 os.chdir(os.path.dirname(os.path.realpath(__file__)))  # __file__ is safer since it doesn't change based on where this file is called from
 

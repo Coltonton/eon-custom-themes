@@ -1,6 +1,6 @@
 #!/usr/bin/python
 ##################################################################################
-#                                   VER 1.1.1                                      #
+#                                   VER 2.0                                      #
 #                                                                                #
 #      Permission is granted to anyone to use this software for any purpose,     #
 #     excluding commercial applications, and to alter it and redistribute it     #
@@ -38,7 +38,7 @@
 #  (https://medium.com/@jfrux/comma-eon-getting-connected-with-ssh-3ed6136e4a75) #
 #                                                                                #
 #              Type the following command if using the main project              #
-#                  exec /data/eon-custom-themes/install_theme.py                #
+#                  exec /data/eon-custom-themes/install_theme.py                 #
 #                                                                                #
 #            Or if trying to use the included package with an OP Fork:           #
 #              cd /data/(your openpilot directory)/eon-custom-themes             #
@@ -109,14 +109,6 @@ class ThemeInstaller:
 
   def get_available_options(self):      # Check what assets are available for the selected theme
     self.theme_options = []
-
-    # Check if the selected theme has an apk asset
-    #if self.selected_theme != 'Kumar-Nightmode-APK' and os.path.exists('{}/{}/apk'.format(CONTRIB_THEMES, self.selected_theme)):
-    #  self.theme_options.append('APK')
-
-    # Add Kumar Nightmode APK always as option if exists!
-    #if os.path.exists('{}/Kumar-Nightmode-APK'.format(CONTRIB_THEMES)):
-    #  self.theme_options.append('Kumar-Nightmode-APK')
 
     # Check if the selected theme has a boot logo asset
     if os.path.exists('{}/{}/{}'.format(CONTRIB_THEMES, self.selected_theme, BOOT_LOGO_THEME_PATH)):
