@@ -5,9 +5,8 @@ import time
 import difflib
 from os import path
 from datetime import datetime
-from support.support_variables import AUTO_WELCOME_TEXT, BACKUPS_DIR, CONTRIB_THEMES, DESIRED_AUTO_VER, EXCLUDED_THEMES, MIN_SIM_THRESHOLD,
-                                      RESTORE_WELCOME_TEXT, SPINER_NOTIF_TEXT, WELCOME_TEXT, UTIL_WELCOME_TEXT
-from support.auto_config import IS_AUTO_INSTALL
+from support.support_variables import AUTO_WELCOME_TEXT, BACKUPS_DIR, CONTRIB_THEMES, EXCLUDED_THEMES, MIN_SIM_THRESHOLD, RESTORE_WELCOME_TEXT, SPINER_NOTIF_TEXT, WELCOME_TEXT, UTIL_WELCOME_TEXT
+from support.auto_config import IS_AUTO_INSTALL, DESIRED_AUTO_VER
 
 os.chdir(os.path.dirname(os.path.realpath(__file__)))  # __file__ is safer since it doesn't change based on where this file is called from
 
@@ -16,7 +15,7 @@ def get_device_theme_data():
   # Crude device detection, *shrug* it works! LeEco does not have tristate!
   if path.exists('/sys/devices/virtual/switch/tri-state-key'): #If 3T-ON
     print('\n*** OG OnePlus EON Device Detected! OooOoOooo we got a rebel! ***')
-    print('PLEASE NOTE! Comma wrongfully depicated the 3T-EON, this program')
+    print('PLEASE NOTE! Comma wrongfully deprecated the 3T-EON, this program')
     print('will still work for a long time but may not be as maintaind as the')
     print('Eon-Gold and possibly with less features.. I do this for free and fun')
     print('making money by force upgrading is the least of my concern...')
@@ -26,13 +25,15 @@ def get_device_theme_data():
     BOOT_LOGO_NAME       = 'sde17'                               # Set the device boot logo name for 3T
     BOOT_LOGO_PATH       = '/dev/block/sde17'                    # Set the device boot logo directory for 3T
   else:                                                        #If LEON/Two
-    print('\n*** LeEco EON (LeON/Gold/Comma 2) Device Detected ***\n')
+    print('\n*** LeEco EON (LeON/Gold/Comma 2) Device Detected ***')
     EON_TYPE             = 'LeEco'                               # EON type is LeEco
     BOOT_LOGO_THEME_NAME = 'LOGO'                                # Set the theme name for the logo for Leo
     BOOT_LOGO_THEME_PATH = 'LeEco-Logo/SPLASH'                   # Set the theme boot logo path for  Leo
     BOOT_LOGO_NAME       = 'splash'                              # Set the device boot logo name for Leo
     BOOT_LOGO_PATH       = '/dev/block/bootdevice/by-name/splash'# Set the device boot logo directory for Leo
   print('IMPORTANT: Soft-bricking is likely if this detection is incorrect!')
+
+  time.sleep(4)  # Pause for suspense, and so can be read
   return EON_TYPE, BOOT_LOGO_THEME_NAME, BOOT_LOGO_THEME_PATH, BOOT_LOGO_NAME, BOOT_LOGO_PATH
 
 def is_affirmative():           # Ask user for confirmation
@@ -47,6 +48,26 @@ def make_backup_folder():
   backup_dir = datetime.now().strftime('/storage/emulated/0/theme-backups/backup.%m-%d-%y--%I:%M.%S-%p')
   os.mkdir(backup_dir)  # Create the session backup folder
   return backup_dir
+
+def print_text(text):   # This center formats text automatically
+  if text == 'self':        # If self text
+    showText = WELCOME_TEXT
+  elif text == 'auto':      # If auto text
+    showText = AUTO_WELCOME_TEXT
+  elif text == 'restore':   # If restore text
+    showText = RESTORE_WELCOME_TEXT
+  elif text == 'util':      # If utility text
+    showText = UTIL_WELCOME_TEXT
+  elif text == 'spin warn':   # If Spinner warning text
+    showText = SPINER_NOTIF_TEXT
+
+  max_line_length = max([len(line) for line in showText]) + 4
+  print(''.join(['+' for _ in range(max_line_length)]))
+  for line in showText:
+    padding = max_line_length - len(line) - 2
+    padding_left = padding // 2
+    print('+{}+'.format(' ' * padding_left + line + ' ' * (padding - padding_left)))
+  print(''.join(['+' for _ in range(max_line_length)]))
 
 def selector_picker(listvar, printtext):
   options = list(listvar)      # this only contains available options from self.get_available_options
@@ -64,49 +85,9 @@ def selector_picker(listvar, printtext):
   selected_option = listvar[indexChoice]
   return selected_option
 
-## =============== Installer ================ ##.
-# Created by @ShaneSmiskol some modifications by coltonton
-def get_user_theme():           # Auto discover themes and let user choose!
-  available_themes = [t for t in os.listdir(CONTRIB_THEMES)]
-  available_themes = [t for t in available_themes if os.path.isdir(os.path.join(CONTRIB_THEMES, t))]
-  available_themes = [t for t in available_themes if t not in EXCLUDED_THEMES]
-  lower_available_themes = [t.lower() for t in available_themes]
-  print('\nAvailable themes:')
-  for idx, theme in enumerate(available_themes):
-    print('{}. {}'.format(idx + 1, theme))
-  #print('\nType `restore` or enter 69 to restore a backup')
-  print('Type `exit` or enter 0 to exit.')
-  while 1:
-    theme = input('\nChoose a theme to install (by name or index): ').strip().lower()
-    print()
-    #if theme in ['restore', 'r']:
-    #  return 'restore'
-    if theme in ['exit', 'e', '0']:
-      exit()
-    if theme.isdigit():
-      theme = int(theme)
-      #if theme == 69:
-      #  print('\nnice\n')
-      #  return 'restore'
-      if theme > len(available_themes):
-        print('Index out of range, try again!')
-        continue
-      return available_themes[int(theme) - 1]
-    else:
-      if theme in lower_available_themes:
-        return available_themes[lower_available_themes.index(theme)]
-      sims = [str_sim(theme, t.lower()) for t in available_themes]
-      most_sim_idx = max(range(len(sims)), key=sims.__getitem__)
-      theme = available_themes[most_sim_idx]
-      if sims[most_sim_idx] >= MIN_SIM_THRESHOLD:
-        print('Selected theme: {}'.format(theme))
-        print('Is this correct?')
-        print('[Y/n]: ', end='')
-        if input().lower().strip() in ['yes', 'y', 1, 'ye']:
-          return theme
-      else:
-        print('Unknown theme, try again!')
 
+## ============= Installer Support Funcs ============= ##
+# Created by @ShaneSmiskol some modifications by coltonton
 def installer_chooser():
   # Do self install checks
   if IS_AUTO_INSTALL == True:
@@ -158,17 +139,75 @@ def installer_chooser():
   elif IS_AUTO_INSTALL == False:                                                  
       return 'Do_Self' 
 
+def get_user_theme():           # Auto discover themes and let user choose!
+  try:
+    available_themes = [t for t in os.listdir(CONTRIB_THEMES)]
+  except FileNotFoundError:
+    print("\nCRITICAL ERROR: Run this program using 'exec ./theme_install.py' ++++++\n")
+
+  available_themes = [t for t in os.listdir(CONTRIB_THEMES)]
+  available_themes = [t for t in available_themes if os.path.isdir(os.path.join(CONTRIB_THEMES, t))]
+  available_themes = [t for t in available_themes if t not in EXCLUDED_THEMES]
+  lower_available_themes = [t.lower() for t in available_themes]
+  print('\n*\nAvailable themes:')
+
+  for idx, theme in enumerate(available_themes):
+    print('{}. {}'.format(idx + 1, theme))
+  #print('\nType `restore` or enter 69 to restore a backup')
+  print('Type `exit` or enter 0 to exit.')
+  while 1:
+    theme = input('\nChoose a theme to install (by name or index): ').strip().lower()
+    print()
+    #if theme in ['restore', 'r']:
+    #  return 'restore'
+    if theme in ['exit', 'e', '0']:
+      exit()
+    if theme.isdigit():
+      theme = int(theme)
+      if theme == 69:
+        print('nice\n')
+      if theme > len(available_themes):
+        print('Index out of range, try again!')
+        continue
+      return available_themes[int(theme) - 1]
+    else:
+      if theme in lower_available_themes:
+        return available_themes[lower_available_themes.index(theme)]
+      sims = [str_sim(theme, t.lower()) for t in available_themes]
+      most_sim_idx = max(range(len(sims)), key=sims.__getitem__)
+      theme = available_themes[most_sim_idx]
+      if sims[most_sim_idx] >= MIN_SIM_THRESHOLD:
+        print('Selected theme: {}'.format(theme))
+        print('Is this correct?')
+        print('[Y/n]: ', end='')
+        if input().lower().strip() in ['yes', 'y', 1, 'ye']:
+          return theme
+      else:
+        print('Unknown theme, try again!')
+
+def ask_rainbow_spinner():      # Ask user if they want the rainbow spinner!!!
+  #Ask user if they would like to install rainbow spinner
+  print("\nWould you like to install @ShaneSmiskol's rainbow spinner?")
+  print("It makes the progress bar go rave rainbow mode!!!")
+  if is_affirmative():  # Yes they want to!!!
+    print('RAVE RAINBOW SELECTED!!!!')
+    raveRainbow = True       # Rave Rainbow Spinner!!!
+  else:
+    raveRainbow = False      # Standard boring spinner
+
+  return raveRainbow
+
 def mark_self_installed():      # Creates a file letting the auto installer know if a self theme installed
   if not path.exists('/storage/emulated/0/eon_custom_themes_self_installed'):
     f = open("/storage/emulated/0/eon_custom_themes_self_installed.txt", "w")
     f.close
 
 
-##
+##================= Installer Code =================== ##
 def INSTALL_BOOT_LOGO(eon_type, backup_dir, install_from_path):
   if eon_type == 'OP3T':
     boot_logo_device_path = '/dev/block/sde17'
-  elif eon_type == 'LeEco'
+  elif eon_type == 'LeEco':
     boot_logo_device_path = '/dev/block/bootdevice/by-name/splash'
   os.system('cp {} {}/logo'.format(boot_logo_device_path, backup_dir))              # Make Backup
   os.system('dd if={} of={}'.format(install_from_path, boot_logo_device_path))      # Replace
@@ -181,7 +220,7 @@ def INSTALL_BOOTANIMATION(backup_dir, install_from_path, color):
   os.system('chmod 666 /system/media/bootanimation.zip')                                         # Need to chmod to edet permissions to 666
   print('\nBoot Animation installed! Original file(s) backed up to {}'.format(self.backup_dir))
 
-def INSTALL_SPINNER(backup_dir, opdir, install_from_path, rave_rainbow, skip_worktree, con_output):
+def INSTALL_SPINNER(backup_dir, opdir, install_from_path, rave_rainbow, con_output):
   # Check if theme contributer provided a spinner logo
   if path.exists('{}/img_spinner_comma.png'.format(install_from_path)):                               #Contibuter Did Provide
     os.system('mv /data/{}/selfdrive/assets/img_spinner_comma.png {}/spinner'.format(opdir, backup_dir))                        #Backup spinner logo
@@ -202,83 +241,27 @@ def INSTALL_SPINNER(backup_dir, opdir, install_from_path, rave_rainbow, skip_wor
     os.system('cp {}/spinner.c /data/{}/selfdrive/common'.format(CONTRIB_THEMES, self.selected_theme, opdir))             #Replace spinner.c with supplied custom 
     custom_c = True                                                                                                                  #Add custom_C flag
 
-  #Hack to keep OpenPilot from overriding
-  if skip_worktree == True:
-    if custom_logo == True:
-      os.system('cd /data/{} && git update-index --skip-worktree ./selfdrive/assets/img_spinner_comma.png'.format(opdir))
-    if custom_track == True:    
-      os.system('cd /data/{} && git update-index --skip-worktree ./selfdrive/assets/img_spinner_track.png'.format(opdir))
-    if custom_c == True:
-      os.system('cd /data/{} && git update-index --skip-worktree ./selfdrive/common/spinner.c'.format(opdir))
-    print('--skip-worktree flag(s) set for custom files')
-
   #Final make new spinner & finish
   print('\nBuilding new spinner files, please wait..... This should take under a minute....')
   os.system('cd /data/openpilot/selfdrive/ui/spinner && make{}'.format(self.con_output))
   print('\n{} spinner installed successfully! Original file(s) backed up to {}'.format(opdir, self.backup_dir))
 
-# Created by @ShaneSmiskol some modifications by coltonton
-def print_text(text):   # This center formats text automatically
-  if text == 'self':        # If self text
-    showText = WELCOME_TEXT
-  elif text == 'auto':      # If auto text
-    showText = AUTO_WELCOME_TEXT
-  elif text == 'restore':   # If restore text
-    showText = RESTORE_WELCOME_TEXT
-  elif text == 'util':      # If utility text
-    showText = UTIL_WELCOME_TEXT
-  elif text == 'spin warn':   # If Spinner warning text
-    showText = SPINER_NOTIF_TEXT
+def INSTALL_QT_SPINNER(backup_dir, opdir, install_from_path, con_output):
+  # Check if theme contributer provided a spinner logo
+  if path.exists('{}/img_spinner_comma.png'.format(install_from_path)):                               #Contibuter Did Provide
+    os.system('mv /data/{}/selfdrive/assets/img_spinner_comma.png {}/spinner'.format(opdir, backup_dir))                        #Backup spinner logo
+    os.system('cp {}/img_spinner_comma.png /data/{}/selfdrive/assets'.format(install_from_path, opdir)) #Replace spinner logo supplied custom
+    custom_logo = True                                                                                                               #Add custom_logo flag
+  # Check if theme contributer provided a spinner track
+  if path.exists('{}/img_spinner_track.png'.format(install_from_path)):                               #Contibuter Did Provide
+    os.system('mv /data/{}/selfdrive/assets/img_spinner_track.png {}/spinner'.format(opdir, backup_dir))                        #Backup spinner track
+    os.system('cp {}/img_spinner_track.png /data/{}/selfdrive/assets'.format(CONTRIB_THEMES, self.selected_theme, opdir)) #Replace spinner track supplied custom
+    custom_track = True                                                                                                              #Add custom_track flag
+  #Finish
+  print('\n{} spinner installed successfully! Original file(s) backed up to {}'.format(opdir, backup_dir))
 
-  max_line_length = max([len(line) for line in showText]) + 4
-  print(''.join(['+' for _ in range(max_line_length)]))
-  for line in showText:
-    padding = max_line_length - len(line) - 2
-    padding_left = padding // 2
-    print('+{}+'.format(' ' * padding_left + line + ' ' * (padding - padding_left)))
-  print(''.join(['+' for _ in range(max_line_length)]))
-  time.sleep(2)  # Pause for suspense, and so can be read
 
-def backup_overide_check(backup_dir, theme_type):
-  #Check if there was a backup already this session to prevent accidental overwrites
-  if path.exists('{}/{}'.format(backup_dir, theme_type)):
-    print('\nIt appears you already made a(n) {} install this session'.format(theme_type)) 
-    print('continuing will overwrite the last {} backup'.format(theme_type))
-    print('the program made this session already!!!')
-    print('Would you like to continue and overwrite previous?')
-    if not is_affirmative():
-      print('Not installed, exiting session..... Please re-run program')
-      return True
-  else:
-    os.mkdir('{}/{}'.format(backup_dir, theme_type))
-    return False
-
-def op_dir_finder():
-  #Ask user if their OP directory is custom (like arnepilot / dragonpilot)
-  print('\nDo you have an OP fork with a custom directory name?')
-  if is_affirmative():  # Yes there is a custom OP dir
-    print('What is the OP directory name? (case matters, not including /data/)')
-    opdir = '{}'.format(input('> ').strip('/'))  # get custom dir name, strip slashes for safety
-    print('Your openpilot directory name is {}'.format(opdir))
-    input('*** Please enter to continue, or Ctrl+C to abort if this is incorrect! ***')
-  else:
-    opdir = 'openpilot'                                #op directory is not custom so openpilot
-
-  return opdir
-
-def ask_rainbow_spinner():
-  #Ask user if they would like to install rainbow spinner
-  print("\nWould you like to install @ShaneSmiskol's rainbow spinner?")
-  print("It makes the progress bar go rave rainbow mode!!!")
-  if is_affirmative():  # Yes they want to!!!
-    print('RAVE RAINBOW SELECTED!!!!')
-    raveRainbow = True       # Rave Rainbow Spinner!!!
-  else:
-    raveRainbow = False      # Standard boring spinner
-
-  return raveRainbow
-
-## ================ Restorer ================ ##
+## ================= Restor-er Code ================= ##
 # Created by @ShaneSmiskol modified version of get_user_theme() to get all backups by Coltonton
 def get_user_backups(exclude):
   available_backups = [t for t in os.listdir(BACKUPS_DIR)]
@@ -314,7 +297,21 @@ def get_user_backups(exclude):
       continue
 
 
-## ================== Misc ================== ##
+## ====================== Misc ====================== ##
+def backup_overide_check(backup_dir, theme_type):
+  #Check if there was a backup already this session to prevent accidental overwrites
+  if path.exists('{}/{}'.format(backup_dir, theme_type)):
+    print('\nIt appears you already made a(n) {} install this session'.format(theme_type)) 
+    print('continuing will overwrite the last {} backup'.format(theme_type))
+    print('the program made this session already!!!')
+    print('Would you like to continue and overwrite previous?')
+    if not is_affirmative():
+      print('Not installed.......')
+      return True
+  else:
+    os.mkdir('{}/{}'.format(backup_dir, theme_type))
+    return False
+
 # Created by @ShaneSmiskol
 def str_sim(a, b):              # Part of Shane's get_user_theme code
   return difflib.SequenceMatcher(a=a, b=b).ratio()

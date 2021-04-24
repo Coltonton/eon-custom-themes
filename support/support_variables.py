@@ -11,15 +11,18 @@ CONTRIB_THEMES = 'contributed-themes'
 EXCLUDED_THEMES = ['Example', 'ignoreme', 'Kumar-Nightmode-APK', 'Colton']
 MIN_SIM_THRESHOLD = 0.25      # user's input needs to be this percent or higher similar to a theme to select it
 
+# =========== Get OP Ver & Location vars =========== ##
+OP_VER = 0.1
+OP_LOC = ''
+
 # =================  Welcome Texts ================= ##
 WELCOME_TEXT = ['Created By: Colton (Brandon) S. EndLine \\n',
                 'Special Thanks to @ShaneSmiskol for all the help!!!',
                 'Free to use! Free to Edit! Free to integrate!',
                 'Design and contribute your themes today!',
                 '(See the developer folder in this repo)',
-                'It\'s your EON, do what you want!'
-                '*'
-                'Use exec ./install_theme.py to run if failure']
+                'It\'s your EON, do what you want!']
+
 AUTO_WELCOME_TEXT = ['Created By: Colton (Brandon) S. EndLine \\n',
                 'Special Thanks to @ShaneSmiskol for all the help!!!',
                 'Free to use! Free to Edit! Free to integrate!',
@@ -71,18 +74,3 @@ SPINER_NOTIF_TEXT = ['\n\n ************************* PLEASE READ ***************
                         'you from pulling changes. You must undo the --skip-worktree flag',
                         'by running the `theme_utils.py` program  and choosing `Remove git --skip-worktree flag(s)`',
                         'with the command `/data/eon-custom-themes/theme_utils.py`']
-
-
-# ================= APK Notify Text ================ ##
-'''APK_NOTICE_TEXT = ['\n\n**PLEASE NOTE** '
-                   "Unfortunatly this process is difficult to fully automize"
-                   'And requires some manual labor. One of the files that needs edited'
-                   'for the full expericence is a core file to OpenPilot and is frequently'
-                   'changed; or you may be on a different version. It would be a futal'
-                   'task to constantly play catchup / support all possible commits & versions'
-
-                    "\nMay I suggest runing my OpenPilot Fork? It's stock or you can choose with Comma Junk removed"
-                    'It comes default with the Kumar-Nightmode-APK and better intergration with custom themes!'
-                    'https://github.com/Coltonton/openpilot.git'
-                    
-                    '\nYou can still install this but the sidebar'] '''

@@ -58,11 +58,9 @@
 import os
 import time
 from os import path
-from support.support_functions import ask_rainbow_spinner, backup_overide_check, get_device_theme_data, get_user_backups, get_user_theme
-from support.support_functions import installer_chooser, is_affirmative, make_backup_folder, mark_self_installed, print_text, op_dir_finder
-from support.support_variables import AUTO_INSTALL_CONF, BACKUPS_DIR, BACKUP_OPTIONS, CONTRIB_THEMES, DESIRED_AUTO_VER, IS_AUTO_INSTALL, SHOW_CONSOLE_OUTPUT
-
-from support.support_functions import INSTALL_BOOT_LOGO, INSTALL_BOOTANIMATION, INSTALL_SPINNER
+from support.support_functions import * 
+from support.support_variables import BACKUPS_DIR, BACKUP_OPTIONS, CONTRIB_THEMES, OP_VER, OP_LOC, SHOW_CONSOLE_OUTPUT
+from support.auto_config       import AUTO_INSTALL_CONF, IS_AUTO_INSTALL, DESIRED_AUTO_VER
 
 ##======================= CODE START ================================================================
 os.chdir(os.path.dirname(os.path.realpath(__file__)))  # __file__ is safer since it doesn't change based on where this file is called from
@@ -72,7 +70,6 @@ else:
   print_text('self')               #Print welcome text with the flag for self welcome text
   
 EON_TYPE, BOOT_LOGO_THEME_NAME, BOOT_LOGO_THEME_PATH, BOOT_LOGO_DEVICE_NAME, BOOT_LOGO_DEVICE_PATH = get_device_theme_data() # Get Perams based off detected device
-
 
 class ThemeInstaller:
   def __init__(self):                   # Init code runs once. sets up & determines if to run auto or self
@@ -101,34 +98,65 @@ class ThemeInstaller:
       if self.selected_theme is None:
         print('Didn\'t select a theme, exiting.')
         return
-      if self.selected_theme == 'restore':
-        self.backup_reinstaller_loop()
+      self.get_OP_Ver_Loc()
       self.get_available_options()
       if self.install_function() == 'exit':
         return
 
+  def get_OP_Ver_Loc(self):             # Get OpenPilot Version & Location
+    global OP_VER
+    global OP_LOC
+    while True:
+      if path.exists('/data/openpilot'):
+        print("\n*\nOpenPilot Location Auto-Detected as /data/openpilot")
+        print('Is This The Correct OpenPilot Directory?')
+        response = input('[1.Yes / 2.No]: ').lower().strip()
+      else:
+        print("\n*\nOpenPilot Location Not Auto-Detected")     
+        response = '2'
+      if response == '1' or response == '2':
+        break
+
+    if response == "2":
+      print('What Is The Correct OpenPilot directory?')
+      OP_LOC = input('/data/').lower().strip()
+    else:
+      OP_LOC = 'openpilot'
+
+    OPVER = ''
+    file = open(('/data/{}/RELEASES.md'.format(OP_LOC)), 'r')
+    file.seek(10)
+    while True:
+      temp = file.read(1)
+      if(temp != " "):
+        OPVER = OPVER + temp
+      else:
+        OP_VER = float(OPVER)
+        break
+
+    print("OpenPilot Version Auto-Detected as {} from /data/{}".format(OP_VER, OP_LOC))
+
   def get_available_options(self):      # Check what assets are available for the selected theme
     self.theme_options = []
-
     # Check if the selected theme has a boot logo asset
     if os.path.exists('{}/{}/{}'.format(CONTRIB_THEMES, self.selected_theme, BOOT_LOGO_THEME_PATH)):
       self.theme_options.append('Boot Logo')
-
     # Check if the selected theme has a boot annimation asset
     if os.path.exists('{}/{}/bootanimation.zip'.format(CONTRIB_THEMES, self.selected_theme)):
       self.theme_options.append('Boot Animation')
-
     # Check if the selected theme has a color boot annimation asset
     if os.path.exists('{}/{}/color_bootanimation.zip'.format(CONTRIB_THEMES, self.selected_theme)):
       self.theme_options.append('Color Boot Animation')
-    
     # Check if the selected theme has a white boot annimation asset
     if os.path.exists('{}/{}/white_bootanimation.zip'.format(CONTRIB_THEMES, self.selected_theme)):
       self.theme_options.append('White Boot Animation')
-
     # Check if the selected theme has a OpenPilot Spinner asset
-    if os.path.exists('{}/{}/spinner'.format(CONTRIB_THEMES, self.selected_theme)):
-      self.theme_options.append('OpenPilot Spinner')
+    if os.path.exists('{}/{}/spinner'.format(CONTRIB_THEMES, self.selected_theme)) and (OP_VER <= 7.8):
+      #self.theme_options.append('Non-QT OpenPilot Spinner')
+      pass
+    # Check if the selected theme has a QT OpenPilot Spinner asset
+    if os.path.exists('{}/{}/spinner'.format(CONTRIB_THEMES, self.selected_theme)) and (OP_VER >= 8.3):
+      self.theme_options.append('QT OpenPilot Spinner')
 
     self.theme_options.append('-Main Menu-')
     self.theme_options.append('-Reboot-')
@@ -138,11 +166,11 @@ class ThemeInstaller:
     while 1:
       options = list(self.theme_options)  # this only contains available options from self.get_available_options
       if not len(options):
-        print('The selected theme has no resources available for your device! Try another.')
+        print('\n*\nThe selected theme has no resources available for your device! Try another.')
         time.sleep(2)
         return
       
-      print('What resources do you want to install for the {} theme?'.format(self.selected_theme))
+      print('\n*\nWhat resources do you want to install for the {} theme?'.format(self.selected_theme))
       for idx, theme in enumerate(options):
         print('{}. {}'.format(idx + 1, theme))
       indexChoice = int(input("Enter Index Value: "))
@@ -150,7 +178,7 @@ class ThemeInstaller:
 
       selected_option = self.theme_options[indexChoice]
 
-      if selected_option == 'Boot Logo':
+      if selected_option   == 'Boot Logo':
         #Confirm user wants to install bootlogo
         print('\nSelected to install the {} Boot Logo. Continue?'.format(self.selected_theme))
         if not is_affirmative():
@@ -170,7 +198,7 @@ class ThemeInstaller:
         print('Press enter to continue!')
         input()
 
-      elif selected_option == 'OpenPilot Spinner':
+      elif selected_option == 'Non-QT OpenPilot Spinner':
         ##Confirm user wants to install Spinner
         print('\nSelected to install the {} OP Spinner. Continue?'.format(self.selected_theme))
         if not is_affirmative():
@@ -193,7 +221,7 @@ class ThemeInstaller:
           exit()
 
         ##Ask user if their OP directory is custom (like arnepilot / dragonpilot)
-        opdir = op_dir_finder()
+        opdir = OP_LOC #op_dir_finder()
 
         ##Ask user if they want @shaneSmiskol rave rainbow spinner
         raveRainbow = ask_rainbow_spinner()
@@ -238,68 +266,26 @@ class ThemeInstaller:
         mark_self_installed()        # Create flag in /sdcard so auto installer knows there is a self installation
         print('Press enter to continue!')
         input()
+ 
+      elif selected_option == 'QT OpenPilot Spinner':
+        ##Confirm user wants to install Spinner
+        print('\nSelected to install the {} OP Spinner. Continue?'.format(self.selected_theme))
+        if not is_affirmative():
+          print('Not installing...')
+          time.sleep(1.5)
+          continue
 
-      # elif selected_option == 'APK' or selected_option == 'Kumar-Nightmode-APK':
-        #   # Hack to get apk & kumar-nightmode-apk in same installer
-        #   if selected_option== 'Kumar-Nightmode-APK':
-        #     local_selected_theme = 'Kumar-Nightmode-APK'  # make a locally used selected_theme using Kumar to hax program
-        #     show_apk = ''       #Another hack so in print statments, it doesnt say 'Kumar-Nightmode-APK apk' cuz OCD. YES I AM that OCD!!
-        #   else:
-        #     local_selected_theme = self.selected_theme    # make a locally used selected_theme from global
-        #     show_apk = ' APK'   #Another hack so in print statments, it doesnt say 'Kumar-Nightmode-APK apk' cuz OCD. YES I AM that OCD!!
+        ##Check if there was a spinner backup already this session to prevent accidental overwrites
+        #Returns false if okay to proceed. Gets self.backup_dir & asset type name
+        if backup_overide_check(self.backup_dir, 'spinner') == True:
+          break
 
-        #   #Confirm user wants to install Kumar Nightmode APK
-        #   #print('\n\n**PLEASE NOTE** ')
-        #   print("Unfortunatly this process is difficult to fully automize")
-        #   print('And requires some manual labor. One of the files that needs edited')
-        #   print('for the full expericence is a core file to OpenPilot and is frequently')
-        #   print('changed; or you may be on a different version. It would be a futal')
-        #   print('task to constantly play catchup / support all possible commits & versions')
+        install_from_path = ("{}/{}/spinner".format(CONTRIB_THEMES, self.selected_theme))
+        INSTALL_QT_SPINNER(self.backup_dir, OP_LOC, install_from_path, SHOW_CONSOLE_OUTPUT)
+        mark_self_installed()        # Create flag in /sdcard so auto installer knows there is a self installation
+        print('Press enter to continue!')
+        input()
 
-        #   print("\nMay I suggest runing my OpenPilot Fork? It's stock or you can choose with Comma Junk removed")
-        #   print('It comes default with the Kumar-Nightmode-APK and better intergration with custom themes!')
-        #   print('                    https://github.com/Coltonton/openpilot.git')
-
-
-        #   print('If you have a fork like ArnePilot, or any other with')
-        #   print('a modified UI DO NOT USE THIS!! OpenPilot will fail to run!! \n')
-        #   print('Instead refer to the DEVREADME located in this project')
-        #   print("at ./developer, in the 'APK' section for more info!!\n")
-        #   print('Selected to install the {}{}. Continue?'.format(local_selected_theme, show_apk))
-        #   if not is_affirmative():
-        #     print('Not installing...')
-        #     time.sleep(1.5)
-        #     continue
-
-        #   op_ver = get_op_ver()
-
-        #   #Check if there was an APK backup already this session to prevent accidental overwrites
-        #   #Returns false if okay to proceed. Gets self.backup_dir & asset type name
-        #   if backup_overide_check(self.backup_dir, 'apk') == True:
-        #     exit()
-      
-        #   #Ask user if their OP directory is custom (like arnepilot / dragonpilot)
-        #   opdir = op_dir_finder()
-
-        #   #Backup files
-        #   os.system('mv /data/{}/apk/ai.comma.plus.offroad.apk {}/apk'.format(opdir, self.backup_dir)) # Backup apk
-        #   os.system('mv /data/{}/selfdrive/ui/ui.hpp {}/apk'.format(opdir, self.backup_dir))           # backup ui.hpp
-
-        #   #Copy in new files
-        #   os.system('cp {}/{}/apk/ai.comma.plus.offroad.apk /data/{}/apk'.format(CONTRIB_THEMES, local_selected_theme, opdir)) # Copy APK
-        #   os.system('cp {}/{}/apk/ui.hpp /data/{}/selfdrive/ui'.format(CONTRIB_THEMES, local_selected_theme, opdir))           # Copy ui.hpp
-
-        #   #Build
-        #   print('\nBuilding new APK files, please wait..... This should take under a minute....')
-        #   print('Please note, {} will trigger a full re-compile next reboot'.format(opdir))
-        #   os.system('cd /data/{}/selfdrive/ui/ && scons -u{}'.format(opdir, self.con_output))
-
-        #   # Finish
-        #   print('\n{}{} installed successfully! Original file(s) backed up to {}'.format(local_selected_theme, show_apk, self.backup_dir))
-        #   mark_self_installed()        # Create flag in /sdcard so auto installer knows there is a self installation
-        #   print('Press enter to continue!')
-        #   input()
-        
       elif selected_option == '-Main Menu-' or selected_option is None:
         return
 
