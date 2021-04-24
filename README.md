@@ -1,4 +1,5 @@
-# DEAR ALL! The time has come, that I have been waiting for! Comma released their QT UI. at this time any information related to spinner/UI is outdated unless your OP version is .7.x and lower! Untill i start wrok again please do not install spinner assets! I will be keeping it live for legacy users for now untill I work on the new files and info!! You CAN still choose a boot Logo and Boot Animation!!!!! - Cole 4/22/21
+# DEAR ALL! V2 currently in dev; please use branch V2-PreRelease-Testing if using OpenPilot V0.8.3+ The pre-release V2 branch is fully (as i can tell) working! (except auto) Feel free to post issues or contacct me with problems!! 
+-Cole 4/23/21
 
 
 Release 1.1
