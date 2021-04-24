@@ -1,6 +1,6 @@
 #!/usr/bin/python
 ################################################################################## 
-#                                   VER 1.1.1                                    # 
+#                                  VER 2.0 PR                                    #
 #                                                                                #
 #      Permission is granted to anyone to use this software for any purpose,     #
 #     excluding commercial applications, and to alter it and redistribute it     #
@@ -17,7 +17,7 @@
 #    distribution.                                                               #
 #                                                                                #
 #                                                                                #
-#    ===Created by Colton (Brandon) S. (@C-ton) for the OpenPilot Community===   #
+#  ==Created by Colton (Brandon) S. (@Coltonton) for the OpenPilot Community===  #
 #              === http://endoflinetech.com/eon-custom-themes ===                #
 #                                                                                #
 #              With a mission to rid all EONS of Comma.ai branding               #

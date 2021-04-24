@@ -1,10 +1,10 @@
-Release 1.1.1
+Release 2.0 -PreRelease
 
 [![](https://i.imgur.com/w9jylkJ.png[/img])](#)
 # EON-Custom-Themes
 Upgrade your EON/Leon/Two's Looks!!! This is a pretty all inclusive guide to modify your device themingly. It's your own device! You own it, do with it as you please despite what someeee people may say, which is ironic dont you think?..... Lets Light It Up!!! (Contest)
 
-This is a new project, find any errors? submit an issue, or make a pull request! This is not my project but our project!! * **Soviet national anthem plays** * You may also message me @C-ton#2169 on discord (I'm in all the servers)
+This is a new project, find any errors? submit an issue, or make a pull request! This is not my project but our project!! * **Soviet national anthem plays** * You may also message me @Coltonton#2169 on discord (I'm in all the servers)
 
 Feel free to check out the [main unoffical community discord server](https://discord.gg/2rxE2r3ywe), and find my own little chat #custom-themes for more support from other then just me!
 

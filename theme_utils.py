@@ -1,12 +1,11 @@
 #!/usr/bin/python
 import os
 import time
-from support.support_functions import op_dir_finder, is_affirmative, print_text, mark_self_installed, selector_picker, get_device_theme_data, make_backup_folder
+from support.support_functions import *
+#====================== Vars ===================================
 
-#=====================Vars====================================
 
-
-#===================CODE START================================
+#=================== CODE START ================================
 print_text('util')
 
 class ThemeUtil:
@@ -15,10 +14,8 @@ class ThemeUtil:
             util_options = ['Install from custom location', 'Remove git --skip-worktree flag(s)', 'Restore Comma-default', 'Restore backup', 'Cleanup for uninstall', '-Reboot-', '-Quit-']
             selected_util = selector_picker(util_options, 'This Is a Test')
 
-            if selected_util == 'Install from custom location':
+            if selected_util   == 'Install from custom location':
                 self.Install_from_loc('I')
-            elif selected_util == 'Remove git --skip-worktree flag(s)':
-                self.Fix_git()
             elif selected_util == 'Restore Comma-default':
                 self.Restore_comma_default()
             elif selected_util == 'Restore backup':
@@ -161,29 +158,6 @@ class ThemeUtil:
                 mark_self_installed()        # Create flag in /sdcard so auto installer knows there is a self installation
                 print('Press enter to continue!')
                 input()   
-
-    def Fix_git(self):
-        print('This program removes the --skip-worktree flag for the OpenPilot spinner')
-        print('Continue?')
-        if is_affirmative():
-            u = True
-
-        ##Ask user if their OP directory is custom
-        opdir = op_dir_finder()
-
-        if u == True:
-            print('\nStarting.....')
-            os.system('git update-index --no-skip-worktree /data/{}/selfdrive/assets/img_spinner_comma.png'.format(opdir))
-            print('- Removed flag from img_spinner_comma.png')
-            os.system('git update-index --no-skip-worktree /data/{}/selfdrive/assets/img_spinner_track.png'.format(opdir))
-            print('- Removed flag from img_spinner_track.png')
-            os.system('git update-index --no-skip-worktree /data/{}/selfdrive/common/spinner.c'.format(opdir))
-            print('- Removed flag from spinner.c')
-            print('Completed! Goodbye....')
-            exit()
-        else:
-            print('Program terminating...')
-            exit()
 
     def Restore_comma_default(self):
         print('Selected to restore Comma-Default theme. Continue?')

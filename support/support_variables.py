@@ -8,7 +8,7 @@ BACKUP_OPTIONS = []
 
 # =============  get_user_theme() vars ============= ##
 CONTRIB_THEMES = 'contributed-themes'
-EXCLUDED_THEMES = ['Example', 'ignoreme', 'Kumar-Nightmode-APK', 'Colton']
+EXCLUDED_THEMES = ['Example', 'ignoreme', 'Colton']
 MIN_SIM_THRESHOLD = 0.25      # user's input needs to be this percent or higher similar to a theme to select it
 
 # =========== Get OP Ver & Location vars =========== ##
@@ -22,7 +22,6 @@ WELCOME_TEXT = ['Created By: Colton (Brandon) S. EndLine \\n',
                 'Design and contribute your themes today!',
                 '(See the developer folder in this repo)',
                 'It\'s your EON, do what you want!']
-
 AUTO_WELCOME_TEXT = ['Created By: Colton (Brandon) S. EndLine \\n',
                 'Special Thanks to @ShaneSmiskol for all the help!!!',
                 'Free to use! Free to Edit! Free to integrate!',

@@ -185,23 +185,44 @@ def get_user_theme():           # Auto discover themes and let user choose!
       else:
         print('Unknown theme, try again!')
 
-def ask_rainbow_spinner():      # Ask user if they want the rainbow spinner!!!
-  #Ask user if they would like to install rainbow spinner
-  print("\nWould you like to install @ShaneSmiskol's rainbow spinner?")
-  print("It makes the progress bar go rave rainbow mode!!!")
-  if is_affirmative():  # Yes they want to!!!
-    print('RAVE RAINBOW SELECTED!!!!')
-    raveRainbow = True       # Rave Rainbow Spinner!!!
-  else:
-    raveRainbow = False      # Standard boring spinner
-
-  return raveRainbow
-
 def mark_self_installed():      # Creates a file letting the auto installer know if a self theme installed
   if not path.exists('/storage/emulated/0/eon_custom_themes_self_installed'):
     f = open("/storage/emulated/0/eon_custom_themes_self_installed.txt", "w")
     f.close
 
+def get_OP_Ver_Loc(self):             # Get OpenPilot Version & Location
+  global OP_VER
+  global OP_LOC
+  while True:
+  if path.exists('/data/openpilot'):
+    print("\n*\nOpenPilot Location Auto-Detected as /data/openpilot")
+    print('Is This The Correct OpenPilot Directory?')
+    response = input('[1.Yes / 2.No]: ').lower().strip()
+  else:
+    print("\n*\nOpenPilot Location Not Auto-Detected")     
+    response = '2'
+  if response == '1' or response == '2':
+    break
+
+  if response == "2":
+    print('What Is The Correct OpenPilot directory?')
+    OP_LOC = input('/data/').lower().strip()
+  else:
+    OP_LOC = 'openpilot'
+
+  OPVER = ''
+  file = open(('/data/{}/RELEASES.md'.format(OP_LOC)), 'r')
+  file.seek(10)
+  while True:
+    temp = file.read(1)
+    if(temp != " "):
+      OPVER = OPVER + temp
+    else:
+      OP_VER = float(OPVER)
+      break
+
+  print("OpenPilot Version Auto-Detected as {} from /data/{}".format(OP_VER, OP_LOC))
+  return OP_VER, OP_LOC
 
 ##================= Installer Code =================== ##
 def INSTALL_BOOT_LOGO(eon_type, backup_dir, install_from_path):

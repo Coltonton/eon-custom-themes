@@ -1,6 +1,6 @@
 #!/usr/bin/python
 ##################################################################################
-#                                   VER 2.0                                      #
+#                                  VER 2.0 PR                                    #
 #                                                                                #
 #      Permission is granted to anyone to use this software for any purpose,     #
 #     excluding commercial applications, and to alter it and redistribute it     #
@@ -17,7 +17,7 @@
 #    distribution.                                                               #
 #                                                                                #
 #                                                                                #
-#    ===Created by Colton (Brandon) S. (@C-ton) for the OpenPilot Community===   #
+#  ==Created by Colton (Brandon) S. (@Coltonton) for the OpenPilot Community===  #
 #              === http://endoflinetech.com/eon-custom-themes ===                #
 #                                                                                #
 #              With a mission to rid all EONS of Comma.ai branding               #
@@ -35,7 +35,7 @@
 #                     To Get Started Making Your EON Purdy:                      #
 #                                                                                #
 #                              SSH into your EON:                                #
-#  (https://medium.com/@jfrux/comma-eon-getting-connected-with-ssh-3ed6136e4a75) #
+#                                  [REDACTED]                                    #
 #                                                                                #
 #              Type the following command if using the main project              #
 #                  exec /data/eon-custom-themes/install_theme.py                 #
@@ -48,7 +48,7 @@
 #                  Everything will be done automagically!!!!!                    #
 #                                                                                #
 #                      Don't forget to tell your friends!!                       #
-#                              Love, Cole (@C-ton)                               #
+#                           Love, Cole (@Coltonton)                              #
 #                                                                                #
 #        Did you know that if you have a custom OP fork you can use this         #
 #     program to auto install your custom theme for your users automagiclly?     #
@@ -98,43 +98,10 @@ class ThemeInstaller:
       if self.selected_theme is None:
         print('Didn\'t select a theme, exiting.')
         return
-      self.get_OP_Ver_Loc()
+      OP_VER, OP_LOC = get_OP_Ver_Loc()
       self.get_available_options()
       if self.install_function() == 'exit':
         return
-
-  def get_OP_Ver_Loc(self):             # Get OpenPilot Version & Location
-    global OP_VER
-    global OP_LOC
-    while True:
-      if path.exists('/data/openpilot'):
-        print("\n*\nOpenPilot Location Auto-Detected as /data/openpilot")
-        print('Is This The Correct OpenPilot Directory?')
-        response = input('[1.Yes / 2.No]: ').lower().strip()
-      else:
-        print("\n*\nOpenPilot Location Not Auto-Detected")     
-        response = '2'
-      if response == '1' or response == '2':
-        break
-
-    if response == "2":
-      print('What Is The Correct OpenPilot directory?')
-      OP_LOC = input('/data/').lower().strip()
-    else:
-      OP_LOC = 'openpilot'
-
-    OPVER = ''
-    file = open(('/data/{}/RELEASES.md'.format(OP_LOC)), 'r')
-    file.seek(10)
-    while True:
-      temp = file.read(1)
-      if(temp != " "):
-        OPVER = OPVER + temp
-      else:
-        OP_VER = float(OPVER)
-        break
-
-    print("OpenPilot Version Auto-Detected as {} from /data/{}".format(OP_VER, OP_LOC))
 
   def get_available_options(self):      # Check what assets are available for the selected theme
     self.theme_options = []
@@ -326,8 +293,8 @@ class ThemeInstaller:
         print('Press enter to continue!')
         input()
    
-  # Auto installer stuff
-  def auto_installer(self):               # Auto Installer program for incorperating into OP forks SEE DEVREADME
+  # Auto
+  def auto_installer(self):             # Auto Installer program for incorperating into OP forks SEE DEVREADME
     self.selected_theme = AUTO_INSTALL_CONF['auto_selected_theme']
     opdir               = AUTO_INSTALL_CONF['op_dir_name']
     install_3t_logo     = AUTO_INSTALL_CONF['install_3T_logo']
