@@ -227,6 +227,7 @@ def get_OP_Ver_Loc(self):             # Get OpenPilot Version & Location
     print("OpenPilot Version Auto-Detected as {} from /data/{}".format(OP_VER, OP_LOC))
     return OP_VER, OP_LOC
 
+
 ##================= Installer Code =================== ##
 def INSTALL_BOOT_LOGO(eon_type, backup_dir, install_from_path):
     if eon_type == 'OP3T':
