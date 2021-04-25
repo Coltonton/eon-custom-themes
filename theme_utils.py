@@ -40,10 +40,11 @@ class ThemeUtil:
         custom_track = False 
         custom_c = False
  
-        
-        print('\nWhat is the full path to your folder? ex. /sdcard/mythemefolder')
+        print('\nWhat is the full path to your custom theme folder? ')
+        print('ex. /sdcard/mythemefolder')
         install_from_path = input('?: ')
 
+        OP_VER, OP_LOC = get_OP_Ver_Loc()
 
         if path.exists('{}/LOGO'.format(install_path)):
             self.theme_options.append('OP3T Boot Logo')
@@ -62,8 +63,6 @@ class ThemeUtil:
             self.theme_options.append('Boot Animation')
         if path.exists('{}/img_spinner_comma.png'.format(install_path)) or path.exists('{}/img_spinner_track.png'.format(install_path)) or path.exists('{}/spinner.c'.format(install_path)):
             self.theme_options.append('OP Spinner')
-        
-        
         self.theme_options.append('-Reboot-')
         self.theme_options.append('-Quit-')
     
@@ -82,7 +81,7 @@ class ThemeUtil:
 
             selected_option = self.theme_options[indexChoice]
 
-            if selected_option == 'Boot Animation':
+            if selected_option   == 'Boot Animation':
                 #Backup And install new bootanimation
                 os.system('mount -o remount,rw /system')                                    # /system read only, must mount as r/w
                 os.system('mv /system/media/bootanimation.zip {}/bootanimation'.format(self.backup_dir))  # backup
@@ -92,64 +91,31 @@ class ThemeUtil:
                 mark_self_installed()        # Create flag in /sdcard so auto installer knows there is a self installation
                 print('Press enter to continue!')
                 input()
-
             elif selected_option == 'OP Spinner':
-                ##Ask user if they want to --skip-worktree
-                print_text('spin warn')
-                print('\nHave you read the statment above, understand, and wish to use it? (its optional)')
-                print('Please look at the main README at the `Spinner OP Hack` section for more info....')
-                if is_affirmative():
-                    skip_worktree = True
-                else:
-                    skip_worktree = False
+                ##Confirm user wants to install Spinner
+                print('\nSelected to install the Custom OP Spinner. Continue?')
+                if not is_affirmative():
+                    print('Not installing...')
+                    time.sleep(1.5)
+                    continue
 
-                ##Ask user if their OP directory is custom (like arnepilot / dragonpilot)
-                opdir = op_dir_finder()
+                ##Check if there was a spinner backup already this session to prevent accidental overwrites
+                #Returns false if okay to proceed. Gets self.backup_dir & asset type name
+                if backup_overide_check(self.backup_dir, 'spinner') == True:
+                    break
 
-                ##Backup & Copy in relevant files
-                # Check if theme contributer provided a spinner logo
-                if path.exists('{}/img_spinner_comma.png'.format(install_path)):                                             #Contibuter Did Provide
-                    os.system('mv /data/{}/selfdrive/assets/img_spinner_comma.png {}/spinner'.format(opdir, self.backup_dir)) #Backup logo
-                    os.system('cp {}/img_spinner_comma.png /data/{}/selfdrive/assets'.format(install_path, opdir))            #Replace spinner logo supplied custom
-                    custom_logo == True
-                # Check if theme contributer provided a spinner track
-                if path.exists('{}/img_spinner_track.png'.format(install_path)):                                             #Contibuter Did Provide
-                    os.system('mv /data/{}/selfdrive/assets/img_spinner_track.png {}/spinner'.format(opdir, self.backup_dir)) #backup spinner track
-                    os.system('cp {}/img_spinner_track.png /data/{}/selfdrive/assets'.format(install_path, opdir))            #replace spinner track supplied custom
-                    custom_track = True
-                # Check  if theme contributer provided a spinner.c
-                if path.exists('{}/spinner.c'.format(install_path)):                                                         #Contibuter Did Provide
-                    os.system('mv /data/{}/selfdrive/common/spinner.c {}/spinner'.format(opdir, self.backup_dir))             #backup spinner.c     
-                    os.system('cp {}/spinner.c /data/{}/selfdrive/common'.format(install_path, opdir))                        #replace spinner.c with supplied custom 
-                    custom_c = True
-
-                #Hack to keep OpenPilot from overriding
-                if skip_worktree == True:
-                    if custom_logo == True:
-                        os.system('cd /data/{} && git update-index --skip-worktree ./selfdrive/assets/img_spinner_comma.png'.format(opdir))
-                    if custom_track == True:    
-                        os.system('cd /data/{} && git update-index --skip-worktree ./selfdrive/assets/img_spinner_track.png'.format(opdir))
-                    if custom_c == True:
-                        os.system('cd /data/{} && git update-index --skip-worktree ./selfdrive/common/spinner.c'.format(opdir))
-                    print('--skip-worktree flag(s) set for custom files')
-
-                #Final make new spinner & finish
-                print('\nBuilding new spinner files, please wait..... This should take under a minute....')
-                os.system('cd /data/openpilot/selfdrive/ui/spinner && make')
-                print('\n{} spinner installed successfully! Original file(s) backed up to {}'.format(opdir, self.backup_dir))
+                install_from_path = ("{}/{}/spinner".format(CONTRIB_THEMES, self.selected_theme))
+                INSTALL_QT_SPINNER(self.backup_dir, OP_VER, OP_LOC, install_from_path, SHOW_CONSOLE_OUTPUT)
                 mark_self_installed()        # Create flag in /sdcard so auto installer knows there is a self installation
                 print('Press enter to continue!')
-                input()        
-
+                input()    
             elif selected_option == '-Reboot-':
                 print('\nRebooting.... Thank You, Come Again!!!')
                 os.system('am start -a android.intent.action.REBOOT')  # reboot intent is safer (reboot sometimes causes corruption)
                 return 'exit'
-
             elif selected_option == '-Quit-' or selected_option is None:
                 print('\nThank you come again! You will see your changes next reboot!\n')
-                exit()
-            
+                exit()          
             elif selected_option == 'OP3T Boot Logo' or selected_option == 'LeEco Boot Logo':
                 #Backup & install new
                 os.system('cp {} {}/logo'.format(BOOT_LOGO_PATH, self.backup_dir))  # Make Backup
@@ -181,8 +147,6 @@ class ThemeUtil:
 
     def Restore_backup(self):
         BACKUP_OPTIONS = []
-        
-
 
     def Cleanup_files(self):
         print('\n\nWelcome to the uninstall - cleanup utility')
@@ -219,4 +183,4 @@ class ThemeUtil:
 
 
 if __name__ == '__main__':
-  tu = ThemeUtil()
+    tu = ThemeUtil()
