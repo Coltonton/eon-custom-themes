@@ -1,38 +1,90 @@
 #!/usr/bin/python
+###################################################################################
+#                                  VER 2.0 PR                                    #
+ #                                                                                #
+ #      Permission is granted to anyone to use this software for any purpose,     #
+ #     excluding commercial applications, and to alter it and redistribute it     #
+ #               freely, subject to the following restrictions:                   #
+ #                                                                                #
+ #    1. The origin of this software must not be misrepresented; you must not     #
+ #    claim that you wrote the original software. If you use this software        #
+ #    in a product, an acknowledgment in the product documentation is required.   #
+ #                                                                                #
+ #    2. Altered source versions must be plainly marked as such, and must not be  #
+ #    misrepresented as being the original software.                              #
+ #                                                                                #
+ #    3. This notice may not be removed or altered from any source                #
+ #    distribution.                                                               #
+ #                                                                                #
+ #                                                                                #
+ #  ==Created by Colton (Brandon) S. (@Coltonton) for the OpenPilot Community===  #
+ #              === http://endoflinetech.com/eon-custom-themes ===                #
+ #                                                                                #
+ #              With a mission to rid all EONS of Comma.ai branding               #
+ #             And give the people the freedom, knowlage, and power!              #
+ #                         & to make their EONS purdy!                            #
+ #                                                                                #
+ #                         Grab life by the horns                                 #
+ #                                                                                 #
+ #   A very special thank you to @ShaneSmiskol for creating the theme picker      #
+ #      for his tireless help, and donating the life of his LeEco EON             #
+ #           to get the LeEco based EONs supported by this project                #
+ #                   Although revived least we forget.....                        #
+ ##################################################################################
+ #                                                                                #
+ #                     To Get Started Making Your EON Purdy:                      #
+ #                                                                                #
+ #                              SSH into your EON:                                #
+ #                                  [REDACTED]                                    #
+ #                                                                                #
+ #              Type the following command if using the main project              #
+ #                  exec /data/eon-custom-themes/theme_install.py                 #
+ #                                                                                #
+ #            Or if trying to use the included package with an OP Fork:           #
+ #              cd /data/(your openpilot directory)/eon-custom-themes             #
+ #                          exec ./theme_install.py                               #
+ #                                                                                #
+ #               Now follow the prompts and make your selections!                 #
+ #                  Everything will be done automagically!!!!!                    #
+ #                                                                                #
+ #                      Don't forget to tell your friends!!                       #
+ #                           Love, Cole (@Coltonton)                              #
+ #                                                                                #
+ #        Did you know that if you have a custom OP fork you can use this         #
+ #      program to auto install your custom theme for your users automagiclly?    #
+ #       And incorparate it into your OP Fork? See ./developer/DEVREADME          #
+ #                                                                                #
+##################################################################################
 import os
 import time
 from support.support_functions import *
+from support_variables import CLEANUP_TEXT, SHOW_CONSOLE_OUTPUT, UTIL_WELCOME_TEXT
 #====================== Vars ===================================
 
 
 #=================== CODE START ================================
-print_text('util')
+print_text(UTIL_WELCOME_TEXT)
 
 class ThemeUtil:
     def __init__(self):
-        while 1:
-            util_options = ['Install from custom location', 'Remove git --skip-worktree flag(s)', 'Restore Comma-default', 'Restore backup', 'Cleanup for uninstall', '-Reboot-', '-Quit-']
+        while True:
+            util_options = ['Install from custom location', 'Restore Comma-default', 'Restore backup', 'Cleanup for uninstall', '-Reboot-', '-Quit-']
             selected_util = selector_picker(util_options, 'This Is a Test')
 
-            if selected_util   == 'Install from custom location':
-                self.Install_from_loc('I')
+            if   selected_util == 'Install from custom location':
+                self.Install_From_Loc('I')
             elif selected_util == 'Restore Comma-default':
-                self.Restore_comma_default()
+                self.Restore_Comma_Default()
             elif selected_util == 'Restore backup':
-                self.backup_dir = make_backup_folder()  # Create and get backup folder
-                self.Restore_backup()
+                self.Restore_Backup()
             elif selected_util == 'Cleanup for uninstall':
-                self.Cleanup_files()
+                self.Cleanup_Files()
             elif selected_util == '-Reboot-':
-                print('Rebooting.... Enjoy your old theme!!!')
-                os.system('am start -a android.intent.action.REBOOT') #create an android action to reboot
-                exit()
+                REBOOT()
             elif selected_util == '-Quit-':
-                print('Thank you come again! You will see your changes next reboot!')
-                exit()
+                QUIT_PROG()
 
-
-    def Install_from_loc(self):
+    def Install_From_Loc(self):      #TEST & Cleanup the spare vars
         EON_TYPE, BOOT_LOGO_THEME_NAME, BOOT_LOGO_THEME_PATH, BOOT_LOGO_NAME, BOOT_LOGO_PATH = get_device_theme_data() # Get Perams based off detected device
         backup_dir = make_backup_folder()
         theme_options = []
@@ -42,9 +94,9 @@ class ThemeUtil:
  
         print('\nWhat is the full path to your custom theme folder? ')
         print('ex. /sdcard/mythemefolder')
-        install_from_path = input('?: ')
+        install_folder = input('?: ')
 
-        OP_VER, OP_LOC = get_OP_Ver_Loc()
+        op_ver, op_loc = get_OP_Ver_Loc()
 
         if path.exists('{}/LOGO'.format(install_path)):
             self.theme_options.append('OP3T Boot Logo')
@@ -81,51 +133,54 @@ class ThemeUtil:
 
             selected_option = self.theme_options[indexChoice]
 
-            if selected_option   == 'Boot Animation':
-                #Backup And install new bootanimation
-                os.system('mount -o remount,rw /system')                                    # /system read only, must mount as r/w
-                os.system('mv /system/media/bootanimation.zip {}/bootanimation'.format(self.backup_dir))  # backup
-                os.system('cp {}/bootanimation.zip /system/media/bootanimation.zip'.format(install_path, self.selected_theme))  # replace
-                os.system('chmod 666 /system/media/bootanimation.zip')                      #Need to chmod and edet permissions to 666
-                print('\nBoot Animation installed successfully! Original file(s) backed up to {}'.format(self.backup_dir))
-                mark_self_installed()        # Create flag in /sdcard so auto installer knows there is a self installation
-                print('Press enter to continue!')
-                input()
-            elif selected_option == 'OP Spinner':
-                ##Confirm user wants to install Spinner
-                print('\nSelected to install the Custom OP Spinner. Continue?')
+            if selected_option  in ['Boot Animation', 'OP3T Boot Logo', 'LeEco Boot Logo', 'OP Spinner']:    
+                ##Confirm user wants to install asset
+                print('\nSelected to install the Custom {}. Continue?'.format(selected_option))
                 if not is_affirmative():
                     print('Not installing...')
                     time.sleep(1.5)
-                    continue
+                    continue       
 
+            if selected_option   == 'Boot Animation':
+                ##Check if there was a boot ani backup already this session to prevent accidental overwrites
+                #Returns false if okay to proceed. Gets self.backup_dir & asset type name
+                if backup_overide_check(self.backup_dir, 'bootanimation.zip') == True:
+                    break
+
+                install_from_path = ("{}/bootanimation.zip".format(install_folder))
+                INSTALL_BOOTANIMATION(self.backup_dir, install_from_path)
+                mark_self_installed()        # Create flag in /sdcard so auto installer knows there is a self installation
+                print('Press enter to continue!')
+                input() 
+            elif selected_option == 'OP Spinner':
                 ##Check if there was a spinner backup already this session to prevent accidental overwrites
                 #Returns false if okay to proceed. Gets self.backup_dir & asset type name
                 if backup_overide_check(self.backup_dir, 'spinner') == True:
                     break
 
-                install_from_path = ("{}/{}/spinner".format(CONTRIB_THEMES, self.selected_theme))
-                INSTALL_QT_SPINNER(self.backup_dir, OP_VER, OP_LOC, install_from_path, SHOW_CONSOLE_OUTPUT)
+                install_from_path = ("{}/spinner".format(install_folder))
+                INSTALL_SPINNER(self.backup_dir, op_ver, op_loc, install_from_path, SHOW_CONSOLE_OUTPUT)
                 mark_self_installed()        # Create flag in /sdcard so auto installer knows there is a self installation
                 print('Press enter to continue!')
                 input()    
             elif selected_option == '-Reboot-':
-                print('\nRebooting.... Thank You, Come Again!!!')
-                os.system('am start -a android.intent.action.REBOOT')  # reboot intent is safer (reboot sometimes causes corruption)
-                return 'exit'
+                REBOOT()
             elif selected_option == '-Quit-' or selected_option is None:
-                print('\nThank you come again! You will see your changes next reboot!\n')
-                exit()          
+                QUIT_PROG()        
             elif selected_option == 'OP3T Boot Logo' or selected_option == 'LeEco Boot Logo':
-                #Backup & install new
-                os.system('cp {} {}/logo'.format(BOOT_LOGO_PATH, self.backup_dir))  # Make Backup
-                os.system('dd if={}/{} of={}'.format(install_path, boot_name, BOOT_LOGO_PATH))  # Replace
-                print('\nBoot Logo installed successfully! Original file(s) backed up to {}/logo'.format(self.backup_dir))
+                ##Check if there was a Boot Logo backup already this session to prevent accidental overwrites
+                #Returns false if okay to proceed. Gets self.backup_dir & asset type name
+                if backup_overide_check(self.backup_dir, BOOT_LOGO_NAME) == True:
+                    break
+
+                #Do Install
+                install_from_path = ("{}/{}".format(install_folder, BOOT_LOGO_THEME_NAME))
+                INSTALL_BOOT_LOGO(EON_TYPE, self.backup_dir, install_from_path) 
                 mark_self_installed()        # Create flag in /sdcard so auto installer knows there is a self installation
                 print('Press enter to continue!')
-                input()   
+                input() 
 
-    def Restore_comma_default(self):
+    def Restore_Comma_Default(self): #TODO 
         print('Selected to restore Comma-Default theme. Continue?')
         print('Process is fully automagic!')
         if not is_affirmative():
@@ -145,41 +200,33 @@ class ThemeUtil:
         print('Thank you come again!')
         exit()
 
-    def Restore_backup(self):
+    def Restore_Backup(self):        #TODO
+        self.backup_dir = make_backup_folder()  # Create and get backup folder
         BACKUP_OPTIONS = []
 
-    def Cleanup_files(self):
-        print('\n\nWelcome to the uninstall - cleanup utility')
-        print("I'm sad to see you go... :(")
-        print('\nThis program removes the following files not stored in the main directory:')
-        print('- WARNING!!!! ALL BACKUPS!!! Stored in /sdcard/theme-backups')
-        print('- eon_custom_themes_self_installed.txt in /sdcard used as a marker to the auto installer')
-        print('\nIt does not remove:')
-        print('- The main project directory')
-        print('- Any installed themes, please run restore_theme.py and choose')
-        print('  option r to restore the comma-default boot logo and boot animation')
-        print('  BEFORE running this utility')
+    def Cleanup_Files(self):
+        #Print hAllo message
+        print_text(CLEANUP_TEXT)
+        #Confirm user wants to install bootlogo
+        print('\nHave you read and understand the warning above and wish to proceed?')
+        if not is_affirmative():
+            print('Canceling...)
+            time.sleep(1.5)
+            continue
 
-        print('Have you read and understand the warning above and wish to proceed?')
-        if is_affirmative():
-            u = True
+        print('\nStarting.....')
+        os.system('cd /storage/emulated/0 && rm -rf theme-backups')
+        print('Removed the theme-backups directory')
+        os.system('cd /storage/emulated/0 && rm -r eon_custom_themes_self_installed.txt')
+        print('Removed eon_custom_themes_self_installed.txt')
+        print('\nPlease take a look and make sure the file and directory is removed....')
+        os.system('cd /storage/emulated/0 && ls')
+        print("\n\nThank you! You will be missed; don't forget to run...")
+        print('cd /data && rm -rf eon-custom-themes')
+        print('to finish your complete un-installation')
+        print('Until we meet again.....')
+        exit()
 
-        if u == True:
-            print('\nStarting.....')
-            os.system('cd /storage/emulated/0 && rm -rf theme-backups')
-            print('Removed the theme-backups directory')
-            os.system('cd /storage/emulated/0 && rm -r eon_custom_themes_self_installed.txt')
-            print('Removed eon_custom_themes_self_installed.txt')
-            print('\nPlease take a look and make sure the file and directory is removed....')
-            os.system('cd /storage/emulated/0 && ls')
-            print('\n\nThank you! You will be missed dont forget to run')
-            print('cd /data && rm -rf eon-custom-themes')
-            print('to finish your complete un-installation')
-            print('Goodbye....')
-            exit()
-        else:
-            print('Program terminating...')
-            exit()
 
 
 if __name__ == '__main__':

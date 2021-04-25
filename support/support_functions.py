@@ -27,7 +27,7 @@ def get_device_theme_data():
     else:                                                        #If LEON/Two
         print('\n*** LeEco EON (LeON/Gold/Comma 2) Device Detected ***')
         EON_TYPE             = 'LeEco'                               # EON type is LeEco
-        BOOT_LOGO_THEME_NAME = 'LOGO'                                # Set the theme name for the logo for Leo
+        BOOT_LOGO_THEME_NAME = 'SPLASH'                              # Set the theme name for the logo for Leo
         BOOT_LOGO_THEME_PATH = 'LeEco-Logo/SPLASH'                   # Set the theme boot logo path for  Leo
         BOOT_LOGO_NAME       = 'splash'                              # Set the device boot logo name for Leo
         BOOT_LOGO_PATH       = '/dev/block/bootdevice/by-name/splash'# Set the device boot logo directory for Leo
@@ -51,18 +51,7 @@ def make_backup_folder():
     os.mkdir(backup_dir)  # Create the session backup folder
     return backup_dir
 
-def print_text(text):   # This center formats text automatically
-    if text == 'self':        # If self text
-        showText = WELCOME_TEXT
-    elif text == 'auto':      # If auto text
-        showText = AUTO_WELCOME_TEXT
-    elif text == 'restore':   # If restore text
-        showText = RESTORE_WELCOME_TEXT
-    elif text == 'util':      # If utility text
-        showText = UTIL_WELCOME_TEXT
-    elif text == 'spin warn':   # If Spinner warning text
-        showText = SPINER_NOTIF_TEXT
-
+def print_text(showText):   # This center formats text automatically
     max_line_length = max([len(line) for line in showText]) + 4
     print(''.join(['+' for _ in range(max_line_length)]))
     for line in showText:
@@ -232,13 +221,15 @@ def get_OP_Ver_Loc(self):             # Get OpenPilot Version & Location
 def INSTALL_BOOT_LOGO(eon_type, backup_dir, install_from_path):
     if eon_type == 'OP3T':
         boot_logo_device_path = '/dev/block/sde17'
+        boot_lego_name = 'sde17'
     elif eon_type == 'LeEco':
         boot_logo_device_path = '/dev/block/bootdevice/by-name/splash'
-    os.system('cp {} {}/logo'.format(boot_logo_device_path, backup_dir))              # Make Backup
+        boot_lego_name = 'splash'
+    os.system('cp {} {}/{}}'.format(boot_logo_device_path, backup_dir, boot_log_nam))              # Make Backup
     os.system('dd if={} of={}'.format(install_from_path, boot_logo_device_path))      # Replace
-    print('\nBoot Logo installed! Original file(s) backed up to {}/logo'.format(backup_dir))
+    print('\nBoot Logo installed! Original file(s) backed up to {}/{}'.format(backup_dir, boot_log_nam))
 
-def INSTALL_BOOTANIMATION(backup_dir, install_from_path, color):
+def INSTALL_BOOTANIMATION(backup_dir, install_from_path, color=''):
     os.system('mount -o remount,rw /system')                                                       # /system read only, must mount as rw
     os.system('mv /system/media/bootanimation.zip {}/bootanimation'.format(self.backup_dir))       # Backup
     os.system('cp {}bootanimation.zip /system/media/bootanimation.zip'.format(install_from_path))  # Replace
@@ -323,6 +314,15 @@ def backup_overide_check(backup_dir, theme_type):
     else:
         os.mkdir('{}/{}'.format(backup_dir, theme_type))
         return False
+
+def REBOOT():
+    print('\nRebooting.... Thank You, Come Again!!!')
+    os.system('am start -a android.intent.action.REBOOT')  # reboot intent is safer (reboot sometimes causes corruption)
+    return 'exit'
+
+def QUIT_PROG():
+    print('\nThank you come again! You will see your changes next reboot!\n')
+    exit()  
 
 # Created by @ShaneSmiskol
 def str_sim(a, b):              # Part of Shane's get_user_theme code
