@@ -5,7 +5,7 @@ import time
 import difflib
 from os import path
 from datetime import datetime
-from support.support_variables import AUTO_WELCOME_TEXT, BACKUPS_DIR, CONTRIB_THEMES, EXCLUDED_THEMES, MIN_SIM_THRESHOLD, RESTORE_WELCOME_TEXT, SPINER_NOTIF_TEXT, WELCOME_TEXT, UTIL_WELCOME_TEXT
+from support.support_variables import AUTO_WELCOME_TEXT, BACKUPS_DIR, CONTRIB_THEMES, EXCLUDED_THEMES, MIN_SIM_THRESHOLD, RESTORE_WELCOME_TEXT, WELCOME_TEXT, UTIL_WELCOME_TEXT
 from support.auto_config import IS_AUTO_INSTALL, DESIRED_AUTO_VER
 
 os.chdir(os.path.dirname(os.path.realpath(__file__)))  # __file__ is safer since it doesn't change based on where this file is called from
@@ -14,9 +14,9 @@ os.chdir(os.path.dirname(os.path.realpath(__file__)))  # __file__ is safer since
 def get_device_theme_data():
     # Crude device detection, *shrug* it works! LeEco does not have tristate!
     if path.exists('/sys/devices/virtual/switch/tri-state-key'): #If 3T-ON
-        print('\n*** OG OnePlus EON Device Detected! OooOoOooo we got a rebel! ***')
+        print('\n*** OG OnePlus EON Device Detected! OooOoOooo we got a rebel! :O ***')
         print('PLEASE NOTE! Comma wrongfully deprecated the 3T-EON, this program')
-        print('will still work for a long time but may not be as maintaind as the')
+        print('will still work for as long as feasable but may not be as maintaind as the')
         print('Eon-Gold and possibly with less features.. I do this for free and fun')
         print('making money by force upgrading is the least of my concern...')
         EON_TYPE             = 'OP3T'                                # EON type is OP3T
@@ -182,7 +182,7 @@ def mark_self_installed():      # Creates a file letting the auto installer know
         f = open("/storage/emulated/0/eon_custom_themes_self_installed.txt", "w")
         f.close
 
-def get_OP_Ver_Loc(self):             # Get OpenPilot Version & Location
+def get_OP_Ver_Loc():           # Get OpenPilot Version & Location
     global OP_VER
     global OP_LOC
     while True:
@@ -213,7 +213,7 @@ def get_OP_Ver_Loc(self):             # Get OpenPilot Version & Location
             OP_VER = float(OPVER)
             break
 
-    print("OpenPilot Version Auto-Detected as {} from /data/{}".format(OP_VER, OP_LOC))
+    print("\n*\nOpenPilot Version Auto-Detected as {} from /data/{}".format(OP_VER, OP_LOC))
     return OP_VER, OP_LOC
 
 
@@ -221,20 +221,20 @@ def get_OP_Ver_Loc(self):             # Get OpenPilot Version & Location
 def INSTALL_BOOT_LOGO(eon_type, backup_dir, install_from_path):
     if eon_type == 'OP3T':
         boot_logo_device_path = '/dev/block/sde17'
-        boot_lego_name = 'sde17'
+        boot_lego_name = 'LOGO'
     elif eon_type == 'LeEco':
         boot_logo_device_path = '/dev/block/bootdevice/by-name/splash'
-        boot_lego_name = 'splash'
-    os.system('cp {} {}/{}}'.format(boot_logo_device_path, backup_dir, boot_log_nam))              # Make Backup
-    os.system('dd if={} of={}'.format(install_from_path, boot_logo_device_path))      # Replace
-    print('\nBoot Logo installed! Original file(s) backed up to {}/{}'.format(backup_dir, boot_log_nam))
+        boot_lego_name = 'SPLASH'
+    os.system('cp {} {}/{}'.format(boot_logo_device_path, backup_dir, boot_lego_name))    # Make Backup
+    os.system('dd if={} of={}'.format(install_from_path, boot_logo_device_path))           # Replace
+    print('Boot Logo installed! Original file(s) backed up to {}'.format(backup_dir, boot_lego_name))
 
 def INSTALL_BOOTANIMATION(backup_dir, install_from_path, color=''):
     os.system('mount -o remount,rw /system')                                                       # /system read only, must mount as rw
-    os.system('mv /system/media/bootanimation.zip {}/bootanimation'.format(self.backup_dir))       # Backup
-    os.system('cp {}bootanimation.zip /system/media/bootanimation.zip'.format(install_from_path))  # Replace
+    os.system('mv /system/media/bootanimation.zip {}'.format(backup_dir))       # Backup
+    os.system('cp {}/{}bootanimation.zip /system/media/bootanimation.zip'.format(install_from_path, color))  # Replace
     os.system('chmod 666 /system/media/bootanimation.zip')                                         # Need to chmod to edet permissions to 666
-    print('\nBoot Animation installed! Original file(s) backed up to {}'.format(self.backup_dir))
+    print('\nBoot Animation installed! Original file(s) backed up to {}'.format(backup_dir))
 
 def INSTALL_SPINNER(backup_dir, opver, opdir, install_from_path, con_output):
     # Check if theme contributer provided a spinner logo

@@ -57,12 +57,14 @@
 ##################################################################################
 import os
 import time
+from os import path
 from support.support_functions import *
-from support_variables import CLEANUP_TEXT, SHOW_CONSOLE_OUTPUT, UTIL_WELCOME_TEXT
+from support.support_variables import CLEANUP_TEXT, CONTRIB_THEMES, SHOW_CONSOLE_OUTPUT, UTIL_WELCOME_TEXT
 #====================== Vars ===================================
 
 
 #=================== CODE START ================================
+os.chdir(os.path.dirname(os.path.realpath(__file__)))  # __file__ is safer since it doesn't change based on where this file is called from
 print_text(UTIL_WELCOME_TEXT)
 
 class ThemeUtil:
@@ -72,7 +74,7 @@ class ThemeUtil:
             selected_util = selector_picker(util_options, 'This Is a Test')
 
             if   selected_util == 'Install from custom location':
-                self.Install_From_Loc('I')
+                self.Install_From_Loc()
             elif selected_util == 'Restore Comma-default':
                 self.Restore_Comma_Default()
             elif selected_util == 'Restore backup':
@@ -88,48 +90,39 @@ class ThemeUtil:
         EON_TYPE, BOOT_LOGO_THEME_NAME, BOOT_LOGO_THEME_PATH, BOOT_LOGO_NAME, BOOT_LOGO_PATH = get_device_theme_data() # Get Perams based off detected device
         backup_dir = make_backup_folder()
         theme_options = []
-        custom_logo = False 
-        custom_track = False 
-        custom_c = False
  
-        print('\nWhat is the full path to your custom theme folder? ')
+        print('\n*')
+        print('What is the full path to your custom theme folder? ')
         print('ex. /sdcard/mythemefolder')
         install_folder = input('?: ')
 
         op_ver, op_loc = get_OP_Ver_Loc()
-
-        if path.exists('{}/LOGO'.format(install_path)):
-            self.theme_options.append('OP3T Boot Logo')
-            boot_name = 'LOGO'
-            if EON_TYPE == 'OP3T':
-                op3_compat = 'Compatable'
-                leo_compat = 'Not compatable'
-                boot_name = 'LOGO'
-        if path.exists('{}/SPLASH'.format(install_path)):
-            self.theme_options.append('LeEco Boot Logo')
-            if EON_TYPE == 'LeEco':
-                op3_compat = 'Not compatable'
-                leo_compat = 'Compatable'
-                boot_name = 'SPLASH'
-        if path.exists('{}/bootanimation.zip'.format(install_path)):
-            self.theme_options.append('Boot Animation')
-        if path.exists('{}/img_spinner_comma.png'.format(install_path)) or path.exists('{}/img_spinner_track.png'.format(install_path)) or path.exists('{}/spinner.c'.format(install_path)):
+    # cd /data/eon-custom-themes && exec ./theme_utils.py
+    # /data/eon-custom-themes/contributed-themes/Subaru
+        if path.exists('{}/LOGO'.format(install_folder)):
+            theme_options.append('OP3T Boot Logo')
+        if path.exists('{}/SPLASH'.format(install_folder)):
+            theme_options.append('LeEco Boot Logo')
+        if path.exists('{}/bootanimation.zip'.format(install_folder)):
+            theme_options.append('Boot Animation')
+        if path.exists('{}/img_spinner_comma.png'.format(install_folder)) or path.exists('{}/img_spinner_track.png'.format(install_folder)) or path.exists('{}/spinner.c'.format(install_folder)):
             self.theme_options.append('OP Spinner')
-        self.theme_options.append('-Reboot-')
-        self.theme_options.append('-Quit-')
+        theme_options.append('-Reboot-')
+        theme_options.append('-Quit-')
     
         while 1:
-            options = list(self.theme_options)  # this only contains available options from self.get_available_options
+            options = list(theme_options)  # this only contains available options from self.get_available_options
             if not len(options):
-                print('The selected theme has no resources available for your device! Try another.')
+                print('\n*\nThe selected theme has no resources available for your device! Try another.')
                 time.sleep(2)
                 return
-
-            print('What resources do you want to install?')
+        
+            #Ask users what resources to install
+            print('\n*\nWhat resources do you want to install for the Custom theme?')
             for idx, theme in enumerate(options):
                 print('{}. {}'.format(idx + 1, theme))
-                indexChoice = int(input("Enter Index Value: "))
-                indexChoice -= 1 
+            indexChoice = int(input("Enter Index Value: "))
+            indexChoice -= 1 
 
             selected_option = self.theme_options[indexChoice]
 
@@ -140,7 +133,7 @@ class ThemeUtil:
                     print('Not installing...')
                     time.sleep(1.5)
                     continue       
-
+    
             if selected_option   == 'Boot Animation':
                 ##Check if there was a boot ani backup already this session to prevent accidental overwrites
                 #Returns false if okay to proceed. Gets self.backup_dir & asset type name
@@ -180,24 +173,28 @@ class ThemeUtil:
                 print('Press enter to continue!')
                 input() 
 
-    def Restore_Comma_Default(self): #TODO 
-        print('Selected to restore Comma-Default theme. Continue?')
+    def Restore_Comma_Default(self): #PERFECT 
+        eon_type, boot_logo_theme_name, boot_logo_theme_path, boot_logo_name, boot_logo_path = get_device_theme_data() # Get Perams based off detected device
+
+        print('\nSelected to restore Comma-Default theme. Continue?')
         print('Process is fully automagic!')
         if not is_affirmative():
             print('Not restoring...')
             time.sleep(1.5)
-            self.backup_reinstaller_loop()
+            return None
 
-        os.system('cp {} {}'.format(BOOT_LOGO_PATH, self.backup_dir))      # Make Backup
-        os.system('dd if=./{}/{}/{} of={}'.format(CONTRIB_THEMES, self.selected_backup, BOOT_LOGO_THEME_PATH, BOOT_LOGO_PATH))  # Replace
-        print('Factory Boot Logo restored successfully! Custom file(s) backed up to {}\n'.format(self.backup_dir))
+        print('Please wait..... This should only take a few moments!\n')
+        backup_dir = make_backup_folder()
 
-        os.system('mount -o remount,rw /system')  # /system read only, must mount as r/w
-        os.system('mv /system/media/bootanimation.zip {}'.format(self.backup_dir))  # backup
-        os.system('cp ./{}/{}/bootanimation.zip /system/media/bootanimation.zip'.format(CONTRIB_THEMES, self.selected_backup,))  # replace
-        os.system('chmod 666 /system/media/bootanimation.zip')
-        print('Factory Boot Animation restored successfully! Custom file(s) backed up to {}\n'.format(self.backup_dir))
-        print('Thank you come again!')
+        #Boot-Logo
+        install_from_path = '{}/Comma-Default/{}'.format(CONTRIB_THEMES, boot_logo_theme_path)
+        INSTALL_BOOT_LOGO(eon_type, backup_dir, install_from_path)
+
+        #Boot-Animation
+        install_from_path = '{}/Comma-Default/'.format(CONTRIB_THEMES)
+        INSTALL_BOOTANIMATION(backup_dir, install_from_path)
+
+        print('\nThank you come again! - Boot Logo & Boot Animation factory restored!!')
         exit()
 
     def Restore_Backup(self):        #TODO
@@ -210,9 +207,9 @@ class ThemeUtil:
         #Confirm user wants to install bootlogo
         print('\nHave you read and understand the warning above and wish to proceed?')
         if not is_affirmative():
-            print('Canceling...)
+            print('Canceling...')
             time.sleep(1.5)
-            continue
+            exit()                 #Fix ??
 
         print('\nStarting.....')
         os.system('cd /storage/emulated/0 && rm -rf theme-backups')

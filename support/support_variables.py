@@ -7,7 +7,7 @@ BACKUPS_DIR = '/storage/emulated/0/theme-backups'
 BACKUP_OPTIONS = []
 
 # =============  get_user_theme() vars ============= ##
-CONTRIB_THEMES = 'contributed-themes'
+CONTRIB_THEMES = '/data/eon-custom-themes/contributed-themes'
 EXCLUDED_THEMES = ['Example', 'ignoreme', 'Colton']
 MIN_SIM_THRESHOLD = 0.25      # user's input needs to be this percent or higher similar to a theme to select it
 
@@ -56,11 +56,11 @@ UTIL_WELCOME_TEXT = ['Created By: Colton (Brandon) S. EndLine \\n',
 
 CLEANUP_TEXT = ['\n\nWelcome to the uninstall - cleanup utility',
                     "I'm sad to see you go... :",
-                  '\nThis program removes the following files not stored in the main directory:'),
-                    '- WARNING!!!! ALL BACKUPS!!! Stored in /sdcard/theme-backups'),
-                    '- eon_custom_themes_self_installed.txt in /sdcard used as a marker to the auto installer'),
-                  '\nIt does not remove:'),
-                    '- The main project directory'),
-                    '- Any installed themes, please run Restore Comma-default from'),
-                    'this program to restore the comma-default boot logo and boot animation'),
+                  '\nThis program removes the following files not stored in the main directory:',
+                    '- WARNING!!!! ALL BACKUPS!!! Stored in /sdcard/theme-backups',
+                    '- eon_custom_themes_self_installed.txt in /sdcard used as a marker to the auto installer',
+                  '\nIt does not remove:',
+                    '- The main project directory',
+                    "- Any installed themes, please run 'Restore Comma-default' from",
+                    'this program to restore the comma-default boot logo and boot animation',
                     'BEFORE running this utility!!!']

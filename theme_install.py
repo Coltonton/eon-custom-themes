@@ -65,9 +65,9 @@ from support.auto_config       import AUTO_INSTALL_CONF, IS_AUTO_INSTALL, DESIRE
 ##======================= CODE START ================================================================
 os.chdir(os.path.dirname(os.path.realpath(__file__)))  # __file__ is safer since it doesn't change based on where this file is called from
 if IS_AUTO_INSTALL:
-    print_text(AUTO_WELCOME_TEXT)               #Print welcome text with the flag for auto welcome text
+    print_text(AUTO_WELCOME_TEXT)         #Print welcome text with the flag for auto welcome text
 else:
-    print_text(WELCOME_TEXT)               #Print welcome text with the flag for self welcome text
+    print_text(WELCOME_TEXT)              #Print welcome text with the flag for self welcome text
   
 EON_TYPE, BOOT_LOGO_THEME_NAME, BOOT_LOGO_THEME_PATH, BOOT_LOGO_DEVICE_NAME, BOOT_LOGO_DEVICE_PATH = get_device_theme_data() # Get Perams based off detected device
 
@@ -133,6 +133,7 @@ class ThemeInstaller:
                 time.sleep(2)
                 return
         
+            #Ask users what resources to install
             print('\n*\nWhat resources do you want to install for the {} theme?'.format(self.selected_theme))
             for idx, theme in enumerate(options):
                 print('{}. {}'.format(idx + 1, theme))
@@ -141,6 +142,7 @@ class ThemeInstaller:
 
             selected_option = self.theme_options[indexChoice]
 
+            #Main logic
             if selected_option   == 'Boot Logo':
                 #Confirm user wants to install bootlogo
                 print('\nSelected to install the {} Boot Logo. Continue?'.format(self.selected_theme))
@@ -155,7 +157,7 @@ class ThemeInstaller:
                     break
 
                 #Backup & install new
-                install_from_path = ('{}/{}/{}'.format(CONTRIB_THEMES, self.selected_theme, BOOT_LOGO_THEME_PATH))
+                install_from_path = ('./{}/{}/{}'.format(CONTRIB_THEMES, self.selected_theme, BOOT_LOGO_THEME_PATH))
                 INSTALL_BOOT_LOGO(EON_TYPE, self.backup_dir, install_from_path)
                 mark_self_installed()       # Create flag in /sdcard so auto installer knows there is a self installation
                 print('Press enter to continue!')
@@ -173,7 +175,7 @@ class ThemeInstaller:
                 if backup_overide_check(self.backup_dir, 'spinner') == True:
                     break
 
-                install_from_path = ("{}/{}/spinner".format(CONTRIB_THEMES, self.selected_theme))
+                install_from_path = ("./{}/{}/spinner".format(CONTRIB_THEMES, self.selected_theme))
                 INSTALL_QT_SPINNER(self.backup_dir, OP_VER, OP_LOC, install_from_path, SHOW_CONSOLE_OUTPUT)
                 mark_self_installed()        # Create flag in /sdcard so auto installer knows there is a self installation
                 print('Press enter to continue!')
@@ -192,27 +194,26 @@ class ThemeInstaller:
                     time.sleep(1.5)
                     continue
             
-            #Check if there was an APK backup already this session to prevent accidental overwrites
-            #Returns true if okay to proceed. Gets self.backup_dir & asset type name
-            if backup_overide_check(self.backup_dir, 'spinner') == True:
-                break
+                #Check if there was an APK backup already this session to prevent accidental overwrites
+                #Returns true if okay to proceed. Gets self.backup_dir & asset type name
+                if backup_overide_check(self.backup_dir, 'spinner') == True:
+                    break
 
-            #Set bootAniColor based off the selected option - if 'white_', 'color_', or standard bootanimation 
-            if selected_option == 'Boot Animation':
-                bootAniColor = ''
-            elif selected_option == 'Color Boot Animation':
-                bootAniColor = 'color_'
-            elif selected_option == 'White Boot Animation':
-                bootAniColor = 'white_'
+                #Set bootAniColor based off the selected option - if 'white_', 'color_', or standard bootanimation 
+                if selected_option == 'Boot Animation':
+                    bootAniColor = ''
+                elif selected_option == 'Color Boot Animation':
+                    bootAniColor = 'color_'
+                elif selected_option == 'White Boot Animation':
+                    bootAniColor = 'white_'
 
-            #Backup And install new bootanimation
-            install_from_path = ('{}/{}/{}'.format(CONTRIB_THEMES, self.selected_theme, bootAniColor))
-            INSTALL_BOOTANIMATION(self.backup_dir, install_from_path)
-            mark_self_installed()        # Create flag in /sdcard so auto installer knows there is a self installation
-            print('Press enter to continue!')
-            input()
+                #Backup And install new bootanimation
+                install_from_path = ('./{}/{}/{}'.format(CONTRIB_THEMES, self.selected_theme, bootAniColor))
+                INSTALL_BOOTANIMATION(self.backup_dir, install_from_path)
+                mark_self_installed()        # Create flag in /sdcard so auto installer knows there is a self installation
+                print('Press enter to continue!')
+                input()
    
-    # Auto
     def auto_installer(self):             # Auto Installer program for incorperating into OP forks SEE DEVREADME
         self.selected_theme = AUTO_INSTALL_CONF['auto_selected_theme']
         opdir               = AUTO_INSTALL_CONF['op_dir_name']
