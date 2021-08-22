@@ -99,7 +99,7 @@ class ThemeInstaller:
                 print('Didn\'t select a theme, exiting.')
                 return
             OP_VER, OP_LOC = get_OP_Ver_Loc()
-            print(OP_LOC)
+            print("OpenLocation".format(OP_LOC))
             self.get_available_options()
             if self.install_function() == 'exit':
                 return
