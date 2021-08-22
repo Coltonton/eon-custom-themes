@@ -73,6 +73,8 @@ EON_TYPE, BOOT_LOGO_THEME_NAME, BOOT_LOGO_THEME_PATH, BOOT_LOGO_DEVICE_NAME, BOO
 
 class ThemeInstaller:
     def __init__(self):                   # Init code runs once. sets up & determines if to run auto or self
+        print(BOOT_LOGO_DEVICE_NAME)
+
         # Create and get backup folder
         self.backup_dir = make_backup_folder()
 
@@ -125,7 +127,9 @@ class ThemeInstaller:
         self.theme_options.append('-Reboot-')
         self.theme_options.append('-Quit-')
 
-    def install_function(self, OPLOC):           # Self installer program, prompts user on what they want to do
+    def install_function(self):           # Self installer program, prompts user on what they want to do
+        global OP_LOC
+        global BOOT_LOGO_DEVICE_NAME
         while 1:
             theme_types = list(self.theme_options)  # this only contains available options from self.get_available_options
             if not len(theme_types):
@@ -178,7 +182,7 @@ class ThemeInstaller:
                     break
 
                 install_from_path = ("{}/{}/spinner".format(CONTRIB_THEMES, self.selected_theme))
-                INSTALL_QT_SPINNER(self.backup_dir, OP_VER, OPLOC, install_from_path, SHOW_CONSOLE_OUTPUT)
+                INSTALL_QT_SPINNER(self.backup_dir, OP_VER, OP_LOC, install_from_path, SHOW_CONSOLE_OUTPUT)
                 mark_self_installed()        # Create flag in /sdcard so auto installer knows there is a self installation
                 print('Press enter to continue!')
                 input()
