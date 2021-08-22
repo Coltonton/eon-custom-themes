@@ -43,10 +43,6 @@ def is_affirmative():           # Ask user for confirmation
     return u in ['yes', 'ye', 'y', '1']
 
 def make_backup_folder():
-    # Simple if PC check
-    if os.path.exists("C:/"):
-        print("Sorry No PC!!")
-        sys.exit()
     # Check if theme backup folder doesnt exist then create
     if not os.path.exists('/storage/emulated/0/theme-backups'):
         os.mkdir('/storage/emulated/0/theme-backups')
@@ -236,6 +232,7 @@ def INSTALL_BOOT_LOGO(eon_type, backup_dir, install_from_path):
 def INSTALL_BOOTANIMATION(backup_dir, install_from_path, color=''):
     os.system('mount -o remount,rw /system')                                                       # /system read only, must mount as rw
     os.system('mv /system/media/bootanimation.zip {}'.format(backup_dir))       # Backup
+    print(color)
     os.system('cp {}/{}bootanimation.zip /system/media/bootanimation.zip'.format(install_from_path, color))  # Replace
     os.system('chmod 666 /system/media/bootanimation.zip')                                         # Need to chmod to edet permissions to 666
     print('\nBoot Animation installed! Original file(s) backed up to {}'.format(backup_dir))
