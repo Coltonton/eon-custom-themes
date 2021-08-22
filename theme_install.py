@@ -151,6 +151,8 @@ class ThemeInstaller:
                     time.sleep(1.5)
                     continue
 
+                print('\nPlease wait....')
+
                 #Check if there was an Boot logo backup already this session to prevent accidental overwrites
                 #Returns true if okay to proceed. Gets self.backup_dir & asset type name
                 if backup_overide_check(self.backup_dir, 'spinner') == True:
@@ -184,6 +186,7 @@ class ThemeInstaller:
                 return
             elif selected_option == '-Reboot-':
                 REBOOT()
+                exit()
             elif selected_option == '-Quit-' or selected_option is None:
                 QUIT_PROG()
             elif selected_option == 'Boot Animation' or 'Color Boot Animation' or 'White Boot Animation':

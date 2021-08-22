@@ -97,8 +97,8 @@ class ThemeUtil:
         install_folder = input('?: ')
 
         op_ver, op_loc = get_OP_Ver_Loc()
-    # cd /data/eon-custom-themes && exec ./theme_utils.py
-    # /data/eon-custom-themes/contributed-themes/Subaru
+        # cd /data/eon-custom-themes && exec ./theme_utils.py
+        # /data/eon-custom-themes/contributed-themes/Subaru
         if path.exists('{}/LOGO'.format(install_folder)):
             theme_options.append('OP3T Boot Logo')
         if path.exists('{}/SPLASH'.format(install_folder)):
