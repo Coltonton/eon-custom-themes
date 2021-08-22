@@ -199,7 +199,7 @@ class ThemeInstaller:
             
                 #Check if there was a boot ani backup already this session to prevent accidental overwrites
                 #Returns true if okay to proceed. Gets self.backup_dir & asset type name
-
+                print("hewwo".format(BOOT_LOGO_DEVICE_NAME))
                 if backup_overide_check(self.backup_dir, BOOT_LOGO_DEVICE_NAME) == True:
                     break
 
