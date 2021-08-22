@@ -99,7 +99,7 @@ class ThemeInstaller:
                 print('Didn\'t select a theme, exiting.')
                 return
             OP_VER, OP_LOC = get_OP_Ver_Loc()
-            print("OpenLocation".format(OP_LOC))
+            print("OpenLocation{}".format(OP_LOC))
             self.get_available_options()
             if self.install_function() == 'exit':
                 return
@@ -178,7 +178,7 @@ class ThemeInstaller:
                 if backup_overide_check(self.backup_dir, 'spinner') == True:
                     break
 
-                print("Location".format(OP_LOC))
+                print("Location {}".format(OP_LOC))
                 install_from_path = ("{}/{}/spinner".format(CONTRIB_THEMES, self.selected_theme))
                 INSTALL_QT_SPINNER(self.backup_dir, OP_VER, OP_LOC, install_from_path, SHOW_CONSOLE_OUTPUT)
                 mark_self_installed()        # Create flag in /sdcard so auto installer knows there is a self installation
