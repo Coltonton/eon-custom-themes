@@ -241,12 +241,14 @@ def INSTALL_QT_SPINNER(backup_dir, opver, opdir, install_from_path, con_output):
     if path.exists('{}/img_spinner_comma.png'.format(install_from_path)):                               #Contibuter Did Provide
         os.system('mv /data/{}/selfdrive/assets/img_spinner_comma.png {}/spinner'.format(opdir, backup_dir))                        #Backup spinner logo
         os.system('cp {}/img_spinner_comma.png /data/{}/selfdrive/assets'.format(install_from_path, opdir)) #Replace spinner logo supplied custom
-        custom_logo = True                                                                                                               #Add custom_logo flag
+        custom_logo = True
+        print("logo")                                                                                                               #Add custom_logo flag
     # Check if theme contributer provided a spinner track
     if path.exists('{}/img_spinner_track.png'.format(install_from_path)):                               #Contibuter Did Provide
         os.system('mv /data/{}/selfdrive/assets/img_spinner_track.png {}/spinner'.format(opdir, backup_dir))                        #Backup spinner track
         os.system('cp {}/img_spinner_track.png /data/{}/selfdrive/assets'.format(install_from_path, opdir)) #Replace spinner track supplied custom
-        custom_track = True                                                                                                              #Add custom_track flag
+        custom_track = True   
+        print('track')                                                                                                           #Add custom_track flag
     # Check if theme contributer provided a spinner.c
     #if raveRainbow == True:                                                                                                          #User wants rave rainbow
         #os.system('mv /data/{}/selfdrive/common/spinner.c {}/spinner'.format(opdir, backup_dir))                                    #Backup spinner.c
