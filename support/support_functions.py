@@ -43,6 +43,10 @@ def is_affirmative():           # Ask user for confirmation
     return u in ['yes', 'ye', 'y', '1']
 
 def make_backup_folder():
+    # Simple if PC check
+    if os.path.exists("C:/"):
+        print("Sorry No PC!!")
+        sys.exit()
     # Check if theme backup folder doesnt exist then create
     if not os.path.exists('/storage/emulated/0/theme-backups'):
         os.mkdir('/storage/emulated/0/theme-backups')

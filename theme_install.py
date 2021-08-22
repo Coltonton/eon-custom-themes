@@ -64,6 +64,10 @@ from support.auto_config       import AUTO_INSTALL_CONF, IS_AUTO_INSTALL, DESIRE
 
 ##======================= CODE START ================================================================
 os.chdir(os.path.dirname(os.path.realpath(__file__)))  # __file__ is safer since it doesn't change based on where this file is called from
+# Simple if PC check, not needed but nice to have
+if os.path.exists("C:/"):
+    print("This program only works on Comma EONS & Comma Two, sorry...")
+    sys.exit()
 if IS_AUTO_INSTALL:
     print_text(AUTO_WELCOME_TEXT)         #Print welcome text with the flag for auto welcome text
 else:
@@ -73,8 +77,6 @@ EON_TYPE, BOOT_LOGO_THEME_NAME, BOOT_LOGO_THEME_PATH, BOOT_LOGO_DEVICE_NAME, BOO
 
 class ThemeInstaller:
     def __init__(self):                   # Init code runs once. sets up & determines if to run auto or self
-        print(BOOT_LOGO_DEVICE_NAME)
-
         # Create and get backup folder
         self.backup_dir = make_backup_folder()
 
@@ -95,6 +97,7 @@ class ThemeInstaller:
             exit()                                                 # Terminate program
 
     def start_loop(self):                 # Self Installer loop
+        global OP_VER, OP_LOC
         while 1:
             self.selected_theme = get_user_theme()
             if self.selected_theme is None:
