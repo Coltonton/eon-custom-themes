@@ -155,7 +155,7 @@ class ThemeInstaller:
 
                 #Check if there was an Boot logo backup already this session to prevent accidental overwrites
                 #Returns true if okay to proceed. Gets self.backup_dir & asset type name
-                if backup_overide_check(self.backup_dir, 'spinner') == True:
+                if backup_overide_check(self.backup_dir, 'bootanimation.zip') == True:
                     break
 
                 #Backup & install new
