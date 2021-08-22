@@ -1,8 +1,4 @@
-# DEAR ALL! V2 currently in dev; please use branch V2-PreRelease-Testing if using OpenPilot V0.8.3+ The pre-release V2 branch is fully (as i can tell) working! (except auto) Feel free to post issues or contacct me with problems!! 
--Cole 4/23/21
-
-
-Release 1.1
+Release 2.0 - Beta 1
 
 [![](https://i.imgur.com/w9jylkJ.png[/img])](#)
 # EON-Custom-Themes
@@ -22,6 +18,9 @@ Table of Contents
 * [What Are The Availble Assets?](#what-are-the-availble-assets)
 * [Restoring From Backup](#restoring-theme-assets-from-backup)
 * [Restoring The Comma.ai Stock Theme (if backup lost)](#restoring-the-comma-stock-theme-if-backup-lost)
+
+### Theme Utils Package
+* [General Info](#)
 
 ### List Of Themes:
 *  [Stock Themes:](#stock-themes)

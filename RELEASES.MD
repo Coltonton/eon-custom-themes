@@ -1,3 +1,23 @@
+Version 2.0.0 (2021-XX-XX)
+========================
+* Condense installer code to run in dedicated functions
+* Cleanup naming scheme to theme_xxxx.py
+* ReDo Restore Code
+* Remove traces of APK :(
+* TODO - Auto Logic Finish!!!
+
+
+Version 1.1.1 (2020-01-01)
+========================
+* Fix backup bug
+* Make new utility theme_utils.py for utilities
+* fix github hack to --skip-worktree and add option
+* Add utility to undo that in theme_utils.py 
+* move cleanup_files.py into theme_utils.py
+* OP spinner now doesnt needlessly install files it doesnt have to
+* re-orrenent spinner code for all
+* make print_welcome_text just print_text to use for more then welcome
+
 Version 1.1 (2020-11-03)
 ========================
 * Add @ShaneSmiskol rave rainbow OpenPilot spinner option (It makes the progress bar turn into a rave!)
