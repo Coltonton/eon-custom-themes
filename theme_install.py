@@ -101,7 +101,7 @@ class ThemeInstaller:
             OP_VER, OP_LOC = get_OP_Ver_Loc()
             print("OpenLocation{}".format(OP_LOC))
             self.get_available_options()
-            if self.install_function() == 'exit':
+            if self.install_function(OP_LOC) == 'exit':
                 return
 
     def get_available_options(self):      # Check what assets are available for the selected theme
@@ -126,7 +126,7 @@ class ThemeInstaller:
         self.theme_options.append('-Reboot-')
         self.theme_options.append('-Quit-')
 
-    def install_function(self):           # Self installer program, prompts user on what they want to do
+    def install_function(self, OPLOC):           # Self installer program, prompts user on what they want to do
         while 1:
             theme_types = list(self.theme_options)  # this only contains available options from self.get_available_options
             if not len(theme_types):
