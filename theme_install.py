@@ -127,15 +127,15 @@ class ThemeInstaller:
 
     def install_function(self):           # Self installer program, prompts user on what they want to do
         while 1:
-            options = list(self.theme_options)  # this only contains available options from self.get_available_options
-            if not len(options):
+            theme_types = list(self.theme_options)  # this only contains available options from self.get_available_options
+            if not len(theme_types):
                 print('\n*\nThe selected theme has no resources available for your device! Try another.')
                 time.sleep(2)
                 return
         
             #Ask users what resources to install
             print('\n*\nWhat resources do you want to install for the {} theme?'.format(self.selected_theme))
-            for idx, theme in enumerate(options):
+            for idx, theme in enumerate(theme_types):
                 print('{}. {}'.format(idx + 1, theme))
             indexChoice = int(input("Enter Index Value: "))
             indexChoice -= 1 
@@ -157,7 +157,7 @@ class ThemeInstaller:
                     break
 
                 #Backup & install new
-                install_from_path = ('./{}/{}/{}'.format(CONTRIB_THEMES, self.selected_theme, BOOT_LOGO_THEME_PATH))
+                install_from_path = ('.{}/{}/{}'.format(CONTRIB_THEMES, self.selected_theme, BOOT_LOGO_THEME_PATH))
                 INSTALL_BOOT_LOGO(EON_TYPE, self.backup_dir, install_from_path)
                 mark_self_installed()       # Create flag in /sdcard so auto installer knows there is a self installation
                 print('Press enter to continue!')
