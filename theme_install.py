@@ -218,8 +218,8 @@ class ThemeInstaller:
                     bootAniColor = 'white_'
 
                 #Backup And install new bootanimation
-                install_from_path = ('{}/{}/{}'.format(CONTRIB_THEMES, self.selected_theme, bootAniColor))
-                INSTALL_BOOTANIMATION(self.backup_dir, install_from_path)
+                install_from_path = ('{}/{}'.format(CONTRIB_THEMES, self.selected_theme))
+                INSTALL_BOOTANIMATION(self.backup_dir, install_from_path, bootAniColor)
                 mark_self_installed()        # Create flag in /sdcard so auto installer knows there is a self installation
                 print('Press enter to continue!')
                 input()
