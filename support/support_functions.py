@@ -318,7 +318,6 @@ def backup_overide_check(backup_dir, theme_type):
 def REBOOT():
     print('\nRebooting.... Thank You, Come Again!!!')
     os.system('am start -a android.intent.action.REBOOT')  # reboot intent is safer (reboot sometimes causes corruption)
-    @return 'exit'
     sys.exit()
 
 def QUIT_PROG():
