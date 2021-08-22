@@ -105,7 +105,7 @@ class ThemeInstaller:
                 return
             OP_VER, OP_LOC = get_OP_Ver_Loc()
             self.get_available_options()
-            if self.install_function(OP_LOC) == 'exit':
+            if self.install_function() == 'exit':
                 return
 
     def get_available_options(self):      # Check what assets are available for the selected theme
