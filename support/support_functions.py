@@ -245,7 +245,7 @@ def INSTALL_QT_SPINNER(backup_dir, opver, opdir, install_from_path, con_output):
     # Check if theme contributer provided a spinner track
     if path.exists('{}/img_spinner_track.png'.format(install_from_path)):                               #Contibuter Did Provide
         os.system('mv /data/{}/selfdrive/assets/img_spinner_track.png {}/spinner'.format(opdir, backup_dir))                        #Backup spinner track
-        os.system('cp {}/img_spinner_track.png /data/{}/selfdrive/assets'.format(CONTRIB_THEMES, self.selected_theme, opdir)) #Replace spinner track supplied custom
+        os.system('cp {}/img_spinner_track.png /data/{}/selfdrive/assets'.format(install_from_path, opdir)) #Replace spinner track supplied custom
         custom_track = True                                                                                                              #Add custom_track flag
     # Check if theme contributer provided a spinner.c
     #if raveRainbow == True:                                                                                                          #User wants rave rainbow
@@ -254,14 +254,14 @@ def INSTALL_QT_SPINNER(backup_dir, opver, opdir, install_from_path, con_output):
         #custom_c = True                                                                                                                  #Add custom_C flag                                                                                                                  #Add custom_C flag
     if path.exists('{}/spinner.c'.format(install_from_path)) and opver == OP_VER <= 7.8:                #Contibuter Did Provide      
         os.system('mv /data/{}/selfdrive/common/spinner.c {}/spinner'.format(opdir, backup_dir))                                    #Backup spinner.c                
-        os.system('cp {}/spinner.c /data/{}/selfdrive/common'.format(CONTRIB_THEMES, self.selected_theme, opdir))             #Replace spinner.c with supplied custom 
+        os.system('cp {}/spinner.c /data/{}/selfdrive/common'.format(install_from_path, opdir))             #Replace spinner.c with supplied custom 
         custom_c = True                                                                                                                  #Add custom_C flag
 
     #Final make new spinner & finish if non QT
     if OP_VER <= 7.8:
         print('\nBuilding new spinner files, please wait..... This should take under a minute....')
         os.system('cd /data/openpilot/selfdrive/ui/spinner && make{}'.format(self.con_output))
-    print('\n{} spinner installed successfully! Original file(s) backed up to {}'.format(opdir, self.backup_dir))
+    print('\n{} spinner installed successfully! Original file(s) backed up to {}'.format(opdir, backup_dir))
 
 
 ## ================= Restor-er Code ================= ##
