@@ -73,6 +73,8 @@ EON_TYPE, BOOT_LOGO_THEME_NAME, BOOT_LOGO_THEME_PATH, BOOT_LOGO_DEVICE_NAME, BOO
 
 class ThemeInstaller:
     def __init__(self):                   # Init code runs once. sets up & determines if to run auto or self
+        OP_LOC = "-"
+
         # Create and get backup folder
         self.backup_dir = make_backup_folder()
 
