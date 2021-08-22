@@ -236,7 +236,7 @@ def INSTALL_BOOTANIMATION(backup_dir, install_from_path, color=''):
     os.system('chmod 666 /system/media/bootanimation.zip')                                         # Need to chmod to edet permissions to 666
     print('\nBoot Animation installed! Original file(s) backed up to {}'.format(backup_dir))
 
-def INSTALL_SPINNER(backup_dir, opver, opdir, install_from_path, con_output):
+def INSTALL_QT_SPINNER(backup_dir, opver, opdir, install_from_path, con_output):
     # Check if theme contributer provided a spinner logo
     if path.exists('{}/img_spinner_comma.png'.format(install_from_path)):                               #Contibuter Did Provide
         os.system('mv /data/{}/selfdrive/assets/img_spinner_comma.png {}/spinner'.format(opdir, backup_dir))                        #Backup spinner logo
