@@ -197,9 +197,10 @@ class ThemeInstaller:
                     time.sleep(1.5)
                     continue
             
-                #Check if there was an APK backup already this session to prevent accidental overwrites
+                #Check if there was a boot ani backup already this session to prevent accidental overwrites
                 #Returns true if okay to proceed. Gets self.backup_dir & asset type name
-                if backup_overide_check(self.backup_dir, 'spinner') == True:
+
+                if backup_overide_check(self.backup_dir, BOOT_LOGO_DEVICE_NAME) == True:
                     break
 
                 #Set bootAniColor based off the selected option - if 'white_', 'color_', or standard bootanimation 
@@ -211,7 +212,7 @@ class ThemeInstaller:
                     bootAniColor = 'white_'
 
                 #Backup And install new bootanimation
-                install_from_path = ('./{}/{}/{}'.format(CONTRIB_THEMES, self.selected_theme, bootAniColor))
+                install_from_path = ('{}/{}/{}'.format(CONTRIB_THEMES, self.selected_theme, bootAniColor))
                 INSTALL_BOOTANIMATION(self.backup_dir, install_from_path)
                 mark_self_installed()        # Create flag in /sdcard so auto installer knows there is a self installation
                 print('Press enter to continue!')
