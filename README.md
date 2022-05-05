@@ -74,7 +74,7 @@ Thanks to many hours of coding, thinking, and courtious help of @ShaneSmiskol th
 3. `git clone https://github.com/Coltonton/eon-custom-themes.git`
 
 4. `cd ./eon-custom-themes` after cloning has finished
-5. `exec ./install_theme.py`
+5. `python ./theme_install.py`
 6. The installer will now run.
 
 ### Navigating The Installer:
