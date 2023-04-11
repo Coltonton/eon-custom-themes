@@ -28,11 +28,7 @@ Table of Contents
 *  [How To Contribute Your Work!](#contribute-your-work)
 
 ### Minimal Self Installer Assistance (Included with OP Forks)
-* [Main Info](#Minimal-Self-Installer-Assistance)
-* [Disable auto installer](#Disable-auto-installer)
-* [WHY DID MY EONS THEME CHANGE NO ONE TOLD ME](#WHY-DID-MY-EONS-THEME-CHANGE-NO-ONE-TOLD-ME)
-* [Features](#Features)
-* [Support](#Support)
+reserved
 
 ### Un-Installing EON-Custom-Themes
 * [Main Info](#UnInstalling-EON-Custom-Themes)
@@ -140,29 +136,18 @@ Please see the [DEVREADME](https://github.com/Coltonton/eon-custom-themes/blob/m
 
 # Minimal Self Installer Assistance:
 
-This program and project was designed with the intent to not just be a program users can run but also a program OpenPilot developers can include in their fork to theme their users EONs with their theme. Please see the [DEVREADME](https://github.com/Coltonton/eon-custom-themes/blob/master/developer/DEVREADME.md) for more information if you are a developer wanting to include the auto installer as part of your fork! If you have stumbled across this as part of an OpenPilot fork, bellow is alot of helpful information! 
+This program and project was designed with the intent to not just be a program users can run but also a program OpenPilot developers can include in their fork to theme their users EONs with their theme (Coming in Version 2). Please see the [DEVREADME](https://github.com/Coltonton/eon-custom-themes/blob/master/developer/DEVREADME.md) for more information if you are a developer wanting to include the auto installer as part of your fork! If you have stumbled across this as part of an OpenPilot fork, bellow is alot of helpful information! 
 
 
 ### Disable auto installer:
+reserved
 
-- If you do not wish to have the selected auto boot logo and boot animation installed as part of your EON (change will stick despite what OpenPilot fork you run) follow the instructions to come, but please read everythting here!
-
-- If you installed a different theme before hand from the main EON-Custom-Theme project you need not worry about this step. The program is intellegent enough to know if another theme was already installed and it's assumed you probably want that one.
-
-- *psst* hey you, yeah you... dont want included chosen theme? Well.... how about one to go with your Honda/Toyota/Subaru/Hyundai etc? there are plenty to choose from  [over here](https://github.com/Coltonton/eon-custom-themes)!!!
-
-- To disable the auto installation process simply [SSH into your EON](https://medium.com/@jfrux/comma-eon-getting-connected-with-ssh-3ed6136e4a75) and `nano /data/arnepilot/eon-custom-themes/support/do_not_auto.txt` by changing the 0 to a 1. This will prevent any auto install attempts, this MUST BE done before the next reboot after you clone or pull this version to prevent the auto installer from running next reboot!!
 
 ### WHY DID MY EONS THEME CHANGE NO ONE TOLD ME!!
-- Didn't know that the auto installer was included   and dont like it or Simply want to go back to the Comma stock EON theme? Firstly may I recomend the main [EON Custom Themes](https://github.com/Coltonton/eon-custom-themes) project that the minimal version is a subsidiary of? If you dont know it is a community project created by @Coltonton for the community and allows you to chage your EONs boot logo and boot animation, and OP spinenr (as you saw if you're reading this...) With many themes available for all the major supported cars! ex. Honda, Hyundai, Toyota, Subaru, and much more, including others! [Check it out!!](https://github.com/Coltonton/eon-custom-themes) N...No? Oh...Okay you want the Comma stock one back eh? You Sure? Colton put many weeks of work into creating that project and making it easy and intuitive for you to get a custom look!! O..oh... okay... still not interested.... that's fine! This wonderfully overengineered and overthought program made a backup when it installed this theme automagicly! To restore the comma stock theme [SSH into your EON](https://medium.com/@jfrux/comma-eon-getting-connected-with-ssh-3ed6136e4a75) and:
-- - `exec /data/'your_OP_directory_name'/eon-custom-themes/restore_theme.py` and follow the prompts of the easy to use program! You will not need to follow the steps above and set the `do_not_auto.txt` file to 1 (unless you want to) since you used the program to install a chosen theme (or restore in this case) it will remember that! Even if its a restoring a backup! 
-- - If you lost the backup somehow please clone the [main project here](https://github.com/Coltonton/eon-custom-themes) to /data  using `git clone https://github.com/Coltonton/eon-custom-themes.git` and then `exec /data/eon-custom-themes/install_theme.py`, and use the simple program to install the 'comma-default' theme. 
+reserved
 
 ### Features:
 
-- Don't like the provided boot animation color? Many of the themes have a all-white and matching-color boot animation!! Just edit `AUTO_INSTALL_CONF = {anicolor}` in `/data/'your_OP_directory_name'/eon-custom-themes/support_variables/.py` under the `AUTO_INSTALL_CONF` var to `color_` or `white_`. Be sure to check [here](#stock-themes) for what options are available!
-- You can disable automatic installation by editing `./eon-custom-themes/support/do_not_auto.txt ` by changing the 0 to a 1 
-- This program has the ability to auto update themes so dont be alarmed if it changes
 - Backups are stored in `/sdcard/theme-backups` and can also be easily restored by running `exec /data/'your_OP_directory_name'/eon-custom-themes/restore_theme.py` and following the prompts.
 - If you already used the EON-Custom-Themes program to install/restore a new custom theme of your choosing this intelligent program will not auto install this theme 
 - The Installer and this project was designed so the main program and this minimal program would be able to work togeter in unision. No stones were left unturned in development....
@@ -170,12 +155,9 @@ This program and project was designed with the intent to not just be a program u
 ### Support:
 - How do I restore a previous theme?
 - - Restoring a previous theme can be done by running `exec ./restore_theme.py` in the eon-custom-themes directory. If you cloned the main project it should be in `/data` or it can be in `/data/'your_OP_directory_name'/` if your OpenPilot fork has the auto installer inbuilt. 
--  I installed a custom theme but I want to switch over to get the provided theme with possible updates? 
-- - Easy! All you should need to do is delete the file `/sdcard/is_self_istaleld.txt` and next reboot the auto installer will run and install the provided theme. This will also unlock the potential for future updates.
-- - The "self install themes" like arnepilot and dragonpilot are also usually available as part of the main project, so you can also manually install it yourself, but you will not recive auto updates (if applicable)
 - This project is cool! are there other themes other then the one that was included? YES! [See here](#stock-themes)
-- How does all this sorcery work? How do I include the self installer in my fork? How do I design my own theme to use? And possibly publish??
-- - All good questions! The code is all open source so please take a look! There is also lotsss of information available on how the program works, how to include it in your fork, and even how to design your own in the [DEVREADME](https://github.com/Coltonton/eon-custom-themes/blob/master/developer/DEVREADME.md)
+- How does all this sorcery work? How do I design my own theme to use? And possibly publish??
+- - All good questions! The code is all open source so please take a look! There is also lotsss of information available on how the program works, and even how to design your own in the [DEVREADME](https://github.com/Coltonton/eon-custom-themes/blob/master/developer/DEVREADME.md)
 - Message me on discord @C-ton#2169 if you need any additional help :)
 -  Feel free to check out the [main unoffical community discord server](http://discord.gg/4UKcsmGJDq), and find my own little chat #custom-themes for more support from other then just me! Or just to catch me easier!!
 
