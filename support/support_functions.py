@@ -161,9 +161,10 @@ def get_aval_themes():           # Auto discover themes and let user choose!
                 DebugPrint("Did not match")
     
 def mark_self_installed():      # Creates a file letting the auto installer know if a self theme installed
+    pass
     DebugPrint("Marking as self installed to /storage/emulated/0/eon_custom_themes_self_installed'")
-    if DEVMODE: contonder=is_affirmative()
-    if not path.exists or contonder is '1' ('/storage/emulated/0/eon_custom_themes_self_installed'):
+    if DEVMODE: return
+    if not path.exists ('/storage/emulated/0/eon_custom_themes_self_installed'):
         f = open("/storage/emulated/0/eon_custom_themes_self_installed.txt", "w")
         f.close
 
