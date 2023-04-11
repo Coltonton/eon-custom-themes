@@ -1,6 +1,6 @@
 #!/usr/bin/python
 ###################################################################################
-#                                  VER 2.0 PR                                    #
+#                                  VER 1.2                                        #
  #                                                                                #
  #      Permission is granted to anyone to use this software for any purpose,     #
  #     excluding commercial applications, and to alter it and redistribute it     #
@@ -35,7 +35,7 @@
  #                     To Get Started Making Your EON Purdy:                      #
  #                                                                                #
  #                              SSH into your EON:                                #
- #                                  [REDACTED]                                    #
+ #https://github.com/commaai/openpilot/wiki/SSH#option-3---githubs-official-instructions#   
  #                                                                                #
  #              Type the following command if using the main project              #
  #                  exec /data/eon-custom-themes/theme_install.py                 #
@@ -55,6 +55,9 @@
  #       And incorparate it into your OP Fork? See ./developer/DEVREADME          #
  #                                                                                #
 ##################################################################################
+from support.support_variables import EON_CUSTOM_THEMES_VER
+print('EON Custom Themes Version '+ EON_CUSTOM_THEMES_VER)
+
 import os
 import time
 from os import path
@@ -152,7 +155,7 @@ class ThemeUtil:
                     break
 
                 install_from_path = ("{}/spinner".format(install_folder))
-                INSTALL_SPINNER(self.backup_dir, op_ver, op_loc, install_from_path, SHOW_CONSOLE_OUTPUT)
+                INSTALL_QT_SPINNER(self.backup_dir, op_ver, op_loc, install_from_path, SHOW_CONSOLE_OUTPUT)
                 mark_self_installed()        # Create flag in /sdcard so auto installer knows there is a self installation
                 print('Press enter to continue!')
                 input()    

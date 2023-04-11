@@ -1,14 +1,18 @@
 #!/usr/bin/python
 # ===================  Misc vars =================== ##
 SHOW_CONSOLE_OUTPUT = False                # Show the console output when 'make' is called?
+VERBOSE = True
+DEVMODE = True
+DEV_PLATFORM = ""
+EON_CUSTOM_THEMES_VER = "1.2"              # This Softwares Version
 
 # ==============  Backup related vars ============== ##
-BACKUPS_DIR = '/storage/emulated/0/theme-backups'
+BACKUPS_DIR = '/storage/emulated/0/theme-backups' if not DEVMODE else './test-theme-backups'
 BACKUP_OPTIONS = []
 
-# =============  get_user_theme() vars ============= ##
-CONTRIB_THEMES = '/data/eon-custom-themes/contributed-themes'
-EXCLUDED_THEMES = ['Example', 'ignoreme', 'Colton']
+# =============  get_aval_themes() vars ============= ##
+CONTRIB_THEMES = '/data/eon-custom-themes/contributed-themes' if not DEVMODE else "./contributed-themes"
+EXCLUDED_THEMES = ["Test", 'Example', 'ignoreme', 'Colton'] if not DEVMODE else ['Example', 'ignoreme', 'Colton']
 MIN_SIM_THRESHOLD = 0.25      # user's input needs to be this percent or higher similar to a theme to select it
 
 # =========== Get OP Ver & Location vars =========== ##
@@ -21,7 +25,8 @@ WELCOME_TEXT = ['Created By: Colton (Brandon) S. EndLine \\n',
                 'Free to use! Free to Edit! Free to integrate!',
                 'Design and contribute your themes today!',
                 '(See the developer folder in this repo)',
-                'It\'s your EON, do what you want!']
+                'It\'s your EON, do what you want!',
+                'Version {}'.format(EON_CUSTOM_THEMES_VER)]
 AUTO_WELCOME_TEXT = ['Created By: Colton (Brandon) S. EndLine \\n',
                 'Special Thanks to @ShaneSmiskol for all the help!!!',
                 'Free to use! Free to Edit! Free to integrate!',

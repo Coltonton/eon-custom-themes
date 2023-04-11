@@ -1,0 +1,3 @@
+exec /data/eon-custom-themes/theme_install.py
+
+cd /data/eon-custom-themes && git pull
