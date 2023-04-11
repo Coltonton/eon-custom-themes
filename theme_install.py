@@ -111,8 +111,8 @@ class ThemeInstaller:
         if os.path.exists('{}/{}/white_bootanimation.zip'.format(CONTRIB_THEMES, self.selected_theme)):
             self.theme_options.append('White Boot Animation')
         # Check if the selected theme has a OpenPilot Spinner asset
-        if os.path.exists('{}/{}/spinner'.format(CONTRIB_THEMES, self.selected_theme)):
-            self.theme_options.append('OpenPilot Spinner')
+        #if os.path.exists('{}/{}/spinner'.format(CONTRIB_THEMES, self.selected_theme)):
+            #self.theme_options.append('OpenPilot Spinner')
 
         self.theme_options.append('-Main Menu-')
         self.theme_options.append('-Reboot-')
