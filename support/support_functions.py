@@ -51,7 +51,10 @@ def is_affirmative():           # Ask user for confirmation
         print("WTF do you mean {}... I'm going to assume NO so i dont brick ya shi...".format(u))
     if u not in ['yes', 'ye', 'y', '1', "j", "ja", "si"]:
         print('Not Installing....')
-    return u in ['yes', 'ye', 'y', '1', "j", "ja", "si"]
+    if u in ['yes', 'ye', 'y', '1', "j", "ja", "si"]: 
+        return 1
+    else: 
+        return 0
 
 def make_backup_folder():
     DebugPrint('Getting backup Folder congig')
@@ -160,7 +163,7 @@ def get_aval_themes():           # Auto discover themes and let user choose!
 def mark_self_installed():      # Creates a file letting the auto installer know if a self theme installed
     DebugPrint("Marking as self installed to /storage/emulated/0/eon_custom_themes_self_installed'")
     if DEVMODE: contonder=is_affirmative()
-    if not path.exists or not contonder ('/storage/emulated/0/eon_custom_themes_self_installed'):
+    if not path.exists or contonder is '1' ('/storage/emulated/0/eon_custom_themes_self_installed'):
         f = open("/storage/emulated/0/eon_custom_themes_self_installed.txt", "w")
         f.close
 
