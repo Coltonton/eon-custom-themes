@@ -1,8 +1,8 @@
 #!/usr/bin/python
 # ===================  Misc vars =================== ##
 SHOW_CONSOLE_OUTPUT = False                # Show the console output when 'make' is called?
-VERBOSE = True
-DEVMODE = True
+VERBOSE = False
+DEVMODE = False
 DEV_PLATFORM = ""
 EON_CUSTOM_THEMES_VER = "1.2"              # This Softwares Version
 
