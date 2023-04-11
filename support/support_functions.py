@@ -8,6 +8,7 @@ os.chdir(os.path.dirname(os.path.realpath(__file__)))  # __file__ is safer since
 ## ================= Shared ================= ##
 def get_device_theme_data(onprocess='null'):
     DebugPrint('Getting Device Data...', 'sf')
+    devicedata = dict
     # Crude device detection, *shrug* it works! LeEco does not have tristate!
     if path.exists('/sys/devices/virtual/switch/tri-state-key'): #If 3T-ON
         print('\n*** OG OnePlus EON Device Detected! OooOoOooo we got a rebel! :O ***')
@@ -179,7 +180,7 @@ def get_OP_Ver_Loc():           # Get OpenPilot Version & Location
     while True:
         if response == "1":
             OP_LOC = '/data/openpilot'
-        if response == "2" or DEVMODE is True:
+        if response == "2" or DEVMODE is True and response == "2":
             print('What Is The Correct OpenPilot directory?')
             OP_LOC = input('/data/')
             if OP_LOC in ["override", "o"]: 

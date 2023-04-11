@@ -72,7 +72,6 @@ DebugPrint("DEBUG ON")
 
 OpInfo = dict
 DeviceData = get_device_theme_data() # Get Perams based off detected device
-print(DeviceData["BOOT_LOGO_THEME_PATH"])
 
 class ThemeInstaller:
     def __init__(self):                   # Init code runs once. sets up & determines if to run auto or self
