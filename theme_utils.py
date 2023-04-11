@@ -35,7 +35,7 @@
  #                     To Get Started Making Your EON Purdy:                      #
  #                                                                                #
  #                              SSH into your EON:                                #
- #                                  [REDACTED]                                    #
+ #https://github.com/commaai/openpilot/wiki/SSH#option-3---githubs-official-instructions#   
  #                                                                                #
  #              Type the following command if using the main project              #
  #                  exec /data/eon-custom-themes/theme_install.py                 #
@@ -55,6 +55,9 @@
  #       And incorparate it into your OP Fork? See ./developer/DEVREADME          #
  #                                                                                #
 ##################################################################################
+from support.support_variables import EON_CUSTOM_THEMES_VER
+print('EON Custom Themes Version '+ EON_CUSTOM_THEMES_VER)
+
 import os
 import time
 from os import path

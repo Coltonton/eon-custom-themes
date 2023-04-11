@@ -35,14 +35,11 @@
  #                     To Get Started Making Your EON Purdy:                      #
  #                                                                                #
  #                              SSH into your EON:                                #
- #                                  [REDACTED]                                    #
+ #https://github.com/commaai/openpilot/wiki/SSH#option-3---githubs-official-instructions#                               #
  #                                                                                #
  #              Type the following command if using the main project              #
  #                  exec /data/eon-custom-themes/theme_install.py                 #
- #                                                                                #
- #            Or if trying to use the included package with an OP Fork:           #
- #              cd /data/(your openpilot directory)/eon-custom-themes             #
- #                          exec ./theme_install.py                               #
+
  #                                                                                #
  #               Now follow the prompts and make your selections!                 #
  #                  Everything will be done automagically!!!!!                    #
@@ -50,11 +47,14 @@
  #                      Don't forget to tell your friends!!                       #
  #                           Love, Cole (@Coltonton)                              #
  #                                                                                #
- #        Did you know that if you have a custom OP fork you can use this         #
+ #    Did you know that soontm if you have a custom OP fork you can use this      #
  #      program to auto install your custom theme for your users automagiclly?    #
- #       And incorparate it into your OP Fork? See ./developer/DEVREADME          #
+ #                    And incorparate it into your OP Fork?                       #
  #                                                                                #
 ##################################################################################
+from support.support_variables import EON_CUSTOM_THEMES_VER
+print('EON Custom Themes Version '+ EON_CUSTOM_THEMES_VER)
+
 import os
 import time
 from os import path

@@ -172,8 +172,4 @@ Well... this is akward.... I'LL CHANGE!!!! Haha but seriously... Want to remove 
 5. Don't forget to unpair your device in the Comma connect app ;)
 
 # Shameless Plug For A Bee....Cup Of Coffee:
-I also hate to ask but I've put quite an ammount of time in to this project. If you like what I've done and do want to help you can buy me a bee....coffee! By donating on [PayPal](paypal.me/BrandonSheaffer). Just a coupple dollary doo's will mean alot, plese dont feel overly generous I did this for my fun and the community!! 
-        
-        
-        
-                                  
+I also hate to ask but I've put quite an ammount of time in to this project. If you like what I've done and do want to help you can buy me a bee....coffee! By donating on [PayPal](paypal.me/BrandonSheaffer). Just a coupple dollary doo's will mean alot, plese dont feel overly generous I did this for my fun and the community!!                 

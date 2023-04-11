@@ -1,6 +1,7 @@
 #!/usr/bin/python
 # ===================  Misc vars =================== ##
 SHOW_CONSOLE_OUTPUT = False                # Show the console output when 'make' is called?
+EON_CUSTOM_THEMES_VER = '1.2'              # This Softwares Version
 
 # ==============  Backup related vars ============== ##
 BACKUPS_DIR = '/storage/emulated/0/theme-backups'

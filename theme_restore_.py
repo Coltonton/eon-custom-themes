@@ -1,60 +1,60 @@
 #!/usr/bin/python
-################################################################################## 
-#                                  VER 1.2                                       #
-#                                                                                #
-#      Permission is granted to anyone to use this software for any purpose,     #
-#     excluding commercial applications, and to alter it and redistribute it     #
-#               freely, subject to the following restrictions:                   #
-#                                                                                #
-#    1. The origin of this software must not be misrepresented; you must not     #
-#    claim that you wrote the original software. If you use this software        #
-#    in a product, an acknowledgment in the product documentation is required.   #
-#                                                                                #
-#    2. Altered source versions must be plainly marked as such, and must not be  #
-#    misrepresented as being the original software.                              #
-#                                                                                #
-#    3. This notice may not be removed or altered from any source                #
-#    distribution.                                                               #
-#                                                                                #
-#                                                                                #
-#  ==Created by Colton (Brandon) S. (@Coltonton) for the OpenPilot Community===  #
-#              === http://endoflinetech.com/eon-custom-themes ===                #
-#                                                                                #
-#              With a mission to rid all EONS of Comma.ai branding               #
-#             And give the people the freedom, knowlage, and power!              #
-#                         & to make their EONS purdy!                            #
-#                                                                                #
-#                         Grab life by the horns                                 #
-#                                                                                #
-#   A very special thank you to @ShaneSmiskol for creating the theme picker      #
-#      for his tireless help, and donating the life of his LeEco EON             #
-#           to get the LeEco based EONs supported by this project                #
-#                   Although revived least we forget.....                        #
+###################################################################################
+#                                  VER 1.2                                        #
+ #                                                                                #
+ #      Permission is granted to anyone to use this software for any purpose,     #
+ #     excluding commercial applications, and to alter it and redistribute it     #
+ #               freely, subject to the following restrictions:                   #
+ #                                                                                #
+ #    1. The origin of this software must not be misrepresented; you must not     #
+ #    claim that you wrote the original software. If you use this software        #
+ #    in a product, an acknowledgment in the product documentation is required.   #
+ #                                                                                #
+ #    2. Altered source versions must be plainly marked as such, and must not be  #
+ #    misrepresented as being the original software.                              #
+ #                                                                                #
+ #    3. This notice may not be removed or altered from any source                #
+ #    distribution.                                                               #
+ #                                                                                #
+ #                                                                                #
+ #  ==Created by Colton (Brandon) S. (@Coltonton) for the OpenPilot Community===  #
+ #              === http://endoflinetech.com/eon-custom-themes ===                #
+ #                                                                                #
+ #              With a mission to rid all EONS of Comma.ai branding               #
+ #             And give the people the freedom, knowlage, and power!              #
+ #                         & to make their EONS purdy!                            #
+ #                                                                                #
+ #                         Grab life by the horns                                 #
+ #                                                                                 #
+ #   A very special thank you to @ShaneSmiskol for creating the theme picker      #
+ #      for his tireless help, and donating the life of his LeEco EON             #
+ #           to get the LeEco based EONs supported by this project                #
+ #                   Although revived least we forget.....                        #
+ ##################################################################################
+ #                                                                                #
+ #                     To Get Started Making Your EON Purdy:                      #
+ #                                                                                #
+ #                              SSH into your EON:                                #
+ #https://github.com/commaai/openpilot/wiki/SSH#option-3---githubs-official-instructions#                               #
+ #                                                                                #
+ #              Type the following command if using the main project              #
+ #                  exec /data/eon-custom-themes/theme_install.py                 #
+
+ #                                                                                #
+ #               Now follow the prompts and make your selections!                 #
+ #                  Everything will be done automagically!!!!!                    #
+ #                                                                                #
+ #                      Don't forget to tell your friends!!                       #
+ #                           Love, Cole (@Coltonton)                              #
+ #                                                                                #
+ #    Did you know that soontm if you have a custom OP fork you can use this      #
+ #      program to auto install your custom theme for your users automagiclly?    #
+ #                    And incorparate it into your OP Fork?                       #
+ #                                                                                #
 ##################################################################################
-#                                                                                #
-#                         To Restore A Theme Backup:                             #
-#                                                                                #
-#                              SSH into your EON:                                #
-#  (https://medium.com/@jfrux/comma-eon-getting-connected-with-ssh-3ed6136e4a75) #
-#                                                                                #
-#              Type the following command if using the main project              #
-#                  exec /data/eon-custom-themes/restore_theme.py                 #
-#                                                                                #
-#            Or if trying to use the included package with an OP Fork:           #
-#              cd /data/(your openpilot directory)/eon-custom-themes             #
-#                           exec ./restore_theme.py                              #
-#                                                                                #
-#               Now follow the prompts and make your selections!                 #
-#                  Everything will be done automagically!!!!!                    #
-#                                                                                #
-#                      Don't forget to tell your friends!!                       #
-#                           Love Cole (@Coltonton)                               #
-#                                                                                #
-#        Did you know that if you have a custom OP fork you can use this         #
-#     program to auto install your custom theme for your users automagiclly?     #
-#       And incorparate it into your OP Fork? See ./developer/DEVREADME          #
-#                                                                                #
-##################################################################################
+from support.support_variables import EON_CUSTOM_THEMES_VER
+print('EON Custom Themes Version '+ EON_CUSTOM_THEMES_VER)
+
 import os
 import time
 from os import path

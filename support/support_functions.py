@@ -5,7 +5,7 @@ import time
 import difflib
 from os import path
 from datetime import datetime
-from support.support_variables import AUTO_WELCOME_TEXT, BACKUPS_DIR, CONTRIB_THEMES, EXCLUDED_THEMES, MIN_SIM_THRESHOLD, RESTORE_WELCOME_TEXT, WELCOME_TEXT, UTIL_WELCOME_TEXT
+from support.support_variables import AUTO_WELCOME_TEXT, BACKUPS_DIR, CONTRIB_THEMES, EXCLUDED_THEMES, MIN_SIM_THRESHOLD, RESTORE_WELCOME_TEXT, WELCOME_TEXT, UTIL_WELCOME_TEXT, EON_CUSTOM_THEMES_VER
 
 os.chdir(os.path.dirname(os.path.realpath(__file__)))  # __file__ is safer since it doesn't change based on where this file is called from
 
@@ -58,6 +58,10 @@ def print_text(showText):   # This center formats text automatically
         padding_left = padding // 2
         print('+{}+'.format(' ' * padding_left + line + ' ' * (padding - padding_left)))
     print(''.join(['+' for _ in range(max_line_length)]))
+
+def print_version(ver=''):
+
+    print('Eon Custom Themes Version '+ EON_CUSTOM_THEMES_VER)
 
 def selector_picker(listvar, printtext):
     options = list(listvar)      # this only contains available options from self.get_available_options
