@@ -1,6 +1,6 @@
 #!/usr/bin/python
 ################################################################################## 
-#                                  VER 2.0 PR                                    #
+#                                  VER 1.2                                       #
 #                                                                                #
 #      Permission is granted to anyone to use this software for any purpose,     #
 #     excluding commercial applications, and to alter it and redistribute it     #

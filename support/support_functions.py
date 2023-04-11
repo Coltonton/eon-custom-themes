@@ -6,7 +6,6 @@ import difflib
 from os import path
 from datetime import datetime
 from support.support_variables import AUTO_WELCOME_TEXT, BACKUPS_DIR, CONTRIB_THEMES, EXCLUDED_THEMES, MIN_SIM_THRESHOLD, RESTORE_WELCOME_TEXT, WELCOME_TEXT, UTIL_WELCOME_TEXT
-from support.auto_config import IS_AUTO_INSTALL, DESIRED_AUTO_VER
 
 os.chdir(os.path.dirname(os.path.realpath(__file__)))  # __file__ is safer since it doesn't change based on where this file is called from
 
@@ -79,57 +78,8 @@ def selector_picker(listvar, printtext):
 
 ## ============= Installer Support Funcs ============= ##
 # Created by @ShaneSmiskol some modifications by coltonton
-def installer_chooser():
-    # Do self install checks
-    if IS_AUTO_INSTALL == True:
-        #Get DO_NOT_AUTO_INSTALL var from its file
-        file = open('./support/do_not_auto.txt', 'r')       # Open do_not_auto flag file
-        DO_NOT_AUTO_INSTALL = file.read()                     # Store flag
-        file.close
-        print('Debug: The value as read from do_not_auto.txt is {}'.format(DO_NOT_AUTO_INSTALL))
-
-        # See if user has a self installed theme. If not - auto install is permited!
-        if path.exists('/storage/emulated/0/eon_custom_themes_self_installed.txt'):
-            IS_SELF_INSTALLED = True
-        else:
-            IS_SELF_INSTALLED = False
-        print('DEBUG: IS_SELF_INSTALLED is {}'.format(IS_SELF_INSTALLED))
-
-        # Check if is auto install and do_not_auto is false and IS_SELF_INSTALLED is false
-        if DO_NOT_AUTO_INSTALL == '0' and IS_SELF_INSTALLED == False:  
-            #Open auto installed version file & store as CURRENT_AUTO_VER - the currently installed version
-            file2 = open('./support/auto_install_ver.txt', 'r')
-            CURRENT_AUTO_VER = file2.read()
-            file2.close
-            print('DEBUG: The Value of the read auto_install_ver.txt is {}'.format(CURRENT_AUTO_VER))
-
-            # Detrtmine if installed version is desired version and act
-            if CURRENT_AUTO_VER is not DESIRED_AUTO_VER:         # If current installed version != desired version
-                print('First install or new version detected, installing.....')
-                return 'Do_Auto'                                       # Do Auto install theme
-            else:                                                # If current installed version == desired version 
-                print('Most current version installed, Terminating.....')
-                return None
-        
-        # Check If both the do_not_install flag is set and user has a self installed theme, return none to cancel and exit
-        elif DO_NOT_AUTO_INSTALL == '1' and IS_SELF_INSTALLED is True:
-            print('Do Not install flag set by user & a self installed theme exists terminating....') 
-            return None
-        
-        # Check If do_not_install flag set,return none to cancel and exit
-        elif DO_NOT_AUTO_INSTALL == '1':
-            print('Do Not install flag set by user!! Terminating....') 
-            return None
-        
-        # Check if user has a self installed theme, return none to cancel and exit
-        elif IS_SELF_INSTALLED == True:
-            print('A self installed theme exists!! Terminating....') 
-            return None
-
-
-    # Else return self installer
-    elif IS_AUTO_INSTALL == False:                                                  
-        return 'Do_Self' 
+def installer_chooser():                                                    
+    return 'Do_Self' 
 
 def get_user_theme():           # Auto discover themes and let user choose!
     try:

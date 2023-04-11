@@ -1,4 +1,4 @@
-Release 2.0 - Beta 1
+Release 1.2
 
 [![](https://i.imgur.com/w9jylkJ.png[/img])](#)
 # EON-Custom-Themes
