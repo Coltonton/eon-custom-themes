@@ -149,7 +149,7 @@ class ThemeInstaller:
 
                 #Check if there was an Boot logo backup already this session to prevent accidental overwrites
                 #Returns true if okay to proceed. Gets self.backup_dir & asset type name
-                if backup_overide_check(self.backup_dir, DeviceData["Boot_Logo_Name"]) == True:
+                if backup_overide_check(self.backup_dir, DeviceData["BOOT_LOGO_NAME"]) == True:
                     break
 
                 #Backup & install new
