@@ -21,7 +21,7 @@ def get_device_theme_data(onprocess='null'):
             "BOOT_LOGO_THEME_NAME" : 'LOGO',                                # Set the theme name for the logo for 3T
             "BOOT_LOGO_THEME_PATH" : 'OP3T-Logo/LOGO',                      # Set the theme boot logo path for 3T
             "BOOT_LOGO_NAME"       : 'sde17',                               # Set the device boot logo name for 3T
-            "BOOT_LOGO_PATH "      : '/dev/block/sde17'                    # Set the device boot logo directory for 3T
+            "BOOT_LOGO_PATH"      : '/dev/block/sde17'                    # Set the device boot logo directory for 3T
         }
     else:                                                        #If LEON/Two
         print('\n*** {} ***'.format("LeEco EON (LeON/Gold/Comma 2) Device Detected" if not DEVMODE else "[DEVMODE] Device Faked as LeEco based"))
@@ -30,7 +30,7 @@ def get_device_theme_data(onprocess='null'):
             "BOOT_LOGO_THEME_NAME" : 'SPLASH',                              # Set the theme name for the logo for Leo
             "BOOT_LOGO_THEME_PATH" : 'LeEco-Logo/SPLASH',                   # Set the theme boot logo path for  Leo
             "BOOT_LOGO_NAME"       : 'splash',                              # Set the device boot logo name for Leo
-            "BOOT_LOGO_PATH"       : "/dev/block/bootdevice/by-name/splash"# Set the device boot logo directory for Leo
+            "BOOT_LOGO_PATH"       : "/dev/block/bootdevice/by-name/splash" # Set the device boot logo directory for Leo
         }
     print('IMPORTANT: {}-bricking is likely if this detection is incorrect!'.format("Soft" if not DEVMODE else "SEVERE"))
 
