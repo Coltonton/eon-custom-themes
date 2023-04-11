@@ -1,16 +1,13 @@
 #!/usr/bin/python
-import os
-import sys
-import time
-import difflib
+import os, sys, time, platform, difflib, json
 from os import path
 from datetime import datetime
-from support.support_variables import AUTO_WELCOME_TEXT, BACKUPS_DIR, CONTRIB_THEMES, EXCLUDED_THEMES, MIN_SIM_THRESHOLD, RESTORE_WELCOME_TEXT, WELCOME_TEXT, UTIL_WELCOME_TEXT, EON_CUSTOM_THEMES_VER
-
+from support.support_variables import *
 os.chdir(os.path.dirname(os.path.realpath(__file__)))  # __file__ is safer since it doesn't change based on where this file is called from
 
 ## ================= Shared ================= ##
-def get_device_theme_data():
+def get_device_theme_data(onprocess='null'):
+    DebugPrint('Getting Device Data...', 'sf')
     # Crude device detection, *shrug* it works! LeEco does not have tristate!
     if path.exists('/sys/devices/virtual/switch/tri-state-key'): #If 3T-ON
         print('\n*** OG OnePlus EON Device Detected! OooOoOooo we got a rebel! :O ***')
@@ -18,39 +15,56 @@ def get_device_theme_data():
         print('will still work for as long as feasable but may not be as maintaind as the')
         print('Eon-Gold and possibly with less features.. I do this for free and fun')
         print('making money by force upgrading is the least of my concern...')
-        EON_TYPE             = 'OP3T'                                # EON type is OP3T
-        BOOT_LOGO_THEME_NAME = 'LOGO'                                # Set the theme name for the logo for 3T
-        BOOT_LOGO_THEME_PATH = 'OP3T-Logo/LOGO'                      # Set the theme boot logo path for 3T
-        BOOT_LOGO_NAME       = 'sde17'                               # Set the device boot logo name for 3T
-        BOOT_LOGO_PATH       = '/dev/block/sde17'                    # Set the device boot logo directory for 3T
+        devicedata = {
+            "EON_TYPE"             : 'OP3T',                                # EON type is OP3T
+            "BOOT_LOGO_THEME_NAME" : 'LOGO',                                # Set the theme name for the logo for 3T
+            "BOOT_LOGO_THEME_PATH" : 'OP3T-Logo/LOGO',                      # Set the theme boot logo path for 3T
+            "BOOT_LOGO_NAME"       : 'sde17',                               # Set the device boot logo name for 3T
+            "BOOT_LOGO_PATH "      : '/dev/block/sde17'                    # Set the device boot logo directory for 3T
+        }
     else:                                                        #If LEON/Two
-        print('\n*** LeEco EON (LeON/Gold/Comma 2) Device Detected ***')
-        EON_TYPE             = 'LeEco'                               # EON type is LeEco
-        BOOT_LOGO_THEME_NAME = 'SPLASH'                              # Set the theme name for the logo for Leo
-        BOOT_LOGO_THEME_PATH = 'LeEco-Logo/SPLASH'                   # Set the theme boot logo path for  Leo
-        BOOT_LOGO_NAME       = 'splash'                              # Set the device boot logo name for Leo
-        BOOT_LOGO_PATH       = '/dev/block/bootdevice/by-name/splash'# Set the device boot logo directory for Leo
-    print('IMPORTANT: Soft-bricking is likely if this detection is incorrect!')
+        print('\n*** {} ***'.format("LeEco EON (LeON/Gold/Comma 2) Device Detected" if not DEVMODE else "[DEVMODE] Device Faked as LeEco based"))
+        devicedata = {
+            "EON_TYPE"             : 'LeEco',                               # EON type is LeEco
+            "BOOT_LOGO_THEME_NAME" : 'SPLASH',                              # Set the theme name for the logo for Leo
+            "BOOT_LOGO_THEME_PATH" : 'LeEco-Logo/SPLASH',                   # Set the theme boot logo path for  Leo
+            "BOOT_LOGO_NAME"       : 'splash',                              # Set the device boot logo name for Leo
+            "BOOT_LOGO_PATH"       : "/dev/block/bootdevice/by-name/splash"# Set the device boot logo directory for Leo
+        }
+    print('IMPORTANT: {}-bricking is likely if this detection is incorrect!'.format("Soft" if not DEVMODE else "SEVERE"))
 
-    time.sleep(4)  # Pause for suspense, and so can be read
-    return EON_TYPE, BOOT_LOGO_THEME_NAME, BOOT_LOGO_THEME_PATH, BOOT_LOGO_NAME, BOOT_LOGO_PATH
+    if not DEVMODE:
+        time.sleep(4)  # Pause for suspense, and so can be read
+  
+    cycle = 0
+    for x in devicedata.keys():
+        DebugPrint('{} = {}'.format(x, devicedata[x]), overide="sf" ,multi=1 if cycle <1 else 2)
+        cycle = cycle +1
+    return devicedata
 
 def is_affirmative():           # Ask user for confirmation
+    DebugPrint('Asking to confirm', 'sf')
     u = input('[1.Yes / 2.No]: ').lower().strip()
-    if u not in ['yes', 'ye', 'y', '1']:
+    DebugPrint('Got {} (lower.strip)'.format(u), 'sf')
+    if u in ['i guess', 'sure', 'fine', 'whatever']:
+        print("WTF do you mean {}... I'm going to assume NO so i dont brick ya shi...".format(u))
+    if u not in ['yes', 'ye', 'y', '1', "j", "ja", "si"]:
         print('Not Installing....')
-    return u in ['yes', 'ye', 'y', '1']
+    return u in ['yes', 'ye', 'y', '1', "j", "ja", "si"]
 
 def make_backup_folder():
+    DebugPrint('Getting backup Folder congig')
     # Check if theme backup folder doesnt exist then create
-    if not os.path.exists('/storage/emulated/0/theme-backups'):
-        os.mkdir('/storage/emulated/0/theme-backups')
-    # Create session backup folder named with date & time 
-    backup_dir = datetime.now().strftime('/storage/emulated/0/theme-backups/backup.%m-%d-%y--%I:%M.%S-%p')
+    if not os.path.exists(BACKUPS_DIR): 
+        DebugPrint('It doesent exist... Creating at {}'.format(BACKUPS_DIR), 'sf')
+        os.mkdir(BACKUPS_DIR)
+    # Create session backup folder named with date & time
+    backup_dir = datetime.now().strftime('{}/backup.%m-%d-%y--%I:%M.%S-%p'.format(BACKUPS_DIR))
     os.mkdir(backup_dir)  # Create the session backup folder
+    DebugPrint('Created session backup folder at ' + backup_dir, 'sf')
     return backup_dir
 
-def print_text(showText):   # This center formats text automatically
+def print_text(showText, withver=0):   # This center formats text automatically
     max_line_length = max([len(line) for line in showText]) + 4
     print(''.join(['+' for _ in range(max_line_length)]))
     for line in showText:
@@ -79,20 +93,25 @@ def selector_picker(listvar, printtext):
     selected_option = listvar[indexChoice]
     return selected_option
 
-
 ## ============= Installer Support Funcs ============= ##
 # Created by @ShaneSmiskol some modifications by coltonton
 def installer_chooser():                                                    
     return 'Do_Self' 
 
-def get_user_theme():           # Auto discover themes and let user choose!
+def get_aval_themes():           # Auto discover themes and let user choose!
     try:
         available_themes = [t for t in os.listdir(CONTRIB_THEMES)]
     except FileNotFoundError:
         print("\nCRITICAL ERROR: Run this program using 'exec ./theme_install.py' ++++++\n")
+        DebugPrint("File Not Found or doesnt have access")
 
     available_themes = [t for t in os.listdir(CONTRIB_THEMES)]
     available_themes = [t for t in available_themes if os.path.isdir(os.path.join(CONTRIB_THEMES, t))]
+    if DEVMODE:
+        DebugPrint("Found all these directorys: ", multi=1)
+        DebugPrint(available_themes, multi=2)
+        DebugPrint("Are Excluded in support.support_variables.py: ", multi=1)
+        DebugPrint(EXCLUDED_THEMES, multi=2)
     available_themes = [t for t in available_themes if t not in EXCLUDED_THEMES]
     lower_available_themes = [t.lower() for t in available_themes]
     print('\n*\nAvailable themes:')
@@ -103,11 +122,15 @@ def get_user_theme():           # Auto discover themes and let user choose!
     print('Type `exit` or enter 0 to exit.')
     while 1:
         theme = input('\nChoose a theme to install (by name or index): ').strip().lower()
+        DebugPrint("User entered: {}".format(theme))
         print()
         #if theme in ['restore', 'r']:
         #  return 'restore'
-        if theme in ['exit', 'e', '0']:
+        if theme in ['exit', 'e', '0', 'stop']:
+            DebugPrint("Got Exit")
             exit()
+        if theme in ['devmode']:
+            return 'devmode'
         if theme.isdigit():
             theme = int(theme)
             if theme == 69:
@@ -126,13 +149,17 @@ def get_user_theme():           # Auto discover themes and let user choose!
                 print('Selected theme: {}'.format(theme))
                 print('Is this correct?')
                 print('[Y/n]: ', end='')
-                if input().lower().strip() in ['yes', 'y', 1, 'ye']:
+                if input().lower().strip() in ['yes', 'ye', 'y', '1', "j", "ja", "si"]:
+                    DebugPrint("You entered: {}".format(input))
                     return theme
             else:
                 print('Unknown theme, try again!')
+                DebugPrint("Did not match")
     
 def mark_self_installed():      # Creates a file letting the auto installer know if a self theme installed
-    if not path.exists('/storage/emulated/0/eon_custom_themes_self_installed'):
+    DebugPrint("Marking as self installed to /storage/emulated/0/eon_custom_themes_self_installed'")
+    if DEVMODE: contonder=is_affirmative()
+    if not path.exists or not contonder ('/storage/emulated/0/eon_custom_themes_self_installed'):
         f = open("/storage/emulated/0/eon_custom_themes_self_installed.txt", "w")
         f.close
 
@@ -147,17 +174,30 @@ def get_OP_Ver_Loc():           # Get OpenPilot Version & Location
         else:
             print("\n*\nOpenPilot Location Not Auto-Detected")     
             response = '2'
-        if response == '1' or response == '2':
-            break
+        if response == '1' or response == '2': break
 
-    if response == "2":
-        print('What Is The Correct OpenPilot directory?')
-        OP_LOC = input('/data/').lower().strip()
-    else:
-        OP_LOC = 'openpilot'
+    while True:
+        if response == "1":
+            OP_LOC = '/data/openpilot'
+        if response == "2" or DEVMODE is True:
+            print('What Is The Correct OpenPilot directory?')
+            OP_LOC = input('/data/')
+            if OP_LOC in ["override", "o"]: 
+                OP_LOC = input('Enter Full Path To OpenPilot ex. /data/openpilot: ')
+            else: 
+                OP_LOC = "/data/{}".format(OP_LOC)
+
+        print("Looking For {}".format(OP_LOC))
+        
+        if os.path.isfile("{}/RELEASES.md".format(OP_LOC)) is True: 
+            print("I Found Valid OpenPilot Software!") 
+            break
+        else: 
+            print("You typed {}".format(OP_LOC))
+            print("Hmm I could not find that or an error occured... Try Again...")
 
     OPVER = ''
-    file = open(('/data/{}/RELEASES.md'.format(OP_LOC)), 'r')
+    file = open(('{}/RELEASES.md'.format(OP_LOC)), 'r')
     file.seek(10)
     while True:
         temp = file.read(1)
@@ -167,8 +207,12 @@ def get_OP_Ver_Loc():           # Get OpenPilot Version & Location
             OP_VER = float(OPVER)
             break
 
-    print("\n*\nOpenPilot Version Auto-Detected as {} from /data/{}".format(OP_VER, OP_LOC))
-    return OP_VER, OP_LOC
+    print("\n*\nOpenPilot Version Auto-Detected as {} from {}".format(OP_VER, OP_LOC))
+    OP_info_dict = {
+        "OP_Version": OP_VER,
+        "OP_Location": OP_LOC
+    }
+    return OP_info_dict
 
 
 ##================= Installer Code =================== ##
@@ -209,7 +253,7 @@ def INSTALL_QT_SPINNER(backup_dir, opver, opdir, install_from_path, con_output):
 
 
 ## ================= Restor-er Code ================= ##
-# Created by @ShaneSmiskol modified version of get_user_theme() to get all backups by Coltonton
+# Created by @ShaneSmiskol modified version of get_aval_themes() to get all backups by Coltonton
 def get_user_backups(exclude):
     available_backups = [t for t in os.listdir(BACKUPS_DIR)]
     available_backups = [t for t in available_backups if os.path.isdir(os.path.join(BACKUPS_DIR, t))]
@@ -259,6 +303,55 @@ def backup_overide_check(backup_dir, theme_type):
         os.mkdir('{}/{}'.format(backup_dir, theme_type))
         return False
 
+def setVerbose(a=False):
+    if a == True:
+        con_output = ' >/dev/null 2>&1'  # string to surpress output
+    else:
+        con_output = ''  # string to surpress output
+    print('[DEBUG MSG]: Verbose ' + a)
+
+def DebugPrint(msg, fromprocess_input="null", overide=0, multi=0):
+    if VERBOSE == True or overide == 1:
+        now = datetime.now()
+        debugtime = now.strftime("%m/%d %I:%M.%S")
+        runprocess = get_running()
+        fromprocess_input = runprocess if fromprocess_input == "null" else fromprocess_input
+        if fromprocess_input == "sf":
+            runprocess = (runprocess.strip(".py")+"/support/support_functions.py")
+
+        if multi > 0:
+            if multi == 1:
+                print("*[DEBUG][{} {}] || GOT MULTIPLE DATA".format(debugtime, runprocess))
+            print("--> {}".format(msg))#] #Debug Msg ()s
+        elif multi == 0:
+            print("*[DEBUG][{} {}] || {}".format(debugtime, runprocess, msg))#] #Debug Msg ()s
+
+def set_running(data):
+    with open('person.txt', 'w') as json_file:
+        json.dump(data, json_file)
+
+def get_running():
+    with open('./support/vars.json', 'r') as f:
+        datadict = json.load(f)
+    x = datadict['Launched Program']
+    return x
+
+def DEV_CHECK():
+    global DEV_PLATFORM, DEVMODE, VERBOSE
+    # Simple if PC check, not needed but nice to have
+    DEV_PLATFORM = platform.system()
+    print(DEV_PLATFORM)
+    if DEV_PLATFORM in ['Windows', 'Darwin']:
+        print("This program only works on Comma EONS & Comma Two, sorry...")
+        print("Press enter to exit.")
+        u = input('')
+        if u == "devmode3t":
+            print('EON DEVMODE enabled, proceed with great caution!')
+            VERBOSE = True
+            DEVMODE = True
+        else:
+            sys.exit()
+
 def REBOOT():
     print('\nRebooting.... Thank You, Come Again!!!')
     os.system('am start -a android.intent.action.REBOOT')  # reboot intent is safer (reboot sometimes causes corruption)
@@ -269,5 +362,5 @@ def QUIT_PROG():
     sys.exit()  
 
 # Created by @ShaneSmiskol
-def str_sim(a, b):              # Part of Shane's get_user_theme code
+def str_sim(a, b):              # Part of Shane's get_aval_themes code
     return difflib.SequenceMatcher(a=a, b=b).ratio()

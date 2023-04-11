@@ -123,10 +123,11 @@ This is the default linup, I will be creating coupple others. Happy to hear sugg
 ## Contributed Themes
 | Theme Name            |Boot Logo? (3T)| Boot Logo? (LeEco) | Boot Animation? | Custom OP Files?                 | Contributor/ Author|
 | ----------------------| --------------| ------------------ | ----------------| ---------------------------------| -------------------|
-| Comma-Stock           | Yes           | Yes                | Yes             | OP Spinner                       | Comma.ai           |
-| cgw1968-Bat           | No            | Yes                | Color           | OP Spinner                       | Colton             |
-| Khonsu-LemmonCurd     | Yes           | Yes                | White           | OP Spinner                       | Colton             |
-| ShaneSmiskol-Toyota   | Yes           | Yes                | White & Color   | OP Spinner                       | Colton             |
+| Comma-Stock           | Yes           | Yes                | Yes             | OP Spinner                       | Comma.ai              |
+| Colton Tron Subaru    | No            | Yes                | Yes             | No                            | Coltonton             |
+| cgw1968-Bat           | No            | Yes                | Color           | OP Spinner                       | Coltonton             |
+| Khonsu-LemmonCurd     | Yes           | Yes                | White           | OP Spinner                       | Coltonton             |
+| ShaneSmiskol-Toyota   | Yes           | Yes                | White & Color   | OP Spinner                       | Coltonton             |
 (Check out forks of this project for potentially more)
 
 ## Contribute Your Work!:

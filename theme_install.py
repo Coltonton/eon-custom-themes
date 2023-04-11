@@ -53,45 +53,47 @@
  #                                                                                #
 ##################################################################################
 from support.support_variables import EON_CUSTOM_THEMES_VER
-print('EON Custom Themes Version '+ EON_CUSTOM_THEMES_VER)
 
-import os
-import time
+import time, os, platform
+import json
 from os import path
 from support.support_functions import * 
-from support.support_variables import BACKUPS_DIR, BACKUP_OPTIONS, CONTRIB_THEMES, OP_VER, OP_LOC, SHOW_CONSOLE_OUTPUT
+from support.support_variables import BACKUPS_DIR, BACKUP_OPTIONS, CONTRIB_THEMES, OP_VER, OP_LOC, VERBOSE,SHOW_CONSOLE_OUTPUT, WELCOME_TEXT, DEV_PLATFORM
+
+
 
 ##======================= CODE START ================================================================
 os.chdir(os.path.dirname(os.path.realpath(__file__)))  # __file__ is safer since it doesn't change based on where this file is called from
-# Simple if PC check, not needed but nice to have
-if os.path.exists("C:/"):
-    print("This program only works on Comma EONS & Comma Two, sorry...")
-    sys.exit()
+
 print_text(WELCOME_TEXT)              #Print welcome text with the flag for self welcome text
-  
-EON_TYPE, BOOT_LOGO_THEME_NAME, BOOT_LOGO_THEME_PATH, BOOT_LOGO_DEVICE_NAME, BOOT_LOGO_DEVICE_PATH = get_device_theme_data() # Get Perams based off detected device
+DebugPrint("DEBUG ON")
+#RunningProcess = json.loads(data.json)
+#RunningProcess=".theme_install"
+
+OpInfo = dict
+DeviceData = get_device_theme_data() # Get Perams based off detected device
+print(DeviceData["BOOT_LOGO_THEME_PATH"])
 
 class ThemeInstaller:
     def __init__(self):                   # Init code runs once. sets up & determines if to run auto or self
-        # Create and get backup folder
-        self.backup_dir = make_backup_folder()
-
-        # Dev function to show console output when this program calls make for example....
-        if SHOW_CONSOLE_OUTPUT == False:
-            self.con_output = ' >/dev/null 2>&1'  # string to surpress output
-        else:
-            self.con_output = ''
-
+        get_running()
         self.start_loop()                                      # Do self install theme git                                             # Terminate program
 
     def start_loop(self):                 # Self Installer loop
-        global OP_VER, OP_LOC
+        # Create Backup folder(if nonexistant) and Create session backup and get location
+        self.backup_dir = make_backup_folder()
         while 1:
-            self.selected_theme = get_user_theme()
+            self.selected_theme = get_aval_themes()
+            if self.selected_theme == 'devmode' and DEVMODE == False:
+                VERBOSE == True
+                DebugPrint("Debug Functionality On!")
+            elif self.selected_theme == 'devmode' and DEVMODE == True:
+                VERBOSE = False 
+                DebugPrint("Debug Functionality Off!", 1) 
             if self.selected_theme is None:
-                print('Didn\'t select a theme, exiting.')
+                print('Didn\'t select a valid theme, exiting.')
                 return
-            OP_VER, OP_LOC = get_OP_Ver_Loc()
+            OP_INFO = get_OP_Ver_Loc()
             self.get_available_options()
             if self.install_function() == 'exit':
                 return
@@ -99,7 +101,7 @@ class ThemeInstaller:
     def get_available_options(self):      # Check what assets are available for the selected theme
         self.theme_options = []
         # Check if the selected theme has a boot logo asset
-        if os.path.exists('{}/{}/{}'.format(CONTRIB_THEMES, self.selected_theme, BOOT_LOGO_THEME_PATH)):
+        if os.path.exists('{}/{}/{}'.format(CONTRIB_THEMES, self.selected_theme, DeviceData["BOOT_LOGO_THEME_PATH"])):
             self.theme_options.append('Boot Logo')
         # Check if the selected theme has a boot annimation asset
         if os.path.exists('{}/{}/bootanimation.zip'.format(CONTRIB_THEMES, self.selected_theme)):
@@ -119,8 +121,7 @@ class ThemeInstaller:
         self.theme_options.append('-Quit-')
 
     def install_function(self):           # Self installer program, prompts user on what they want to do
-        global OP_LOC
-        global BOOT_LOGO_DEVICE_NAME
+        
         while 1:
             theme_types = list(self.theme_options)  # this only contains available options from self.get_available_options
             if not len(theme_types):
@@ -150,12 +151,12 @@ class ThemeInstaller:
 
                 #Check if there was an Boot logo backup already this session to prevent accidental overwrites
                 #Returns true if okay to proceed. Gets self.backup_dir & asset type name
-                if backup_overide_check(self.backup_dir, BOOT_LOGO_DEVICE_NAME) == True:
+                if backup_overide_check(self.backup_dir, DeviceData["Boot_Logo_Name"]) == True:
                     break
 
                 #Backup & install new
-                install_from_path = ('{}/{}/{}'.format(CONTRIB_THEMES, self.selected_theme, BOOT_LOGO_THEME_PATH))
-                INSTALL_BOOT_LOGO(EON_TYPE, self.backup_dir, install_from_path)
+                install_from_path = ('{}/{}/{}'.format(CONTRIB_THEMES, self.selected_theme, DeviceData["BOOT_LOGO_THEME_PATH"]))
+                INSTALL_BOOT_LOGO(DeviceData["EON_TYPE"], self.backup_dir, install_from_path)
                 mark_self_installed()       # Create flag in /sdcard so auto installer knows there is a self installation
                 print('Press enter to continue!')
                 input()
@@ -173,7 +174,7 @@ class ThemeInstaller:
                     break
 
                 install_from_path = ("{}/{}/spinner".format(CONTRIB_THEMES, self.selected_theme))
-                INSTALL_QT_SPINNER(self.backup_dir, OP_VER, OP_LOC, install_from_path, SHOW_CONSOLE_OUTPUT)
+                INSTALL_QT_SPINNER(self.backup_dir, OpInfo["OP_VER"], OpInfo["OP_LOC"], install_from_path)
                 mark_self_installed()        # Create flag in /sdcard so auto installer knows there is a self installation
                 print('Press enter to continue!')
                 input()
