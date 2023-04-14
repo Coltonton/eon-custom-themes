@@ -61,15 +61,26 @@ def is_affirmative():           # Ask user for confirmation
         return 0
 
 def make_backup_folder():
-    DebugPrint('Getting backup Folder congig')
+    DebugPrint('Getting backup Folder congig', fromprocess_input="sf")
     # Check if theme backup folder doesnt exist then create
     if not os.path.exists(BACKUPS_DIR): 
-        DebugPrint('It doesent exist... Creating at {}'.format(BACKUPS_DIR), 'sf')
+        DebugPrint('It doesent exist... Creating at {}'.format(BACKUPS_DIR), fromprocess_input="sf")
         os.mkdir(BACKUPS_DIR)
-    # Create session backup folder named with date & time
-    backup_dir = datetime.now().strftime('{}/backup.%m-%d-%y--%I:%M.%S-%p'.format(BACKUPS_DIR))
+    # Create session backup folder
+    while True:
+        print("Do You wish to name your backup or use default?")
+        ans = input("1.Yes/2.Use Default").strip().lower()
+        if ans == "1" or "y" or "yes":
+            usersChoice = input("Enter: backup.")
+            backup_dir = '{}/backup.{}}'.format(BACKUPS_DIR, usersChoice)
+            break
+        elif ans == "2" or "n" or "no" or "u" or "d" or "use default" or "default":
+            backup_dir = datetime.now().strftime('{}/backup.%m-%d-%y--%I:%M.%S-%p'.format(BACKUPS_DIR))
+            break
+        else:
+            print("Invalid Input... Please Try Again...")
     os.mkdir(backup_dir)  # Create the session backup folder
-    DebugPrint('Created session backup folder at ' + backup_dir, 'sf')
+    DebugPrint('Created session backup folder at {}'.format(backup_dir), fromprocess_input="sf")
     return backup_dir
 
 def print_text(showText, withver=0):   # This center formats text automatically

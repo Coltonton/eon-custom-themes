@@ -59,20 +59,23 @@ import os
 import time
 from os import path
 from support.support_variables import BACKUPS_DIR, BACKUP_OPTIONS, CONTRIB_THEMES
-from support.support_functions import get_device_theme_data, get_user_backups, is_affirmative, make_backup_folder, mark_self_installed, print_text
+from support.support_functions import *
 
 
 ##======================= CODE START ================================================================
 os.chdir(os.path.dirname(os.path.realpath(__file__)))  # __file__ is safer since it doesn't change based on where this file is called from
-print_text('restore')                                #Print welcome text with the flag for restore welcome text
-DeviceData = get_device_theme_data() # Get Perams based off detected device
+print_text(RESTORE_WELCOME_TEXT)                  # Print welcome text with the flag for self welcome text
+DebugPrint("VERBOSE MODE ON")             # Notify if Verbosity Mode is on, DebugPrints only run in dev or verbose mode
+DEV_CHECK()                               # Check if running on unsupported PC/MAC
+OpInfo = dict                             # Init OPInfo Dict
+DeviceData = get_device_theme_data()      # Init Device Data dict with device info
 
 class ThemeRestorer:
     def __init__(self):                       # Init code runs once. sets up.
         self.backup_dir = make_backup_folder()  # Create and get backup folder
         self.theme_restore_loop()          # Start main loop
 
-    def theme_restore_loop(self):           # Theme_restorer!
+    def theme_restore_loop(self):             # Theme_restorer!
         # Backup_restore Loop
         while 1:
             self.selected_backup = get_user_backups(self.backup_dir)
