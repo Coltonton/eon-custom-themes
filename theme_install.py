@@ -58,7 +58,7 @@ import time, os, platform
 import json
 from os import path
 from support.support_functions import * 
-from support.support_variables import BACKUPS_DIR, BACKUP_OPTIONS, CONTRIB_THEMES, OP_Version, OP_Location, VERBOSE,SHOW_CONSOLE_OUTPUT, WELCOME_TEXT, DEV_PLATFORM, VALID_BOOT_ANIMATIONS
+from support.support_variables import BACKUPS_DIR, BACKUP_OPTIONS, CONTRIB_THEMES, OP_Version, OP_Location, VERBOSE, WELCOME_TEXT, DEV_PLATFORM, VALID_BOOT_ANIMATIONS
 
 
 
