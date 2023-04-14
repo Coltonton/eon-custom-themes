@@ -104,7 +104,7 @@ class ThemeUtility:
         if path.exists('{}/bootanimation.zip'.format(install_folder)):
             theme_options.append('Boot Animation')
         if path.exists('{}/spinner/img_spinner_comma.png'.format(install_folder)) or path.exists('{}/img_spinner_track.png'.format(install_folder)) or path.exists('{}/spinner.c'.format(install_folder)):
-            self.theme_options.append('OP Spinner')
+            theme_options.append('OP Spinner')
         theme_options.append('-Reboot-')
         theme_options.append('-Quit-')
     
