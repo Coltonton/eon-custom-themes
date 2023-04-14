@@ -79,8 +79,6 @@ class ThemeUtility:
                 self.Install_From_Loc()
             elif selected_util == 'Restore Comma-default':
                 self.Restore_Comma_Default()
-            #elif selected_util == 'Restore backup':
-                #self.Restore_Backup()
             elif selected_util == 'Cleanup for uninstall':
                 self.Cleanup_Files()
             elif selected_util == '-Reboot-':
@@ -99,13 +97,13 @@ class ThemeUtility:
         
         # cd /data/eon-custom-themes && exec ./theme_utils.py
         # /data/eon-custom-themes/contributed-themes/Subaru
-        if path.exists('{}/LOGO'.format(install_folder)):
+        if path.exists('{}/OP3T-Logo/LOGO'.format(install_folder)):
             theme_options.append('OP3T Boot Logo')
-        if path.exists('{}/SPLASH'.format(install_folder)):
+        if path.exists('{}/LeEco-Logo/SPLASH'.format(install_folder)):
             theme_options.append('LeEco Boot Logo')
         if path.exists('{}/bootanimation.zip'.format(install_folder)):
             theme_options.append('Boot Animation')
-        if path.exists('{}/img_spinner_comma.png'.format(install_folder)) or path.exists('{}/img_spinner_track.png'.format(install_folder)) or path.exists('{}/spinner.c'.format(install_folder)):
+        if path.exists('{}/spinner/img_spinner_comma.png'.format(install_folder)) or path.exists('{}/img_spinner_track.png'.format(install_folder)) or path.exists('{}/spinner.c'.format(install_folder)):
             self.theme_options.append('OP Spinner')
         theme_options.append('-Reboot-')
         theme_options.append('-Quit-')
@@ -180,7 +178,7 @@ class ThemeUtility:
                     print('Press enter to continue!')
                     input()
 
-    def Restore_Comma_Default(self): #PERFECT 
+    def Restore_Comma_Default(self): #Restore the default theme for EON 
         print('\nSelected to restore Comma-Default theme. Continue?')
         print('Process is fully automagic!')
         if not is_affirmative():
@@ -200,11 +198,7 @@ class ThemeUtility:
         print('\nThank you come again! - Boot Logo & Boot Animation factory restored!!')
         exit()
 
-    '''def Restore_Backup(self):        #TODO??
-        self.backup_dir = make_backup_folder()  # Create and get backup folder
-        BACKUP_OPTIONS = []'''
-
-    def Cleanup_Files(self):
+    def Cleanup_Files(self):         #Remove all traces of EON Custom Themes
         #Print hAllo message
         print_text(CLEANUP_TEXT)
         #Confirm user wants to install bootlogo
