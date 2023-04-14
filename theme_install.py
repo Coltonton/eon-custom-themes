@@ -167,16 +167,16 @@ class ThemeInstaller:
             # Some logic to not give stupid results to stupid people i.e. reboot should come after all installs and we really dont need to go to the main menu too...
             if "-Reboot-" in selected_option_list:                         #If Reeboot is selected remove Main Menu, Quit, and ensure its at the end
                 if "-Main Menu-" in selected_option_list: selected_option_list.remove("-Main Menu-") #Remove Main Menu as we dont need it...
-                if "-Quit-" in selected_option_list:selected_option_list.remove("-Quit-")            #Remove Quit as we dont need it...
-                selected_option_list.remove("-Reboot-")                                              #Pop Reboot out so we can
-                selected_option_list.append("-Reboot-")                                              #Put it on the end!
+                if "-Quit-" in selected_option_list:selected_option_list.remove("-Quit-")  #Remove Quit as we dont need it...
+                selected_option_list.remove("-Reboot-")                                    #Pop Reboot out so we can
+                selected_option_list.append("-Reboot-")                                    #Put it on the end!
             if "-Quit-" in selected_option_list:                           #If Quit is selected remove Main Menu, and ensure its at the end            
                 if "-Main Menu-" in selected_option_list: selected_option_list.remove("-Main Menu-") #Remove Main Menu as we dont need it...
-                selected_option_list.remove("-Quit-")                                                 #Pop Quit out so we can
-                selected_option_list.append("-Quit-")                                                #Put it on the end!
+                selected_option_list.remove("-Quit-")                                      #Pop Quit out so we can
+                selected_option_list.append("-Quit-")                                      #Put it on the end!
             if "-Main Menu-" in selected_option_list:                      #If Main Menu is Selected ensure its at the end
-                selected_option_list.remove("-Main Menu-")                                           #Pop Quit out so we can
-                selected_option_list.append("-Main Menu-")                                           #Put it on the end!
+                selected_option_list.remove("-Main Menu-")                                 #Pop Quit out so we can
+                selected_option_list.append("-Main Menu-")                                 #Put it on the end!
 
             DebugPrint("Selected Options: ", multi=selected_option_list)
 

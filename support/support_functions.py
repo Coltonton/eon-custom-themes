@@ -81,10 +81,6 @@ def print_text(showText, withver=0):   # This center formats text automatically
         print('+{}+'.format(' ' * padding_left + line + ' ' * (padding - padding_left)))
     print(''.join(['+' for _ in range(max_line_length)]))
 
-def print_version(ver=''):
-
-    print('Eon Custom Themes Version '+ EON_CUSTOM_THEMES_VER)
-
 def selector_picker(listvar, printtext):
     options = list(listvar)      # this only contains available options from self.get_available_options
     if not len(options):
@@ -119,9 +115,9 @@ def backup_overide_check(backup_dir, theme_type):
 ## ============= Installer Support Funcs ============= ##
 #########################################################
 # Created by @ShaneSmiskol some modifications by coltonton
-def installer_chooser():        # Choose what installer to use (DEPRICATED) 
+'''def installer_chooser():        # Choose what installer to use (DEPRICATED) 
     DebugPrint("installer_chooser() called", fromprocess_input="sf")                                                   
-    return 'Do_Self' 
+    return 'Do_Self' '''
 
 def get_aval_themes():          # Auto discover themes and let user choose!
     DebugPrint("get_aval_themes() called", fromprocess_input="sf")
@@ -182,10 +178,8 @@ def get_aval_themes():          # Auto discover themes and let user choose!
     
 def mark_self_installed():      # Creates a file letting the auto installer know if a self theme installed
     DebugPrint("mark_self_installed() called", fromprocess_input="sf")
-    pass
     DebugPrint("Marking as self installed to /storage/emulated/0/eon_custom_themes_self_installed'", fromprocess_input="sf")
-    if DEVMODE: return
-    if not path.exists ('/storage/emulated/0/eon_custom_themes_self_installed'):
+    if Dev_DoInstall() and not path.exists ('/storage/emulated/0/eon_custom_themes_self_installed'):
         f = open("/storage/emulated/0/eon_custom_themes_self_installed.txt", "w")
         f.close
 
@@ -251,14 +245,14 @@ def get_OP_Ver_Loc():           # Get OpenPilot Version & Location
 #########################################################
 ##================= Installer Code =================== ##
 #########################################################
-def INSTALL_BOOT_LOGO(DeviceData, backup_dir, install_from_path):
+def INSTALL_BOOT_LOGO(DeviceData, backup_dir, install_from_path):               #INSTALL_BOOT_LOGO
     DebugPrint("INSTALL_BOOT_LOGO() called", multi=[DeviceData["BOOT_LOGO_PATH"], DeviceData["BOOT_LOGO_THEME_NAME"], backup_dir, install_from_path], fromprocess_input="sf")
     DebugPrint("Installing Boot Logo...", fromprocess_input="sf")
     os.system('cp {} {}/{}'.format(DeviceData["BOOT_LOGO_PATH"], backup_dir, DeviceData["BOOT_LOGO_THEME_NAME"]))    # Make Backup
     os.system('dd if={} of={}'.format(install_from_path, DeviceData["BOOT_LOGO_PATH"]))           # Replace
     print('\n*\nBoot Logo installed! Original file(s) backed up to {}'.format(backup_dir, DeviceData["BOOT_LOGO_THEME_NAME"]))
 
-def INSTALL_BOOTANIMATION(backup_dir, install_from_path, color=''):
+def INSTALL_BOOTANIMATION(backup_dir, install_from_path, color=''):             #INSTALL_BOOTANIMATION
     DebugPrint("INSTALL_BOOTANIMATION() called".format([backup_dir, install_from_path, color]), fromprocess_input="sf")
     DebugPrint("Installing Boot Animation...", fromprocess_input="sf")
     os.system('mount -o remount,rw /system')                                                       # /system read only, must mount as rw
@@ -267,7 +261,7 @@ def INSTALL_BOOTANIMATION(backup_dir, install_from_path, color=''):
     os.system('chmod 666 /system/media/bootanimation.zip')                                         # Need to chmod to edet permissions to 666
     print('\nBoot Animation installed! Original file(s) backed up to {}'.format(backup_dir))
 
-def INSTALL_QT_SPINNER(backup_dir, OP_INFO, install_from_path, con_output=''):
+def INSTALL_QT_SPINNER(backup_dir, OP_INFO, install_from_path, con_output=''):  #INSTALL_QT_SPINNER
     DebugPrint("INSTALL_QT_SPINNER() called".format([backup_dir, OP_INFO["OP_Location"], OP_INFO["OP_Version"], install_from_path]), fromprocess_input="sf")
     flags=[]
     # Check if theme contributer provided a spinner logo
@@ -291,7 +285,7 @@ def INSTALL_QT_SPINNER(backup_dir, OP_INFO, install_from_path, con_output=''):
 
 ## ================= Restor-er Code ================= ##
 # Created by @ShaneSmiskol modified version of get_aval_themes() to get all backups by Coltonton
-def get_user_backups(exclude):
+def get_user_backups(exclude):  #Gets users backups in /sdcard/theme-backups
     available_backups = [t for t in os.listdir(BACKUPS_DIR)]
     available_backups = [t for t in available_backups if os.path.isdir(os.path.join(BACKUPS_DIR, t))]
     available_backups = [t for t in available_backups if t not in exclude]
@@ -324,8 +318,9 @@ def get_user_backups(exclude):
             print('Please enter only Index number value!!')
             continue
 
-
-## ====================== Misc ====================== ##
+#########################################################
+## ====================== Misc ======================= ##
+#########################################################
 '''def set_running(data):
     with open('person.txt', 'w') as json_file:
         json.dump(data, json_file)
@@ -336,12 +331,12 @@ def get_running():
     x = datadict['Launched Program']
     return x
 '''
-def REBOOT():
+def REBOOT():                   #Reboot EON Device
     print('\nRebooting.... Thank You, Come Again!!!')
     os.system('am start -a android.intent.action.REBOOT')  # reboot intent is safer (reboot sometimes causes corruption)
     sys.exit()
 
-def QUIT_PROG():
+def QUIT_PROG():                # Terminate Program friendly
     print('\nThank you come again! You will see your changes next reboot!\n')
     sys.exit()  
 
@@ -351,18 +346,18 @@ def str_sim(a, b):              # Part of @ShaneSmiskol's get_aval_themes code
 #########################################################
 ## ==================== DEV/Debug ==================== ##
 #########################################################
-def setVerbose(a=False):
+def setVerbose(a=False):        #Set Verbosity (DEPRICATED)
     if a == True:
         con_output = ' >/dev/null 2>&1'  # string to surpress output
     else:
         con_output = ''  # string to surpress output
     print('[DEBUG MSG]: Verbose ' + a)
 
-def DebugPrint(msg, fromprocess_input="null", overide=0, multi=0):
+def DebugPrint(msg, fromprocess_input="null", overide=0, multi=0):  #My own utility for debug msgs
     if VERBOSE == True or DEVMODE == True or overide == 1:
         now = datetime.now()
         debugtime = now.strftime("%m/%d %I:%M.%S")
-        runprocess = get_running()
+        runprocess = "theme_install.py"
         fromprocess_input = runprocess if fromprocess_input == "null" else fromprocess_input
         if fromprocess_input == "sf":
             runprocess = (runprocess.strip(".py")+"/support/support_functions.py")
@@ -375,7 +370,7 @@ def DebugPrint(msg, fromprocess_input="null", overide=0, multi=0):
         else:
             print("##[DEBUG][{} {}] || {}".format(debugtime, runprocess, msg))#] #Debug Msg ()s
 
-def DEV_CHECK():
+def DEV_CHECK():                #Hault Program If Ran On PC/Mac
     global DEV_PLATFORM, DEVMODE, VERBOSE
     # Simple if PC check, not needed but nice to have
     DEV_PLATFORM = platform.system()
@@ -391,7 +386,7 @@ def DEV_CHECK():
         else:
             sys.exit()
 
-def Dev_DoInstall():   #Function to ask before installing for use in dev to not screw up my computer, and test logic
+def Dev_DoInstall():            #Function to ask before installing for use in dev to not screw up my computer, and test logic
     if DEVMODE == True:
         DebugPrint("Developer Mode enabled do you actually want to install?", overide="sf")
         DebugPrint("Type 'install' to install or press enter to skip.", overide="sf")
