@@ -52,13 +52,10 @@
  #                    And incorparate it into your OP Fork?                       #
  #                                                                                #
 ##################################################################################
-from support.support_variables import EON_CUSTOM_THEMES_VER
-print('EON Custom Themes Version '+ EON_CUSTOM_THEMES_VER)
-
 import os
 import time
 from os import path
-from support.support_variables import BACKUPS_DIR, BACKUP_OPTIONS, CONTRIB_THEMES
+from support.support_variables import BACKUPS_DIR, BACKUP_OPTIONS
 from support.support_functions import *
 
 
@@ -117,37 +114,33 @@ class ThemeRestorer:
             for idx, theme in enumerate(options):
                 print('{}. {}'.format(idx + 1, theme))
             indexChoice = int(input("Enter Index Value: "))
-            indexChoice -= 1 
 
-            selected_option = BACKUP_OPTIONS[indexChoice]
+            selected_option = BACKUP_OPTIONS[indexChoice-1]
             
             if   selected_option == 'Boot Logo':
                 print('Selected to install the Boot Logo backup. Continue?')
                 if not is_affirmative():
-                    print('Not installing...')
-                    time.sleep(1.5)
                     continue
-                os.system('cp {} {}'.format(BOOT_LOGO_PATH, self.backup_dir))      # Make Backup
-                os.system('dd if={}/{}/{} of={}'.format(BACKUPS_DIR, self.selected_backup, BOOT_LOGO_NAME, BOOT_LOGO_PATH))   # Replace
-                print('\nBoot Logo re-installed successfully! Original backed up to {}'.format(self.backup_dir))
-                print('Press enter to continue!')
-                mark_self_installed()       # Create flag in /sdcard so auto installer knows there is a self installation
-                input()
+
+                #Backup & install new
+                install_from_path = ('{}/{}/{}'.format(BACKUPS_DIR, self.selected_backup, DeviceData["BOOT_LOGO_THEME_PATH"], re=True))
+                if Dev_DoInstall():
+                    INSTALL_BOOT_LOGO(DeviceData, self.backup_dir, install_from_path)
+                    mark_self_installed()       # Create flag in /sdcard so auto installer knows there is a self installation
+                    print('Press enter to continue!')
+                    input()
             elif selected_option == 'Boot Animation':
                 print('Selected to install the Boot Animation backup. Continue?')
                 if not is_affirmative():
-                    print('Not installing...')
-                    time.sleep(1.5)
                     continue
-              
-                os.system('mount -o remount,rw /system')  # /system read only, must mount as r/w
-                os.system('mv /system/media/bootanimation.zip {}/bootanimation'.format(self.backup_dir))  # backup
-                os.system('cp {}/{}/bootanimation/bootanimation.zip /system/media/bootanimation.zip'.format(BACKUPS_DIR, self.selected_backup))  # replace
-                os.system('chmod 666 /system/media/bootanimation.zip')
-                print('\nBoot Animation re-installed successfully! Original backed up to {}'.format(self.backup_dir))
-                print('Press enter to continue!')
-                mark_self_installed()       # Create flag in /sdcard so auto installer knows there is a self installation
-                input()
+
+                #Backup And install new bootanimation
+                install_from_path = ('{}/{}'.format(BACKUPS_DIR, self.selected_backup))
+                if Dev_DoInstall():
+                    INSTALL_BOOTANIMATION(self.backup_dir, install_from_path, re=True)
+                    mark_self_installed()        # Create flag in /sdcard so auto installer knows there is a self installation
+                    print('Press enter to continue!')
+                    input()      
             elif selected_option == 'OpenPilot Spinner':
                 ##Confirm user wants to install Spinner
                 print('\nSelected to install the {} OP Spinner. Continue?'.format(self.selected_theme))
@@ -164,7 +157,7 @@ class ThemeRestorer:
                 DebugPrint("Got OP Location: {} and Version 0.{}".format(OP_INFO["OP_Location"], OP_INFO["OP_Version"]))
 
                 #Backup & Install
-                install_from_path = ("{}/{}/spinner".format(CONTRIB_THEMES, self.selected_theme))
+                install_from_path = ("{}/{}/spinner".format(BACKUPS_DIR, self.selected_backup))
                 #Function to ask before installing for use in dev to not screw up my computer, and test logic
                 if Dev_DoInstall():
                     INSTALL_QT_SPINNER(self.backup_dir, OP_INFO, install_from_path)

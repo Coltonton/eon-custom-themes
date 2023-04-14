@@ -256,23 +256,29 @@ def get_OP_Ver_Loc():           # Get OpenPilot Version & Location
 #########################################################
 ##================= Installer Code =================== ##
 #########################################################
-def INSTALL_BOOT_LOGO(DeviceData, backup_dir, install_from_path):               #INSTALL_BOOT_LOGO
+def INSTALL_BOOT_LOGO(DeviceData, backup_dir, install_from_path, re=False):               #INSTALL_BOOT_LOGO
     DebugPrint("INSTALL_BOOT_LOGO() called", multi=[DeviceData["BOOT_LOGO_PATH"], DeviceData["BOOT_LOGO_THEME_NAME"], backup_dir, install_from_path], fromprocess_input="sf")
     DebugPrint("Installing Boot Logo...", fromprocess_input="sf")
     os.system('cp {} {}/{}'.format(DeviceData["BOOT_LOGO_PATH"], backup_dir, DeviceData["BOOT_LOGO_THEME_NAME"]))    # Make Backup
     os.system('dd if={} of={}'.format(install_from_path, DeviceData["BOOT_LOGO_PATH"]))           # Replace
-    print('\n*\nBoot Logo installed! Original file(s) backed up to {}'.format(backup_dir, DeviceData["BOOT_LOGO_THEME_NAME"]))
+    if re == False:
+        print('\n*\nBoot Logo installed! Original file(s) backed up to {}'.format(backup_dir, DeviceData["BOOT_LOGO_THEME_NAME"]))
+    elif re == True:
+        print('\n*\nBoot Logo re-installed from backup! Current file(s) backed up to {}'.format(backup_dir, DeviceData["BOOT_LOGO_THEME_NAME"]))
 
-def INSTALL_BOOTANIMATION(backup_dir, install_from_path, color=''):             #INSTALL_BOOTANIMATION
+def INSTALL_BOOTANIMATION(backup_dir, install_from_path, color='', re=False):             #INSTALL_BOOTANIMATION
     DebugPrint("INSTALL_BOOTANIMATION() called".format([backup_dir, install_from_path, color]), fromprocess_input="sf")
     DebugPrint("Installing Boot Animation...", fromprocess_input="sf")
     os.system('mount -o remount,rw /system')                                                       # /system read only, must mount as rw
     os.system('mv /system/media/bootanimation.zip {}/bootanimation.zip'.format(backup_dir))       # Backup
     os.system('cp {}/{}bootanimation.zip /system/media/bootanimation.zip'.format(install_from_path, color))  # Replace
-    os.system('chmod 666 /system/media/bootanimation.zip')                                         # Need to chmod to edet permissions to 666
-    print('\nBoot Animation installed! Original file(s) backed up to {}'.format(backup_dir))
+    os.system('chmod 666 /system/media/bootanimation.zip')
+    if re == False:                                         # Need to chmod to edet permissions to 666
+        print('\nBoot Animation installed! Original file(s) backed up to {}'.format(backup_dir))
+    elif re == True:
+        print('\nBoot Animation Re-installed! Current file(s) backed up to {}'.format(backup_dir))
 
-def INSTALL_QT_SPINNER(backup_dir, OP_INFO, install_from_path, con_output=''):  #INSTALL_QT_SPINNER
+def INSTALL_QT_SPINNER(backup_dir, OP_INFO, install_from_path, con_output='', re=False):  #INSTALL_QT_SPINNER
     DebugPrint("INSTALL_QT_SPINNER() called".format([backup_dir, OP_INFO["OP_Location"], OP_INFO["OP_Version"], install_from_path]), fromprocess_input="sf")
     flags=[]
     # Check if theme contributer provided a spinner logo
