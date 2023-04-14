@@ -233,7 +233,7 @@ def get_OP_Ver_Loc():           # Get OpenPilot Version & Location
 
 ##================= Installer Code =================== ##
 def INSTALL_BOOT_LOGO(DeviceData, backup_dir, install_from_path):
-    DebugPrint('Install_Boot_Logo \nBOOT_LOGO_PATH:{} \nBOOT_LOGO_THEME_NAME:{} \nbackup_dir:{} \ninstall_from_path:{}\n'.format(DeviceData["BOOT_LOGO_PATH"], DeviceData["BOOT_LOGO_THEME_NAME"], backup_dir, install_from_path), fromprocess_input="sf")
+    DebugPrint("Install_Boot_Logo() Output: ", multi=[DeviceData["BOOT_LOGO_PATH"], DeviceData["BOOT_LOGO_THEME_NAME"], backup_dir, install_from_path], fromprocess_input="sf")
     os.system('cp {} {}/{}'.format(DeviceData["BOOT_LOGO_PATH"], backup_dir, DeviceData["BOOT_LOGO_THEME_NAME"]))    # Make Backup
     os.system('dd if={} of={}'.format(install_from_path, DeviceData["BOOT_LOGO_PATH"]))           # Replace
     print('\n*\nBoot Logo installed! Original file(s) backed up to {}'.format(backup_dir, DeviceData["BOOT_LOGO_THEME_NAME"]))
@@ -354,11 +354,17 @@ def DebugPrint(msg, fromprocess_input="null", overide=0, multi=0):
         if fromprocess_input == "sf":
             runprocess = (runprocess.strip(".py")+"/support/support_functions.py")
 
-        if multi > 0:
-            if multi == 1:
-                print("\n##[DEBUG][{} {}] || GOT MULTIPLE DATA".format(debugtime, runprocess))
-            print("--> {}".format(msg))#] #Debug Msg ()s
-        elif multi == 0:
+        if type(multi) == list:
+            print("\n##[DEBUG][{} {}] || GOT MULTIPLE DATA".format(debugtime, runprocess))
+            print("####[DEBUG] {}".format(msg))
+            for x in range(len(multi)):
+                print("--> {}".format(multi[x])),
+
+        #if multi > 0:
+        #    if multi == 1:
+        #        print("\n##[DEBUG][{} {}] || GOT MULTIPLE DATA".format(debugtime, runprocess))
+        #    print("--> {}".format(msg))#] #Debug Msg ()s
+        if multi is int:
             print("##[DEBUG][{} {}] || {}".format(debugtime, runprocess, msg))#] #Debug Msg ()s
 
 def DEV_CHECK():
