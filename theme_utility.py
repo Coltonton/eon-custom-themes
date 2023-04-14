@@ -97,9 +97,9 @@ class ThemeUtility:
         
         # cd /data/eon-custom-themes && exec ./theme_utils.py
         # /data/eon-custom-themes/contributed-themes/Subaru
-        if path.exists('{}/OP3T-Logo/LOGO'.format(install_folder)):
+        if path.exists('{}/OP3T-Logo/LOGO'.format(install_folder)) and DeviceData["EON_TYPE"] == 'OP3T':
             theme_options.append('OP3T Boot Logo')
-        if path.exists('{}/LeEco-Logo/SPLASH'.format(install_folder)):
+        if path.exists('{}/LeEco-Logo/SPLASH'.format(install_folder)) and DeviceData["EON_TYPE"] == 'LeEco':
             theme_options.append('LeEco Boot Logo')
         if path.exists('{}/bootanimation.zip'.format(install_folder)):
             theme_options.append('Boot Animation')
@@ -130,7 +130,7 @@ class ThemeUtility:
                 if not is_affirmative():
                     continue       
     
-            if selected_option   == 'Boot Animation': #Done 23
+            if selected_option   == 'Boot Animation':
                 ##Check if there was a boot ani backup already this session to prevent accidental overwrites
                 #Returns false if okay to proceed. Gets self.backup_dir & asset type name
                 if backup_overide_check(backup_dir, 'bootanimation.zip') == True:
