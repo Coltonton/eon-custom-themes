@@ -122,7 +122,7 @@ class ThemeUtility:
             indexChoice = int(input("Enter Index Value: "))
             indexChoice -= 1 
 
-            selected_option = self.theme_options[indexChoice]
+            selected_option = theme_options[indexChoice]
 
             if selected_option  in ['Boot Animation', 'OP3T Boot Logo', 'LeEco Boot Logo', 'OP Spinner']:    
                 ##Confirm user wants to install asset
