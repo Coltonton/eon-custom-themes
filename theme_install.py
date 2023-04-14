@@ -154,8 +154,8 @@ class ThemeInstaller:
                 #Backup & install new
                 install_from_path = ('{}/{}/{}'.format(CONTRIB_THEMES, self.selected_theme, DeviceData["BOOT_LOGO_THEME_PATH"]))
                 if Dev_DoInstall():
-                    INSTALL_BOOT_LOGO(DeviceData["EON_TYPE"], self.backup_dir, install_from_path)
-                    INSTALL_BOOT_LOGO(DeviceData, self.backup_dir, install_from_path)
+                    #INSTALL_BOOT_LOGO(DeviceData["EON_TYPE"], self.backup_dir, install_from_path)
+                    INSTALL_BOOT_LOGO(DeviceData[2], DeviceData[3], self.backup_dir, install_from_path)
                     mark_self_installed()       # Create flag in /sdcard so auto installer knows there is a self installation
                     print('Press enter to continue!')
                     input()

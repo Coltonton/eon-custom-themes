@@ -232,13 +232,13 @@ def get_OP_Ver_Loc():           # Get OpenPilot Version & Location
 
 
 ##================= Installer Code =================== ##
-def INSTALL_BOOT_LOGO(DeviceData, backup_dir, install_from_path):
+def INSTALL_BOOT_LOGO(two, three, backup_dir, install_from_path):
     #DebugPrint('Install_Boot_Logo boot logo path:{} boot logo name:{} backup_dir:{} install_from_path:{}'.format(DeviceData["BOOT_LOGO_PATH"], DeviceData["BOOT_LOGO_THEME_NAME"], backup_dir, install_from_path), overide="sf")
-    print(DeviceData[3])
-    print(DeviceData[2])
-    os.system('cp {} {}/{}'.format(DeviceData[3], backup_dir, DeviceData[2]))    # Make Backup
-    os.system('dd if={} of={}'.format(install_from_path, DeviceData[3]))           # Replace
-    print('Boot Logo installed! Original file(s) backed up to {}'.format(backup_dir, DeviceData[2]))
+    print(three)
+    print(two)
+    os.system('cp {} {}/{}'.format(three, backup_dir, two))    # Make Backup
+    os.system('dd if={} of={}'.format(install_from_path, three))           # Replace
+    print('Boot Logo installed! Original file(s) backed up to {}'.format(backup_dir, two))
 
 def INSTALL_BOOTANIMATION(backup_dir, install_from_path, color=''):
     os.system('mount -o remount,rw /system')                                                       # /system read only, must mount as rw
