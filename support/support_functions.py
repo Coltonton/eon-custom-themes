@@ -44,16 +44,20 @@ def get_device_theme_data(onprocess='null'):
     return devicedata
 
 def is_affirmative():           # Ask user for confirmation
-    DebugPrint('Asking to confirm', 'sf')
+    #DebugPrint('Asking to confirm', 'sf')
     u = input('[1.Yes / 2.No]: ').lower().strip()
-    DebugPrint('Got {} (lower.strip)'.format(u), 'sf')
+    DebugPrint('Got {}'.format(u), 'sf')
     if u in ['i guess', 'sure', 'fine', 'whatever']:
         print("WTF do you mean {}... I'm going to assume NO so i dont brick ya shi...".format(u))
     if u not in ['yes', 'ye', 'y', '1', "j", "ja", "si"]:
         print('Not Installing....')
+        time.sleep(1.5) 
+        return 0
     if u in ['yes', 'ye', 'y', '1', "j", "ja", "si"]: 
         return 1
-    else: 
+    else:
+        print('Not installing...')
+        time.sleep(1.5) 
         return 0
 
 def make_backup_folder():
@@ -228,16 +232,11 @@ def get_OP_Ver_Loc():           # Get OpenPilot Version & Location
 
 
 ##================= Installer Code =================== ##
-def INSTALL_BOOT_LOGO(eon_type, backup_dir, install_from_path):
-    if eon_type == 'OP3T':
-        boot_logo_device_path = '/dev/block/sde17'
-        boot_lego_name = 'LOGO'
-    elif eon_type == 'LeEco':
-        boot_logo_device_path = '/dev/block/bootdevice/by-name/splash'
-        boot_lego_name = 'SPLASH'
-    os.system('cp {} {}/{}'.format(boot_logo_device_path, backup_dir, boot_lego_name))    # Make Backup
-    os.system('dd if={} of={}'.format(install_from_path, boot_logo_device_path))           # Replace
-    print('Boot Logo installed! Original file(s) backed up to {}'.format(backup_dir, boot_lego_name))
+def INSTALL_BOOT_LOGO(DeviceData, backup_dir, install_from_path):
+    DebugPrint('Install_Boot_Logo boot logo path:{} boot logo name:{} backup_dir:{} install_from_path:{}'.format(DeviceData["BOOT_LOGO_PATH"], DeviceData["BOOT_LOGO_THEME_NAME"], backup_dir, install_from_path), overide="sf")
+    os.system('cp {} {}/{}'.format(DeviceData["BOOT_LOGO_PATH"], backup_dir, DeviceData["BOOT_LOGO_THEME_NAME"]))    # Make Backup
+    os.system('dd if={} of={}'.format(install_from_path, DeviceData["BOOT_LOGO_PATH"]))           # Replace
+    print('Boot Logo installed! Original file(s) backed up to {}'.format(backup_dir, DeviceData["BOOT_LOGO_THEME_NAME"]))
 
 def INSTALL_BOOTANIMATION(backup_dir, install_from_path, color=''):
     os.system('mount -o remount,rw /system')                                                       # /system read only, must mount as rw
@@ -315,6 +314,30 @@ def backup_overide_check(backup_dir, theme_type):
         os.mkdir('{}/{}'.format(backup_dir, theme_type))
         return False
 
+def set_running(data):
+    with open('person.txt', 'w') as json_file:
+        json.dump(data, json_file)
+
+def get_running():
+    with open('./support/vars.json', 'r') as f:
+        datadict = json.load(f)
+    x = datadict['Launched Program']
+    return x
+
+def REBOOT():
+    print('\nRebooting.... Thank You, Come Again!!!')
+    os.system('am start -a android.intent.action.REBOOT')  # reboot intent is safer (reboot sometimes causes corruption)
+    sys.exit()
+
+def QUIT_PROG():
+    print('\nThank you come again! You will see your changes next reboot!\n')
+    sys.exit()  
+
+# Created by @ShaneSmiskol
+def str_sim(a, b):              # Part of Shane's get_aval_themes code
+    return difflib.SequenceMatcher(a=a, b=b).ratio()
+
+## ====================== DEV/Debug ====================== ##
 def setVerbose(a=False):
     if a == True:
         con_output = ' >/dev/null 2>&1'  # string to surpress output
@@ -336,17 +359,7 @@ def DebugPrint(msg, fromprocess_input="null", overide=0, multi=0):
                 print("\n##[DEBUG][{} {}] || GOT MULTIPLE DATA".format(debugtime, runprocess))
             print("--> {}".format(msg))#] #Debug Msg ()s
         elif multi == 0:
-            print("*[DEBUG][{} {}] || {}".format(debugtime, runprocess, msg))#] #Debug Msg ()s
-
-def set_running(data):
-    with open('person.txt', 'w') as json_file:
-        json.dump(data, json_file)
-
-def get_running():
-    with open('./support/vars.json', 'r') as f:
-        datadict = json.load(f)
-    x = datadict['Launched Program']
-    return x
+            print("##[DEBUG][{} {}] || {}".format(debugtime, runprocess, msg))#] #Debug Msg ()s
 
 def DEV_CHECK():
     global DEV_PLATFORM, DEVMODE, VERBOSE
@@ -364,15 +377,15 @@ def DEV_CHECK():
         else:
             sys.exit()
 
-def REBOOT():
-    print('\nRebooting.... Thank You, Come Again!!!')
-    os.system('am start -a android.intent.action.REBOOT')  # reboot intent is safer (reboot sometimes causes corruption)
-    sys.exit()
-
-def QUIT_PROG():
-    print('\nThank you come again! You will see your changes next reboot!\n')
-    sys.exit()  
-
-# Created by @ShaneSmiskol
-def str_sim(a, b):              # Part of Shane's get_aval_themes code
-    return difflib.SequenceMatcher(a=a, b=b).ratio()
+def Dev_DoInstall():   #Function to ask before installing for use in dev to not screw up my computer, and test logic
+    if DEVMODE == True:
+        DebugPrint("Developer Mode enabled do you actually want to install?", overide="sf")
+        DebugPrint("Type 'install' to install or press enter to skip.", overide="sf")
+        askinstall = input("## ").lower().strip()
+        if askinstall == "install":
+            return True
+        else:
+            DebugPrint("Install Skipped...", overide="sf")
+            return False
+    else:
+        return True

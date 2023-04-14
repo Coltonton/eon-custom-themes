@@ -58,7 +58,7 @@ import time, os, platform
 import json
 from os import path
 from support.support_functions import * 
-from support.support_variables import BACKUPS_DIR, BACKUP_OPTIONS, CONTRIB_THEMES, OP_VER, OP_LOC, VERBOSE,SHOW_CONSOLE_OUTPUT, WELCOME_TEXT, DEV_PLATFORM
+from support.support_variables import BACKUPS_DIR, BACKUP_OPTIONS, CONTRIB_THEMES, OP_Version, OP_Location, VERBOSE,SHOW_CONSOLE_OUTPUT, WELCOME_TEXT, DEV_PLATFORM
 
 
 
@@ -110,8 +110,8 @@ class ThemeInstaller:
         if os.path.exists('{}/{}/white_bootanimation.zip'.format(CONTRIB_THEMES, self.selected_theme)):
             self.theme_options.append('White Boot Animation')
         # Check if the selected theme has a OpenPilot Spinner asset
-        #if os.path.exists('{}/{}/spinner'.format(CONTRIB_THEMES, self.selected_theme)):
-            #self.theme_options.append('OpenPilot Spinner')
+        if os.path.exists('{}/{}/spinner'.format(CONTRIB_THEMES, self.selected_theme)) :
+            self.theme_options.append('OpenPilot Spinner')
 
         self.theme_options.append('-Main Menu-')
         self.theme_options.append('-Reboot-')
@@ -153,17 +153,16 @@ class ThemeInstaller:
 
                 #Backup & install new
                 install_from_path = ('{}/{}/{}'.format(CONTRIB_THEMES, self.selected_theme, DeviceData["BOOT_LOGO_THEME_PATH"]))
-                INSTALL_BOOT_LOGO(DeviceData["EON_TYPE"], self.backup_dir, install_from_path)
-                mark_self_installed()       # Create flag in /sdcard so auto installer knows there is a self installation
-                print('Press enter to continue!')
-                input()
+                if Dev_DoInstall():
+                    INSTALL_BOOT_LOGO(DeviceData["EON_TYPE"], self.backup_dir, install_from_path)
+                    INSTALL_BOOT_LOGO(DeviceData, self.backup_dir, install_from_path)
+                    mark_self_installed()       # Create flag in /sdcard so auto installer knows there is a self installation
+                    print('Press enter to continue!')
+                    input()
             elif selected_option == 'OpenPilot Spinner':
-                #print("*\nFeature currently unsupported...")
                 ##Confirm user wants to install Spinner
                 print('\nSelected to install the {} OP Spinner. Continue?'.format(self.selected_theme))
                 if not is_affirmative():
-                    print('Not installing...')
-                    time.sleep(1.5)
                     continue
 
                 ##Check if there was a spinner backup already this session to prevent accidental overwrites
@@ -171,14 +170,18 @@ class ThemeInstaller:
                 if backup_overide_check(self.backup_dir, 'spinner') == True:
                     break
 
+                #Gets OpenPilot Location and Version
                 OP_INFO = get_OP_Ver_Loc()
                 DebugPrint("Got OP Location: {} and Version 0.{}".format(OP_INFO["OP_Location"], OP_INFO["OP_Version"]))
 
+                #Backup & Install
                 install_from_path = ("{}/{}/spinner".format(CONTRIB_THEMES, self.selected_theme))
-                INSTALL_QT_SPINNER(self.backup_dir, OP_INFO["OP_Version"], OP_INFO["OP_Location"], install_from_path)
-                mark_self_installed()        # Create flag in /sdcard so auto installer knows there is a self installation
-                print('Press enter to continue!')
-                input()
+                #Function to ask before installing for use in dev to not screw up my computer, and test logic
+                if Dev_DoInstall():
+                    INSTALL_QT_SPINNER(self.backup_dir, OP_INFO["OP_Version"], OP_INFO["OP_Location"], install_from_path)
+                    mark_self_installed()        # Create flag in /sdcard so auto installer knows there is a self installation
+                    print('Press enter to continue!')
+                    input()
             elif selected_option == '-Main Menu-' or selected_option is None:
                 return
             elif selected_option == '-Reboot-':
@@ -190,8 +193,6 @@ class ThemeInstaller:
                 #Confirm user wants to install bootlogo
                 print('\nSelected to install the {} {}. Continue?'.format(self.selected_theme, selected_option))
                 if not is_affirmative():
-                    print('Not installing...')
-                    time.sleep(1.5)
                     continue
             
                 #Check if there was a boot ani backup already this session to prevent accidental overwrites
@@ -209,11 +210,12 @@ class ThemeInstaller:
 
                 #Backup And install new bootanimation
                 install_from_path = ('{}/{}'.format(CONTRIB_THEMES, self.selected_theme))
-                INSTALL_BOOTANIMATION(self.backup_dir, install_from_path, bootAniColor)
-                mark_self_installed()        # Create flag in /sdcard so auto installer knows there is a self installation
-                print('Press enter to continue!')
-                input()
-   
+                if Dev_DoInstall():
+                    INSTALL_BOOTANIMATION(self.backup_dir, install_from_path, bootAniColor)
+                    mark_self_installed()        # Create flag in /sdcard so auto installer knows there is a self installation
+                    print('Press enter to continue!')
+                    input()
+                    
 
 
 if __name__ == '__main__':
