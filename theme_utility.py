@@ -133,20 +133,20 @@ class ThemeUtility:
             if selected_option   == 'Boot Animation': #Done 23
                 ##Check if there was a boot ani backup already this session to prevent accidental overwrites
                 #Returns false if okay to proceed. Gets self.backup_dir & asset type name
-                if backup_overide_check(self.backup_dir, 'bootanimation.zip') == True:
+                if backup_overide_check(backup_dir, 'bootanimation.zip') == True:
                     break
 
                 #Backup And install new bootanimation
                 install_from_path = ('{}/{}'.format(CONTRIB_THEMES, self.selected_theme))
                 if Dev_DoInstall():
-                    INSTALL_BOOTANIMATION(self.backup_dir, install_from_path,)
+                    INSTALL_BOOTANIMATION(backup_dir, install_from_path,)
                     mark_self_installed()        # Create flag in /sdcard so auto installer knows there is a self installation
                     print('Press enter to continue!')
                     input()  
             elif selected_option == 'OP Spinner':
                 ##Check if there was a spinner backup already this session to prevent accidental overwrites
                 #Returns false if okay to proceed. Gets self.backup_dir & asset type name
-                if backup_overide_check(self.backup_dir, 'spinner') == True:
+                if backup_overide_check(backup_dir, 'spinner') == True:
                     break
 
                 OP_INFO = get_OP_Ver_Loc()
@@ -156,7 +156,7 @@ class ThemeUtility:
                 install_from_path = ("{}/{}/spinner".format(CONTRIB_THEMES, self.selected_theme))
                 #Function to ask before installing for use in dev to not screw up my computer, and test logic
                 if Dev_DoInstall():
-                    INSTALL_QT_SPINNER(self.backup_dir, OP_INFO, install_from_path)
+                    INSTALL_QT_SPINNER(backup_dir, OP_INFO, install_from_path)
                     mark_self_installed()        # Create flag in /sdcard so auto installer knows there is a self installation
                     print('Press enter to continue!')
                     input()   
@@ -167,13 +167,13 @@ class ThemeUtility:
             elif selected_option == 'OP3T Boot Logo' or selected_option == 'LeEco Boot Logo':
                 ##Check if there was a Boot Logo backup already this session to prevent accidental overwrites
                 #Returns false if okay to proceed. Gets self.backup_dir & asset type name
-                if backup_overide_check(self.backup_dir, DeviceData["BOOT_LOGO_NAME"]) == True:
+                if backup_overide_check(backup_dir, DeviceData["BOOT_LOGO_NAME"]) == True:
                     break
 
                 #Backup & install new
                 install_from_path = ('{}/{}/{}'.format(CONTRIB_THEMES, self.selected_theme, DeviceData["BOOT_LOGO_THEME_PATH"]))
                 if Dev_DoInstall():
-                    INSTALL_BOOT_LOGO(DeviceData, self.backup_dir, install_from_path)
+                    INSTALL_BOOT_LOGO(DeviceData, backup_dir, install_from_path)
                     mark_self_installed()       # Create flag in /sdcard so auto installer knows there is a self installation
                     print('Press enter to continue!')
                     input()
