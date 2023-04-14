@@ -91,7 +91,6 @@ class ThemeInstaller:
             if self.selected_theme is None:
                 print('Didn\'t select a valid theme, exiting.')
                 return
-            OP_INFO = get_OP_Ver_Loc()
             self.get_available_options()
             if self.install_function() == 'exit':
                 return
@@ -159,6 +158,7 @@ class ThemeInstaller:
                 print('Press enter to continue!')
                 input()
             elif selected_option == 'OpenPilot Spinner':
+                #print("*\nFeature currently unsupported...")
                 ##Confirm user wants to install Spinner
                 print('\nSelected to install the {} OP Spinner. Continue?'.format(self.selected_theme))
                 if not is_affirmative():
@@ -171,8 +171,11 @@ class ThemeInstaller:
                 if backup_overide_check(self.backup_dir, 'spinner') == True:
                     break
 
+                OP_INFO = get_OP_Ver_Loc()
+                DebugPrint("Got OP Location: {} and Version 0.{}".format(OP_INFO["OP_Location"], OP_INFO["OP_Version"]))
+
                 install_from_path = ("{}/{}/spinner".format(CONTRIB_THEMES, self.selected_theme))
-                INSTALL_QT_SPINNER(self.backup_dir, OpInfo["OP_VER"], OpInfo["OP_LOC"], install_from_path)
+                INSTALL_QT_SPINNER(self.backup_dir, OP_INFO["OP_Version"], OP_INFO["OP_Location"], install_from_path)
                 mark_self_installed()        # Create flag in /sdcard so auto installer knows there is a self installation
                 print('Press enter to continue!')
                 input()

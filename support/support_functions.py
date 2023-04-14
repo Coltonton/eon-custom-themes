@@ -169,8 +169,7 @@ def mark_self_installed():      # Creates a file letting the auto installer know
         f.close
 
 def get_OP_Ver_Loc():           # Get OpenPilot Version & Location
-    global OP_VER
-    global OP_LOC
+    #Get Location Information
     while True:
         if path.exists('/data/openpilot'):
             print("\n*\nOpenPilot Location Auto-Detected as /data/openpilot")
@@ -183,39 +182,47 @@ def get_OP_Ver_Loc():           # Get OpenPilot Version & Location
 
     while True:
         if response == "1":
-            OP_LOC = '/data/openpilot'
+            OP_Location = '/data/openpilot'
         if response == "2" or DEVMODE is True and response == "2":
             print('What Is The Correct OpenPilot directory?')
-            OP_LOC = input('/data/')
-            if OP_LOC in ["override", "o"]: 
-                OP_LOC = input('Enter Full Path To OpenPilot ex. /data/openpilot: ')
+            #print("Enter 'overide' to choose a location other then /data/")
+            OP_Location = input('/data/')
+            if OP_Location in ["override", "o"]: 
+                OP_Location = input('Enter Full Path To OpenPilot ex. /data/openpilot: ')
             else: 
-                OP_LOC = "/data/{}".format(OP_LOC)
+                OP_Location = "/data/{}".format(OP_Location)
 
-        print("Looking For {}".format(OP_LOC))
+        print("\n*")
+        print("Looking For {}/releases.md to auto determine version...".format(OP_Location))
         
-        if os.path.isfile("{}/RELEASES.md".format(OP_LOC)) is True: 
-            print("I Found Valid OpenPilot Software!") 
+        if os.path.isfile("{}/RELEASES.md".format(OP_Location)) is True: 
+            print("I Found an OpenPilot Software Release!") 
             break
         else: 
-            print("You typed {}".format(OP_LOC))
+            print("You typed {}".format(OP_Location))
             print("Hmm I could not find that or an error occured... Try Again...")
 
-    OPVER = ''
-    file = open(('{}/RELEASES.md'.format(OP_LOC)), 'r')
-    file.seek(10)
-    while True:
-        temp = file.read(1)
-        if(temp != " "):
-            OPVER = OPVER + temp
-        else:
-            OP_VER = float(OPVER)
-            break
+    #Start Getting Version Information
+    filesize = os.path.getsize('{}/RELEASES.md'.format(OP_Location))
+    DebugPrint("Got {} bytes".format(filesize))
+    if filesize < 26:
+        print("\n*")
+        print("Invalid Releases.md found in {}. File size invalid.".format(OP_Location))
+        print("Please see issue #28 on my repo https://github.com/Coltonton/eon-custom-themes/issues/28")
+        print("\n*")
+        print("Auto-detection failed please manually enter...")
+        OP_Version=input("OpenPilot Version 0.")
+    else:
+        OP_Version = ''
+        file = open(('{}/RELEASES.md'.format(OP_Location)), 'r')
+        OP_Version = file.readline(13)
+        OP_Version = OP_Version.strip("Version 0.")
+        file.close()
 
-    print("\n*\nOpenPilot Version Auto-Detected as {} from {}".format(OP_VER, OP_LOC))
+        print("\n*\nOpenPilot Version Auto-Detected as 0.{} from {}".format(OP_Version, OP_Location))
     OP_info_dict = {
-        "OP_Version": OP_VER,
-        "OP_Location": OP_LOC
+        "OP_Version": OP_Version,
+        "OP_Location": OP_Location
     }
     return OP_info_dict
 
@@ -326,7 +333,7 @@ def DebugPrint(msg, fromprocess_input="null", overide=0, multi=0):
 
         if multi > 0:
             if multi == 1:
-                print("*[DEBUG][{} {}] || GOT MULTIPLE DATA".format(debugtime, runprocess))
+                print("\n##[DEBUG][{} {}] || GOT MULTIPLE DATA".format(debugtime, runprocess))
             print("--> {}".format(msg))#] #Debug Msg ()s
         elif multi == 0:
             print("*[DEBUG][{} {}] || {}".format(debugtime, runprocess, msg))#] #Debug Msg ()s

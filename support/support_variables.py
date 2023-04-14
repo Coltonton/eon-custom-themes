@@ -16,8 +16,8 @@ EXCLUDED_THEMES = ["Test", 'Example', 'ignoreme', 'Colton'] if not DEVMODE else 
 MIN_SIM_THRESHOLD = 0.25      # user's input needs to be this percent or higher similar to a theme to select it
 
 # =========== Get OP Ver & Location vars =========== ##
-OP_VER = 0.1
-OP_LOC = ''
+OP_Version = 0.1
+OP_Location = ''
 
 # =================  Welcome Texts ================= ##
 WELCOME_TEXT = ['Created By: Colton (Brandon) S. EndLine \\n',
