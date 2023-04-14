@@ -364,7 +364,7 @@ def DebugPrint(msg, fromprocess_input="null", overide=0, multi=0):
         #    if multi == 1:
         #        print("\n##[DEBUG][{} {}] || GOT MULTIPLE DATA".format(debugtime, runprocess))
         #    print("--> {}".format(msg))#] #Debug Msg ()s
-        if multi is int:
+        else:
             print("##[DEBUG][{} {}] || {}".format(debugtime, runprocess, msg))#] #Debug Msg ()s
 
 def DEV_CHECK():
