@@ -5,6 +5,7 @@ VERBOSE = True
 DEVMODE = True
 DEV_PLATFORM = ""
 EON_CUSTOM_THEMES_VER = "1.2"              # This Softwares Version
+VALID_BOOT_ANIMATIONS =  ['Boot Animation', 'Color Boot Animation', 'White Boot Animation']
 
 # ==============  Backup related vars ============== ##
 BACKUPS_DIR = '/storage/emulated/0/theme-backups' if not DEVMODE else './test-theme-backups'

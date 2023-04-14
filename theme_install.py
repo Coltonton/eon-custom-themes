@@ -58,40 +58,46 @@ import time, os, platform
 import json
 from os import path
 from support.support_functions import * 
-from support.support_variables import BACKUPS_DIR, BACKUP_OPTIONS, CONTRIB_THEMES, OP_Version, OP_Location, VERBOSE,SHOW_CONSOLE_OUTPUT, WELCOME_TEXT, DEV_PLATFORM
+from support.support_variables import BACKUPS_DIR, BACKUP_OPTIONS, CONTRIB_THEMES, OP_Version, OP_Location, VERBOSE,SHOW_CONSOLE_OUTPUT, WELCOME_TEXT, DEV_PLATFORM, VALID_BOOT_ANIMATIONS
 
 
 
 ##======================= CODE START ================================================================
 os.chdir(os.path.dirname(os.path.realpath(__file__)))  # __file__ is safer since it doesn't change based on where this file is called from
 
-print_text(WELCOME_TEXT)              #Print welcome text with the flag for self welcome text
-DebugPrint("DEBUG ON")
-#RunningProcess = json.loads(data.json)
-#RunningProcess=".theme_install"
+print_text(WELCOME_TEXT)                  # Print welcome text with the flag for self welcome text
+DebugPrint("VERBOSE MODE ON")             # Notify if Verbosity Mode is on, DebugPrints only run in dev or verbose mode
+DEV_CHECK()                               # Check if running on unsupported PC/MAC
+OpInfo = dict                             # Init OPInfo Dict
+DeviceData = get_device_theme_data()      # Init Device Data dict with device info
 
-OpInfo = dict
-DeviceData = get_device_theme_data() # Get Perams based off detected device
 class ThemeInstaller:
     def __init__(self):                   # Init code runs once. sets up & determines if to run auto or self
-        get_running()
-        self.start_loop()                                      # Do self install theme git                                             # Terminate program
+        #get_running()                     # Get Running Process
+        self.start_loop()                 # Do self install theme git                                             # Terminate program
 
     def start_loop(self):                 # Self Installer loop
         # Create Backup folder(if nonexistant) and Create session backup and get location
         self.backup_dir = make_backup_folder()
+
+        #Main Program (loop)
         while 1:
-            self.selected_theme = get_aval_themes()
-            if self.selected_theme == 'devmode' and DEVMODE == False:
+            # Auto discover themes and let user choose!
+            self.selected_theme = get_aval_themes()  
+            if self.selected_theme == 'debug' and VERBOSE == False:
                 VERBOSE == True
-                DebugPrint("Debug Functionality On!")
-            elif self.selected_theme == 'devmode' and DEVMODE == True:
+                DebugPrint("Debug Level Verbose On!")
+            elif self.selected_theme == 'debug' and VERBOSE == True:
                 VERBOSE = False 
-                DebugPrint("Debug Functionality Off!", 1) 
+                DebugPrint("Debug Level Verbose Off!", 1) 
             if self.selected_theme is None:
                 print('Didn\'t select a valid theme, exiting.')
                 return
+            
+            # Check what assets are available for the selected theme
             self.get_available_options()
+
+            #Goto Installer
             if self.install_function() == 'exit':
                 return
 
@@ -118,7 +124,6 @@ class ThemeInstaller:
         self.theme_options.append('-Quit-')
 
     def install_function(self):           # Self installer program, prompts user on what they want to do
-        
         while 1:
             theme_types = list(self.theme_options)  # this only contains available options from self.get_available_options
             if not len(theme_types):
@@ -128,93 +133,133 @@ class ThemeInstaller:
         
             #Ask users what resources to install
             print('\n*\nWhat resources do you want to install for the {} theme?'.format(self.selected_theme))
+            print("NEW! Use commas to seperate multiple selections ex '1,2' for option 1 & 2")
             for idx, theme in enumerate(theme_types):
                 print('{}. {}'.format(idx + 1, theme))
-            indexChoice = int(input("Enter Index Value: "))
-            indexChoice -= 1 
+            indexChoice = input("Enter Index Value: ")
+            indexChoice.replace(" ", "")
+            indexChoiceList = indexChoice.split(",")
 
-            selected_option = self.theme_options[indexChoice]
+            selected_option_list= []
+            for x in range(len(indexChoiceList)):
+                runOne = int(indexChoiceList[x])
+                selected_option_list.append(self.theme_options[runOne-1])
 
-            #Main logic
-            if selected_option   == 'Boot Logo':
-                #Confirm user wants to install bootlogo
-                print('\nSelected to install the {} Boot Logo. Continue?'.format(self.selected_theme))
-                if not is_affirmative():
-                    print('Not installing...')
-                    time.sleep(1.5)
-                    continue
+            # Some logic that only allows one boot animation to be installed 
+            onlyOneBootAnimation = []
+            for y in range(len(selected_option_list)):                     # Enumerate through list
+                if selected_option_list[y] in VALID_BOOT_ANIMATIONS:       # If current item is a Valid Boot Animation selection
+                    onlyOneBootAnimation.append(selected_option_list[y])   # Add to a new list to keep track
+            if len(onlyOneBootAnimation) > 1:                              # If there was more then one selection
+                for z in range(len(onlyOneBootAnimation)):                   # Enumerate through said new list and 
+                    selected_option_list.remove(onlyOneBootAnimation[z])     # remove all boot animation selelctions
+                while True:
+                    print("\n*\nOnly one boot animation is permitted to install, please select for {} theme.".format(self.selected_theme))
+                    for idx, theme in enumerate(onlyOneBootAnimation):       # Enumerate multiple boot animation list
+                        print('{}. {}'.format(idx + 1, theme))               # Print to screen
+                    realAnimationChoice = int(input("Enter Index Value: "))  # Ask user to select one
+                    if realAnimationChoice <= len(onlyOneBootAnimation):     # User input was valid
+                        selected_option_list.append(onlyOneBootAnimation[realAnimationChoice-1]) # Add their selection to the stack!! 
+                        break
+                    else:                                                        # User input was not valid
+                        print("Invalid Index... Try Again...")
 
-                print('\nPlease wait....')
+            # Some logic to not give stupid results to stupid people i.e. reboot should come after all installs and we really dont need to go to the main menu too...
+            if "-Reboot-" in selected_option_list:                         #If Reeboot is selected remove Main Menu, Quit, and ensure its at the end
+                if "-Main Menu-" in selected_option_list: selected_option_list.remove("-Main Menu-") #Remove Main Menu as we dont need it...
+                if "-Quit-" in selected_option_list:selected_option_list.remove("-Quit-")            #Remove Quit as we dont need it...
+                selected_option_list.remove("-Reboot-")                                              #Pop Reboot out so we can
+                selected_option_list.append("-Reboot-")                                              #Put it on the end!
+            if "-Quit-" in selected_option_list:                           #If Quit is selected remove Main Menu, and ensure its at the end            
+                if "-Main Menu-" in selected_option_list: selected_option_list.remove("-Main Menu-") #Remove Main Menu as we dont need it...
+                selected_option_list.remove("-Quit-")                                                 #Pop Quit out so we can
+                selected_option_list.append("-Quit-")                                                #Put it on the end!
+            if "-Main Menu-" in selected_option_list:                      #If Main Menu is Selected ensure its at the end
+                selected_option_list.remove("-Main Menu-")                                           #Pop Quit out so we can
+                selected_option_list.append("-Main Menu-")                                           #Put it on the end!
 
-                #Check if there was an Boot logo backup already this session to prevent accidental overwrites
-                #Returns true if okay to proceed. Gets self.backup_dir & asset type name
-                if backup_overide_check(self.backup_dir, DeviceData["BOOT_LOGO_NAME"]) == True:
-                    break
+            DebugPrint("Selected Options: ", multi=selected_option_list)
 
-                #Backup & install new
-                install_from_path = ('{}/{}/{}'.format(CONTRIB_THEMES, self.selected_theme, DeviceData["BOOT_LOGO_THEME_PATH"]))
-                if Dev_DoInstall():
-                    INSTALL_BOOT_LOGO(DeviceData, self.backup_dir, install_from_path)
-                    mark_self_installed()       # Create flag in /sdcard so auto installer knows there is a self installation
-                    print('Press enter to continue!')
-                    input()
-            elif selected_option == 'OpenPilot Spinner':
-                ##Confirm user wants to install Spinner
-                print('\nSelected to install the {} OP Spinner. Continue?'.format(self.selected_theme))
-                if not is_affirmative():
-                    continue
+            for z in range(len(selected_option_list)):
+                #Main logic
+                if selected_option_list[z]   == 'Boot Logo':
+                    #Confirm user wants to install bootlogo
+                    print('\nSelected to install the {} Boot Logo. Continue?'.format(self.selected_theme))
+                    if not is_affirmative():
+                        print('Not installing...')
+                        time.sleep(1.5)
+                        continue
 
-                ##Check if there was a spinner backup already this session to prevent accidental overwrites
-                #Returns false if okay to proceed. Gets self.backup_dir & asset type name
-                if backup_overide_check(self.backup_dir, 'spinner') == True:
-                    break
+                    print('\nPlease wait....')
 
-                #Gets OpenPilot Location and Version
-                OP_INFO = get_OP_Ver_Loc()
-                DebugPrint("Got OP Location: {} and Version 0.{}".format(OP_INFO["OP_Location"], OP_INFO["OP_Version"]))
+                    #Check if there was an Boot logo backup already this session to prevent accidental overwrites
+                    #Returns true if okay to proceed. Gets self.backup_dir & asset type name
+                    if backup_overide_check(self.backup_dir, DeviceData["BOOT_LOGO_NAME"]) == True:
+                        break
 
-                #Backup & Install
-                install_from_path = ("{}/{}/spinner".format(CONTRIB_THEMES, self.selected_theme))
-                #Function to ask before installing for use in dev to not screw up my computer, and test logic
-                if Dev_DoInstall():
-                    INSTALL_QT_SPINNER(self.backup_dir, OP_INFO["OP_Version"], OP_INFO["OP_Location"], install_from_path)
-                    mark_self_installed()        # Create flag in /sdcard so auto installer knows there is a self installation
-                    print('Press enter to continue!')
-                    input()
-            elif selected_option == '-Main Menu-' or selected_option is None:
-                return
-            elif selected_option == '-Reboot-':
-                REBOOT()
-                exit()
-            elif selected_option == '-Quit-' or selected_option is None:
-                QUIT_PROG()
-            elif selected_option == 'Boot Animation' or 'Color Boot Animation' or 'White Boot Animation':
-                #Confirm user wants to install bootlogo
-                print('\nSelected to install the {} {}. Continue?'.format(self.selected_theme, selected_option))
-                if not is_affirmative():
-                    continue
-            
-                #Check if there was a boot ani backup already this session to prevent accidental overwrites
-                #Returns true if okay to proceed. Gets self.backup_dir & asset type name
-                if backup_overide_check(self.backup_dir, 'bootanimation.zip') == True:
-                    break
+                    #Backup & install new
+                    install_from_path = ('{}/{}/{}'.format(CONTRIB_THEMES, self.selected_theme, DeviceData["BOOT_LOGO_THEME_PATH"]))
+                    if Dev_DoInstall():
+                        INSTALL_BOOT_LOGO(DeviceData, self.backup_dir, install_from_path)
+                        mark_self_installed()       # Create flag in /sdcard so auto installer knows there is a self installation
+                        print('Press enter to continue!')
+                        input()
+                elif selected_option_list[z] == 'OpenPilot Spinner':
+                    ##Confirm user wants to install Spinner
+                    print('\nSelected to install the {} OP Spinner. Continue?'.format(self.selected_theme))
+                    if not is_affirmative():
+                        continue
 
-                #Set bootAniColor based off the selected option - if 'white_', 'color_', or standard bootanimation 
-                if selected_option == 'Boot Animation':
-                    bootAniColor = ''
-                elif selected_option == 'Color Boot Animation':
-                    bootAniColor = 'color_'
-                elif selected_option == 'White Boot Animation':
-                    bootAniColor = 'white_'
+                    ##Check if there was a spinner backup already this session to prevent accidental overwrites
+                    #Returns false if okay to proceed. Gets self.backup_dir & asset type name
+                    if backup_overide_check(self.backup_dir, 'spinner') == True:
+                        break
 
-                #Backup And install new bootanimation
-                install_from_path = ('{}/{}'.format(CONTRIB_THEMES, self.selected_theme))
-                if Dev_DoInstall():
-                    INSTALL_BOOTANIMATION(self.backup_dir, install_from_path, bootAniColor)
-                    mark_self_installed()        # Create flag in /sdcard so auto installer knows there is a self installation
-                    print('Press enter to continue!')
-                    input()
-                    
+                    #Gets OpenPilot Location and Version
+                    OP_INFO = get_OP_Ver_Loc()
+                    DebugPrint("Got OP Location: {} and Version 0.{}".format(OP_INFO["OP_Location"], OP_INFO["OP_Version"]))
+
+                    #Backup & Install
+                    install_from_path = ("{}/{}/spinner".format(CONTRIB_THEMES, self.selected_theme))
+                    #Function to ask before installing for use in dev to not screw up my computer, and test logic
+                    if Dev_DoInstall():
+                        INSTALL_QT_SPINNER(self.backup_dir, OP_INFO, install_from_path)
+                        mark_self_installed()        # Create flag in /sdcard so auto installer knows there is a self installation
+                        print('Press enter to continue!')
+                        input()
+                elif selected_option_list[z] == '-Main Menu-' or selected_option_list[z] is None:
+                    return
+                elif selected_option_list[z] == '-Reboot-':
+                    REBOOT()
+                    exit()
+                elif selected_option_list[z] == '-Quit-':
+                    QUIT_PROG()
+                elif selected_option_list[z] in VALID_BOOT_ANIMATIONS:
+                    #Confirm user wants to install bootlogo
+                    print('\nSelected to install the {} {}. Continue?'.format(self.selected_theme, selected_option_list[z]))
+                    if not is_affirmative():
+                        continue
+                
+                    #Check if there was a boot ani backup already this session to prevent accidental overwrites
+                    #Returns true if okay to proceed. Gets self.backup_dir & asset type name
+                    if backup_overide_check(self.backup_dir, 'bootanimation.zip') == True:
+                        break
+
+                    #Set bootAniColor based off the selected option - if 'white_', 'color_', or standard bootanimation 
+                    if selected_option_list[z] == 'Boot Animation':
+                        bootAniColor = ''
+                    elif selected_option_list[z] == 'Color Boot Animation':
+                        bootAniColor = 'color_'
+                    elif selected_option_list[z] == 'White Boot Animation':
+                        bootAniColor = 'white_'
+
+                    #Backup And install new bootanimation
+                    install_from_path = ('{}/{}'.format(CONTRIB_THEMES, self.selected_theme))
+                    if Dev_DoInstall():
+                        INSTALL_BOOTANIMATION(self.backup_dir, install_from_path, bootAniColor)
+                        mark_self_installed()        # Create flag in /sdcard so auto installer knows there is a self installation
+                        print('Press enter to continue!')
+                        input()      
 
 
 if __name__ == '__main__':
