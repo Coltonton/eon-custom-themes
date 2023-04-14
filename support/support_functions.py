@@ -326,7 +326,7 @@ def get_user_backups(exclude):
 
 
 ## ====================== Misc ====================== ##
-def set_running(data):
+'''def set_running(data):
     with open('person.txt', 'w') as json_file:
         json.dump(data, json_file)
 
@@ -335,7 +335,7 @@ def get_running():
         datadict = json.load(f)
     x = datadict['Launched Program']
     return x
-
+'''
 def REBOOT():
     print('\nRebooting.... Thank You, Come Again!!!')
     os.system('am start -a android.intent.action.REBOOT')  # reboot intent is safer (reboot sometimes causes corruption)
