@@ -190,7 +190,7 @@ class ThemeUtility:
         backup_dir = make_backup_folder()
 
         #Boot-Logo
-        install_from_path = '{}/Comma-Default/{}'.format(CONTRIB_THEMES, boot_logo_theme_path)
+        install_from_path = '{}/Comma-Default/{}'.format(CONTRIB_THEMES, DeviceData["BOOT_LOGO_THEME_PATH"])
         INSTALL_BOOT_LOGO(DeviceData, backup_dir, install_from_path)
 
         #Boot-Animation
