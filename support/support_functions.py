@@ -273,20 +273,20 @@ def INSTALL_QT_SPINNER(backup_dir, OP_INFO, install_from_path, con_output=''):
     # Check if theme contributer provided a spinner logo
     if path.exists('{}/img_spinner_comma.png'.format(install_from_path)):                   #Contibuter Did Provide
         DebugPrint("Installing logo...", fromprocess_input="sf")
-        os.system('mv /data/{}/selfdrive/assets/img_spinner_comma.png {}/spinner'.format(OP_INFO["OP_Location"], backup_dir))      #Backup spinner logo
-        os.system('cp {}/img_spinner_comma.png /data/{}/selfdrive/assets'.format(install_from_path, OP_INFO["OP_Location"]))       #Replace spinner logo supplied custom
+        os.system('mv {}/selfdrive/assets/img_spinner_comma.png {}/spinner'.format(OP_INFO["OP_Location"], backup_dir))      #Backup spinner logo
+        os.system('cp {}/img_spinner_comma.png {}/selfdrive/assets'.format(install_from_path, OP_INFO["OP_Location"]))       #Replace spinner logo supplied custom
         flags.append("custom_logo")                                                                                                #Add custom_logo flag
     # Check if theme contributer provided a spinner track
     if path.exists('{}/img_spinner_track.png'.format(install_from_path)):                   #Contibuter Did Provide
         DebugPrint("Installing track...", fromprocess_input="sf")
-        os.system('mv /data/{}/selfdrive/assets/img_spinner_track.png {}/spinner'.format(OP_INFO["OP_Location"], backup_dir))      #Backup spinner track
-        os.system('cp {}/img_spinner_track.png /data/{}/selfdrive/assets'.format(install_from_path, OP_INFO["OP_Location"]))       #Replace spinner track supplied custom
+        os.system('mv {}/selfdrive/assets/img_spinner_track.png {}/spinner'.format(OP_INFO["OP_Location"], backup_dir))      #Backup spinner track
+        os.system('cp {}/img_spinner_track.png {}/selfdrive/assets'.format(install_from_path, OP_INFO["OP_Location"]))       #Replace spinner track supplied custom
         flags.append("custom_track")                                                                                               #Add custom_trackflag
     # Check if theme contributer provided a spinner.c                                                                                                                                                                                                          #Add custom_C flag                                                                                                                  #Add custom_C flag
     #if path.exists('{}/spinner.c'.format(install_from_path)) and opver == OP_VER <= 7.8:   #Contibuter Did Provide      
         #DebugPrint("Installing spinner.c...", fromprocess_input="sf")
-        #os.system('mv /data/{}/selfdrive/common/spinner.c {}/spinner'.format(opdir, backup_dir))                                   #Backup spinner.c                
-        #os.system('cp {}/spinner.c /data/{}/selfdrive/common'.format(install_from_path, opdir))                                    #Replace spinner.c with supplied custom 
+        #os.system('mv {}/selfdrive/common/spinner.c {}/spinner'.format(opdir, backup_dir))                                   #Backup spinner.c                
+        #os.system('cp {}/spinner.c {}/selfdrive/common'.format(install_from_path, opdir))                                    #Replace spinner.c with supplied custom 
         #flags.append("custom_c")                                                                                                   #Add custom_C flag
 
 ## ================= Restor-er Code ================= ##
