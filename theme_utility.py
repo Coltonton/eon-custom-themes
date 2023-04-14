@@ -70,7 +70,7 @@ DEV_CHECK()                               # Check if running on unsupported PC/M
 DeviceData = get_device_theme_data()      # Init Device Data dict with device info
 
 class ThemeUtility:
-    def __init__(self):
+    def __init__(self):              #Init
         while True:
             util_options = ['Install from custom location', 'Restore Comma-default', 'Cleanup for uninstall', '-Reboot-', '-Quit-']
             selected_util = selector_picker(util_options, 'This Is a Test')
@@ -86,7 +86,7 @@ class ThemeUtility:
             elif selected_util == '-Quit-':
                 QUIT_PROG()
 
-    def Install_From_Loc(self):      #TEST & Cleanup the spare vars
+    def Install_From_Loc(self):      #Install a custom theme from custom location
         backup_dir = make_backup_folder()
         theme_options = []
  
@@ -179,24 +179,8 @@ class ThemeUtility:
                     input()
 
     def Restore_Comma_Default(self): #Restore the default theme for EON 
-        print('\nSelected to restore Comma-Default theme. Continue?')
-        print('Process is fully automagic!')
-        if not is_affirmative():
-            return None
-
-        print('Please wait..... This should only take a few moments!\n')
         backup_dir = make_backup_folder()
-
-        #Boot-Logo
-        install_from_path = '{}/Comma-Default/{}'.format(CONTRIB_THEMES, DeviceData["BOOT_LOGO_THEME_PATH"])
-        INSTALL_BOOT_LOGO(DeviceData, backup_dir, install_from_path)
-
-        #Boot-Animation
-        install_from_path = '{}/Comma-Default/'.format(CONTRIB_THEMES)
-        INSTALL_BOOTANIMATION(backup_dir, install_from_path)
-
-        print('\nThank you come again! - Boot Logo & Boot Animation factory restored!!')
-        exit()
+        restore_comma_default(DeviceData, backup_dir)
 
     def Cleanup_Files(self):         #Remove all traces of EON Custom Themes
         #Print hAllo message

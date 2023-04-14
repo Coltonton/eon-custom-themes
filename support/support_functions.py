@@ -329,6 +329,25 @@ def get_user_backups(exclude):  #Gets users backups in /sdcard/theme-backups
             print('Please enter only Index number value!!')
             continue
 
+def restore_comma_default(DeviceData, backup_dir):
+    print('\nSelected to restore Comma-Default theme. Continue?')
+    print('Process is fully automagic!')
+    if not is_affirmative():
+        return None
+
+    print('Please wait..... This should only take a few moments!\n')
+    
+    #Boot-Logo
+    install_from_path = '{}/Comma-Default/{}'.format(CONTRIB_THEMES, DeviceData["BOOT_LOGO_THEME_PATH"])
+    INSTALL_BOOT_LOGO(DeviceData, backup_dir, install_from_path)
+
+    #Boot-Animation
+    install_from_path = '{}/Comma-Default/'.format(CONTRIB_THEMES)
+    INSTALL_BOOTANIMATION(backup_dir, install_from_path)
+
+    print('\nThank you come again! - Boot Logo & Boot Animation factory restored!!')
+    exit()
+
 #########################################################
 ## ====================== Misc ======================= ##
 #########################################################

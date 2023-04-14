@@ -89,12 +89,8 @@ class ThemeRestorer:
                 return
   
     def backup_get_available_options(self):   # Check what assets are available for the selected backup
-        # Check if the selected backup has a APK asset
-        #if os.path.exists('{}/{}/spinner'.format(BACKUPS_DIR, self.selected_backup)):
-        #    BACKUP_OPTIONS.append('APK')
-
         # Check if the selected backup has a boot logo asset
-        if os.path.exists('{}/{}/{}'.format(BACKUPS_DIR, self.selected_backup, BOOT_LOGO_NAME)):
+        if os.path.exists('{}/{}/{}'.format(BACKUPS_DIR, self.selected_backup, DeviceData["BOOT_LOGO_NAME"])):
             BACKUP_OPTIONS.append('Boot Logo')
 
         # Check if the selected backup has a boot annimation asset
@@ -104,13 +100,6 @@ class ThemeRestorer:
         # Check if the selected backup has a OpenPilot Spinner asset
         if os.path.exists('{}/{}/spinner'.format(BACKUPS_DIR, self.selected_backup)):
             BACKUP_OPTIONS.append('OpenPilot Spinner') 
-
-        # Check if the selected backup has a APK asset
-        #if os.path.exists('{}/{}/spinner'.format(BACKUPS_DIR, self.selected_backup)):
-        #   BACKUP_OPTIONS.append('APK')
-
-        # if os.path.exists('{}/{}/additional'.format(BACKUPS_DIR, self.selected_backup)):  # todo disabled for now
-        #   self.BACKUP_OPTIONS.append('4. Additional Resources')
 
         BACKUP_OPTIONS.append('-Main Menu-')
         BACKUP_OPTIONS.append('-Reboot-')
@@ -131,51 +120,8 @@ class ThemeRestorer:
             indexChoice -= 1 
 
             selected_option = BACKUP_OPTIONS[indexChoice]
-
-            # if selected_option == 'APK':
-                #     print('Selected to install the APK backup. Continue?')
-                #     if not is_affirmative():
-                #         print('Not installing...')
-                #         time.sleep(1.5)
-                #         continue
-                #     os.system('cp /data/openpilot/apk/ai.comma.plus.offroad.apk {}'.format(self.backup_dir))      # Make Backup
-                #     os.system('dd if={}/{}/{} of={}'.format(BACKUPS_DIR, self.selected_backup, BOOT_LOGO_NAME, BOOT_LOGO_PATH))   # Replace
-                #     print('\nBoot Logo re-installed successfully! Original backed up to {}'.format(self.backup_dir))
-                #     print('Press enter to continue!')
-                #     mark_self_installed()       # Create flag in /sdcard so auto installer knows there is a self installation
-                #     input()
-
-
-
-                #     #Confirm user wants to install APK
-                #     print('Selected to install the {} APK backup. Continue?'.format(self.selected_theme))
-                #     if not is_affirmative():
-                #         print('Not installing...')
-                #         time.sleep(1.5)
-                #         continue
             
-                #     #Check if there was a backup already this session to prevent accidental overwrites
-                #     if path.exists('{}/spinner'.format(self.backup_dir)):                  
-                #         print('It appears you already made a APK install this session') 
-                #         print('continuing will overwrite the last APK backup')
-                #         print('the program made this session already!!!')
-                #         print('Would you like to continue and overwrite previous?')
-                #         if not is_affirmative():
-                #             print('Not installed, exiting session..... Please re-run program')
-                #             exit()      #Exit program if user does not want to overwrite, so they can start a new session
-                #     else:
-                #         os.mkdir('{}/spinner'.format(self.backup_dir))
-
-                #     #Ask user if their OP directory is custom (like arnepilot / dragonpilot)
-                #     print('Do you have an OP fork with a custom directory name? (ex. arnepilot, dragonpilot)')  # Ask the user if their OP fork used a diffrent directory.
-                #     if is_affirmative():  # Yes there is a custom OP dir
-                #         print('What is the OP directory name? (case matters, not including /data/)')
-                #         opdir = '/data/{}'.format(input('> ').strip('/'))  # get custom dir name, strip slashes for safety
-                #         print('Your openpilot directory is {}'.format(opdir))
-                #         input('*** Please enter to continue, or Ctrl+C to abort if this is incorrect! ***')
-                #     else:
-                #         opdir = 'openpilot'                                #op directory is not custom so openpilot
-            if selected_option == 'Boot Logo':
+            if   selected_option == 'Boot Logo':
                 print('Selected to install the Boot Logo backup. Continue?')
                 if not is_affirmative():
                     print('Not installing...')
@@ -203,73 +149,37 @@ class ThemeRestorer:
                 mark_self_installed()       # Create flag in /sdcard so auto installer knows there is a self installation
                 input()
             elif selected_option == 'OpenPilot Spinner':
-                #Confirm user wants to install Spinner
-                print('Selected to install the {} OP Spinner backup. Continue?'.format(self.selected_theme))
+                ##Confirm user wants to install Spinner
+                print('\nSelected to install the {} OP Spinner. Continue?'.format(self.selected_theme))
                 if not is_affirmative():
-                    print('Not installing...')
-                    time.sleep(1.5)
                     continue
-        
+
                 ##Check if there was a spinner backup already this session to prevent accidental overwrites
                 #Returns false if okay to proceed. Gets self.backup_dir & asset type name
                 if backup_overide_check(self.backup_dir, 'spinner') == True:
-                    exit()
+                    break
 
-                ##Ask user if their OP directory is custom (like arnepilot / dragonpilot)
-                opdir = op_dir_finder()
+                #Gets OpenPilot Location and Version
+                OP_INFO = get_OP_Ver_Loc()
+                DebugPrint("Got OP Location: {} and Version 0.{}".format(OP_INFO["OP_Location"], OP_INFO["OP_Version"]))
 
-                ##Backup & Copy in relevant files
-                # Check if backup has a spinner logo
-                if path.exists('{}/{}/spinner/img_spinner_comma.png'.format(CONTRIB_THEMES, self.selected_theme)):                               #Backup does haz
-                    os.system('mv /data/{}/selfdrive/assets/img_spinner_comma.png {}/spinner'.format(opdir, self.backup_dir))                      #Backup logo
-                    os.system('cp {}/{}/spinner/img_spinner_comma.png /data/{}/selfdrive/assets'.format(BACKUPS_DIR, self.selected_backup, opdir)) #Replace logo
-                # Check if backup has a spinner track
-                if path.exists('{}/{}/spinner/img_spinner_track.png'.format(CONTRIB_THEMES, self.selected_theme)):                               #Backup does haz
-                    os.system('mv /data/{}/selfdrive/assets/img_spinner_track.png {}/spinner'.format(opdir, self.backup_dir))                      #Backup sprinner track
-                    os.system('cp {}/{}/spinner/img_spinner_track.png /data/{}/selfdrive/assets'.format(BACKUPS_DIR, self.selected_backup, opdir)) #Replace spinner
-                # Check if backup has a spinner.c
-                elif path.exists('{}/{}/spinner/spinner.c'.format(CONTRIB_THEMES, self.selected_theme)) and raveRainbow == False:                #Backup does haz     
-                    os.system('mv /data/{}/selfdrive/common/spinner.c {}/spinner'.format(opdir, self.backup_dir))                                  #Backup spinner.c               
-                    os.system('cp {}/{}/spinner/spinner.c /data/{}/selfdrive/common'.format(BACKUPS_DIR, self.selected_backup, opdir))             #Replace spinner.c 
-
-                #Final make new spinner & finish
-                os.system('cd /data/{}/selfdrive/ui/spinner && make'.format(opdir))
-                print('\n{} spinner re-installed successfully! Original backed up to {}'.format(opdir, self.backup_dir))
-                print('Press enter to continue!')
-                mark_self_installed()        # Create flag in /sdcard so auto installer knows there is a self installation
-                input()
-            #elif selected_option == 'OpenPilot UI':
-              #  print('Additional Resources are not an active feature')
-              #  time.sleep(5)
+                #Backup & Install
+                install_from_path = ("{}/{}/spinner".format(CONTRIB_THEMES, self.selected_theme))
+                #Function to ask before installing for use in dev to not screw up my computer, and test logic
+                if Dev_DoInstall():
+                    INSTALL_QT_SPINNER(self.backup_dir, OP_INFO, install_from_path)
+                    mark_self_installed()        # Create flag in /sdcard so auto installer knows there is a self installation
+                    print('Press enter to continue!')
+                    input()
             elif selected_option == '-Main Menu-' or selected_option is None:
                 return
             elif selected_option == '-Reboot-':
-                print('Rebooting.... Enjoy your old theme!!!')
-                os.system('am start -a android.intent.action.REBOOT') #create an android action to reboot
-                exit()
+                REBOOT()
             elif selected_option == '-Quit-':
-                print('Thank you come again! You will see your changes next reboot!')
-                exit()
+                QUIT_PROG()
 
     def restore_default_comma(self):
-        print('Selected to restore Comma-Default theme. Continue?')
-        print('Process is fully automagic!')
-        if not is_affirmative():
-            print('Not restoring...')
-            time.sleep(1.5)
-            self.backup_reinstaller_loop()
-
-        os.system('cp {} {}'.format(BOOT_LOGO_PATH, self.backup_dir))      # Make Backup
-        os.system('dd if=./{}/{}/{} of={}'.format(CONTRIB_THEMES, self.selected_backup, BOOT_LOGO_THEME_PATH, BOOT_LOGO_PATH))  # Replace
-        print('Factory Boot Logo restored successfully! Custom file(s) backed up to {}\n'.format(self.backup_dir))
-
-        os.system('mount -o remount,rw /system')  # /system read only, must mount as r/w
-        os.system('mv /system/media/bootanimation.zip {}'.format(self.backup_dir))  # backup
-        os.system('cp ./{}/{}/bootanimation.zip /system/media/bootanimation.zip'.format(CONTRIB_THEMES, self.selected_backup,))  # replace
-        os.system('chmod 666 /system/media/bootanimation.zip')
-        print('Factory Boot Animation restored successfully! Custom file(s) backed up to {}\n'.format(self.backup_dir))
-        print('Thank you come again!')
-        exit()
+        restore_comma_default(DeviceData, self.backup_dir)
 
 if __name__ == '__main__':
   bi = ThemeRestorer()
