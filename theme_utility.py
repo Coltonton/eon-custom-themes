@@ -137,7 +137,7 @@ class ThemeUtility:
                     break
 
                 #Backup And install new bootanimation
-                install_from_path = ('{}/{}'.format(CONTRIB_THEMES, self.selected_theme))
+                install_from_path = (install_folder)
                 if Dev_DoInstall():
                     INSTALL_BOOTANIMATION(backup_dir, install_from_path,)
                     mark_self_installed()        # Create flag in /sdcard so auto installer knows there is a self installation
@@ -153,7 +153,7 @@ class ThemeUtility:
                 DebugPrint("Got OP Location: {} and Version 0.{}".format(OP_INFO["OP_Location"], OP_INFO["OP_Version"]))
 
                 #Backup & Install
-                install_from_path = ("{}/{}/spinner".format(CONTRIB_THEMES, self.selected_theme))
+                install_from_path = ("{}/spinner".format(install_folder))
                 #Function to ask before installing for use in dev to not screw up my computer, and test logic
                 if Dev_DoInstall():
                     INSTALL_QT_SPINNER(backup_dir, OP_INFO, install_from_path)
