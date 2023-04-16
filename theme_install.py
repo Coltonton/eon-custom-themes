@@ -68,13 +68,6 @@ DEV_CHECK()                               # Check if running on unsupported PC/M
 OpInfo = dict                             # Init OPInfo Dict
 DeviceData = get_device_theme_data()      # Init Device Data dict with device info
 
-print_text(WELCOME_TEXT)              #Print welcome text with the flag for self welcome text
-DebugPrint("DEBUG ON")
-#RunningProcess = json.loads(data.json)
-#RunningProcess=".theme_install"
-
-OpInfo = dict
-DeviceData = get_device_theme_data() # Get Perams based off detected device
 class ThemeInstaller:
     def __init__(self):                   # Init code runs once. sets up & determines if to run auto or self
         #get_running()                     # Get Running Process

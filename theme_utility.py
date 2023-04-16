@@ -55,9 +55,6 @@
  #       And incorparate it into your OP Fork? See ./developer/DEVREADME          #
  #                                                                                #
 ##################################################################################
-from support.support_variables import EON_CUSTOM_THEMES_VER
-print('EON Custom Themes Version '+ EON_CUSTOM_THEMES_VER)
-
 import os
 import time
 from os import path
