@@ -6,6 +6,8 @@ VERBOSE = False
 DEVMODE = False
 DEV_PLATFORM = ""
 VALID_BOOT_ANIMATIONS =  ['Boot Animation', 'Color Boot Animation', 'White Boot Animation']
+IS_AFFIRMATIVE_YES = ['yes', 'ye', 'y', '1', "j", "ja", "si", "s"]
+IS_AFFIRMATIVE_UNSURE = ['i guess', 'sure', 'fine', 'whatever', 'idk', 'why', "uh", "um", "...", "bite me", "eat my shorts"]
 
 # ==============  Backup related vars ============== ##
 BACKUPS_DIR = '/storage/emulated/0/theme-backups' if not DEVMODE else './test-theme-backups'

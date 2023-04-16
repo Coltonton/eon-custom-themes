@@ -43,22 +43,26 @@ def get_device_theme_data(onprocess='null'):
         cycle = cycle +1
     return devicedata
 
-def is_affirmative():           # Ask user for confirmation
+def is_affirmative(key1="Yes", key2="No"):           # Ask user for confirmation
     #DebugPrint('Asking to confirm', 'sf')
+    key1_s = key1.lower().strip()
+    key2_s = key2.lower().strip()
     u = input('[1.Yes / 2.No]: ').lower().strip()
     DebugPrint('Got {}'.format(u), 'sf')
-    if u in ['i guess', 'sure', 'fine', 'whatever']:
-        print("WTF do you mean {}... I'm going to assume NO so i dont brick ya shi...".format(u))
-    if u not in ['yes', 'ye', 'y', '1', "j", "ja", "si"]:
+    if u in IS_AFFIRMATIVE_UNSURE:
+        print("WTF do you mean {}... I'm going to assume NO so I dont brick ya shi...".format(u))
+    if u in ['i dont talk to cops without my lawyer present']:
+        print("Attaboy oat!")
+    if u not in IS_AFFIRMATIVE_YES or [key1_s]:
         print('Not Installing....')
         time.sleep(1.5) 
-        return 0
-    if u in ['yes', 'ye', 'y', '1', "j", "ja", "si"]: 
-        return 1
+        return False
+    if u in IS_AFFIRMATIVE_YES or [key1_s]: 
+        return True
     else:
         print('Not installing...')
         time.sleep(1.5) 
-        return 0
+        return False
 
 def make_backup_folder():
     DebugPrint('Getting backup Folder congig', fromprocess_input="sf")
@@ -69,14 +73,12 @@ def make_backup_folder():
     # Create session backup folder
     while True:
         print("\n*\nDo You wish to name your backup or use default? ")
-        ans = int(input("1.Custom/2.Default (By Index): "))
-        if ans == 1:
+        if is_affirmative(key1="Custom", key2="Default"):
             usersChoice = input("Enter: backup.")
             backup_dir = '{}/backup.{}'.format(BACKUPS_DIR, usersChoice)
             if path.exists('{}'.format(backup_dir)):
-                print("Directory already exists...")
-                overwrite = int(input("Overwrite Data? 1.Yes/2.No (By Index): "))
-                if overwrite == 1:
+                print("Directory already exists... Overwrite Data?")
+                if is_affirmative(key1="Overwrite", key2="Don't Overwrite"):
                     os.removedirs(backup_dir)
                     break
                 else:
@@ -379,12 +381,12 @@ def get_running():
     return x
 '''
 def REBOOT():                   #Reboot EON Device
-    print('\nRebooting.... Thank You, Come Again!!!')
+    print('\nRebooting.... Thank You, Come Again!!!\n\n########END OF PROGRAM########\n')
     os.system('am start -a android.intent.action.REBOOT')  # reboot intent is safer (reboot sometimes causes corruption)
     sys.exit()
 
 def QUIT_PROG():                # Terminate Program friendly
-    print('\nThank you come again! You will see your changes next reboot!\n')
+    print('\nThank you come again! You will see your changes next reboot!\n\n########END OF PROGRAM########\n')
     sys.exit()  
 
 def str_sim(a, b):              # Part of @ShaneSmiskol's get_aval_themes code
