@@ -68,12 +68,18 @@ def make_backup_folder():
         os.mkdir(BACKUPS_DIR)
     # Create session backup folder
     while True:
-        print("Do You wish to name your backup or use default? ")
+        print("\n*\nDo You wish to name your backup or use default? ")
         ans = int(input("1.Yes/2.Use Default (By Index): "))
         if ans == 1:
             usersChoice = input("Enter: backup.")
             backup_dir = '{}/backup.{}'.format(BACKUPS_DIR, usersChoice)
-            break
+            if path.exists('{}'.format(backup_dir)):
+                print("Directory already exists...")
+                overwrite = int(input("Overwrite Data? 1.Yes/2.No (By Index): "))
+                if overwrite == 1:
+                    os.removedirs(backup_dir)
+            else:
+                break
         elif ans == 2:
             backup_dir = datetime.now().strftime('{}/backup.%m-%d-%y--%I:%M.%S-%p'.format(BACKUPS_DIR))
             break
