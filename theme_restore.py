@@ -160,7 +160,7 @@ class ThemeRestorer:
                 install_from_path = ("{}/{}/spinner".format(BACKUPS_DIR, self.selected_backup))
                 #Function to ask before installing for use in dev to not screw up my computer, and test logic
                 if Dev_DoInstall():
-                    INSTALL_QT_SPINNER(self.backup_dir, OP_INFO, install_from_path)
+                    INSTALL_QT_SPINNER(self.backup_dir, OP_INFO, install_from_path, re=True)
                     mark_self_installed()        # Create flag in /sdcard so auto installer knows there is a self installation
                     print('Press enter to continue!')
                     input()

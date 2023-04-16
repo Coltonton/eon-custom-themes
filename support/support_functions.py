@@ -298,7 +298,11 @@ def INSTALL_QT_SPINNER(backup_dir, OP_INFO, install_from_path, con_output='', re
         #DebugPrint("Installing spinner.c...", fromprocess_input="sf")
         #os.system('mv {}/selfdrive/common/spinner.c {}/spinner'.format(opdir, backup_dir))                                   #Backup spinner.c                
         #os.system('cp {}/spinner.c {}/selfdrive/common'.format(install_from_path, opdir))                                    #Replace spinner.c with supplied custom 
-        #flags.append("custom_c")                                                                                                   #Add custom_C flag
+        #flags.append("custom_c")  
+    if re == False:                                         # Need to chmod to edet permissions to 666
+        print('\nOpenPilot Spinner installed! Original file(s) backed up to {}'.format(backup_dir))
+    elif re == True:
+        print('\nOpenPilot Spinner Re-installed! Current file(s) backed up to {}'.format(backup_dir))                                                                                                 #Add custom_C flag
 
 ## ================= Restor-er Code ================= ##
 # Created by @ShaneSmiskol modified version of get_aval_themes() to get all backups by Coltonton
