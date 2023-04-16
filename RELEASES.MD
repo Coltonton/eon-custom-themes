@@ -1,3 +1,6 @@
+Version X.X.X (20XX-XX-XX)
+========================
+
 Version 1.2.0 (2023-04-16)
 ========================
 * Multi-install Feature
