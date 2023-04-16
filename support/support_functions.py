@@ -69,12 +69,12 @@ def make_backup_folder():
     # Create session backup folder
     while True:
         print("Do You wish to name your backup or use default? ")
-        ans = input("1.Yes/2.Use Default: ").lower().strip()
-        if ans == "1" or "y" or "yes":
+        ans = input("1.Yes/2.Use Default: ")
+        if ans == "1" or "y" or "yes" or "Y" or "Yes":
             usersChoice = input("Enter: backup.")
             backup_dir = '{}/backup.{}}'.format(BACKUPS_DIR, usersChoice)
             break
-        elif ans == "2" or "n" or "no" or "u" or "d" or "use default" or "default":
+        elif ans == "2" or "n" or "no" or "u" or "d" or "use default" or "default" or "N" or "No" or "U" or "D" or "Use default" or "Default":
             backup_dir = datetime.now().strftime('{}/backup.%m-%d-%y--%I:%M.%S-%p'.format(BACKUPS_DIR))
             break
         else:
@@ -324,7 +324,6 @@ def get_user_backups(exclude):  #Gets users backups in /sdcard/theme-backups
   
     while 1:
         backup = input('\nChoose a backup to install (by index value): ').strip().lower()
-        print()
         if backup in ['exit', 'Exit', 'E', 'e', '0']:
             exit()
         if backup in ['r', 'R' and default_restore_exists == 1]:
@@ -414,8 +413,8 @@ def DEV_CHECK():                #Hault Program If Ran On PC/Mac
     global DEV_PLATFORM, DEVMODE, VERBOSE
     # Simple if PC check, not needed but nice to have
     DEV_PLATFORM = platform.system()
-    print(DEV_PLATFORM)
     if DEV_PLATFORM in ['Windows', 'Darwin']:
+        print(DEV_PLATFORM)
         print("This program only works on Comma EONS & Comma Two, sorry...")
         print("Press enter to exit.")
         u = input('')
