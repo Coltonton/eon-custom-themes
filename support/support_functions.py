@@ -3,10 +3,13 @@ import os, sys, time, platform, difflib, json
 from os import path
 from datetime import datetime
 from support.support_variables import *
+
 os.chdir(os.path.dirname(os.path.realpath(__file__)))  # __file__ is safer since it doesn't change based on where this file is called from
 
-## ================= Shared ================= ##
-def get_device_theme_data(onprocess='null'):
+#########################################################
+##===================== Shared ======================= ##
+#########################################################
+def get_device_theme_data(onprocess='null'):         # Get and set the data based on device
     DebugPrint('Getting Device Data...', 'sf')
     devicedata = dict
     # Crude device detection, *shrug* it works! LeEco does not have tristate!
@@ -43,24 +46,25 @@ def get_device_theme_data(onprocess='null'):
         cycle = cycle +1
     return devicedata
 
-def is_affirmative():           # Ask user for confirmation
+def is_affirmative(key1="Yes", key2="No", output="Not installing..."): # Ask user for confirmation
     #DebugPrint('Asking to confirm', 'sf')
-    u = input('[1.Yes / 2.No]: ').lower().strip()
-    DebugPrint('Got {}'.format(u), 'sf')
-    if u in ['i guess', 'sure', 'fine', 'whatever']:
-        print("WTF do you mean {}... I'm going to assume NO so i dont brick ya shi...".format(u))
-    if u not in ['yes', 'ye', 'y', '1', "j", "ja", "si"]:
-        print('Not Installing....')
-        time.sleep(1.5) 
-        return 0
-    if u in ['yes', 'ye', 'y', '1', "j", "ja", "si"]: 
-        return 1
-    else:
-        print('Not installing...')
-        time.sleep(1.5) 
-        return 0
+    key1_l = key1.lower().strip()                   # lowercase key1 for compare
+    key2_lf = key2.lower().strip()[0]               # lowercase first char key2 for compare
+    key1_lf = key1_l[0] if key1_l[0] not in ["n", key2_lf] else "y" # Get first letter key1(lower), if is "n" (same as no) or same as key2 ignore...
+    afirm = input('[1.{} / 2.{}]: '.format(key1,key2)).lower().strip()
+    DebugPrint('Got {}'.format(afirm), 'sf')
+    if ((afirm in IS_AFFIRMATIVE_YES) or (afirm in [key1_l, key1_lf])): 
+        return True
+    if afirm in IS_AFFIRMATIVE_UNSURE:
+        print("WTF do you mean {}... I'm going to assume NO so I dont brick ya shi...".format(afirm))
+    if afirm in ['i dont talk to cops without my lawyer present']: # Do you like your eggs real or plastic?
+        print("Attaboy Ope!") # Please tell me you watched the Andy Griffith Show... I was only born in '99...
+    
+    if output != "silent": print('{}'.format(output))
+    time.sleep(1.5) 
+    return False
 
-def make_backup_folder():
+def make_backup_folder():                            # Generate the backup dir
     DebugPrint('Getting backup Folder congig', fromprocess_input="sf")
     # Check if theme backup folder doesnt exist then create
     if not os.path.exists(BACKUPS_DIR): 
@@ -68,22 +72,27 @@ def make_backup_folder():
         os.mkdir(BACKUPS_DIR)
     # Create session backup folder
     while True:
-        print("Do You wish to name your backup or use default?")
-        ans = input("1.Yes/2.Use Default").strip().lower()
-        if ans == "1" or "y" or "yes":
+        print("\n*\nDo You wish to name your backup or use default? ")
+        if is_affirmative(key1="Custom", key2="Default", output="silent"):
             usersChoice = input("Enter: backup.")
-            backup_dir = '{}/backup.{}}'.format(BACKUPS_DIR, usersChoice)
-            break
-        elif ans == "2" or "n" or "no" or "u" or "d" or "use default" or "default":
+            backup_dir = '{}/backup.{}'.format(BACKUPS_DIR, usersChoice)
+            if path.exists('{}'.format(backup_dir)):
+                print("Directory already exists... Overwrite Data?")
+                if is_affirmative(key1="Overwrite", key2="Don't Overwrite"):
+                    os.removedirs(backup_dir)
+                    break
+                else:
+                    print("Please try again...")
+            else:
+                break
+        else:
             backup_dir = datetime.now().strftime('{}/backup.%m-%d-%y--%I:%M.%S-%p'.format(BACKUPS_DIR))
             break
-        else:
-            print("Invalid Input... Please Try Again...")
     os.mkdir(backup_dir)  # Create the session backup folder
     DebugPrint('Created session backup folder at {}'.format(backup_dir), fromprocess_input="sf")
     return backup_dir
 
-def print_text(showText, withver=0):   # This center formats text automatically
+def print_text(showText, withver=0):                 # This center formats text automatically
     max_line_length = max([len(line) for line in showText]) + 4
     print(''.join(['+' for _ in range(max_line_length)]))
     for line in showText:
@@ -92,7 +101,7 @@ def print_text(showText, withver=0):   # This center formats text automatically
         print('+{}+'.format(' ' * padding_left + line + ' ' * (padding - padding_left)))
     print(''.join(['+' for _ in range(max_line_length)]))
 
-def selector_picker(listvar, printtext):
+def selector_picker(listvar, printtext):             # Part of @sshane's smart picker
     options = list(listvar)      # this only contains available options from self.get_available_options
     if not len(options):
         print('No options were given')
@@ -108,8 +117,7 @@ def selector_picker(listvar, printtext):
     selected_option = listvar[indexChoice]
     return selected_option
 
-def backup_overide_check(backup_dir, theme_type):
-    #Check if there was a backup already this session to prevent accidental overwrites
+def backup_overide_check(backup_dir, theme_type):    # Check if there was a backup already this session to prevent accidental overwrites
     if path.exists('{}/{}'.format(backup_dir, theme_type)):
         print('\nIt appears you already made a(n) {} install this session'.format(theme_type)) 
         print('continuing will overwrite the last {} backup'.format(theme_type))
@@ -126,7 +134,7 @@ def backup_overide_check(backup_dir, theme_type):
 ## ============= Installer Support Funcs ============= ##
 #########################################################
 # Created by @ShaneSmiskol some modifications by coltonton
-'''def installer_chooser():        # Choose what installer to use (DEPRICATED) 
+'''def installer_chooser():     # Choose what installer to use (DEPRICATED) 
     DebugPrint("installer_chooser() called", fromprocess_input="sf")                                                   
     return 'Do_Self' '''
 
@@ -219,7 +227,6 @@ def get_OP_Ver_Loc():           # Get OpenPilot Version & Location
             else: 
                 OP_Location = "/data/{}".format(OP_Location)
 
-        print("\n*")
         print("Looking For {}/releases.md to auto determine version...".format(OP_Location))
         
         if os.path.isfile("{}/RELEASES.md".format(OP_Location)) is True: 
@@ -246,7 +253,7 @@ def get_OP_Ver_Loc():           # Get OpenPilot Version & Location
         OP_Version = OP_Version.strip("Version 0.")
         file.close()
 
-        print("\n*\nOpenPilot Version Auto-Detected as 0.{} from {}".format(OP_Version, OP_Location))
+        print("OpenPilot Version Auto-Detected as 0.{} from {}".format(OP_Version, OP_Location))
     OP_info_dict = {
         "OP_Version": OP_Version,
         "OP_Location": OP_Location
@@ -262,9 +269,9 @@ def INSTALL_BOOT_LOGO(DeviceData, backup_dir, install_from_path, re=False):     
     os.system('cp {} {}/{}'.format(DeviceData["BOOT_LOGO_PATH"], backup_dir, DeviceData["BOOT_LOGO_THEME_NAME"]))    # Make Backup
     os.system('dd if={} of={}'.format(install_from_path, DeviceData["BOOT_LOGO_PATH"]))           # Replace
     if re == False:
-        print('\n*\nBoot Logo installed! Original file(s) backed up to {}'.format(backup_dir, DeviceData["BOOT_LOGO_THEME_NAME"]))
+        print('#Boot Logo installed! Original file(s) backed up to {}'.format(backup_dir, DeviceData["BOOT_LOGO_THEME_NAME"]))
     elif re == True:
-        print('\n*\nBoot Logo re-installed from backup! Current file(s) backed up to {}'.format(backup_dir, DeviceData["BOOT_LOGO_THEME_NAME"]))
+        print('#Boot Logo re-installed from backup! Current file(s) backed up to {}'.format(backup_dir, DeviceData["BOOT_LOGO_THEME_NAME"]))
 
 def INSTALL_BOOTANIMATION(backup_dir, install_from_path, color='', re=False):             #INSTALL_BOOTANIMATION
     DebugPrint("INSTALL_BOOTANIMATION() called".format([backup_dir, install_from_path, color]), fromprocess_input="sf")
@@ -274,9 +281,9 @@ def INSTALL_BOOTANIMATION(backup_dir, install_from_path, color='', re=False):   
     os.system('cp {}/{}bootanimation.zip /system/media/bootanimation.zip'.format(install_from_path, color))  # Replace
     os.system('chmod 666 /system/media/bootanimation.zip')
     if re == False:                                         # Need to chmod to edet permissions to 666
-        print('\nBoot Animation installed! Original file(s) backed up to {}'.format(backup_dir))
+        print('#Boot Animation installed! Original file(s) backed up to {}'.format(backup_dir))
     elif re == True:
-        print('\nBoot Animation Re-installed! Current file(s) backed up to {}'.format(backup_dir))
+        print('#Boot Animation Re-installed! Current file(s) backed up to {}'.format(backup_dir))
 
 def INSTALL_QT_SPINNER(backup_dir, OP_INFO, install_from_path, con_output='', re=False):  #INSTALL_QT_SPINNER
     DebugPrint("INSTALL_QT_SPINNER() called".format([backup_dir, OP_INFO["OP_Location"], OP_INFO["OP_Version"], install_from_path]), fromprocess_input="sf")
@@ -300,9 +307,9 @@ def INSTALL_QT_SPINNER(backup_dir, OP_INFO, install_from_path, con_output='', re
         #os.system('cp {}/spinner.c {}/selfdrive/common'.format(install_from_path, opdir))                                    #Replace spinner.c with supplied custom 
         #flags.append("custom_c")  
     if re == False:                                         # Need to chmod to edet permissions to 666
-        print('\nOpenPilot Spinner installed! Original file(s) backed up to {}'.format(backup_dir))
+        print('#OpenPilot Spinner installed! Original file(s) backed up to {}'.format(backup_dir))
     elif re == True:
-        print('\nOpenPilot Spinner Re-installed! Current file(s) backed up to {}'.format(backup_dir))                                                                                                 #Add custom_C flag
+        print('#OpenPilot Spinner Re-installed! Current file(s) backed up to {}'.format(backup_dir))                                                                                                 #Add custom_C flag
 
 ## ================= Restor-er Code ================= ##
 # Created by @ShaneSmiskol modified version of get_aval_themes() to get all backups by Coltonton
@@ -324,7 +331,6 @@ def get_user_backups(exclude):  #Gets users backups in /sdcard/theme-backups
   
     while 1:
         backup = input('\nChoose a backup to install (by index value): ').strip().lower()
-        print()
         if backup in ['exit', 'Exit', 'E', 'e', '0']:
             exit()
         if backup in ['r', 'R' and default_restore_exists == 1]:
@@ -339,7 +345,7 @@ def get_user_backups(exclude):  #Gets users backups in /sdcard/theme-backups
             print('Please enter only Index number value!!')
             continue
 
-def restore_comma_default(DeviceData, backup_dir):
+def restore_comma_default(DeviceData, backup_dir):  # Restore the device default theme
     print('\nSelected to restore Comma-Default theme. Continue?')
     print('Process is fully automagic!')
     if not is_affirmative():
@@ -372,12 +378,12 @@ def get_running():
     return x
 '''
 def REBOOT():                   #Reboot EON Device
-    print('\nRebooting.... Thank You, Come Again!!!')
+    print('\nRebooting.... Thank You, Come Again!!!\n\n########END OF PROGRAM########\n')
     os.system('am start -a android.intent.action.REBOOT')  # reboot intent is safer (reboot sometimes causes corruption)
     sys.exit()
 
 def QUIT_PROG():                # Terminate Program friendly
-    print('\nThank you come again! You will see your changes next reboot!\n')
+    print('\nThank you come again! You will see your changes next reboot!\n\n########END OF PROGRAM########\n')
     sys.exit()  
 
 def str_sim(a, b):              # Part of @ShaneSmiskol's get_aval_themes code
@@ -414,8 +420,8 @@ def DEV_CHECK():                #Hault Program If Ran On PC/Mac
     global DEV_PLATFORM, DEVMODE, VERBOSE
     # Simple if PC check, not needed but nice to have
     DEV_PLATFORM = platform.system()
-    print(DEV_PLATFORM)
     if DEV_PLATFORM in ['Windows', 'Darwin']:
+        print(DEV_PLATFORM)
         print("This program only works on Comma EONS & Comma Two, sorry...")
         print("Press enter to exit.")
         u = input('')

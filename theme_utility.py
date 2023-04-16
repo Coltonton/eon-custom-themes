@@ -1,6 +1,6 @@
 #!/usr/bin/python
 ###################################################################################
-#                                  VER 1.2                                        #
+#                                  VER dev                                        #
  #                                                                                #
  #      Permission is granted to anyone to use this software for any purpose,     #
  #     excluding commercial applications, and to alter it and redistribute it     #
@@ -55,15 +55,18 @@
  #       And incorparate it into your OP Fork? See ./developer/DEVREADME          #
  #                                                                                #
 ##################################################################################
+from support.support_variables import EON_CUSTOM_THEMES_VER
+print('EON Custom Themes Version '+ EON_CUSTOM_THEMES_VER)
+
 import os
 import time
 from os import path
 from support.support_functions import *
-from support.support_variables import CLEANUP_TEXT, CONTRIB_THEMES, UTIL_WELCOME_TEXT
-#====================== Vars ===================================
+from support.support_variables import CLEANUP_TEXT, UTIL_WELCOME_TEXT
 
-
-#=================== CODE START ================================
+######################################################################################################
+##======================= CODE START ================================================================#
+######################################################################################################
 os.chdir(os.path.dirname(os.path.realpath(__file__)))  # __file__ is safer since it doesn't change based on where this file is called from
 print_text(UTIL_WELCOME_TEXT)
 DEV_CHECK()                               # Check if running on unsupported PC/MAC
@@ -204,8 +207,6 @@ class ThemeUtility:
         print('to finish your complete un-installation')
         print('Until we meet again.....')
         exit()
-
-
 
 if __name__ == '__main__':
     tu = ThemeUtility()

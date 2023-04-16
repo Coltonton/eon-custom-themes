@@ -1,6 +1,6 @@
 #!/usr/bin/python
 ###################################################################################
-#                                  VER 1.2                                        #
+#                                  VER dev                                        #
  #                                                                                #
  #      Permission is granted to anyone to use this software for any purpose,     #
  #     excluding commercial applications, and to alter it and redistribute it     #
@@ -58,8 +58,9 @@ from os import path
 from support.support_variables import BACKUPS_DIR, BACKUP_OPTIONS
 from support.support_functions import *
 
-
-##======================= CODE START ================================================================
+######################################################################################################
+##======================= CODE START ================================================================#
+######################################################################################################
 os.chdir(os.path.dirname(os.path.realpath(__file__)))  # __file__ is safer since it doesn't change based on where this file is called from
 print_text(RESTORE_WELCOME_TEXT)                  # Print welcome text with the flag for self welcome text
 DebugPrint("VERBOSE MODE ON")             # Notify if Verbosity Mode is on, DebugPrints only run in dev or verbose mode
@@ -171,7 +172,7 @@ class ThemeRestorer:
             elif selected_option == '-Quit-':
                 QUIT_PROG()
 
-    def restore_default_comma(self):
+    def restore_default_comma(self):           # Restore the devices default theme
         restore_comma_default(DeviceData, self.backup_dir)
 
 if __name__ == '__main__':

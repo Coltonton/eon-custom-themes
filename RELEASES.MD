@@ -1,10 +1,17 @@
-Version 2.0.0 (2021-XX-XX)
+Version X.X.X (20XX-XX-XX)
 ========================
+
+Version 1.2.0 (2023-04-16)
+========================
+* Multi-install Feature
 * Condense installer code to run in dedicated functions
 * Cleanup naming scheme to theme_xxxx.py
 * ReDo Restore Code
 * Remove traces of APK :(
-* TODO - Auto Logic Finish!!!
+* LOTS of cleanup / makinging proper / tons of neat logic
+* Easter eggs??? Fake plastic ones maybe in this economy...
+* I'm sure, and I know im forgetting ALOT yes its been a few years.
+* TODO - V2 & V3?????!!!
 
 
 Version 1.1.1 (2020-01-01)

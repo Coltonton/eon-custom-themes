@@ -1,11 +1,13 @@
 #!/usr/bin/python
 # ===================  Misc vars =================== ##
-EON_CUSTOM_THEMES_VER = "1.2"              # This Softwares Version
+EON_CUSTOM_THEMES_VER = "dev"              # This Softwares Version
 #SHOW_CONSOLE_OUTPUT = False                # Show the console output when 'make' is called?
 VERBOSE = True
 DEVMODE = True
 DEV_PLATFORM = ""
 VALID_BOOT_ANIMATIONS =  ['Boot Animation', 'Color Boot Animation', 'White Boot Animation']
+IS_AFFIRMATIVE_YES = ['yes', 'ye', 'y', '1', "j", "ja", "si", "s"]
+IS_AFFIRMATIVE_UNSURE = ['i guess', 'sure', 'fine', 'whatever', 'idk', 'why', "uh", "um", "...", "bite me", "eat my shorts"]
 
 # ==============  Backup related vars ============== ##
 BACKUPS_DIR = '/storage/emulated/0/theme-backups' if not DEVMODE else './test-theme-backups'
@@ -20,7 +22,7 @@ MIN_SIM_THRESHOLD = 0.25      # user's input needs to be this percent or higher 
 OP_Version = 0.0
 OP_Location = ''
 
-# =================  Welcome Texts ================= ##
+# ===================== Texts ====================== ##
 WELCOME_TEXT = ['Created By: Colton (Brandon) S. EndLine \\n',
                 'Special Thanks to @ShaneSmiskol for all the help!!!',
                 'Free to use! Free to Edit! Free to integrate!',
@@ -62,7 +64,6 @@ UTIL_WELCOME_TEXT = ['Created By: Colton (Brandon) S. EndLine \\n',
                 'Version {}'.format(EON_CUSTOM_THEMES_VER),
                 ' ',
                 '*NOTE* this is the theme utility program for misc functions']
-
 CLEANUP_TEXT = ['Welcome to the uninstall - cleanup utility',
                 'Version {}'.format(EON_CUSTOM_THEMES_VER),
                 ' ',

@@ -1,6 +1,6 @@
 #!/usr/bin/python
 ###################################################################################
-#                                  VER 1.2                                        #
+#                                  VER dev                                        #
  #                                                                                #
  #      Permission is granted to anyone to use this software for any purpose,     #
  #     excluding commercial applications, and to alter it and redistribute it     #
@@ -52,17 +52,14 @@
  #                    And incorparate it into your OP Fork?                       #
  #                                                                                #
 ##################################################################################
-from support.support_variables import EON_CUSTOM_THEMES_VER
-
-import time, os, platform
-import json
+import time, os
 from os import path
 from support.support_functions import * 
-from support.support_variables import BACKUPS_DIR, BACKUP_OPTIONS, CONTRIB_THEMES, OP_Version, OP_Location, VERBOSE, WELCOME_TEXT, DEV_PLATFORM, VALID_BOOT_ANIMATIONS
+from support.support_variables import *
 
-
-
-##======================= CODE START ================================================================
+######################################################################################################
+##======================= CODE START ================================================================#
+######################################################################################################
 os.chdir(os.path.dirname(os.path.realpath(__file__)))  # __file__ is safer since it doesn't change based on where this file is called from
 
 print_text(WELCOME_TEXT)                  # Print welcome text with the flag for self welcome text
@@ -71,6 +68,13 @@ DEV_CHECK()                               # Check if running on unsupported PC/M
 OpInfo = dict                             # Init OPInfo Dict
 DeviceData = get_device_theme_data()      # Init Device Data dict with device info
 
+print_text(WELCOME_TEXT)              #Print welcome text with the flag for self welcome text
+DebugPrint("DEBUG ON")
+#RunningProcess = json.loads(data.json)
+#RunningProcess=".theme_install"
+
+OpInfo = dict
+DeviceData = get_device_theme_data() # Get Perams based off detected device
 class ThemeInstaller:
     def __init__(self):                   # Init code runs once. sets up & determines if to run auto or self
         #get_running()                     # Get Running Process
@@ -184,7 +188,7 @@ class ThemeInstaller:
                 #Main logic
                 if selected_option_list[z]   == 'Boot Logo':
                     #Confirm user wants to install bootlogo
-                    print('\nSelected to install the {} Boot Logo. Continue?'.format(self.selected_theme))
+                    print('\n*\nSelected to install the {} Boot Logo. Continue?'.format(self.selected_theme))
                     if not is_affirmative():
                         print('Not installing...')
                         time.sleep(1.5)
@@ -206,7 +210,7 @@ class ThemeInstaller:
                         input()
                 elif selected_option_list[z] == 'OpenPilot Spinner':
                     ##Confirm user wants to install Spinner
-                    print('\nSelected to install the {} OP Spinner. Continue?'.format(self.selected_theme))
+                    print('\n*\nSelected to install the {} OP Spinner. Continue?'.format(self.selected_theme))
                     if not is_affirmative():
                         continue
 
@@ -236,7 +240,7 @@ class ThemeInstaller:
                     QUIT_PROG()
                 elif selected_option_list[z] in VALID_BOOT_ANIMATIONS:
                     #Confirm user wants to install bootlogo
-                    print('\nSelected to install the {} {}. Continue?'.format(self.selected_theme, selected_option_list[z]))
+                    print('\n*\nSelected to install the {} {}. Continue?'.format(self.selected_theme, selected_option_list[z]))
                     if not is_affirmative():
                         continue
                 
@@ -260,7 +264,6 @@ class ThemeInstaller:
                         mark_self_installed()        # Create flag in /sdcard so auto installer knows there is a self installation
                         print('Press enter to continue!')
                         input()      
-
 
 if __name__ == '__main__':
     ti = ThemeInstaller()
