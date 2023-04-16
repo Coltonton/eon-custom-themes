@@ -45,15 +45,16 @@ def get_device_theme_data(onprocess='null'):
 
 def is_affirmative(key1="Yes", key2="No", output="Not installing..."):           # Ask user for confirmation
     #DebugPrint('Asking to confirm', 'sf')
-    key1_s = key1.lower().strip()
-    u = input('[1.{} / 2.{}]: '.format(key1,key2)).lower().strip()
-    DebugPrint('Got {}'.format(u), 'sf')
-    if u in IS_AFFIRMATIVE_UNSURE:
-        print("WTF do you mean {}... I'm going to assume NO so I dont brick ya shi...".format(u))
-    if u in ['i dont talk to cops without my lawyer present']:
-        print("Attaboy oat!")
-    if ((u in IS_AFFIRMATIVE_YES) or (u in [key1_s])): 
+    key1_s = key1.lower().strip()                   # lowercase key1 for compare
+    key1_f = key1_s[0] if key1_s[0] != "n" else "y" # Get first letter of lowercase key1 Just in case if is "n" (same as no) just ignore...
+    afirm = input('[1.{} / 2.{}]: '.format(key1,key2)).lower().strip()
+    DebugPrint('Got {}'.format(afirm), 'sf')
+    if ((afirm in IS_AFFIRMATIVE_YES) or (afirm in [key1_s, key1_f])): 
         return True
+    if afirm in IS_AFFIRMATIVE_UNSURE:
+        print("WTF do you mean {}... I'm going to assume NO so I dont brick ya shi...".format(afirm))
+    if afirm in ['i dont talk to cops without my lawyer present']:
+        print("Attaboy oat!")
     
     if output != "silent": print('{}'.format(output))
     time.sleep(1.5) 
