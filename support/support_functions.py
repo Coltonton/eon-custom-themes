@@ -3,10 +3,13 @@ import os, sys, time, platform, difflib, json
 from os import path
 from datetime import datetime
 from support.support_variables import *
+
 os.chdir(os.path.dirname(os.path.realpath(__file__)))  # __file__ is safer since it doesn't change based on where this file is called from
 
-## ================= Shared ================= ##
-def get_device_theme_data(onprocess='null'):
+#########################################################
+##===================== Shared ======================= ##
+#########################################################
+def get_device_theme_data(onprocess='null'):         # Get and set the data based on device
     DebugPrint('Getting Device Data...', 'sf')
     devicedata = dict
     # Crude device detection, *shrug* it works! LeEco does not have tristate!
@@ -43,14 +46,14 @@ def get_device_theme_data(onprocess='null'):
         cycle = cycle +1
     return devicedata
 
-def is_affirmative(key1="Yes", key2="No", output="Not installing..."):           # Ask user for confirmation
+def is_affirmative(key1="Yes", key2="No", output="Not installing..."): # Ask user for confirmation
     #DebugPrint('Asking to confirm', 'sf')
     key1_l = key1.lower().strip()                   # lowercase key1 for compare
-    key2_l = key2.lower().strip()
-    key1_f = key1_l[0] if key1_l[0] not in ["n", key2_l[0]] else "y" # Get first letter key1(lower), if is "n" (same as no) or same as key2 ignore...
+    key2_lf = key2.lower().strip()[0]               # lowercase first char key2 for compare
+    key1_lf = key1_l[0] if key1_l[0] not in ["n", key2_lf] else "y" # Get first letter key1(lower), if is "n" (same as no) or same as key2 ignore...
     afirm = input('[1.{} / 2.{}]: '.format(key1,key2)).lower().strip()
     DebugPrint('Got {}'.format(afirm), 'sf')
-    if ((afirm in IS_AFFIRMATIVE_YES) or (afirm in [key1_l, key1_f])): 
+    if ((afirm in IS_AFFIRMATIVE_YES) or (afirm in [key1_l, key1_lf])): 
         return True
     if afirm in IS_AFFIRMATIVE_UNSURE:
         print("WTF do you mean {}... I'm going to assume NO so I dont brick ya shi...".format(afirm))
@@ -61,7 +64,7 @@ def is_affirmative(key1="Yes", key2="No", output="Not installing..."):          
     time.sleep(1.5) 
     return False
 
-def make_backup_folder():
+def make_backup_folder():                            # Generate the backup dir
     DebugPrint('Getting backup Folder congig', fromprocess_input="sf")
     # Check if theme backup folder doesnt exist then create
     if not os.path.exists(BACKUPS_DIR): 
@@ -89,7 +92,7 @@ def make_backup_folder():
     DebugPrint('Created session backup folder at {}'.format(backup_dir), fromprocess_input="sf")
     return backup_dir
 
-def print_text(showText, withver=0):   # This center formats text automatically
+def print_text(showText, withver=0):                 # This center formats text automatically
     max_line_length = max([len(line) for line in showText]) + 4
     print(''.join(['+' for _ in range(max_line_length)]))
     for line in showText:
@@ -98,7 +101,7 @@ def print_text(showText, withver=0):   # This center formats text automatically
         print('+{}+'.format(' ' * padding_left + line + ' ' * (padding - padding_left)))
     print(''.join(['+' for _ in range(max_line_length)]))
 
-def selector_picker(listvar, printtext):
+def selector_picker(listvar, printtext):             # Part of @sshane's smart picker
     options = list(listvar)      # this only contains available options from self.get_available_options
     if not len(options):
         print('No options were given')
@@ -114,8 +117,7 @@ def selector_picker(listvar, printtext):
     selected_option = listvar[indexChoice]
     return selected_option
 
-def backup_overide_check(backup_dir, theme_type):
-    #Check if there was a backup already this session to prevent accidental overwrites
+def backup_overide_check(backup_dir, theme_type):    # Check if there was a backup already this session to prevent accidental overwrites
     if path.exists('{}/{}'.format(backup_dir, theme_type)):
         print('\nIt appears you already made a(n) {} install this session'.format(theme_type)) 
         print('continuing will overwrite the last {} backup'.format(theme_type))
@@ -132,7 +134,7 @@ def backup_overide_check(backup_dir, theme_type):
 ## ============= Installer Support Funcs ============= ##
 #########################################################
 # Created by @ShaneSmiskol some modifications by coltonton
-'''def installer_chooser():        # Choose what installer to use (DEPRICATED) 
+'''def installer_chooser():     # Choose what installer to use (DEPRICATED) 
     DebugPrint("installer_chooser() called", fromprocess_input="sf")                                                   
     return 'Do_Self' '''
 
@@ -343,7 +345,7 @@ def get_user_backups(exclude):  #Gets users backups in /sdcard/theme-backups
             print('Please enter only Index number value!!')
             continue
 
-def restore_comma_default(DeviceData, backup_dir):
+def restore_comma_default(DeviceData, backup_dir):  # Restore the device default theme
     print('\nSelected to restore Comma-Default theme. Continue?')
     print('Process is fully automagic!')
     if not is_affirmative():

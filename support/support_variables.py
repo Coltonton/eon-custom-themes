@@ -22,7 +22,7 @@ MIN_SIM_THRESHOLD = 0.25      # user's input needs to be this percent or higher 
 OP_Version = 0.0
 OP_Location = ''
 
-# =================  Welcome Texts ================= ##
+# ===================== Texts ====================== ##
 WELCOME_TEXT = ['Created By: Colton (Brandon) S. EndLine \\n',
                 'Special Thanks to @ShaneSmiskol for all the help!!!',
                 'Free to use! Free to Edit! Free to integrate!',
@@ -64,7 +64,6 @@ UTIL_WELCOME_TEXT = ['Created By: Colton (Brandon) S. EndLine \\n',
                 'Version {}'.format(EON_CUSTOM_THEMES_VER),
                 ' ',
                 '*NOTE* this is the theme utility program for misc functions']
-
 CLEANUP_TEXT = ['Welcome to the uninstall - cleanup utility',
                 'Version {}'.format(EON_CUSTOM_THEMES_VER),
                 ' ',

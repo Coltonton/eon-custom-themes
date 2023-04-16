@@ -52,17 +52,14 @@
  #                    And incorparate it into your OP Fork?                       #
  #                                                                                #
 ##################################################################################
-from support.support_variables import EON_CUSTOM_THEMES_VER
-
-import time, os, platform
-import json
+import time, os
 from os import path
 from support.support_functions import * 
-from support.support_variables import BACKUPS_DIR, BACKUP_OPTIONS, CONTRIB_THEMES, OP_Version, OP_Location, VERBOSE, WELCOME_TEXT, DEV_PLATFORM, VALID_BOOT_ANIMATIONS
+from support.support_variables import *
 
-
-
-##======================= CODE START ================================================================
+######################################################################################################
+##======================= CODE START ================================================================#
+######################################################################################################
 os.chdir(os.path.dirname(os.path.realpath(__file__)))  # __file__ is safer since it doesn't change based on where this file is called from
 
 print_text(WELCOME_TEXT)                  # Print welcome text with the flag for self welcome text
@@ -260,7 +257,6 @@ class ThemeInstaller:
                         mark_self_installed()        # Create flag in /sdcard so auto installer knows there is a self installation
                         print('Press enter to continue!')
                         input()      
-
 
 if __name__ == '__main__':
     ti = ThemeInstaller()
