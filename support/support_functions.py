@@ -43,26 +43,21 @@ def get_device_theme_data(onprocess='null'):
         cycle = cycle +1
     return devicedata
 
-def is_affirmative(key1="Yes", key2="No"):           # Ask user for confirmation
+def is_affirmative(key1="Yes", key2="No", output="Not installing..."):           # Ask user for confirmation
     #DebugPrint('Asking to confirm', 'sf')
     key1_s = key1.lower().strip()
-    key2_s = key2.lower().strip()
     u = input('[1.{} / 2.{}]: '.format(key1,key2)).lower().strip()
     DebugPrint('Got {}'.format(u), 'sf')
     if u in IS_AFFIRMATIVE_UNSURE:
         print("WTF do you mean {}... I'm going to assume NO so I dont brick ya shi...".format(u))
     if u in ['i dont talk to cops without my lawyer present']:
         print("Attaboy oat!")
-    if ((u not in IS_AFFIRMATIVE_YES) or (u not in [key1_s]) or (u in [key2_s])):
-        print('Not Installing....')
-        time.sleep(1.5) 
-        return False
     if ((u in IS_AFFIRMATIVE_YES) or (u in [key1_s])): 
         return True
-    else:
-        print('Not installing...')
-        time.sleep(1.5) 
-        return False
+    
+    if output != "silent": print('{}'.format(output))
+    time.sleep(1.5) 
+    return False
 
 def make_backup_folder():
     DebugPrint('Getting backup Folder congig', fromprocess_input="sf")
@@ -73,7 +68,7 @@ def make_backup_folder():
     # Create session backup folder
     while True:
         print("\n*\nDo You wish to name your backup or use default? ")
-        if is_affirmative(key1="Custom", key2="Default"):
+        if is_affirmative(key1="Custom", key2="Default", output="silent"):
             usersChoice = input("Enter: backup.")
             backup_dir = '{}/backup.{}'.format(BACKUPS_DIR, usersChoice)
             if path.exists('{}'.format(backup_dir)):
@@ -85,11 +80,9 @@ def make_backup_folder():
                     print("Please try again...")
             else:
                 break
-        elif ans == 2:
+        else:
             backup_dir = datetime.now().strftime('{}/backup.%m-%d-%y--%I:%M.%S-%p'.format(BACKUPS_DIR))
             break
-        else:
-            print("Invalid Input... Please Try Again...")
     os.mkdir(backup_dir)  # Create the session backup folder
     DebugPrint('Created session backup folder at {}'.format(backup_dir), fromprocess_input="sf")
     return backup_dir
