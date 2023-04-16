@@ -47,17 +47,17 @@ def is_affirmative(key1="Yes", key2="No"):           # Ask user for confirmation
     #DebugPrint('Asking to confirm', 'sf')
     key1_s = key1.lower().strip()
     key2_s = key2.lower().strip()
-    u = input('[1.Yes / 2.No]: ').lower().strip()
+    u = input('[1.{}} / 2.{}]: '.format(key1,key2)).lower().strip()
     DebugPrint('Got {}'.format(u), 'sf')
     if u in IS_AFFIRMATIVE_UNSURE:
         print("WTF do you mean {}... I'm going to assume NO so I dont brick ya shi...".format(u))
     if u in ['i dont talk to cops without my lawyer present']:
         print("Attaboy oat!")
-    if u not in IS_AFFIRMATIVE_YES or [key1_s]:
+    if ((u not in IS_AFFIRMATIVE_YES) or (u not in [key1_s]) or (u in [key2_s])):
         print('Not Installing....')
         time.sleep(1.5) 
         return False
-    if u in IS_AFFIRMATIVE_YES or [key1_s]: 
+    if ((u in IS_AFFIRMATIVE_YES) or (u in [key1_s])): 
         return True
     else:
         print('Not installing...')
