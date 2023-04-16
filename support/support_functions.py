@@ -47,7 +47,7 @@ def is_affirmative(key1="Yes", key2="No"):           # Ask user for confirmation
     #DebugPrint('Asking to confirm', 'sf')
     key1_s = key1.lower().strip()
     key2_s = key2.lower().strip()
-    u = input('[1.{}} / 2.{}]: '.format(key1,key2)).lower().strip()
+    u = input('[1.{} / 2.{}]: '.format(key1,key2)).lower().strip()
     DebugPrint('Got {}'.format(u), 'sf')
     if u in IS_AFFIRMATIVE_UNSURE:
         print("WTF do you mean {}... I'm going to assume NO so I dont brick ya shi...".format(u))
