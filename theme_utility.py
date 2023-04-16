@@ -62,26 +62,26 @@ import os
 import time
 from os import path
 from support.support_functions import *
-from support.support_variables import CLEANUP_TEXT, CONTRIB_THEMES, SHOW_CONSOLE_OUTPUT, UTIL_WELCOME_TEXT
-#====================== Vars ===================================
+from support.support_variables import CLEANUP_TEXT, UTIL_WELCOME_TEXT
 
-
-#=================== CODE START ================================
+######################################################################################################
+##======================= CODE START ================================================================#
+######################################################################################################
 os.chdir(os.path.dirname(os.path.realpath(__file__)))  # __file__ is safer since it doesn't change based on where this file is called from
 print_text(UTIL_WELCOME_TEXT)
+DEV_CHECK()                               # Check if running on unsupported PC/MAC
+DeviceData = get_device_theme_data()      # Init Device Data dict with device info
 
-class ThemeUtil:
-    def __init__(self):
+class ThemeUtility:
+    def __init__(self):              #Init
         while True:
-            util_options = ['Install from custom location', 'Restore Comma-default', 'Restore backup', 'Cleanup for uninstall', '-Reboot-', '-Quit-']
+            util_options = ['Install from custom location', 'Restore Comma-default', 'Cleanup for uninstall', '-Reboot-', '-Quit-']
             selected_util = selector_picker(util_options, 'This Is a Test')
 
             if   selected_util == 'Install from custom location':
                 self.Install_From_Loc()
             elif selected_util == 'Restore Comma-default':
                 self.Restore_Comma_Default()
-            elif selected_util == 'Restore backup':
-                self.Restore_Backup()
             elif selected_util == 'Cleanup for uninstall':
                 self.Cleanup_Files()
             elif selected_util == '-Reboot-':
@@ -89,8 +89,7 @@ class ThemeUtil:
             elif selected_util == '-Quit-':
                 QUIT_PROG()
 
-    def Install_From_Loc(self):      #TEST & Cleanup the spare vars
-        EON_TYPE, BOOT_LOGO_THEME_NAME, BOOT_LOGO_THEME_PATH, BOOT_LOGO_NAME, BOOT_LOGO_PATH = get_device_theme_data() # Get Perams based off detected device
+    def Install_From_Loc(self):      #Install a custom theme from custom location
         backup_dir = make_backup_folder()
         theme_options = []
  
@@ -98,18 +97,17 @@ class ThemeUtil:
         print('What is the full path to your custom theme folder? ')
         print('ex. /sdcard/mythemefolder')
         install_folder = input('?: ')
-
-        op_ver, op_loc = get_OP_Ver_Loc()
+        
         # cd /data/eon-custom-themes && exec ./theme_utils.py
         # /data/eon-custom-themes/contributed-themes/Subaru
-        if path.exists('{}/LOGO'.format(install_folder)):
+        if path.exists('{}/OP3T-Logo/LOGO'.format(install_folder)) and DeviceData["EON_TYPE"] == 'OP3T':
             theme_options.append('OP3T Boot Logo')
-        if path.exists('{}/SPLASH'.format(install_folder)):
+        if path.exists('{}/LeEco-Logo/SPLASH'.format(install_folder)) and DeviceData["EON_TYPE"] == 'LeEco':
             theme_options.append('LeEco Boot Logo')
         if path.exists('{}/bootanimation.zip'.format(install_folder)):
             theme_options.append('Boot Animation')
-        if path.exists('{}/img_spinner_comma.png'.format(install_folder)) or path.exists('{}/img_spinner_track.png'.format(install_folder)) or path.exists('{}/spinner.c'.format(install_folder)):
-            self.theme_options.append('OP Spinner')
+        if path.exists('{}/spinner/img_spinner_comma.png'.format(install_folder)) or path.exists('{}/img_spinner_track.png'.format(install_folder)) or path.exists('{}/spinner.c'.format(install_folder)):
+            theme_options.append('OP Spinner')
         theme_options.append('-Reboot-')
         theme_options.append('-Quit-')
     
@@ -127,38 +125,44 @@ class ThemeUtil:
             indexChoice = int(input("Enter Index Value: "))
             indexChoice -= 1 
 
-            selected_option = self.theme_options[indexChoice]
+            selected_option = theme_options[indexChoice]
 
             if selected_option  in ['Boot Animation', 'OP3T Boot Logo', 'LeEco Boot Logo', 'OP Spinner']:    
                 ##Confirm user wants to install asset
                 print('\nSelected to install the Custom {}. Continue?'.format(selected_option))
                 if not is_affirmative():
-                    print('Not installing...')
-                    time.sleep(1.5)
                     continue       
     
             if selected_option   == 'Boot Animation':
                 ##Check if there was a boot ani backup already this session to prevent accidental overwrites
                 #Returns false if okay to proceed. Gets self.backup_dir & asset type name
-                if backup_overide_check(self.backup_dir, 'bootanimation.zip') == True:
+                if backup_overide_check(backup_dir, 'bootanimation.zip') == True:
                     break
 
-                install_from_path = ("{}/bootanimation.zip".format(install_folder))
-                INSTALL_BOOTANIMATION(self.backup_dir, install_from_path)
-                mark_self_installed()        # Create flag in /sdcard so auto installer knows there is a self installation
-                print('Press enter to continue!')
-                input() 
+                #Backup And install new bootanimation
+                install_from_path = (install_folder)
+                if Dev_DoInstall():
+                    INSTALL_BOOTANIMATION(backup_dir, install_from_path,)
+                    mark_self_installed()        # Create flag in /sdcard so auto installer knows there is a self installation
+                    print('Press enter to continue!')
+                    input()  
             elif selected_option == 'OP Spinner':
                 ##Check if there was a spinner backup already this session to prevent accidental overwrites
                 #Returns false if okay to proceed. Gets self.backup_dir & asset type name
-                if backup_overide_check(self.backup_dir, 'spinner') == True:
+                if backup_overide_check(backup_dir, 'spinner') == True:
                     break
 
+                OP_INFO = get_OP_Ver_Loc()
+                DebugPrint("Got OP Location: {} and Version 0.{}".format(OP_INFO["OP_Location"], OP_INFO["OP_Version"]))
+
+                #Backup & Install
                 install_from_path = ("{}/spinner".format(install_folder))
-                INSTALL_QT_SPINNER(self.backup_dir, op_ver, op_loc, install_from_path, SHOW_CONSOLE_OUTPUT)
-                mark_self_installed()        # Create flag in /sdcard so auto installer knows there is a self installation
-                print('Press enter to continue!')
-                input()    
+                #Function to ask before installing for use in dev to not screw up my computer, and test logic
+                if Dev_DoInstall():
+                    INSTALL_QT_SPINNER(backup_dir, OP_INFO, install_from_path)
+                    mark_self_installed()        # Create flag in /sdcard so auto installer knows there is a self installation
+                    print('Press enter to continue!')
+                    input()   
             elif selected_option == '-Reboot-':
                 REBOOT()
             elif selected_option == '-Quit-' or selected_option is None:
@@ -166,45 +170,22 @@ class ThemeUtil:
             elif selected_option == 'OP3T Boot Logo' or selected_option == 'LeEco Boot Logo':
                 ##Check if there was a Boot Logo backup already this session to prevent accidental overwrites
                 #Returns false if okay to proceed. Gets self.backup_dir & asset type name
-                if backup_overide_check(self.backup_dir, BOOT_LOGO_NAME) == True:
+                if backup_overide_check(backup_dir, DeviceData["BOOT_LOGO_NAME"]) == True:
                     break
 
-                #Do Install
-                install_from_path = ("{}/{}".format(install_folder, BOOT_LOGO_THEME_NAME))
-                INSTALL_BOOT_LOGO(EON_TYPE, self.backup_dir, install_from_path) 
-                mark_self_installed()        # Create flag in /sdcard so auto installer knows there is a self installation
-                print('Press enter to continue!')
-                input() 
+                #Backup & install new
+                install_from_path = ('{}/{}'.format(install_folder, DeviceData["BOOT_LOGO_THEME_PATH"]))
+                if Dev_DoInstall():
+                    INSTALL_BOOT_LOGO(DeviceData, backup_dir, install_from_path)
+                    mark_self_installed()       # Create flag in /sdcard so auto installer knows there is a self installation
+                    print('Press enter to continue!')
+                    input()
 
-    def Restore_Comma_Default(self): #PERFECT 
-        eon_type, boot_logo_theme_name, boot_logo_theme_path, boot_logo_name, boot_logo_path = get_device_theme_data() # Get Perams based off detected device
-
-        print('\nSelected to restore Comma-Default theme. Continue?')
-        print('Process is fully automagic!')
-        if not is_affirmative():
-            print('Not restoring...')
-            time.sleep(1.5)
-            return None
-
-        print('Please wait..... This should only take a few moments!\n')
+    def Restore_Comma_Default(self): #Restore the default theme for EON 
         backup_dir = make_backup_folder()
+        restore_comma_default(DeviceData, backup_dir)
 
-        #Boot-Logo
-        install_from_path = '{}/Comma-Default/{}'.format(CONTRIB_THEMES, boot_logo_theme_path)
-        INSTALL_BOOT_LOGO(eon_type, backup_dir, install_from_path)
-
-        #Boot-Animation
-        install_from_path = '{}/Comma-Default/'.format(CONTRIB_THEMES)
-        INSTALL_BOOTANIMATION(backup_dir, install_from_path)
-
-        print('\nThank you come again! - Boot Logo & Boot Animation factory restored!!')
-        exit()
-
-    def Restore_Backup(self):        #TODO
-        self.backup_dir = make_backup_folder()  # Create and get backup folder
-        BACKUP_OPTIONS = []
-
-    def Cleanup_Files(self):
+    def Cleanup_Files(self):         #Remove all traces of EON Custom Themes
         #Print hAllo message
         print_text(CLEANUP_TEXT)
         #Confirm user wants to install bootlogo
@@ -227,7 +208,5 @@ class ThemeUtil:
         print('Until we meet again.....')
         exit()
 
-
-
 if __name__ == '__main__':
-    tu = ThemeUtil()
+    tu = ThemeUtility()

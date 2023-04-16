@@ -4,6 +4,7 @@ Boot Logo Tools/OnePlus3TInjector/Thumbs.db
 test-theme-backups
 support/__pycache__
 contributed-themes/DEV
+mydev
 *.db
 *.DS_Store
 *.DS_Store
