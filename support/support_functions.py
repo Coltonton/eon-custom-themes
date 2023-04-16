@@ -68,8 +68,8 @@ def make_backup_folder():
         os.mkdir(BACKUPS_DIR)
     # Create session backup folder
     while True:
-        print("Do You wish to name your backup or use default?")
-        ans = input("1.Yes/2.Use Default").strip().lower()
+        print("Do You wish to name your backup or use default? ")
+        ans = input("1.Yes/2.Use Default: ").lower().strip()
         if ans == "1" or "y" or "yes":
             usersChoice = input("Enter: backup.")
             backup_dir = '{}/backup.{}}'.format(BACKUPS_DIR, usersChoice)

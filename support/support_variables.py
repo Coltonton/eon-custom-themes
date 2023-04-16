@@ -2,8 +2,8 @@
 # ===================  Misc vars =================== ##
 EON_CUSTOM_THEMES_VER = "1.2"              # This Softwares Version
 #SHOW_CONSOLE_OUTPUT = False                # Show the console output when 'make' is called?
-VERBOSE = True
-DEVMODE = True
+VERBOSE = False
+DEVMODE = False
 DEV_PLATFORM = ""
 VALID_BOOT_ANIMATIONS =  ['Boot Animation', 'Color Boot Animation', 'White Boot Animation']
 
