@@ -70,10 +70,9 @@ def make_backup_folder():
     while True:
         print("Do You wish to name your backup or use default? ")
         ans = int(input("1.Yes/2.Use Default (By Index): "))
-        print(ans)
         if ans == 1:
             usersChoice = input("Enter: backup.")
-            backup_dir = '{}/backup.{}}'.format(BACKUPS_DIR, usersChoice)
+            backup_dir = '{}/backup.{}'.format(BACKUPS_DIR, usersChoice)
             break
         elif ans == 2:
             backup_dir = datetime.now().strftime('{}/backup.%m-%d-%y--%I:%M.%S-%p'.format(BACKUPS_DIR))
