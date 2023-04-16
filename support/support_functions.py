@@ -70,6 +70,7 @@ def make_backup_folder():
     while True:
         print("Do You wish to name your backup or use default? ")
         ans = input("1.Yes/2.Use Default: ")
+        print(ans)
         if ans == "1" or "y" or "yes" or "Y" or "Yes":
             usersChoice = input("Enter: backup.")
             backup_dir = '{}/backup.{}}'.format(BACKUPS_DIR, usersChoice)
