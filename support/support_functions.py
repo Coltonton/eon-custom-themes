@@ -228,7 +228,6 @@ def get_OP_Ver_Loc():           # Get OpenPilot Version & Location
             else: 
                 OP_Location = "/data/{}".format(OP_Location)
 
-        print("\n*")
         print("Looking For {}/releases.md to auto determine version...".format(OP_Location))
         
         if os.path.isfile("{}/RELEASES.md".format(OP_Location)) is True: 
@@ -255,7 +254,7 @@ def get_OP_Ver_Loc():           # Get OpenPilot Version & Location
         OP_Version = OP_Version.strip("Version 0.")
         file.close()
 
-        print("\n*\nOpenPilot Version Auto-Detected as 0.{} from {}".format(OP_Version, OP_Location))
+        print("OpenPilot Version Auto-Detected as 0.{} from {}".format(OP_Version, OP_Location))
     OP_info_dict = {
         "OP_Version": OP_Version,
         "OP_Location": OP_Location
@@ -271,9 +270,9 @@ def INSTALL_BOOT_LOGO(DeviceData, backup_dir, install_from_path, re=False):     
     os.system('cp {} {}/{}'.format(DeviceData["BOOT_LOGO_PATH"], backup_dir, DeviceData["BOOT_LOGO_THEME_NAME"]))    # Make Backup
     os.system('dd if={} of={}'.format(install_from_path, DeviceData["BOOT_LOGO_PATH"]))           # Replace
     if re == False:
-        print('\n*\nBoot Logo installed! Original file(s) backed up to {}'.format(backup_dir, DeviceData["BOOT_LOGO_THEME_NAME"]))
+        print('#Boot Logo installed! Original file(s) backed up to {}'.format(backup_dir, DeviceData["BOOT_LOGO_THEME_NAME"]))
     elif re == True:
-        print('\n*\nBoot Logo re-installed from backup! Current file(s) backed up to {}'.format(backup_dir, DeviceData["BOOT_LOGO_THEME_NAME"]))
+        print('#Boot Logo re-installed from backup! Current file(s) backed up to {}'.format(backup_dir, DeviceData["BOOT_LOGO_THEME_NAME"]))
 
 def INSTALL_BOOTANIMATION(backup_dir, install_from_path, color='', re=False):             #INSTALL_BOOTANIMATION
     DebugPrint("INSTALL_BOOTANIMATION() called".format([backup_dir, install_from_path, color]), fromprocess_input="sf")
@@ -283,9 +282,9 @@ def INSTALL_BOOTANIMATION(backup_dir, install_from_path, color='', re=False):   
     os.system('cp {}/{}bootanimation.zip /system/media/bootanimation.zip'.format(install_from_path, color))  # Replace
     os.system('chmod 666 /system/media/bootanimation.zip')
     if re == False:                                         # Need to chmod to edet permissions to 666
-        print('\nBoot Animation installed! Original file(s) backed up to {}'.format(backup_dir))
+        print('#Boot Animation installed! Original file(s) backed up to {}'.format(backup_dir))
     elif re == True:
-        print('\nBoot Animation Re-installed! Current file(s) backed up to {}'.format(backup_dir))
+        print('#Boot Animation Re-installed! Current file(s) backed up to {}'.format(backup_dir))
 
 def INSTALL_QT_SPINNER(backup_dir, OP_INFO, install_from_path, con_output='', re=False):  #INSTALL_QT_SPINNER
     DebugPrint("INSTALL_QT_SPINNER() called".format([backup_dir, OP_INFO["OP_Location"], OP_INFO["OP_Version"], install_from_path]), fromprocess_input="sf")
@@ -309,9 +308,9 @@ def INSTALL_QT_SPINNER(backup_dir, OP_INFO, install_from_path, con_output='', re
         #os.system('cp {}/spinner.c {}/selfdrive/common'.format(install_from_path, opdir))                                    #Replace spinner.c with supplied custom 
         #flags.append("custom_c")  
     if re == False:                                         # Need to chmod to edet permissions to 666
-        print('\nOpenPilot Spinner installed! Original file(s) backed up to {}'.format(backup_dir))
+        print('#OpenPilot Spinner installed! Original file(s) backed up to {}'.format(backup_dir))
     elif re == True:
-        print('\nOpenPilot Spinner Re-installed! Current file(s) backed up to {}'.format(backup_dir))                                                                                                 #Add custom_C flag
+        print('#OpenPilot Spinner Re-installed! Current file(s) backed up to {}'.format(backup_dir))                                                                                                 #Add custom_C flag
 
 ## ================= Restor-er Code ================= ##
 # Created by @ShaneSmiskol modified version of get_aval_themes() to get all backups by Coltonton

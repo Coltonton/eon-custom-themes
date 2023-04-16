@@ -184,7 +184,7 @@ class ThemeInstaller:
                 #Main logic
                 if selected_option_list[z]   == 'Boot Logo':
                     #Confirm user wants to install bootlogo
-                    print('\nSelected to install the {} Boot Logo. Continue?'.format(self.selected_theme))
+                    print('\n*\nSelected to install the {} Boot Logo. Continue?'.format(self.selected_theme))
                     if not is_affirmative():
                         print('Not installing...')
                         time.sleep(1.5)
@@ -206,7 +206,7 @@ class ThemeInstaller:
                         input()
                 elif selected_option_list[z] == 'OpenPilot Spinner':
                     ##Confirm user wants to install Spinner
-                    print('\nSelected to install the {} OP Spinner. Continue?'.format(self.selected_theme))
+                    print('\n*\nSelected to install the {} OP Spinner. Continue?'.format(self.selected_theme))
                     if not is_affirmative():
                         continue
 
@@ -236,7 +236,7 @@ class ThemeInstaller:
                     QUIT_PROG()
                 elif selected_option_list[z] in VALID_BOOT_ANIMATIONS:
                     #Confirm user wants to install bootlogo
-                    print('\nSelected to install the {} {}. Continue?'.format(self.selected_theme, selected_option_list[z]))
+                    print('\n*\nSelected to install the {} {}. Continue?'.format(self.selected_theme, selected_option_list[z]))
                     if not is_affirmative():
                         continue
                 
